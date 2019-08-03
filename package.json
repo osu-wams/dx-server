@@ -5,8 +5,8 @@
   "scripts": {
     "start": "nodemon --files src/index.ts",
     "prod": "ts-node src/index.ts",
-    "lint": "eslint src/**/*",
-    "lint:fix": "eslint src/**/* --fix",
+    "lint": "eslint --ext .js,.ts src/**",
+    "lint:fix": "eslint --ext .js,.ts src/** --fix",
     "test": "NODE_ENV=test jest --no-cache",
     "test:coverage": "NODE_ENV=test jest --coverage"
   },
