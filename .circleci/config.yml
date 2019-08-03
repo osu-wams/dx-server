@@ -68,7 +68,7 @@ not-master: &not-master
       - master
 
 workflows:
-  build_test_deploy:
+  build_test:
     jobs:
       - install
       - lint_test_coverage:
