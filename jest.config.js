@@ -3,6 +3,8 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/config/', '/src/types/', '/dist/'],
   modulePathIgnorePatterns: ['/dist/'],
+  coverageDirectory: './coverage/',
+  collectCoverage: true,
   collectCoverageFrom: [
     '**/*.{js,ts}',
     '!**/coverage/**',
