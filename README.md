@@ -1,1 +1,1 @@
-[![CircleCI](https://circleci.com/gh/osu-wams/dx-server/tree/master.svg?style=svg)](https://circleci.com/gh/osu-wams/dx-server/tree/master)
+[![CircleCI](https://circleci.com/gh/osu-wams/dx-server/tree/master.svg?style=svg)](https://circleci.com/gh/osu-wams/dx-server/tree/master)[![codecov](https://codecov.io/gh/osu-wams/dx-server/branch/master/graph/badge.svg)](https://codecov.io/gh/osu-wams/dx-server)
