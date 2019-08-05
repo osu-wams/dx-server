@@ -23,7 +23,6 @@ describe('/alerts', () => {
       }
     ];
 
-    // Mock response from Handshake - query parameters must be an exact match
     nock(BASE_URL)
       .get('')
       .reply(200, alertPresent.xml, { 'Content-Type': 'application/xml' });
@@ -32,7 +31,6 @@ describe('/alerts', () => {
   });
 
   it('should return an empty array [] when "All Clear" is present in the data', async () => {
-    // Mock response from Handshake - query parameters must be an exact match
     nock(BASE_URL)
       .get('')
       .reply(200, alertClear.xml, { 'Content-Type': 'application/xml' });
