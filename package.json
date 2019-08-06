@@ -1,62 +1,66 @@
 {
-  "name": "dx",
-  "private": true,
-  "workspaces": [
-    "client",
-    "server"
-  ],
+  "name": "server",
+  "version": "1.0.0",
+  "license": "MIT",
   "scripts": {
-    "build": "yarn workspace client run build",
-    "start": "concurrently -k -c \"blue,magenta\" --names \"CLIENT,SERVER\" \"yarn:start:client\" \"yarn:start:server\"",
-    "start:client": "yarn workspace client start",
-    "start:server": "yarn workspace server start",
-    "lint": "yarn run lint:client && yarn run lint:server",
-    "lint:fix": "yarn workspace client run lint:fix && yarn workspace server run lint:fix",
-    "lint:client": "yarn workspace client run lint",
-    "lint:server": "yarn workspace server run lint",
-    "cy:run": "cypress run",
-    "cy:open": "cypress open",
-    "test": "yarn workspace client run test:coverage && yarn workspace server run test:coverage"
+    "start": "nodemon --files src/index.ts",
+    "prod": "ts-node src/index.ts",
+    "lint": "eslint --ext .js,.ts src/**",
+    "lint:fix": "eslint --ext .js,.ts src/** --fix",
+    "test": "NODE_ENV=test jest --no-cache",
+    "test:coverage": "NODE_ENV=test jest --coverage"
   },
-  "dependencies": {
-    "concurrently": "^4.1.0"
+  "config": {
+    "loglevel": "verbose"
   },
   "devDependencies": {
-    "babel-eslint": "^9",
+    "@types/body-parser": "^1.17.0",
+    "@types/config": "^0.0.34",
+    "@types/connect-redis": "^0.0.10",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/express": "^4.17.0",
+    "@types/express-session": "^1.15.13",
+    "@types/jest": "^24.0.16",
+    "@types/nock": "^10.0.3",
+    "@types/node": "^12.6.9",
+    "@types/passport": "^1.0.0",
+    "@types/passport-saml": "^1.1.0",
+    "@types/request-promise": "^4.1.44",
+    "@types/supertest": "^2.0.8",
+    "@types/winston": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
     "codecov": "^3.1.0",
-    "cross-env": "^5.2.0",
-    "cypress": "^3.1.5",
-    "cypress-testing-library": "^2.3.6",
-    "eslint": "5.12.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-config-react-app": "^3.0.5",
-    "eslint-plugin-flowtype": "2.x",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-prettier": "^3.0.0",
-    "eslint-plugin-react": "^7.11.1",
-    "husky": "^1.2.0",
-    "lint-staged": "^8.1.0",
-    "nock": "^10.0.2",
-    "prettier": "^1.15.2",
-    "supertest": "^3.3.0"
+    "concurrently": "^4.1.1",
+    "eslint": "5.3.0",
+    "eslint-config-airbnb": "^17.1.1",
+    "eslint-config-airbnb-base": "13.2.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "jest": "^24.8.0",
+    "nock": "^10.0.6",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2",
+    "ts-jest": "^24.0.2",
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "client/**/*.{js,jsx,ts,tsx}": [
-      "eslint -c ./client/.eslintrc --fix",
-      "git add",
-      "cross-env CI=true yarn workspace client run test --findRelatedTests"
-    ],
-    "server/**/*.js": [
-      "eslint -c ./server/.eslintrc --fix",
-      "git add",
-      "cross-env CI=true yarn workspace server run test --findRelatedTests"
-    ]
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "config": "^3.2.2",
+    "connect-redis": "^3.4.2",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "express-winston": "^3.2.1",
+    "logform": "^2.1.2",
+    "passport": "^0.4.0",
+    "passport-dev": "^1.0.1",
+    "passport-saml": "^1.1.0",
+    "querystring": "^0.2.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4",
+    "rss-parser": "^3.7.2",
+    "winston": "^3.2.1"
   }
 }
