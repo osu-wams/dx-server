@@ -34,6 +34,21 @@ const getData = async (url: string, match: string) => {
   return data;
 };
 
+const filterResults = (data) => {
+  return data.map(data => {
+    const { id, attributes } = data;
+    const { field_service_url, title, icon, field_service_description } = attributes;
+    const { uri } = field_service_url;
+    return {
+      id,
+      title,
+      icon, 
+      field_service_description,
+      uri,
+    }
+  })
+};
+
 router.get('/', async (req: Request, res: Response) => {
   try {
     let requestUrl = servicesUrl;
@@ -52,8 +67,11 @@ router.get('/', async (req: Request, res: Response) => {
         }
       }
     }
+
     const data = await getData(requestUrl, 'field_icon');
-    res.send(data);
+    const filteredData = filterResults(data);
+
+    res.send(filteredData);
   } catch (err) {
     res.status(500).send(err);
   }
