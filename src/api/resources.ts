@@ -34,9 +34,25 @@ const getData = async (url: string, match: string) => {
   return data;
 };
 
-const filterResults = (data) => {
-  return data.map(data => {
-    const { id, attributes } = data;
+// TODO add interface
+interface FilterResultObject {
+  id: string;
+  title: string;
+  icon: string;
+  field_service_description: string;
+  uri: string;
+}
+
+/**
+ * Takes an array of API results and filters out unnessesary 
+ * data for use in the /results?query route.
+ * @param data Array of API results
+ * @returns Array of filtered results
+ */
+const filterResults = (data):Array<FilterResultObject> => {
+  // Map over each element of data returning a new condensed obj.
+  return data.map(item => {
+    const { id, attributes } = item;
     const { field_service_url, title, icon, field_service_description } = attributes;
     const { uri } = field_service_url;
     return {
