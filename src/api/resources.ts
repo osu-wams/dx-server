@@ -38,7 +38,6 @@ interface IResourceResult {
   id: string;
   title: string;
   icon?: string;
-  field_service_description: string;
   uri: string;
 }
 
@@ -56,7 +55,6 @@ const filterResults = (data): Array<IResourceResult> => {
       attributes: {
         title,
         icon,
-        field_service_description,
         field_service_url: { uri }
       }
     } = item;
@@ -65,7 +63,6 @@ const filterResults = (data): Array<IResourceResult> => {
       id,
       title,
       icon,
-      field_service_description,
       uri
     };
   });
