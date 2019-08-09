@@ -4,22 +4,37 @@
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import request from 'request-promise';
 import config from 'config';
+import Auth from '../auth';
 import { getToken } from './util';
-import { getUpcomingAssignments } from './modules/canvas';
+import { getPlannerItemsMask, getPlannerItemsOAuth, UpcomingAssignment } from './modules/canvas'; // eslint-disable-line no-unused-vars
 
 const BASE_URL: string = `${config.get('osuApi.baseUrl')}/students`;
 const router = Router();
 
-router.get('/assignments', async (req: Request, res: Response) => {
-  try {
-    const apiResponse = await getUpcomingAssignments(req.user.masqueradeId || req.user.osuId);
-    // Filter out just assignments
-    const assignments = apiResponse.filter(item => item.assignment !== undefined);
-    res.send(assignments);
-  } catch (err) {
-    res.status(500).send('Unable to retrieve assignments.');
+router.get(
+  '/planner-items',
+  Auth.hasValidCanvasRefreshToken,
+  async (req: Request, res: Response) => {
+    try {
+      let plannerApiResponse: UpcomingAssignment[];
+      // Administrators that have masqueraded get access to this endpoint (else you get oauth)
+      if (req.user.isAdmin && req.user.masqueradeId) {
+        plannerApiResponse = await getPlannerItemsMask(req.user.masqueradeId);
+      } else if (req.user.canvasOauthToken) {
+        plannerApiResponse = await getPlannerItemsOAuth(req.user.canvasOauthToken);
+      } else {
+        plannerApiResponse = [];
+      }
+
+      // Filter out just assignments
+      // const assignments = apiResponse.filter(item => item.assignment !== undefined);
+      res.send(plannerApiResponse);
+    } catch (err) {
+      console.error('api/student/planner-items failed:', err); // eslint-disable-line no-console
+      res.status(500).send('Unable to retrieve planner items.');
+    }
   }
-});
+);
 
 router.get('/academic-status', async (req: Request, res: Response) => {
   try {

@@ -17,7 +17,6 @@ describe('/resources', () => {
         icon: 'http://dev-api-dx.pantheonsite.io/sites/default/files/2019-05/logo_sites_128px.png'
       }
     };
-    // Mock response from Handshake - query parameters must be an exact match
     nock(BASE_URL)
       .get(/.*/)
       .reply(200, resourcesData, { 'Content-Type': 'application/json' });

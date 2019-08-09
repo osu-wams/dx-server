@@ -9,6 +9,8 @@ import config from 'config';
 import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
+import { findOrCreateUser, updateOAuthData } from './api/modules/user-account';
+import { getOAuthToken } from './api/modules/canvas';
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
@@ -43,6 +45,8 @@ const sessionOptions: SessionOptions = {
   }
 };
 
+console.info(`${config.get('env')} server started`);
+
 if (config.get('env') === 'production') {
   sessionOptions.store = new RedisStore({
     host: config.get('redis.host'),
@@ -57,6 +61,7 @@ app.use(session(sessionOptions));
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(Auth.passportStrategy);
+passport.use(Auth.oAuth2Strategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
@@ -69,7 +74,34 @@ app.get('/healthcheck', (req, res) => {
   res.status(200).end();
 });
 
-app.post('/login/saml', passport.authenticate('saml'), (req, res) => {
+app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
+  const { user, isNew } = await findOrCreateUser(req.user);
+  req.session.passport.user = user;
+  if (isNew) {
+    res.redirect('/canvas/login');
+  } else if (user.isCanvasOptIn) {
+    res.redirect('/canvas/refresh');
+  } else {
+    res.redirect('/');
+  }
+});
+
+app.get('/canvas/login', passport.authorize('oauth2'));
+app.get(
+  '/canvas/auth',
+  passport.authorize('oauth2', { failureRedirect: '/' }),
+  async (req: any, res: Response) => {
+    const { account } = req;
+    await updateOAuthData(req.user, { account, isCanvasOptIn: true });
+    req.user.canvasOauthToken = account.accessToken;
+    req.user.canvasOauthExpire = Math.floor(Date.now() / 1000) + parseInt(account.expireTime, 10);
+    req.user.isCanvasOptIn = true;
+    req.user.refreshToken = account.refreshToken;
+    res.redirect('/');
+  }
+);
+app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
+  req.user = await getOAuthToken(req.user);
   res.redirect('/');
 });
 

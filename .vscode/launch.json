@@ -14,10 +14,12 @@
       "outFiles": ["${workspaceFolder/dist/**/*.js"]
     },
     {
-      "name": "Attach",
+      "name": "Node: Nodemon",
       "type": "node",
       "request": "attach",
-      "port": 5858
+      "processId": "${command:PickProcess}",
+      "restart": true,
+      "protocol": "inspector"
     }
   ]
 }

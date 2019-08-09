@@ -2,17 +2,22 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import passport from 'passport';
 import { Strategy as SamlStrategy } from 'passport-saml';
+import { Strategy as OAuthStrategy } from 'passport-oauth2';
 import DevStrategy from 'passport-dev';
 import config from 'config';
+import User from './api/models/user'; // eslint-disable-line no-unused-vars
+import { getOAuthToken } from './api/modules/canvas';
 
 interface Auth {
   passportStrategy?: any;
+  oAuth2Strategy?: any;
   serializeUser?(user: any, done: any): void;
   deserializeUser?(user: any, done: any): void;
   login?(req: Request, res: Response, next: NextFunction): void;
   logout?(req: Request, res: Response): void;
   ensureAuthenticated?(req: Request, res: Response, next: NextFunction): void;
   ensureAdmin?(req: Request, res: Response, next: NextFunction): void;
+  hasValidCanvasRefreshToken?(req: Request, res: Response, next: NextFunction): void;
 }
 
 const Auth: Auth = {};
@@ -29,20 +34,21 @@ SAML_PVK = SAML_PVK.replace(/\\n/g, '\n');
 const samlUrl = 'https://login.oregonstate.edu/idp/profile/';
 const samlLogout = `${samlUrl}Logout`;
 
-function parseSamlResult(user: any, done: any) {
-  const samlUser = {
-    email: user['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
-    firstName: user['urn:oid:2.5.4.42'],
-    lastName: user['urn:oid:2.5.4.4'],
+function parseSamlResult(profile: any, done: any) {
+  const user = {
+    osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
+    email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
+    firstName: profile['urn:oid:2.5.4.42'],
+    lastName: profile['urn:oid:2.5.4.4'],
     isAdmin: false
   };
 
-  const permissions = user['urn:oid:1.3.6.1.4.1.5923.1.1.1.7'] || [];
+  const permissions = profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.7'] || [];
   if (permissions.includes('urn:mace:oregonstate.edu:entitlement:dx:dx-admin')) {
-    samlUser.isAdmin = true;
+    user.isAdmin = true;
   }
 
-  return done(null, samlUser);
+  return done(null, user);
 }
 
 if (ENV === 'production') {
@@ -73,6 +79,26 @@ if (ENV === 'production') {
     isAdmin: true
   });
 }
+
+Auth.oAuth2Strategy = new OAuthStrategy(
+  {
+    authorizationURL: config.get('canvasOauth.authUrl'),
+    tokenURL: config.get('canvasOauth.tokenUrl'),
+    clientID: config.get('canvasOauth.id'),
+    clientSecret: config.get('canvasOauth.secret'),
+    callbackURL: config.get('canvasOauth.callbackUrl')
+  },
+  (accessToken: string, refreshToken: string, params: any, profile: any, done) => {
+    const user = {
+      userId: params.user.id,
+      fullName: params.user.name,
+      accessToken,
+      refreshToken,
+      expireTime: Math.floor(Date.now() / 1000) + parseInt(params.expires_in, 10)
+    };
+    done(null, user);
+  }
+);
 
 Auth.serializeUser = (user, done) => {
   done(null, user);
@@ -122,6 +148,25 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
   }
 
   return res.status(401).send('Unauthorized');
+};
+
+/**
+ * If users canvasOauthExpire isn't set or is a unix date less than or equal to right now,
+ * then get a new token. If the user isn't opt-in or somehow hasn't gotten thier refreshToken
+ * then disallow access to the route protected by this middleware.
+ */
+Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+  const user: User = req.user; // eslint-disable-line prefer-destructuring
+  if (!user.isCanvasOptIn || !user.refreshToken) {
+    console.debug('Canvas opt-in or refresh token missing, returning unauthorized', user); // eslint-disable-line no-console
+  } else {
+    if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
+      console.debug('Canvas oauth token expired, refreshing.', user); // eslint-disable-line no-console
+      await getOAuthToken(user);
+    }
+    return next();
+  }
+  return res.status(401).send('User must opt-in to Canvas login');
 };
 
 export default Auth;

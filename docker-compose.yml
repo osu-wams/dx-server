@@ -1,0 +1,43 @@
+version: '3.7'
+
+networks:
+  internal:
+  external:
+
+services:
+  # App service isn't ready for prime-time, docker-compose exec app yarn db:migrate up is failing
+  #  app:
+  #    build: .
+  #    environment:
+  #      - REDIS_HOST=session_cache
+  #      - RDS_HOST=rds
+  #      - NODE_ENV=${NODE_ENV}
+  #    volumes:
+  #      - .:/var/www/app/current
+  #    networks:
+  #      - internal
+  #      - external
+  #    depends_on:
+  #      - session_cache
+  #      - rds
+  #    ports:
+  #      - '4000:4000'
+  session_cache:
+    image: redis
+    networks:
+      - internal
+      - external
+    ports:
+      - '6379:6379'
+  rds:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password1
+      MYSQL_DATABASE: myosu_dashboard
+      MYSQL_USER: myosu_dashboard
+      MYSQL_PASSWORD: myosu_dashboard
+    networks:
+      - internal
+      - external
+    ports:
+      - '3306:3306'

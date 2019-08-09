@@ -1,0 +1,9 @@
+version: '3.7'
+
+services:
+  session_cache:
+    ports:
+      - '6379:6379'
+  rds:
+    ports:
+      - '3306:3306'

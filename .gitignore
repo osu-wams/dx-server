@@ -10,3 +10,4 @@ yarn-error.log
 config/local.ts
 dist/
 .env
+docker-compose.override.yml

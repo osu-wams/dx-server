@@ -76,8 +76,8 @@ workflows:
       - lint_test_coverage:
           requires:
             - install
-#      - aws-ecr/build_and_push_image:
-#          repo: 'dx'
-#          tag: ${CIRCLE_BUILD_NUM}
-#          requires:
-#            - lint_test_coverage
+      # build docker image, tag as latest and push to ECR
+      - aws-ecr/build_and_push_image:
+          repo: 'dx'
+          requires:
+            - lint_test_coverage
