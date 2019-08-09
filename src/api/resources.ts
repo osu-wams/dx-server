@@ -34,35 +34,41 @@ const getData = async (url: string, match: string) => {
   return data;
 };
 
-// TODO add interface
-interface FilterResultObject {
+interface IResourceResult {
   id: string;
   title: string;
-  icon: string;
+  icon?: string;
   field_service_description: string;
   uri: string;
 }
 
 /**
- * Takes an array of API results and filters out unnessesary 
+ * Takes an array of API results and filters out unnessesary
  * data for use in the /results?query route.
  * @param data Array of API results
  * @returns Array of filtered results
  */
-const filterResults = (data):Array<FilterResultObject> => {
+const filterResults = (data): Array<IResourceResult> => {
   // Map over each element of data returning a new condensed obj.
   return data.map(item => {
-    const { id, attributes } = item;
-    const { field_service_url, title, icon, field_service_description } = attributes;
-    const { uri } = field_service_url;
+    const {
+      id,
+      attributes: {
+        title,
+        icon,
+        field_service_description,
+        field_service_url: { uri }
+      }
+    } = item;
+
     return {
       id,
       title,
-      icon, 
+      icon,
       field_service_description,
-      uri,
-    }
-  })
+      uri
+    };
+  });
 };
 
 router.get('/', async (req: Request, res: Response) => {
