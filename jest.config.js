@@ -6,13 +6,10 @@ module.exports = {
   coverageDirectory: './coverage/',
   collectCoverage: true,
   collectCoverageFrom: [
-    '**/*.{js,ts}',
-    '!**/coverage/**',
+    'src/**/*.{js,ts}',
     '!src/setupTests.ts',
-    '!jest.config.js',
-    '!config/**',
-    '!dist/**',
-    '!src/types/**'
+    '!src/types/**/*',
+    '!src/db/migrations/**/*',
   ],
   coverageThreshold: {
     global: {
