@@ -1,11 +1,14 @@
 /* eslint-disable no-console */
-import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
 import config from 'config';
+import connectDatadog from 'connect-datadog';
+import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import { Datadog, Tracer } from './datadog';
 import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
@@ -15,9 +18,16 @@ import { getOAuthToken } from './api/modules/canvas';
 const RedisStore = redis(session);
 // const ENV = config.get('env');
 
+const datadogOptions = {
+  response_code: true,
+  tags: ['app:dx-server']
+};
+const ConnectDatadog = connectDatadog(datadogOptions);
+
 // App Configuration
 const app: Application = express();
 app.use(expressLogger);
+app.use(ConnectDatadog);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -110,7 +120,10 @@ app.use('/api', ApiRouter);
 // Start Server
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => logger.info(`Server listening on port ${PORT}`));
+  app.listen(PORT, () => {
+    logger.info(`Server listening on port ${PORT}`);
+    Datadog.event('server_start', `listening on port ${PORT}`);
+  });
 }
 
 export default app;

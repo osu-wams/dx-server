@@ -2,6 +2,7 @@ import request from 'request-promise';
 import Parser from 'rss-parser';
 import querystring from 'querystring';
 import config from 'config';
+import { asyncTimedRequest } from '../../datadog';
 
 const parser = new Parser();
 
@@ -16,7 +17,12 @@ const ACADEMIC_CALENDAR_URL: string = config.get('localist.academicCalendarRSS')
 export const getEvents = async (query: any): Promise<object[]> => {
   try {
     const urlParams = querystring.stringify(query);
-    const data = await request(`${LOCALIST_BASE_URL}/events?${urlParams}`, { json: true });
+    const data = await asyncTimedRequest(
+      request,
+      [`${LOCALIST_BASE_URL}/events?${urlParams}`, { json: true }],
+      'localist.get_events.response_time'
+    );
+
     if (urlParams) {
       return data.events;
     }
@@ -34,8 +40,11 @@ export const getAcademicCalendarEvents = async (): Promise<object[]> => {
   try {
     // Note: Getting academic calendar items via RSS as a workaround due to
     //       unlisted/restricted events not being visible via API.
-    const { items } = await parser.parseURL(ACADEMIC_CALENDAR_URL);
-
+    const { items } = await asyncTimedRequest(
+      async () => parser.parseURL(ACADEMIC_CALENDAR_URL),
+      [],
+      'localist.academic_calendar.response_time'
+    );
     return items;
   } catch (err) {
     throw err;

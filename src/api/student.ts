@@ -7,6 +7,7 @@ import config from 'config';
 import Auth from '../auth';
 import { getToken } from './util';
 import { getPlannerItemsMask, getPlannerItemsOAuth, UpcomingAssignment } from './modules/canvas'; // eslint-disable-line no-unused-vars
+import { asyncTimedRequest } from '../datadog';
 
 const BASE_URL: string = `${config.get('osuApi.baseUrl')}/students`;
 const router = Router();
@@ -40,12 +41,18 @@ router.get('/academic-status', async (req: Request, res: Response) => {
   try {
     const term = req.query.term || 'current';
     const bearerToken = await getToken();
-    const apiResponse = await request({
-      method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/academic-status?term=${term}`,
-      auth: { bearer: bearerToken },
-      json: true
-    });
+    const apiResponse = await asyncTimedRequest(
+      request,
+      [
+        `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/academic-status?term=${term}`,
+        {
+          method: 'GET',
+          auth: { bearer: bearerToken },
+          json: true
+        }
+      ],
+      'osu_api.student.academic_status'
+    );
     res.send(apiResponse.data);
   } catch (err) {
     res.status(500).send('Unable to retrieve academic status.');
@@ -55,12 +62,18 @@ router.get('/academic-status', async (req: Request, res: Response) => {
 router.get('/account-balance', async (req: Request, res: Response) => {
   try {
     const bearerToken = await getToken();
-    const apiResponse = await request({
-      method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/account-balance`,
-      auth: { bearer: bearerToken },
-      json: true
-    });
+    const apiResponse = await asyncTimedRequest(
+      request,
+      [
+        `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/account-balance`,
+        {
+          method: 'GET',
+          auth: { bearer: bearerToken },
+          json: true
+        }
+      ],
+      'osu_api.student.account_balance'
+    );
     res.send(apiResponse.data);
   } catch (err) {
     res.status(500).send('Unable to retrieve account balance.');
@@ -70,12 +83,18 @@ router.get('/account-balance', async (req: Request, res: Response) => {
 router.get('/account-transactions', async (req: Request, res: Response) => {
   try {
     const bearerToken = await getToken();
-    const apiResponse = await request({
-      method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/account-transactions`,
-      auth: { bearer: bearerToken },
-      json: true
-    });
+    const apiResponse = await asyncTimedRequest(
+      request,
+      [
+        `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/account-transactions`,
+        {
+          method: 'GET',
+          auth: { bearer: bearerToken },
+          json: true
+        }
+      ],
+      'osu_api.student.account_transactions'
+    );
     res.send(apiResponse.data);
   } catch (err) {
     res.status(500).send('Unable to retrieve account transactions');
@@ -86,12 +105,18 @@ router.get('/class-schedule', async (req: Request, res: Response) => {
   try {
     const term = req.query.term || 'current';
     const bearerToken = await getToken();
-    const apiResponse = await request({
-      method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/class-schedule?term=${term}`,
-      auth: { bearer: bearerToken },
-      json: true
-    });
+    const apiResponse = await asyncTimedRequest(
+      request,
+      [
+        `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/class-schedule?term=${term}`,
+        {
+          method: 'GET',
+          auth: { bearer: bearerToken },
+          json: true
+        }
+      ],
+      'osu_api.student.class_schedule'
+    );
     res.send(apiResponse.data);
   } catch (err) {
     res.status(500).send('Unable to retrieve class schedule.');
@@ -101,12 +126,18 @@ router.get('/class-schedule', async (req: Request, res: Response) => {
 router.get('/gpa', async (req: Request, res: Response) => {
   try {
     const bearerToken = await getToken();
-    const apiResponse = await request({
-      method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/gpa`,
-      auth: { bearer: bearerToken },
-      json: true
-    });
+    const apiResponse = await asyncTimedRequest(
+      request,
+      [
+        `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/gpa`,
+        {
+          method: 'GET',
+          auth: { bearer: bearerToken },
+          json: true
+        }
+      ],
+      'osu_api.student.gpa'
+    );
     res.send(apiResponse.data);
   } catch (err) {
     res.status(500).send('Unable to retrieve GPA data.');
@@ -121,12 +152,18 @@ router.get('/grades', async (req: Request, res: Response) => {
       termParam = `?term=${term}`;
     }
     const bearerToken = await getToken();
-    const apiResponse = await request({
-      method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/grades${termParam}`,
-      auth: { bearer: bearerToken },
-      json: true
-    });
+    const apiResponse = await asyncTimedRequest(
+      request,
+      [
+        `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/grades${termParam}`,
+        {
+          method: 'GET',
+          auth: { bearer: bearerToken },
+          json: true
+        }
+      ],
+      'osu_api.student.grades'
+    );
     res.send(apiResponse.data);
   } catch (err) {
     res.status(500).send('Unable to retrieve grades.');
@@ -136,12 +173,18 @@ router.get('/grades', async (req: Request, res: Response) => {
 router.get('/holds', async (req: Request, res: Response) => {
   try {
     const bearerToken = await getToken();
-    const apiResponse = await request({
-      method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/holds`,
-      auth: { bearer: bearerToken },
-      json: true
-    });
+    const apiResponse = await asyncTimedRequest(
+      request,
+      [
+        `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/holds`,
+        {
+          method: 'GET',
+          auth: { bearer: bearerToken },
+          json: true
+        }
+      ],
+      'osu_api.student.holds'
+    );
     res.send(apiResponse.data);
   } catch (err) {
     res.status(500).send('Unable to retrieve account holds.');

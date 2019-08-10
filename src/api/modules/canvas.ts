@@ -4,6 +4,7 @@ import querystring from 'querystring';
 import { format } from 'date-fns';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
+import { asyncTimedRequest } from '../../datadog';
 
 const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
 const CANVAS_TOKEN: string = config.get('canvasApi.token');
@@ -19,11 +20,14 @@ export interface UpcomingAssignment {
  */
 export const getPlannerItemsMask = async (osuId: number): Promise<UpcomingAssignment[]> => {
   const today = format(Date.now(), 'YYYY-MM-DD');
-  return request({
-    method: 'GET',
-    url: `${CANVAS_BASE_URL}/planner/items?as_user_id=sis_user_id:${osuId}&start_date=${today}`,
-    auth: { bearer: CANVAS_TOKEN }
-  }).promise();
+  return asyncTimedRequest(
+    request,
+    [
+      `${CANVAS_BASE_URL}/planner/items?as_user_id=sis_user_id:${osuId}&start_date=${today}`,
+      { method: 'GET', auth: { bearer: CANVAS_TOKEN } }
+    ],
+    'canvas.getPlannerItemsMask'
+  );
 };
 
 /**
@@ -32,11 +36,14 @@ export const getPlannerItemsMask = async (osuId: number): Promise<UpcomingAssign
  */
 export const getPlannerItemsOAuth = async (accessToken: string): Promise<UpcomingAssignment[]> => {
   const today = format(Date.now(), 'YYYY-MM-DD');
-  return request({
-    method: 'GET',
-    url: `${CANVAS_BASE_URL}/planner/items?start_date=${today}`,
-    auth: { bearer: accessToken }
-  }).promise();
+  return asyncTimedRequest(
+    request,
+    [
+      `${CANVAS_BASE_URL}/planner/items?start_date=${today}`,
+      { method: 'GET', auth: { bearer: accessToken } }
+    ],
+    'canvas.getPlannerItemsOAuth'
+  );
 };
 
 /**
@@ -53,10 +60,12 @@ const performRefresh = async (u: User): Promise<User> => {
   });
 
   try {
-    const body = await request({
-      method: 'POST',
-      uri: `${config.get('canvasOauth.tokenUrl')}?${query}`
-    });
+    const body = await asyncTimedRequest(
+      request,
+      [`${config.get('canvasOauth.tokenUrl')}?${query}`, { method: 'POST' }],
+      'canvas.performRefresh'
+    );
+
     const response = JSON.parse(body);
     const expireTime = Math.floor(Date.now() / 1000) + parseInt(response.expires_in, 10);
     user.canvasOauthToken = response.access_token;

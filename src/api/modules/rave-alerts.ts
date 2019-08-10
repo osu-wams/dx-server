@@ -1,5 +1,6 @@
 import Parser from 'rss-parser';
 import config from 'config';
+import { asyncTimedRequest } from '../../datadog';
 
 const parser: Parser = new Parser();
 const BASE_URL: string = config.get('raveApi.baseUrl');
@@ -11,7 +12,11 @@ const BASE_URL: string = config.get('raveApi.baseUrl');
 export const getAlerts = async (): Promise<object[]> => {
   try {
     // Rave alerts come as an RSS feed, always containing a single item.
-    const { items } = await parser.parseURL(BASE_URL);
+    const { items } = await asyncTimedRequest(
+      async () => parser.parseURL(BASE_URL),
+      [],
+      'rave.channel2.response_time'
+    );
     const alert = items[0];
 
     // Check for the presence of 'all clear' text in the message body

@@ -1,4 +1,3 @@
-import { Pool } from 'promise-mysql'; // eslint-disable-line no-unused-vars
 import { pool, dbQuery } from '../../db';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 
@@ -34,7 +33,7 @@ export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
       user = await User.insert(u, dbPool);
       isNew = true;
     } else {
-      const oauthData = await dbPool.query(dbQuery.selectOAuthData, [u.osuId]);
+      const oauthData: any = await dbPool.query(dbQuery.selectOAuthData, [u.osuId]);
       if (oauthData.length > 0) {
         user.refreshToken = oauthData[0].refresh_token || '';
         user.isCanvasOptIn = oauthData[0].opt_in !== 0 || false;
@@ -52,7 +51,7 @@ export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
 export const updateOAuthData = async (user: User, oAuthData: OAuthData): Promise<void> => {
   try {
     const dbPool = await pool;
-    const result = await dbPool.query(dbQuery.updateOAuthData, [
+    const result: any = await dbPool.query(dbQuery.updateOAuthData, [
       oAuthData.isCanvasOptIn,
       oAuthData.account.refreshToken,
       user.osuId

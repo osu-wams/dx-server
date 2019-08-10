@@ -1,4 +1,4 @@
-import { Pool } from 'promise-mysql'; // eslint-disable-line no-unused-vars
+import { Pool, OkPacket } from 'mysql2/promise'; // eslint-disable-line no-unused-vars
 import { dbQuery } from '../../db';
 import { DbUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
 
@@ -36,7 +36,12 @@ class User {
   static insert = async (props: User, dbPool: Pool): Promise<User> => {
     try {
       const { osuId, firstName, lastName, email } = props;
-      const dbUser = await dbPool.query(dbQuery.insertUser, [osuId, firstName, lastName, email]);
+      const dbUser: any = await dbPool.query(dbQuery.insertUser, [
+        osuId,
+        firstName,
+        lastName,
+        email
+      ]);
 
       await dbPool.query(dbQuery.insertOAuthData, [osuId, '', false]);
       if (dbUser.affectedRows === 0) {
@@ -56,7 +61,7 @@ class User {
 
   static find = async (id: number, dbPool: Pool): Promise<User | null> => {
     try {
-      const results: Array<DbUser> = await dbPool.query(dbQuery.selectUser, [id]);
+      const results: any = await dbPool.query(dbQuery.selectUser, [id]);
       console.debug('selectUser db returns:', results); // eslint-disable-line no-console
       if (!results || results.length === 0) {
         return null;
