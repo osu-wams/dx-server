@@ -8,7 +8,7 @@ import redis from 'connect-redis';
 import config from 'config';
 import connectDatadog from 'connect-datadog';
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
-import { Datadog, Tracer } from './datadog';
+import { Datadog, Tracer } from './datadog'; // eslint-disable-line no-unused-vars
 import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
