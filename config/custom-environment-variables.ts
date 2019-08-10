@@ -26,5 +26,9 @@ export default {
     user: 'RDS_USER',
     password: 'RDS_PASS',
     database: 'RDS_DB'
+  },
+  honeycomb: {
+    writeKey: 'HONEYCOMB_WRITEKEY',
+    dataset: 'HONEYCOMB_DATASET'
   }
 };

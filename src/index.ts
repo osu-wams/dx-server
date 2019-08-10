@@ -1,4 +1,5 @@
 /* eslint-disable no-console */
+import './honeycomb';
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';

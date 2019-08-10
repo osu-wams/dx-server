@@ -39,5 +39,9 @@ export default {
     user: process.env.RDS_USER || 'myosu_dashboard',
     password: process.env.RDS_PASSWORD || 'myosu_dashboard',
     database: process.env.RDS_DATABASE || 'myosu_dashboard'
+  },
+  honeycomb: {
+    writeKey: process.env.HONEYCOMB_WRITEKEY,
+    dataset: process.env.HONEYCOMB_DATASET
   }
 };
