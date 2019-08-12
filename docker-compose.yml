@@ -27,8 +27,6 @@ services:
     networks:
       - internal
       - external
-    ports:
-      - '6379:6379'
   rds:
     image: mariadb
     environment:
@@ -39,5 +37,3 @@ services:
     networks:
       - internal
       - external
-    ports:
-      - '3306:3306'
