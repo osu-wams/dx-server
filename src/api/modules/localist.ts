@@ -2,6 +2,7 @@ import request from 'request-promise';
 import Parser from 'rss-parser';
 import querystring from 'querystring';
 import config from 'config';
+import Honeycomb from '../../honeycomb';
 
 const parser = new Parser();
 
@@ -16,6 +17,10 @@ const ACADEMIC_CALENDAR_URL: string = config.get('localist.academicCalendarRSS')
 export const getEvents = async (query: any): Promise<object[]> => {
   try {
     const urlParams = querystring.stringify(query);
+    Honeycomb.addContext({
+      apiHost: 'localist',
+      apiEndpoint: 'get-events'
+    });
     const data = await request(`${LOCALIST_BASE_URL}/events?${urlParams}`, { json: true });
     if (urlParams) {
       return data.events;
@@ -32,6 +37,10 @@ export const getEvents = async (query: any): Promise<object[]> => {
  */
 export const getAcademicCalendarEvents = async (): Promise<object[]> => {
   try {
+    Honeycomb.addContext({
+      apiHost: 'localist',
+      apiEndpoint: 'get-academic-calendar-events'
+    });
     // Note: Getting academic calendar items via RSS as a workaround due to
     //       unlisted/restricted events not being visible via API.
     const { items } = await parser.parseURL(ACADEMIC_CALENDAR_URL);
