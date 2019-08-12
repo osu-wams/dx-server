@@ -25,6 +25,7 @@ const Auth: Auth = {};
 const ENV: string = config.get('env');
 const SAML_CERT: string = config.get('saml.cert');
 const SAML_CALLBACK_URL: string = config.get('saml.callbackUrl');
+const SAML_LOGOUT_CALLBACK_URL: string = config.get('saml.logoutCallbackUrl');
 let SAML_PVK: string = config.get('saml.pvk');
 // Need to replace the newlines pulled from environment variable with actual
 // newlines, otherwise passport-saml breaks.
@@ -38,6 +39,8 @@ function parseSamlResult(profile: any, done: any) {
   const user = {
     osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
     email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
+    nameID: profile['nameID'],
+    nameIDFormat: profile['nameIDFormat'],
     firstName: profile['urn:oid:2.5.4.42'],
     lastName: profile['urn:oid:2.5.4.4'],
     isAdmin: false
@@ -59,6 +62,7 @@ if (ENV === 'production') {
       identifierFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
       callbackUrl: SAML_CALLBACK_URL,
       logoutUrl: samlLogout,
+      logoutCallbackUrl: SAML_LOGOUT_CALLBACK_URL,
       entryPoint: `${samlUrl}SAML2/Redirect/SSO`,
       issuer: 'https://my.oregonstate.edu',
       cert: SAML_CERT,
@@ -129,9 +133,12 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
 };
 
 Auth.logout = (req: Request, res: Response) => {
-  req.logout();
-  req.session.destroy(err => console.error(`Failed to destroy the session: ${err}`)); // eslint-disable-line no-console
-  res.redirect(samlLogout);
+  if (!req.user) res.redirect('/');
+  return Auth.passportStrategy.logout(req, (err, uri) => {
+    req.session.destroy(err => console.error(`Failed to destroy the session: ${err}`)); // eslint-disable-lin no-console
+    req.logout();
+    return res.redirect(uri);
+  });
 };
 
 Auth.ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
