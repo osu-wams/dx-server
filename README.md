@@ -9,6 +9,10 @@
 
 ## Development Setup
 
+### Copy the default docker-compose.override.yml into place
+
+    $ cp docker-compose.override.example.yml docker-compose.override.yml
+
 ### Start the Database and Redis Queue
 
     $ docker-compose up
