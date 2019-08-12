@@ -39,8 +39,8 @@ function parseSamlResult(profile: any, done: any) {
   const user = {
     osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
     email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
-    nameID: profile['nameID'],
-    nameIDFormat: profile['nameIDFormat'],
+    nameID: profile.nameID,
+    nameIDFormat: profile.nameIDFormat,
     firstName: profile['urn:oid:2.5.4.42'],
     lastName: profile['urn:oid:2.5.4.4'],
     isAdmin: false
@@ -134,7 +134,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
 
 Auth.logout = (req: Request, res: Response) => {
   if (!req.user) res.redirect('/');
-  return Auth.passportStrategy.logout(req, (err, uri) => {
+  return Auth.passportStrategy.logout(req, (error, uri) => {
     req.session.destroy(err => console.error(`Failed to destroy the session: ${err}`)); // eslint-disable-lin no-console
     req.logout();
     return res.redirect(uri);
