@@ -87,7 +87,7 @@ workflows:
             - install
       # build docker image, tag as latest and push to ECR
       - aws-ecr/build_and_push_image:
-          repo: 'dx-server'
+          repo: 'dx'
           requires:
             - lint_test_coverage
           filters: *master-only
