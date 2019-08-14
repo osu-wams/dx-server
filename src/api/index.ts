@@ -8,9 +8,11 @@ import ResourcesRouter from './resources';
 import AlertsRouter from './alerts';
 import AnnouncementsRouter from './announcements';
 import PersonsRouter from './persons';
+import AdminRouter from './admin';
 
 const router = Router();
 
+router.use('/admin', Auth.ensureAdmin, AdminRouter);
 router.use('/user', Auth.ensureAuthenticated, UserRouter);
 router.use('/masquerade', Auth.ensureAdmin, MasqueradeRouter);
 router.use('/student', Auth.ensureAuthenticated, StudentRouter);
