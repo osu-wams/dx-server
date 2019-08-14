@@ -37,12 +37,5 @@ export default {
   redis: {
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: process.env.REDIS_PORT || '6379'
-  },
-  rds: {
-    host: process.env.RDS_HOST || '127.0.0.1',
-    port: process.env.RDS_PORT || '3306',
-    user: process.env.RDS_USER || 'myosu_dashboard',
-    password: process.env.RDS_PASSWORD || 'myosu_dashboard',
-    database: process.env.RDS_DATABASE || 'myosu_dashboard'
   }
 };

@@ -1,5 +1,3 @@
-import { Pool } from 'promise-mysql'; // eslint-disable-line no-unused-vars
-import { dbQuery } from '../../db';
 import { DbUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
 
 class User {
@@ -33,35 +31,15 @@ class User {
     }
   }
 
-  static insert = async (props: User, dbPool: Pool): Promise<User> => {
+  static insert = async (props: User): Promise<User> => {
     try {
-      const { osuId, firstName, lastName, email } = props;
-      const dbUser = await dbPool.query(dbQuery.insertUser, [osuId, firstName, lastName, email]);
-
-      await dbPool.query(dbQuery.insertOAuthData, [osuId, '', false]);
-      if (dbUser.affectedRows === 0) {
-        throw new Error(`User.insert failed to insert user: ${props}`);
-      }
-      return new User({
-        osu_id: props.osuId.toString(),
-        first_name: props.firstName,
-        last_name: props.lastName,
-        email: props.email,
-        phone: ''
-      });
     } catch (err) {
       throw err;
     }
   };
 
-  static find = async (id: number, dbPool: Pool): Promise<User | null> => {
+  static find = async (id: number): Promise<User | null> => {
     try {
-      const results: Array<DbUser> = await dbPool.query(dbQuery.selectUser, [id]);
-      console.debug('selectUser db returns:', results); // eslint-disable-line no-console
-      if (!results || results.length === 0) {
-        return null;
-      }
-      return new User(results[0]);
     } catch (err) {
       throw err;
     }

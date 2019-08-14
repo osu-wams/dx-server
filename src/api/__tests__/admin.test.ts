@@ -1,10 +1,8 @@
 import supertest from 'supertest';
 import app from '../../index';
-import * as database from '../../db';
 
 jest.mock('redis');
 jest.mock('../util.ts');
-jest.mock('../../db/index.ts');
 
 let request: supertest.SuperTest<supertest.Test>;
 
@@ -25,11 +23,7 @@ describe('/admin', () => {
   });
 
   it('should return an error', async () => {
-    // mock a method call that will simulate an error to handle
-    const pool = database.pool as jest.Mocked<any>;
-    pool.query.mockImplementation(() => {
-      throw new Error('something broke!');
-    });
+    // mock a dynamodb method call that will simulate an error to handle
     await request.get('/api/admin/reset-sessions').expect(500, 'Error while resetting sessions.');
   });
 });

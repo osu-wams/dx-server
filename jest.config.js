@@ -5,12 +5,7 @@ module.exports = {
   modulePathIgnorePatterns: ['/dist/'],
   coverageDirectory: './coverage/',
   collectCoverage: true,
-  collectCoverageFrom: [
-    'src/**/*.{js,ts}',
-    '!src/setupTests.ts',
-    '!src/types/**/*',
-    '!src/db/migrations/**/*',
-  ],
+  collectCoverageFrom: ['src/**/*.{js,ts}', '!src/setupTests.ts', '!src/types/**/*'],
   coverageThreshold: {
     global: {
       branches: 30,
