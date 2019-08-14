@@ -42,14 +42,14 @@ interface IResourceResult {
 }
 
 /**
- * Takes an array of API results and filters out unnessesary
+ * Takes an array of API results and filters out unnecessary
  * data for use in the /results?query route.
  * @param data Array of API results
  * @returns Array of filtered results
  */
-const filterResults = (data): Array<IResourceResult> => {
+const filterResults = (data: any): [IResourceResult] => {
   // Map over each element of data returning a new condensed obj.
-  return data.map(item => {
+  return data.map((item: any) => {
     const {
       id,
       attributes: {
