@@ -14,7 +14,8 @@ export default {
   saml: {
     cert: 'SAML_CERT',
     pvk: 'SAML_PVK',
-    callbackUrl: 'SAML_CALLBACK_URL'
+    callbackUrl: 'SAML_CALLBACK_URL',
+    logoutCallbackUrl: 'SAML_LOGOUT_CALLBACK_URL'
   },
   redis: {
     host: 'REDIS_HOST',

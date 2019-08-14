@@ -86,6 +86,11 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
   }
 });
 
+app.get('/logout/saml', (req, res) => {
+  req.logout();
+  res.redirect('/');
+});
+
 app.get('/canvas/login', passport.authorize('oauth2'));
 app.get(
   '/canvas/auth',
