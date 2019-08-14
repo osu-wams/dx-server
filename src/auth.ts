@@ -135,7 +135,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
 Auth.logout = (req: Request, res: Response) => {
   if (!req.user) res.redirect('/');
   return Auth.passportStrategy.logout(req, (error, uri) => {
-    req.session.destroy(err => console.error(`Failed to destroy the session: ${err}`)); // eslint-disable-lin no-console
+    req.session.destroy(err => console.error(`Failed to destroy the session: ${err}`)); // eslint-disable-line no-console
     req.logout();
     return res.redirect(uri);
   });
