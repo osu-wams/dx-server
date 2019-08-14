@@ -4,6 +4,9 @@ networks:
   internal:
   external:
 
+volumes:
+  dynamodbdata:
+
 services:
   # App service isn't ready for prime-time, docker-compose exec app yarn db:migrate up is failing
   #  app:
@@ -27,13 +30,13 @@ services:
     networks:
       - internal
       - external
-  rds:
-    image: mariadb
-    environment:
-      MYSQL_ROOT_PASSWORD: password1
-      MYSQL_DATABASE: myosu_dashboard
-      MYSQL_USER: myosu_dashboard
-      MYSQL_PASSWORD: myosu_dashboard
+  dynamodb:
+    image: amazon/dynamodb-local
+    command: -jar DynamoDBLocal.jar -sharedDb -dbPath .
+    volumes:
+      - dynamodbdata:/data
+    ports:
+      - '8000:8000'
     networks:
       - internal
       - external
