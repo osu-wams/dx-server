@@ -17,5 +17,6 @@ export const dbQuery = {
   insertUser: 'INSERT INTO users (osu_id, first_name, last_name, email) VALUES (?, ?, ?, ?)',
   selectOAuthData: 'SELECT * FROM oauth_data WHERE osu_id = ?',
   insertOAuthData: 'INSERT INTO oauth_data (osu_id, refresh_token, opt_in) VALUES (?, ?, ?)',
-  updateOAuthData: 'UPDATE oauth_data SET opt_in = ?, refresh_token = ? WHERE osu_id = ?'
+  updateOAuthData: 'UPDATE oauth_data SET opt_in = ?, refresh_token = ? WHERE osu_id = ?',
+  resetAllRefreshToken: 'UPDATE oauth_data SET refresh_token = NULL WHERE 1'
 };
