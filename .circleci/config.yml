@@ -57,6 +57,15 @@ jobs:
           root: /home/circleci
           paths:
             - project
+  update-ecs-task-dev:
+    executor: aws-cli/default
+    steps:
+      - aws-cli/install
+      - aws-cli/configure
+      - run:
+          name: Force containers to pull latest
+          command: aws ecs update-service --force-new-deployment --cluster ${AWS_ECS_CLUSTER_NAME} --service ${AWS_ECS_SERVICE_NAME}
+
 # For production only push master
 master-only: &master-only
   branches:
@@ -81,3 +90,10 @@ workflows:
           repo: 'dx'
           requires:
             - lint_test_coverage
+          filters: *master-only
+      - update-ecs-task-dev:
+          requires:
+            - aws-ecr/build_and_push_image
+          context: dx-server-dev
+          filters: *master-only
+
