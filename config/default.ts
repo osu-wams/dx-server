@@ -6,15 +6,19 @@ export default {
     baseUrl: 'https://oregonstateuniversity-dev.apigee.net/v1'
   },
   canvasApi: {
-    token: '',
-    baseUrl: 'https://oregonstate.test.instructure.com/api/v1'
+    token: process.env.CANVAS_API_TOKEN || '',
+    baseUrl: process.env.CANVAS_API_BASEURL || 'https://oregonstate.test.instructure.com/api/v1'
   },
   canvasOauth: {
-    id: '',
-    secret: '',
-    callbackUrl: '',
-    authUrl: 'https://oregonstate.test.instructure.com/login/oauth2/auth',
-    tokenUrl: 'https://oregonstate.test.instructure.com/login/oauth2/token'
+    id: process.env.CANVAS_OAUTH_ID || '',
+    secret: process.env.CANVAS_OAUTH_SECRET || '',
+    callbackUrl: process.env.CANVAS_OAUTH_CALLBACK || '',
+    authUrl:
+      process.env.CANVAS_OAUTH_AUTHURL ||
+      'https://oregonstate.test.instructure.com/login/oauth2/auth',
+    tokenUrl:
+      process.env.CANVAS_OAUTH_TOKENURL ||
+      'https://oregonstate.test.instructure.com/login/oauth2/token'
   },
   raveApi: {
     baseUrl: 'https://www.getrave.com/rss/oregonstate/channel2'
