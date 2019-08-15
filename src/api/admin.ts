@@ -1,13 +1,17 @@
 /**
  * /api/admin
  */
+import config from 'config';
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import { Pool } from 'promise-mysql'; // eslint-disable-line no-unused-vars
 import redis from 'redis';
 import { dbQuery, pool } from '../db';
 
 const router: Router = Router();
-const redisClient = redis.createClient();
+const redisClient = redis.createClient({
+  host: `${config.get('redis.host')}`,
+  port: parseInt(config.get('redis.port'), 10)
+});
 
 /**
  * Reset all users sessions, causing them to login with CAS again
