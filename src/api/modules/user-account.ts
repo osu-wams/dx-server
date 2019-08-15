@@ -1,6 +1,6 @@
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 
-export interface DbUser {
+export interface SamlUser {
   osu_id: string; // eslint-disable-line camelcase
   first_name: string; // eslint-disable-line camelcase
   last_name: string; // eslint-disable-line camelcase
@@ -11,6 +11,10 @@ export interface DbUser {
 interface FindOrCreateUser {
   user: User;
   isNew: boolean;
+}
+
+interface Account {
+  refreshToken: string;
 }
 
 interface OAuthData {
@@ -36,8 +40,15 @@ export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
   }
 };
 
-export const updateOAuthData = async (user: User, oAuthData: OAuthData): Promise<void> => {
+export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<User> => {
   try {
+    const user = await User.updateCanvasData(
+      u,
+      oAuthData.account.refreshToken,
+      oAuthData.isCanvasOptIn
+    );
+    console.debug('updateOAuthData returns:', user); // eslint-disable-line no-console
+    return user;
   } catch (err) {
     console.error('updateOAuthData db failed:', err); // eslint-disable-line no-console
     throw err;

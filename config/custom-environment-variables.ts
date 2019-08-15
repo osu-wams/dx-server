@@ -20,5 +20,12 @@ export default {
   redis: {
     host: 'REDIS_HOST',
     port: 'REDIS_PORT'
+  },
+  aws: {
+    region: 'AWS_REGION',
+    dynamodb: {
+      endpoint: 'AWS_DYNAMODB_ENDPOINT',
+      apiVersion: 'AWS_DYNAMODB_APIVERSION'
+    }
   }
 };

@@ -14,6 +14,7 @@
     "loglevel": "verbose"
   },
   "devDependencies": {
+    "@types/aws-sdk": "^2.7.0",
     "@types/body-parser": "^1.17.0",
     "@types/config": "^0.0.34",
     "@types/connect-redis": "^0.0.10",
@@ -48,6 +49,7 @@
     "typescript": "^3.5.3"
   },
   "dependencies": {
+    "aws-sdk": "^2.510.0",
     "body-parser": "^1.19.0",
     "config": "^3.2.2",
     "connect-redis": "^3.4.2",

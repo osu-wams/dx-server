@@ -37,5 +37,12 @@ export default {
   redis: {
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: process.env.REDIS_PORT || '6379'
+  },
+  aws: {
+    region: process.env.AWS_REGION || 'us-west-2',
+    dynamodb: {
+      endpoint: process.env.AWS_DYNAMODB_ENDPOINT || 'https://dynamodb.us-west-2.amazonaws.com',
+      apiVersion: process.env.AWS_DYNAMODB_APIVERSION || '2012-08-10'
+    }
   }
 };
