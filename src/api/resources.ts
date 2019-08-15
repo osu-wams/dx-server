@@ -5,7 +5,7 @@ import { Router, Request, Response } from 'express'; // eslint-disable-line no-u
 import request from 'request-promise';
 
 const baseUrl: string = 'http://dev-api-dx.pantheonsite.io';
-const servicesUrl: string = `${baseUrl}/jsonapi/node/services?include=field_service_category,field_icon.field_media_image`;
+const resourcesUrl: string = `${baseUrl}/jsonapi/node/services?include=field_service_category,field_icon.field_media_image`;
 const categoriesUrl: string = `${baseUrl}/jsonapi/taxonomy_term/categories?include=field_taxonomy_icon.field_media_image&sort=weight`;
 
 const router = Router();
@@ -41,6 +41,12 @@ interface IResourceResult {
   uri: string;
 }
 
+interface ICategory {
+  id: string;
+  name: string;
+  icon: string;
+}
+
 /**
  * Takes an array of API results and filters out unnecessary
  * data for use in the /results?query route.
@@ -68,16 +74,31 @@ const filterResults = (data: any): [IResourceResult] => {
   });
 };
 
+const filterCategories = (data: any): [ICategory] => {
+  return data.map((item: any) => {
+    const {
+      id,
+      attributes: { name, icon }
+    } = item;
+
+    return {
+      id,
+      name,
+      icon
+    };
+  });
+};
+
 router.get('/', async (req: Request, res: Response) => {
   try {
-    let requestUrl = servicesUrl;
+    let requestUrl = resourcesUrl;
     if (req.query.query) {
-      requestUrl = `${servicesUrl}&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=${
+      requestUrl = `${resourcesUrl}&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=${
         req.query.query
       }`;
     } else if (req.query.category) {
       const categories = req.query.category.split(',');
-      requestUrl = `${servicesUrl}&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND`;
+      requestUrl = `${resourcesUrl}&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND`;
       for (let i = 0; i < categories.length; i += 1) {
         requestUrl += `&filter[${categories[i]}][condition][path]=field_service_category.id`;
         requestUrl += `&filter[${categories[i]}][condition][value]=${categories[i]}`;
@@ -99,7 +120,8 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/categories', async (_req: Request, res: Response) => {
   try {
     const data = await getData(categoriesUrl, 'field_taxonomy_icon');
-    res.send(data);
+    const filteredData = filterCategories(data);
+    res.send(filteredData);
   } catch (err) {
     res.status(500).send(err);
   }
