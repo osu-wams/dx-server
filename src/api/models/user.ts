@@ -141,7 +141,10 @@ class User {
           Key: {
             osuId: { N: id }
           },
-          UpdateExpression: 'REMOVE canvasRefreshToken',
+          UpdateExpression: 'REMOVE canvasRefreshToken SET canvasOptIn = :coi',
+          ExpressionAttributeValues: {
+            ':coi': { BOOL: false },
+          },
           ReturnValues: 'UPDATED_NEW'
         };
         const result = await updateItem(params);
