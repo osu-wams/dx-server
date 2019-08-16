@@ -2,14 +2,14 @@
 // TODO: Replace all console.log/debug/error with winston logging
 
 import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
-import dynamoDb from '../../db';
+import { scan, updateItem, getItem, putItem } from '../../db';
 
 interface UserParams {
   samlUser?: SamlUser;
   dynamoDbUser?: AWS.DynamoDB.GetItemOutput;
 }
 
-interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap {
+export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap {
   osuId: { N: string };
   firstName: { S: string };
   lastName: { S: string };
@@ -84,22 +84,20 @@ class User {
     // ! getItem with the key after having put the item successfully. The DX use
     // ! doesn't really seem like it needs to fetch the user after having created it
     // ! the first time.
-    const params: AWS.DynamoDB.PutItemInput = {
-      TableName: User.TABLE_NAME,
-      Item: User.asDynamoDbItem(props),
-      ReturnValues: 'NONE'
-    };
+    try {
+      const params: AWS.DynamoDB.PutItemInput = {
+        TableName: User.TABLE_NAME,
+        Item: User.asDynamoDbItem(props),
+        ReturnValues: 'NONE'
+      };
 
-    const promise = dynamoDb.putItem(params).promise();
-    return promise
-      .then(d => {
-        console.debug('User.insert succeeded', d);
-        return props;
-      })
-      .catch(err => {
-        console.error(`User.insert error`, props, err);
-        throw err;
-      });
+      const result = await putItem(params);
+      console.debug('User.insert succeeded:', result);
+      return props;
+    } catch (err) {
+      console.error(`User.insert error`, props, err);
+      throw err;
+    }
   };
 
   /**
@@ -109,21 +107,20 @@ class User {
    * @returns Promise<User | null> - a promise with the User or a null if none found
    */
   static find = async (id: number): Promise<User | null> => {
-    const params: AWS.DynamoDB.GetItemInput = {
-      TableName: User.TABLE_NAME,
-      Key: {
-        osuId: { N: `${id}` }
-      }
-    };
-    const promise = dynamoDb.getItem(params).promise();
-    return promise
-      .then(d => {
-        return new User({ dynamoDbUser: d });
-      })
-      .catch(err => {
-        console.error(`User.find(${id}) error:`, err);
-        return null;
-      });
+    try {
+      const params: AWS.DynamoDB.GetItemInput = {
+        TableName: User.TABLE_NAME,
+        Key: {
+          osuId: { N: `${id}` }
+        }
+      };
+      const dynamoDbUser = await getItem(params);
+      if (!Object.keys(dynamoDbUser).length) throw new Error('User not found.');
+      return new User({ dynamoDbUser });
+    } catch (err) {
+      console.error(`User.find(${id}) error:`, err);
+      return null;
+    }
   };
 
   /**
@@ -137,24 +134,22 @@ class User {
   static clearAllCanvasRefreshTokens = async (): Promise<[boolean, any]> => {
     const errors = [];
     const ids = await User.allIds();
-    ids.forEach(id => {
-      dynamoDb
-        .updateItem({
+    ids.forEach(async id => {
+      try {
+        const params: AWS.DynamoDB.UpdateItemInput = {
           TableName: User.TABLE_NAME,
           Key: {
             osuId: { N: id }
           },
           UpdateExpression: 'REMOVE canvasRefreshToken',
           ReturnValues: 'UPDATED_NEW'
-        })
-        .promise()
-        .then(v => {
-          console.debug('User.clearAllCanvasRefreshTokens updated user:', id, v);
-        })
-        .catch(err => {
-          console.error(`User.clearAllCanvasRefreshTokens error:`, err);
-          errors.push([id, err]);
-        });
+        };
+        const result = await updateItem(params);
+        console.debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
+      } catch (err) {
+        console.error(`User.clearAllCanvasRefreshTokens error:`, err);
+        errors.push([id, err]);
+      }
     });
     return Promise.resolve([!errors.length, errors]);
   };
@@ -172,11 +167,12 @@ class User {
     canvasRefreshToken: string,
     canvasOptIn: boolean
   ): Promise<User> => {
-    const promise = dynamoDb
-      .updateItem({
+    try {
+      const user = props;
+      const params: AWS.DynamoDB.UpdateItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
-          osuId: { N: props.osuId.toString() }
+          osuId: { N: user.osuId.toString() }
         },
         UpdateExpression: 'SET canvasRefreshToken = :crt, canvasOptIn = :coi',
         ExpressionAttributeValues: {
@@ -184,20 +180,16 @@ class User {
           ':crt': { S: canvasRefreshToken }
         },
         ReturnValues: 'NONE'
-      })
-      .promise();
-    return promise
-      .then(v => {
-        console.debug('User.updateCanvasData updated user:', props.osuId, v);
-        const user = props;
-        user.isCanvasOptIn = canvasOptIn;
-        user.refreshToken = canvasRefreshToken;
-        return user;
-      })
-      .catch(err => {
-        console.error(`User.updateCanvasData error:`, err);
-        throw err;
-      });
+      };
+      const result: AWS.DynamoDB.UpdateItemOutput = await updateItem(params);
+      console.debug('User.updateCanvasData updated user:', user.osuId, result);
+      user.isCanvasOptIn = canvasOptIn;
+      user.refreshToken = canvasRefreshToken;
+      return user;
+    } catch (err) {
+      console.error(`User.updateCanvasData error:`, err);
+      throw err;
+    }
   };
 
   /**
@@ -208,20 +200,20 @@ class User {
    * @returns Promise<string[]> - an array of the strings of the IDs
    */
   static allIds = async (): Promise<string[]> => {
-    const params: AWS.DynamoDB.ScanInput = {
-      TableName: User.TABLE_NAME,
-      AttributesToGet: ['osuId']
-    };
-    const promise = dynamoDb.scan(params).promise();
-    return promise
-      .then((v: AWS.DynamoDB.ScanOutput) => {
-        console.debug(`User.allIds found count:${v.Count}, scanned count:${v.ScannedCount}`);
-        return v.Items.map((i: AWS.DynamoDB.AttributeMap) => i.osuId.N);
-      })
-      .catch(err => {
-        console.error('User.all_ids error:', err);
-        return [];
-      });
+    try {
+      const params: AWS.DynamoDB.ScanInput = {
+        TableName: User.TABLE_NAME,
+        AttributesToGet: ['osuId']
+      };
+      const results: AWS.DynamoDB.ScanOutput = await scan(params);
+      console.debug(
+        `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`
+      );
+      return results.Items.map((i: AWS.DynamoDB.AttributeMap) => i.osuId.N);
+    } catch (err) {
+      console.error('User.allIds error:', err);
+      return [];
+    }
   };
 
   /**
@@ -232,12 +224,16 @@ class User {
    */
   static asDynamoDbItem = (props: User): DynamoDBUserItem => {
     const Item: DynamoDBUserItem = {
-      osuId: { N: props.osuId.toString() },
+      osuId: { N: `${props.osuId}` },
       firstName: { S: props.firstName },
       lastName: { S: props.lastName },
-      email: { S: props.email },
-      canvasOptIn: { BOOL: props.isCanvasOptIn }
+      email: { S: props.email }
     };
+    if (props.isCanvasOptIn === undefined) {
+      Item.canvasOptIn = { BOOL: false };
+    } else {
+      Item.canvasOptIn = { BOOL: props.isCanvasOptIn };
+    }
     if (props.phone) Item.phone = { S: props.phone };
     if (props.refreshToken) Item.canvasRefreshToken = { S: props.refreshToken };
     return Item;

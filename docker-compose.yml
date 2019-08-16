@@ -35,8 +35,6 @@ services:
     command: -jar DynamoDBLocal.jar -sharedDb -dbPath .
     volumes:
       - dynamodbdata:/data
-    ports:
-      - '8000:8000'
     networks:
       - internal
       - external
