@@ -1,10 +1,13 @@
 /**
  * /api/announcements
  */
+import config from 'config';
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import request from 'request-promise';
 
-const baseUrl = 'http://dev-api-dx.pantheonsite.io';
+const baseUrl = config.get('dxApi.baseUrl');
+const academicGuid = config.get('dxApi.academicGuid');
+const financialGuid = config.get('dxApi.financialGuid');
 const includes = 'include=field_announcement_image,field_announcement_image.field_media_image';
 const announcementsUrl = `${baseUrl}/jsonapi/node/announcement?${includes}&sort=-created`;
 const queueUrl = `${baseUrl}/jsonapi/entity_subqueue/announcements`;
@@ -46,7 +49,7 @@ router.get('/', async (_req: Request, res: Response) => {
 });
 
 router.get('/academic', async (_req: Request, res: Response) => {
-  const academicUrl = `${queueUrl}/9ff07e4b-ec28-4dfb-8b75-9bbc1ef9d7cb/items?${includes}`;
+  const academicUrl = `${queueUrl}/${academicGuid}/items?${includes}`;
   try {
     const result = await getData(academicUrl);
     res.send(result);
@@ -56,7 +59,7 @@ router.get('/academic', async (_req: Request, res: Response) => {
 });
 
 router.get('/financial', async (_req: Request, res: Response) => {
-  const financialUrl = `${queueUrl}/9e3a07b8-4174-4979-990c-c114d2410c29/items?${includes}`;
+  const financialUrl = `${queueUrl}/${financialGuid}/items?${includes}`;
   try {
     const result = await getData(financialUrl);
     res.send(result);

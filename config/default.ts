@@ -1,5 +1,10 @@
 export default {
   env: process.env.NODE_ENV || 'development',
+  dxApi: {
+    baseUrl: process.env.DX_API_BASE_URL || 'http://dev-api-dx.pantheonsite.io',
+    academicGuid: process.env.DX_API_ACADEMIC_GUID || '9ff07e4b-ec28-4dfb-8b75-9bbc1ef9d7cb',
+    financialGuid: process.env.DX_API_FINANCIAL_GUID || '9e3a07b8-4174-4979-990c-c114d2410c29'
+  },
   osuApi: {
     clientId: '',
     clientSecret: '',
