@@ -5,8 +5,10 @@ import { format } from 'date-fns';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
 
-const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
+export const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
 const CANVAS_TOKEN: string = config.get('canvasApi.token');
+export const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
+export const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
 
 // TODO: properly specify the interface members
 export interface UpcomingAssignment {
@@ -55,7 +57,7 @@ const performRefresh = async (u: User): Promise<User> => {
   try {
     const body = await request({
       method: 'POST',
-      uri: `${config.get('canvasOauth.tokenUrl')}?${query}`
+      uri: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_TOKEN_URL}?${query}`
     });
     const response = JSON.parse(body);
     const expireTime = Math.floor(Date.now() / 1000) + parseInt(response.expires_in, 10);

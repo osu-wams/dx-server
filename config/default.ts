@@ -18,12 +18,9 @@ export default {
     id: process.env.CANVAS_OAUTH_ID || '',
     secret: process.env.CANVAS_OAUTH_SECRET || '',
     callbackUrl: process.env.CANVAS_OAUTH_CALLBACK || '',
-    authUrl:
-      process.env.CANVAS_OAUTH_AUTHURL ||
-      'https://oregonstate.test.instructure.com/login/oauth2/auth',
-    tokenUrl:
-      process.env.CANVAS_OAUTH_TOKENURL ||
-      'https://oregonstate.test.instructure.com/login/oauth2/token'
+    baseUrl: process.env.CANVAS_OAUTH_BASE_URL || 'https://oregonstate.test.instructure.com',
+    authUrl: process.env.CANVAS_OAUTH_URL || '/login/oauth2/auth',
+    tokenUrl: process.env.CANVAS_OAUTH_TOKEN_URL || '/login/oauth2/token'
   },
   raveApi: {
     baseUrl: 'https://www.getrave.com/rss/oregonstate/channel2'

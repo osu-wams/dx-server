@@ -14,7 +14,10 @@ export default {
   canvasOauth: {
     id: 'CANVAS_OAUTH_ID',
     secret: 'CANVAS_OAUTH_SECRET',
-    callbackUrl: 'CANVAS_OAUTH_CALLBACK'
+    callbackUrl: 'CANVAS_OAUTH_CALLBACK',
+    baseUrl: 'CANVAS_OAUTH_BASE_URL',
+    authUrl: 'CANVAS_OAUTH_URL',
+    tokenUrl: 'CANVAS_OAUTH_TOKEN_URL'
   },
   saml: {
     cert: 'SAML_CERT',
