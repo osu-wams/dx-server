@@ -2,37 +2,9 @@
  * /api/resources
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
-import request from 'request-promise';
-
-const baseUrl: string = 'http://dev-api-dx.pantheonsite.io';
-const resourcesUrl: string = `${baseUrl}/jsonapi/node/services?include=field_service_category,field_icon.field_media_image`;
-const categoriesUrl: string = `${baseUrl}/jsonapi/taxonomy_term/categories?include=field_taxonomy_icon.field_media_image&sort=weight`;
+import { getResources, getCategories } from './modules/dx';
 
 const router = Router();
-
-const getData = async (url: string, match: string) => {
-  const { data, included } = await request.get(url, { json: true });
-  if (included) {
-    included.forEach((item: any) => {
-      const matchingItems = data.filter((e: any) => {
-        return e.relationships[match].data && e.relationships[match].data.id === item.id;
-      });
-      if (matchingItems.length > 0) {
-        const matchingMedia = included.find((e: any) => {
-          return e.id === item.relationships.field_media_image.data.id;
-        });
-        if (matchingMedia) {
-          matchingItems.forEach((matchingItem: any) => {
-            data[data.indexOf(matchingItem)].attributes.icon = `${baseUrl}${
-              matchingMedia.attributes.uri.url
-            }`;
-          });
-        }
-      }
-    });
-  }
-  return data;
-};
 
 interface IResourceResult {
   id: string;
@@ -91,24 +63,7 @@ const filterCategories = (data: any): [ICategory] => {
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    let requestUrl = resourcesUrl;
-    if (req.query.query) {
-      requestUrl = `${resourcesUrl}&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=${
-        req.query.query
-      }`;
-    } else if (req.query.category) {
-      const categories = req.query.category.split(',');
-      requestUrl = `${resourcesUrl}&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND`;
-      for (let i = 0; i < categories.length; i += 1) {
-        requestUrl += `&filter[${categories[i]}][condition][path]=field_service_category.id`;
-        requestUrl += `&filter[${categories[i]}][condition][value]=${categories[i]}`;
-        if (i === 0) {
-          requestUrl += `&filter[${categories[i]}][condition][memberOf]=and-group`;
-        }
-      }
-    }
-
-    const data = await getData(requestUrl, 'field_icon');
+    const data = await getResources(req.query);
     const filteredData = filterResults(data);
 
     res.send(filteredData);
@@ -119,8 +74,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/categories', async (_req: Request, res: Response) => {
   try {
-    const data = await getData(categoriesUrl, 'field_taxonomy_icon');
+    const data = await getCategories();
     const filteredData = filterCategories(data);
+
     res.send(filteredData);
   } catch (err) {
     res.status(500).send(err);

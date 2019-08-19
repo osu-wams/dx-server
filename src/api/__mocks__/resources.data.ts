@@ -3,7 +3,11 @@ export const resourcesData = {
     {
       id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
       attributes: {
-        title: 'Student Jobs'
+        title: 'Student Jobs',
+        icon: '351f80a6-77c4-4d26-ba4f-59de040de6b5',
+        field_service_url: {
+          uri: '/image'
+        }
       },
       relationships: {
         field_icon: {
@@ -56,13 +60,76 @@ export const resourcesData = {
   ]
 };
 
+export const resourcesDataNoMatchingMedia = {
+  data: [
+    {
+      id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
+      attributes: {
+        title: 'Student Jobs',
+        icon: 'some-invalid-id-that-is-not-in-the-included-data',
+        field_service_url: {
+          uri: '/image'
+        }
+      },
+      relationships: {
+        field_icon: {
+          data: {
+            type: 'media--image',
+            id: 'iddoesntexistheresoitwontbefound'
+          }
+        },
+        field_service_category: {
+          data: [
+            {
+              type: 'taxonomy_term--categories',
+              id: '1b9b7a4b-5a64-41af-a40a-8bb01abedd19'
+            },
+            {
+              type: 'taxonomy_term--categories',
+              id: 'e2730988-0614-43b7-b3ce-0b047e8219e0'
+            }
+          ]
+        }
+      }
+    }
+  ],
+  included: [
+    {
+      type: 'media--image',
+      id: 'thisIDISNTHEREeither',
+      attributes: {
+        name: 'logo_sites_128px'
+      },
+      relationships: {
+        field_media_image: {
+          data: {
+            type: 'file--file',
+            id: '-----THISHASNOMATCH----------------'
+          }
+        }
+      }
+    },
+    {
+      type: 'file--file',
+      id: '---THISWONTFINDEITHER----',
+      attributes: {
+        filename: 'logo_sites_128px.png',
+        uri: {
+          url: '/sites/default/files/2019-05/logo_sites_128px.png'
+        }
+      }
+    }
+  ]
+};
+
 export const categoriesData = {
   data: [
     {
       type: 'taxonomy_term--categories',
       id: '1b9b7a4b-5a64-41af-a40a-8bb01abedd19',
       attributes: {
-        name: 'Popular'
+        name: 'Popular',
+        icon: 'e7cda0c1-fbb3-4773-a1d0-3dabae8113a6'
       },
       relationships: {
         field_taxonomy_icon: {

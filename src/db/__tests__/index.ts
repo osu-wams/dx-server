@@ -1,37 +1,44 @@
 import nock from 'nock';
 import { scan, updateItem, getItem, putItem, DYNAMODB_ENDPOINT } from '../index';
 
-beforeEach(() => {
-  nock(DYNAMODB_ENDPOINT)
-    .get(/.*/)
-    .reply(200, {});
-  nock(DYNAMODB_ENDPOINT)
-    .post(/.*/)
-    .reply(200, {});
-});
-
 describe('scan', () => {
   it('should return an empty promise result', async () => {
-    expect(scan({ TableName: 'test' })).resolves.toBe('');
+    nock(DYNAMODB_ENDPOINT)
+      .get(/.*/)
+      .reply(200, {});
+    expect(scan({ TableName: 'test' })).resolves.toStrictEqual({});
   });
 });
 
 describe('updateItem', () => {
   it('should return an empty promise result', async () => {
-    expect(updateItem({ TableName: 'test', Key: { longLive: { S: 'BobRoss' } } })).resolves.toBe(
-      ''
-    );
+    nock(DYNAMODB_ENDPOINT)
+      .post(/.*/)
+      .reply(200, {});
+    expect(
+      updateItem({ TableName: 'test', Key: { longLive: { S: 'BobRoss' } } })
+    ).resolves.toStrictEqual({});
   });
 });
 
 describe('putItem', () => {
   it('should return an empty promise result', async () => {
-    expect(putItem({ TableName: 'test', Item: { longLive: { S: 'BobRoss' } } })).resolves.toBe('');
+    nock(DYNAMODB_ENDPOINT)
+      .post(/.*/)
+      .reply(200, {});
+    expect(
+      putItem({ TableName: 'test', Item: { longLive: { S: 'BobRoss' } } })
+    ).resolves.toStrictEqual({});
   });
 });
 
 describe('getItem', () => {
+  nock(DYNAMODB_ENDPOINT)
+    .get(/.*/)
+    .reply(200, {});
   it('should return an empty promise result', async () => {
-    expect(getItem({ TableName: 'test', Key: { longLive: { S: 'BobRoss' } } })).resolves.toBe('');
+    expect(
+      getItem({ TableName: 'test', Key: { longLive: { S: 'BobRoss' } } })
+    ).resolves.toStrictEqual({});
   });
 });
