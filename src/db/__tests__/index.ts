@@ -1,4 +1,11 @@
+import nock from 'nock';
 import { scan, updateItem, getItem, putItem } from '../index';
+
+beforeEach(() => {
+  nock('http://bogus:8000')
+    .get(/.*/)
+    .reply(200, {});
+});
 
 describe('scan', () => {
   it('should return an empty promise result', async () => {

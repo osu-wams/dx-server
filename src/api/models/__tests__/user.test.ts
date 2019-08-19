@@ -108,6 +108,11 @@ describe('User model', () => {
       const item = User.asDynamoDbItem(user);
       expect(item.canvasOptIn.BOOL).toBe(user.isCanvasOptIn);
     });
+    it('builds an item with canvas opt in', () => {
+      user.isCanvasOptIn = undefined;
+      const item = User.asDynamoDbItem(user);
+      expect(item.canvasOptIn.BOOL).toBe(false);
+    });
   });
 
   describe('with DynamoDb API calls', () => {
@@ -178,6 +183,14 @@ describe('User model', () => {
         mockDynamoDb.getItem.mockImplementationOnce(() =>
           Promise.reject(new Error('happy little accident'))
         );
+        try {
+          await User.find(user.osuId);
+        } catch (err) {
+          expect(err.message).toStrictEqual('happy little accident');
+        }
+      });
+      it('throws an error when no user is found', async () => {
+        mockDynamoDb.getItem.mockImplementationOnce(() => Promise.resolve({}));
         try {
           await User.find(user.osuId);
         } catch (err) {
