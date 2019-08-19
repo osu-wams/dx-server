@@ -61,10 +61,10 @@ class User {
       const params = p.dynamoDbUser;
       // The partition key is required and the data is stored as a string
       this.osuId = parseInt(params.Item.osuId.N, 10);
-      if (params.Item.firstName) this.firstName = params.Item.firstName.S || this.firstName;
-      if (params.Item.lastName) this.lastName = params.Item.lastName.S || this.lastName;
-      if (params.Item.email) this.email = params.Item.email.S || this.email;
-      if (params.Item.phone) this.phone = params.Item.phone.S || this.phone;
+      if (params.Item.firstName) this.firstName = params.Item.firstName.S;
+      if (params.Item.lastName) this.lastName = params.Item.lastName.S;
+      if (params.Item.email) this.email = params.Item.email.S;
+      if (params.Item.phone) this.phone = params.Item.phone.S;
       if (params.Item.canvasRefreshToken)
         this.refreshToken = params.Item.canvasRefreshToken.S || this.refreshToken;
       if (params.Item.canvasOptIn)
@@ -143,7 +143,7 @@ class User {
           },
           UpdateExpression: 'REMOVE canvasRefreshToken SET canvasOptIn = :coi',
           ExpressionAttributeValues: {
-            ':coi': { BOOL: false },
+            ':coi': { BOOL: false }
           },
           ReturnValues: 'UPDATED_NEW'
         };

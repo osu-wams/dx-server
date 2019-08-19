@@ -1,10 +1,12 @@
 import config from 'config';
 import AWS from 'aws-sdk';
 
+export const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
+
 AWS.config.update({
   region: config.get('aws.region'),
   dynamodb: {
-    endpoint: config.get('aws.dynamodb.endpoint'),
+    endpoint: DYNAMODB_ENDPOINT,
     apiVersion: config.get('aws.dynamodb.apiVersion')
   }
 });

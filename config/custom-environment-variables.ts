@@ -1,4 +1,9 @@
 export default {
+  dxApi: {
+    baseUrl: 'DX_API_BASE_URL',
+    academicGuid: 'DX_API_ACADEMIC_GUID',
+    financialGuid: 'DX_API_FINANCIAL_GUID'
+  },
   osuApi: {
     clientId: 'OSU_API_CLIENT_ID',
     clientSecret: 'OSU_API_CLIENT_SECRET'
@@ -9,7 +14,10 @@ export default {
   canvasOauth: {
     id: 'CANVAS_OAUTH_ID',
     secret: 'CANVAS_OAUTH_SECRET',
-    callbackUrl: 'CANVAS_OAUTH_CALLBACK'
+    callbackUrl: 'CANVAS_OAUTH_CALLBACK',
+    baseUrl: 'CANVAS_OAUTH_BASE_URL',
+    authUrl: 'CANVAS_OAUTH_URL',
+    tokenUrl: 'CANVAS_OAUTH_TOKEN_URL'
   },
   saml: {
     cert: 'SAML_CERT',

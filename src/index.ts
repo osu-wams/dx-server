@@ -113,6 +113,8 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
 app.use('/api', ApiRouter);
 
 // Start Server
+// Don't capture code coverage for the following block
+/* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => logger.info(`Server listening on port ${PORT}`));
