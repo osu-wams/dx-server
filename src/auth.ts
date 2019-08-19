@@ -86,8 +86,8 @@ if (ENV === 'production') {
 
 Auth.oAuth2Strategy = new OAuthStrategy(
   {
-    authorizationURL: config.get('canvasOauth.authUrl'),
-    tokenURL: config.get('canvasOauth.tokenUrl'),
+    authorizationURL: `${config.get('canvasOauth.baseUrl')}${config.get('canvasOauth.authUrl')}`,
+    tokenURL: `${config.get('canvasOauth.baseUrl')}${config.get('canvasOauth.tokenUrl')}`,
     clientID: config.get('canvasOauth.id'),
     clientSecret: config.get('canvasOauth.secret'),
     callbackURL: config.get('canvasOauth.callbackUrl')
