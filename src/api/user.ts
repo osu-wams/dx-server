@@ -6,7 +6,15 @@ import { Router, Request, Response } from 'express'; // eslint-disable-line no-u
 const router: Router = Router();
 
 router.get('/', (req: Request, res: Response) => {
-  res.send(req.user);
+  const userForApi = {
+    osuId: req.user.osuId,
+    firstName: req.user.firstName,
+    lastName: req.user.lastName,
+    email: req.user.email,
+    isAdmin: req.user.isAdmin,
+    isCanvasOptIn: req.user.isCanvasOptIn
+  };
+  res.send(userForApi);
 });
 
 export default router;
