@@ -27,9 +27,8 @@ describe('Canvas module', () => {
       const result = await performRefresh(user);
       expect(result.isCanvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
-      expect(result.canvasOauthExpire).toBeGreaterThanOrEqual(
-        Math.floor(Date.now() / 1000) + 8675309
-      );
+      // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)
+      expect(result.canvasOauthExpire).toBeGreaterThan(Math.floor(Date.now() / 1000) + 867500);
     });
 
     it('resets canvas fields on method exception', async () => {
@@ -59,9 +58,8 @@ describe('Canvas module', () => {
       const result = await getOAuthToken(user);
       expect(result.isCanvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
-      expect(result.canvasOauthExpire).toBeGreaterThanOrEqual(
-        Math.floor(Date.now() / 1000) + 8675309
-      );
+      // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)
+      expect(result.canvasOauthExpire).toBeGreaterThan(Math.floor(Date.now() / 1000) + 867500);
     });
   });
 
