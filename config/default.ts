@@ -38,11 +38,11 @@ export default {
     host: process.env.REDIS_HOST || '127.0.0.1',
     port: process.env.REDIS_PORT || '6379'
   },
-  rds: {
-    host: process.env.RDS_HOST || '127.0.0.1',
-    port: process.env.RDS_PORT || '3306',
-    user: process.env.RDS_USER || 'myosu_dashboard',
-    password: process.env.RDS_PASSWORD || 'myosu_dashboard',
-    database: process.env.RDS_DATABASE || 'myosu_dashboard'
+  aws: {
+    region: process.env.AWS_REGION || 'us-west-2',
+    dynamodb: {
+      endpoint: process.env.AWS_DYNAMODB_ENDPOINT || 'https://dynamodb.us-west-2.amazonaws.com',
+      apiVersion: process.env.AWS_DYNAMODB_APIVERSION || '2012-08-10'
+    }
   }
 };

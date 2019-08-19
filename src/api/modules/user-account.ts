@@ -1,8 +1,6 @@
-import { Pool } from 'promise-mysql'; // eslint-disable-line no-unused-vars
-import { pool, dbQuery } from '../../db';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 
-export interface DbUser {
+export interface SamlUser {
   osu_id: string; // eslint-disable-line camelcase
   first_name: string; // eslint-disable-line camelcase
   last_name: string; // eslint-disable-line camelcase
@@ -26,19 +24,12 @@ interface OAuthData {
 
 export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
   try {
-    const dbPool = await pool;
-    let user: User = await User.find(u.osuId, dbPool);
+    let user: User = await User.find(u.osuId);
     let isNew = false;
 
     if (user === null) {
-      user = await User.insert(u, dbPool);
+      user = await User.insert(u);
       isNew = true;
-    } else {
-      const oauthData = await dbPool.query(dbQuery.selectOAuthData, [u.osuId]);
-      if (oauthData.length > 0) {
-        user.refreshToken = oauthData[0].refresh_token || '';
-        user.isCanvasOptIn = oauthData[0].opt_in !== 0 || false;
-      }
     }
     user.isAdmin = u.isAdmin;
     console.debug('findOrCreateUser returns:', user); // eslint-disable-line no-console
@@ -49,17 +40,15 @@ export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
   }
 };
 
-export const updateOAuthData = async (user: User, oAuthData: OAuthData): Promise<void> => {
+export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<User> => {
   try {
-    const dbPool = await pool;
-    const result = await dbPool.query(dbQuery.updateOAuthData, [
-      oAuthData.isCanvasOptIn,
+    const user = await User.updateCanvasData(
+      u,
       oAuthData.account.refreshToken,
-      user.osuId
-    ]);
-    if (result.affectedRows > 0) {
-      return;
-    }
+      oAuthData.isCanvasOptIn
+    );
+    console.debug('updateOAuthData returns:', user); // eslint-disable-line no-console
+    return user;
   } catch (err) {
     console.error('updateOAuthData db failed:', err); // eslint-disable-line no-console
     throw err;

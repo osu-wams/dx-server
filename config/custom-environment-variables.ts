@@ -21,11 +21,11 @@ export default {
     host: 'REDIS_HOST',
     port: 'REDIS_PORT'
   },
-  rds: {
-    host: 'RDS_HOST',
-    port: 'RDS_PORT',
-    user: 'RDS_USER',
-    password: 'RDS_PASS',
-    database: 'RDS_DB'
+  aws: {
+    region: 'AWS_REGION',
+    dynamodb: {
+      endpoint: 'AWS_DYNAMODB_ENDPOINT',
+      apiVersion: 'AWS_DYNAMODB_APIVERSION'
+    }
   }
 };

@@ -13,21 +13,25 @@
 
     $ cp docker-compose.override.example.yml docker-compose.override.yml
 
-### Start the Database and Redis Queue
+### Install the node modules
+
+    $ yarn
+
+### Start the DynamoDb and Redis Queue
 
     $ docker-compose up
+
+### Create the Users table in DynamoDb
+
+_This step is only required the first time you start development and/or if you wipe the docker volumes for this project._
+
+    $ yarn exec ts-node src/db/scripts/create_users_table.ts
 
 ### Run the server
 
 In a separate terminal window run:
 
     $ yarn start
-
-### Run the migrations
-
-In a separate terminal window run the migrations:
-
-    $ yarn db:migrate up
 
 ## OAuth Testing (Running locally in Production)
 

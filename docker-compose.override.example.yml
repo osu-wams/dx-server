@@ -4,6 +4,6 @@ services:
   session_cache:
     ports:
       - '6379:6379'
-  rds:
+  dynamodb:
     ports:
-      - '3306:3306'
+      - '8000:8000'
