@@ -45,7 +45,7 @@ export const getPlannerItemsOAuth = async (accessToken: string): Promise<Upcomin
  * Performs a oauth2 token refresh against canvas.
  * @param {string} refreshToken
  */
-const performRefresh = async (u: User): Promise<User> => {
+export const performRefresh = async (u: User): Promise<User> => {
   const user: User = u;
   const query = querystring.stringify({
     grant_type: 'refresh_token',
