@@ -67,8 +67,11 @@ class User {
       if (params.Item.phone) this.phone = params.Item.phone.S;
       if (params.Item.canvasRefreshToken)
         this.refreshToken = params.Item.canvasRefreshToken.S || this.refreshToken;
-      if (params.Item.canvasOptIn)
+      if (params.Item.canvasOptIn !== undefined) {
         this.isCanvasOptIn = params.Item.canvasOptIn.BOOL || this.isCanvasOptIn;
+      } else {
+        this.isCanvasOptIn = false;
+      }
     }
   }
 
