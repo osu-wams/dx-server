@@ -33,7 +33,8 @@ export default {
     region: 'AWS_REGION',
     dynamodb: {
       endpoint: 'AWS_DYNAMODB_ENDPOINT',
-      apiVersion: 'AWS_DYNAMODB_APIVERSION'
+      apiVersion: 'AWS_DYNAMODB_APIVERSION',
+      tablePrefix: 'AWS_DYNAMODB_TABLEPREFIX'
     }
   }
 };
