@@ -72,7 +72,8 @@ router.get('/account-transactions', async (req: Request, res: Response) => {
     const bearerToken = await getToken();
     const apiResponse = await request({
       method: 'GET',
-      url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/account-transactions`,
+      url: `${BASE_URL}/${req.user.masqueradeId ||
+        req.user.osuId}/account-transactions?term=current`,
       auth: { bearer: bearerToken },
       json: true
     });
