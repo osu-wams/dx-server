@@ -1,8 +1,11 @@
 /* eslint-disable no-console */
 // TODO: Replace all console.log/debug/error with winston logging
 
+import config from 'config';
 import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
 import { scan, updateItem, getItem, putItem } from '../../db';
+
+const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 
 interface UserParams {
   samlUser?: SamlUser;
@@ -40,7 +43,7 @@ class User {
 
   isCanvasOptIn?: boolean = false;
 
-  static TABLE_NAME: string = 'Users';
+  static TABLE_NAME: string = `${tablePrefix}-Users`;
 
   /**
    * Initializes a new instance of the User with the supplied data.

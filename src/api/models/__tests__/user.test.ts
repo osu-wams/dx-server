@@ -28,7 +28,7 @@ let dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
 
 describe('User model', () => {
   it('has the DynamoDB table name defined', () => {
-    expect(User.TABLE_NAME).toBe('Users');
+    expect(User.TABLE_NAME).toBe(`${User.TABLE_NAME}`);
   });
 
   describe('constructs a new instance', () => {
