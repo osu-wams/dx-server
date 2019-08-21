@@ -12,6 +12,13 @@ export const QUEUE_URL = `${BASE_URL}/jsonapi/entity_subqueue/announcements`;
 export const RESOURCES_URL = `${BASE_URL}/jsonapi/node/services?include=field_service_category,field_icon.field_media_image`;
 export const CATEGORIES_URL = `${BASE_URL}/jsonapi/taxonomy_term/categories?include=field_taxonomy_icon.field_media_image&sort=weight`;
 
+export interface Alert {
+  title: string;
+  date: Date;
+  content: string;
+  type: string;
+}
+
 const getAnnouncementData = async (url: string) => {
   const { data, included } = await request.get(url, { json: true });
   if (included) {
@@ -113,6 +120,21 @@ export const getResources = async (query: any): Promise<any> => {
 export const getCategories = async (): Promise<any> => {
   try {
     return await getResourceData(CATEGORIES_URL, 'field_taxonomy_icon');
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
+ * Get alerts from DX API.
+ * ! TODO: Implement the actual DX API call and parse the data.
+ * @returns Alert[] - An array of alerts from the API
+ */
+export const getDxAlerts = async (): Promise<Alert[]> => {
+  try {
+    return await [
+      { title: 'Warning!', date: new Date(), content: 'This is a cheeseburger!', type: 'warn' }
+    ];
   } catch (err) {
     throw err;
   }

@@ -1,5 +1,6 @@
 import Parser from 'rss-parser';
 import config from 'config';
+import { Alert } from './dx'; // eslint-disable-line no-unused-vars
 
 const parser: Parser = new Parser();
 const BASE_URL: string = config.get('raveApi.baseUrl');
@@ -8,11 +9,16 @@ const BASE_URL: string = config.get('raveApi.baseUrl');
  * Gets active alerts from RAVE.
  * @returns {Promise<Object[]>}
  */
-export const getAlerts = async (): Promise<object[]> => {
+export const getAlerts = async (): Promise<Alert[]> => {
   try {
     // Rave alerts come as an RSS feed, always containing a single item.
     const { items } = await parser.parseURL(BASE_URL);
-    const alert = items[0];
+    const alert: Alert = {
+      title: items[0].title,
+      content: items[0].content,
+      date: items[0].date,
+      type: 'rave'
+    };
 
     // Check for the presence of 'all clear' text in the message body
     // 'all clear' indicates that an alert is NOT active and should not be displayed.
