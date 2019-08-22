@@ -2,7 +2,6 @@ import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import app from '../../index';
-import { gradesData } from '../__mocks__/student.grades.data';
 
 jest.mock('../util.ts');
 
