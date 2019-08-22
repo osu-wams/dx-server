@@ -2,6 +2,7 @@ import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import app from '../../index';
+import { gradesData } from '../__mocks__/student.grades.data';
 
 jest.mock('../util.ts');
 
@@ -188,21 +189,28 @@ describe('/api/student', () => {
     });
 
     it('should return grades for a specified term, or the current term if none provided', async () => {
-      const data = [{ term: '201701' }, { term: 'current' }];
+      const data = [{ attributes: { term: '201701' } }, { attributes: { term: 'current' } }, { attributes: { term: '201901' } }];
+
+      const dataSorted = [
+        { attributes: { term: 'current' } },
+        { attributes: { term: '201901' } },
+        { attributes: { term: '201701' } }
+      ];
 
       // Mock default (term=current) response
       nock(APIGEE_BASE_URL)
+        // test sorted
         .get(/v1\/students\/[0-9]+\/grades/)
         .query(true)
-        .reply(200, { data: data[1] })
+        .reply(200, { data })
         // Mock specified term response
         .get(/v1\/students\/[0-9]+\/grades/)
-        .query(data[0])
-        .reply(200, { data: data[0] });
+        .query(data[0].attributes)
+        .reply(200, { data: [data[0]] })
 
-      await request.get('/api/student/grades').expect(200, data[1]);
+      await request.get('/api/student/grades').expect(200, dataSorted);
+      await request.get('/api/student/grades?term=201701').expect(200, [data[0]]);
 
-      await request.get('/api/student/grades?term=201701').expect(200, data[0]);
     });
 
     it('should return an error if the user is not logged in', async () => {
