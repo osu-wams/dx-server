@@ -56,3 +56,18 @@ export const alertClear: any = {
   `,
   response: []
 };
+
+export const dxAlert: any = [
+  {
+    title: 'BobRoss',
+    date: '2018-05-29T18:47:39Z',
+    content: 'Lets paint some stuff.',
+    type: 'info'
+  },
+  {
+    title: 'RickRoss',
+    date: '2018-05-29T18:47:39Z',
+    content: 'This isnt gonna be on public access channel.',
+    type: 'warn'
+  }
+];

@@ -1,6 +1,7 @@
 import request from 'request-promise';
 import { Request } from 'express'; // eslint-disable-line no-unused-vars
 import config from 'config';
+import { dxAlert } from '../__mocks__/alerts.data';
 
 export const BASE_URL = config.get('dxApi.baseUrl');
 export const ACADEMIC_GUID = config.get('dxApi.academicGuid');
@@ -127,14 +128,12 @@ export const getCategories = async (): Promise<any> => {
 
 /**
  * Get alerts from DX API.
- * ! TODO: Implement the actual DX API call and parse the data.
+ * ! TODO: Implement the actual DX API call and parse the data and remove dxAlert mock data
  * @returns Alert[] - An array of alerts from the API
  */
 export const getDxAlerts = async (): Promise<Alert[]> => {
   try {
-    return await [
-      { title: 'Warning!', date: new Date(), content: 'This is a cheeseburger!', type: 'warn' }
-    ];
+    return await dxAlert;
   } catch (err) {
     throw err;
   }
