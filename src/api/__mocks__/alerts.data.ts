@@ -56,3 +56,117 @@ export const alertClear: any = {
   `,
   response: []
 };
+
+export const dxAlert: any = [
+  {
+    title: 'BobRoss',
+    date: '2018-05-29T18:47:39+00:00',
+    content: 'Lets paint some stuff.',
+    type: 'info'
+  }
+];
+
+export const dxAPIAlerts: any = {
+  jsonapi: {
+    version: '1.0',
+    meta: {
+      links: {
+        self: {
+          href: 'http://jsonapi.org/format/1.0/'
+        }
+      }
+    }
+  },
+  data: [
+    {
+      type: 'node--alerts',
+      id: '7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c',
+      attributes: {
+        drupal_internal__nid: 86,
+        drupal_internal__vid: 741,
+        langcode: 'en',
+        revision_timestamp: '2019-08-26T18:03:38+00:00',
+        revision_log: null,
+        status: true,
+        title: 'BobRoss',
+        created: '2018-05-29T18:47:39+00:00',
+        changed: '2019-08-26T18:03:38+00:00',
+        promote: false,
+        sticky: false,
+        default_langcode: true,
+        revision_translation_affected: true,
+        moderation_state: null,
+        path: {
+          alias: null,
+          pid: null,
+          langcode: 'en'
+        },
+        field_alert_content: 'Lets paint some stuff.',
+        field_alert_expiration_date: '2100-08-23T15:26:56-07:00',
+        field_alert_type: 'info'
+      },
+      relationships: {
+        node_type: {
+          data: {
+            type: 'node_type--node_type',
+            id: '6191716b-e998-4bd9-bfb9-3d5de3ea5bb6'
+          },
+          links: {
+            self: {
+              href:
+                'https://data.dx.oregonstate.edu/jsonapi/node/alerts/7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c/relationships/node_type?resourceVersion=id%3A741'
+            },
+            related: {
+              href:
+                'https://data.dx.oregonstate.edu/jsonapi/node/alerts/7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c/node_type?resourceVersion=id%3A741'
+            }
+          }
+        },
+        revision_uid: {
+          data: {
+            type: 'user--user',
+            id: '331ce117-3d54-4349-9d97-71877701899a'
+          },
+          links: {
+            self: {
+              href:
+                'https://data.dx.oregonstate.edu/jsonapi/node/alerts/7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c/relationships/revision_uid?resourceVersion=id%3A741'
+            },
+            related: {
+              href:
+                'https://data.dx.oregonstate.edu/jsonapi/node/alerts/7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c/revision_uid?resourceVersion=id%3A741'
+            }
+          }
+        },
+        uid: {
+          data: {
+            type: 'user--user',
+            id: 'dc342a06-d466-4526-a523-2739b94e01b3'
+          },
+          links: {
+            self: {
+              href:
+                'https://data.dx.oregonstate.edu/jsonapi/node/alerts/7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c/relationships/uid?resourceVersion=id%3A741'
+            },
+            related: {
+              href:
+                'https://data.dx.oregonstate.edu/jsonapi/node/alerts/7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c/uid?resourceVersion=id%3A741'
+            }
+          }
+        }
+      },
+      links: {
+        self: {
+          href:
+            'https://data.dx.oregonstate.edu/jsonapi/node/alerts/7c8a3c1b-6aa6-4299-a5db-8d1d49bd350c?resourceVersion=id%3A741'
+        }
+      }
+    }
+  ],
+  links: {
+    self: {
+      href:
+        'https://data.dx.oregonstate.edu/jsonapi/node/alerts?filter%5Bfield_expiration_date%5D%5Bcondition%5D%5Boperator%5D=%3E%3D&filter%5Bfield_expiration_date%5D%5Bcondition%5D%5Bpath%5D=field_alert_expiration_date&filter%5Bfield_expiration_date%5D%5Bcondition%5D%5Bvalue%5D=123&sort=-field_alert_expiration_date'
+    }
+  }
+};

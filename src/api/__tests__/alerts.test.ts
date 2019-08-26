@@ -2,9 +2,10 @@ import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import app from '../../index';
-import { alertClear, alertPresent } from '../__mocks__/alerts.data';
+import { alertClear, alertPresent, dxAlert, dxAPIAlerts } from '../__mocks__/alerts.data';
 
 const BASE_URL = config.get('raveApi.baseUrl');
+const DX_BASE_URL = config.get('dxApi.baseUrl');
 const request = supertest.agent(app);
 
 describe('/alerts', () => {
@@ -13,13 +14,8 @@ describe('/alerts', () => {
       {
         date: '2018-05-29T18:47:39Z',
         title: 'Weather closure 10/12',
-        link: '',
-        pubDate: 'Tue, 10 Dec 2018 18:47:39 GMT',
-        'dc:date': '2018-05-29T18:47:39Z',
         content: 'Snow causes dangerous road conditions',
-        contentSnippet: 'Snow causes dangerous road conditions',
-        guid: '',
-        isoDate: '2018-12-10T18:47:39.000Z'
+        type: 'rave'
       }
     ];
 
@@ -45,6 +41,38 @@ describe('/alerts', () => {
 
     await request
       .get('/api/alerts')
+      .expect(500)
+      .expect(r => r.error.text === 'Unable to retrieve alerts.');
+  });
+});
+
+describe('/alerts/dx', () => {
+  it('should return alerts when present', async () => {
+    nock(DX_BASE_URL)
+      .get('/jsonapi/node/alerts')
+      .query(true)
+      .reply(200, dxAPIAlerts, { 'Content-Type': 'application/json' });
+
+    await request.get('/api/alerts/dx').expect(200, dxAlert);
+  });
+
+  it('should return an empty array [] when no alerts are present', async () => {
+    nock(DX_BASE_URL)
+      .get('/jsonapi/node/alerts')
+      .query(true)
+      .reply(200, { data: [] }, { 'Content-Type': 'application/json' });
+
+    await request.get('/api/alerts/dx').expect(200, []);
+  });
+
+  it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
+    nock(DX_BASE_URL)
+      .get('/jsonapi/node/alerts')
+      .query(true)
+      .reply(500);
+
+    await request
+      .get('/api/alerts/dx')
       .expect(500)
       .expect(r => r.error.text === 'Unable to retrieve alerts.');
   });
