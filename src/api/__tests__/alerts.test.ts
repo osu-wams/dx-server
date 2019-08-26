@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import app from '../../index';
-import { alertClear, alertPresent, dxAlert } from '../__mocks__/alerts.data';
+import { alertClear, alertPresent, dxAlert, dxAPIAlerts } from '../__mocks__/alerts.data';
 
 const BASE_URL = config.get('raveApi.baseUrl');
 const DX_BASE_URL = config.get('dxApi.baseUrl');
@@ -48,27 +48,27 @@ describe('/alerts', () => {
 
 describe('/alerts/dx', () => {
   it('should return alerts when present', async () => {
-    // ! TODO: Replace with DX API url to mock
-    // nock(DX_BASE_URL)
-    //   .get('')
-    //   .reply(200, dxAlert, { 'Content-Type': 'application/json' });
+    nock(DX_BASE_URL)
+      .get('/jsonapi/node/alerts')
+      .query(true)
+      .reply(200, dxAPIAlerts, { 'Content-Type': 'application/json' });
 
     await request.get('/api/alerts/dx').expect(200, dxAlert);
   });
 
-  xit('should return an empty array [] when no alerts are present', async () => {
-    // ! TODO: Replace with DX API url to mock
+  it('should return an empty array [] when no alerts are present', async () => {
     nock(DX_BASE_URL)
-      .get('')
-      .reply(200, dxAlert, { 'Content-Type': 'application/json' });
+      .get('/jsonapi/node/alerts')
+      .query(true)
+      .reply(200, { data: [] }, { 'Content-Type': 'application/json' });
 
     await request.get('/api/alerts/dx').expect(200, []);
   });
 
-  xit('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
-    // ! TODO: Replace with DX API url to mock
+  it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
     nock(DX_BASE_URL)
-      .get('')
+      .get('/jsonapi/node/alerts')
+      .query(true)
       .reply(500);
 
     await request

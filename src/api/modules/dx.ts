@@ -1,7 +1,6 @@
 import request from 'request-promise';
 import { Request } from 'express'; // eslint-disable-line no-unused-vars
 import config from 'config';
-import { dxAlert } from '../__mocks__/alerts.data';
 
 export const BASE_URL = config.get('dxApi.baseUrl');
 export const ACADEMIC_GUID = config.get('dxApi.academicGuid');
@@ -12,6 +11,9 @@ export const ANNOUNCEMENTS_URL = `${BASE_URL}/jsonapi/node/announcement?${INCLUD
 export const QUEUE_URL = `${BASE_URL}/jsonapi/entity_subqueue/announcements`;
 export const RESOURCES_URL = `${BASE_URL}/jsonapi/node/services?include=field_service_category,field_icon.field_media_image`;
 export const CATEGORIES_URL = `${BASE_URL}/jsonapi/taxonomy_term/categories?include=field_taxonomy_icon.field_media_image&sort=weight`;
+
+// DX API to filter any alerts that have an expiration date >= to the time of execution, sorted descending order on the expiration date
+export const ALERTS_URL = `${BASE_URL}/jsonapi/node/alerts?sort=-field_alert_expiration_date&filter[field_expiration_date][condition][operator]=%3e%3d&filter[field_expiration_date][condition][path]=field_alert_expiration_date&filter[field_expiration_date][condition][value]=${Date.now()}`;
 
 export interface Alert {
   title: string;
@@ -98,9 +100,7 @@ export const getResources = async (query: any): Promise<any> => {
   try {
     let requestUrl = RESOURCES_URL;
     if (query.query) {
-      requestUrl = `${RESOURCES_URL}&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=${
-        query.query
-      }`;
+      requestUrl = `${RESOURCES_URL}&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=${query.query}`;
     } else if (query.category) {
       const categories = query.category.split(',');
       requestUrl = `${RESOURCES_URL}&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND`;
@@ -128,12 +128,25 @@ export const getCategories = async (): Promise<any> => {
 
 /**
  * Get alerts from DX API.
- * ! TODO: Implement the actual DX API call and parse the data and remove dxAlert mock data
  * @returns Alert[] - An array of alerts from the API
  */
 export const getDxAlerts = async (): Promise<Alert[]> => {
   try {
-    return await dxAlert;
+    const { data } = await request.get(ALERTS_URL, { json: true });
+    if (!data || data.length === 0) {
+      return [];
+    }
+    /* eslint-disable camelcase */
+    const { field_alert_content, field_alert_type, created, title } = data[0].attributes;
+    return [
+      {
+        content: field_alert_content as string,
+        title: title as string,
+        date: created as Date,
+        type: field_alert_type as string
+      }
+    ];
+    /* eslint-enable camelcase */
   } catch (err) {
     throw err;
   }
