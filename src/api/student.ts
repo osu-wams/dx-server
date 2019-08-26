@@ -27,12 +27,10 @@ const sortGradesByTerm = (a: GradeTerm, b: GradeTerm): number => {
   if (a.attributes.term < b.attributes.term) {
     return 1
   }
-  else if (a.attributes.term > b.attributes.term) {
+  if (a.attributes.term > b.attributes.term) {
     return -1
   }
-  else {
-    return 0;
-  }
+  return 0;
 };
 
 router.get(
