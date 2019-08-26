@@ -24,9 +24,15 @@ interface GradeTerm {
  */
 const sortGradesByTerm = (a: GradeTerm, b: GradeTerm): number => {
   if (!b) return 0;
-  if (a.attributes.term < b.attributes.term) return 1;
-  if (b.attributes.term > a.attributes.term) return -1;
-  return 0;
+  if (a.attributes.term < b.attributes.term) {
+    return 1
+  }
+  else if (a.attributes.term > b.attributes.term) {
+    return -1
+  }
+  else {
+    return 0;
+  }
 };
 
 router.get(

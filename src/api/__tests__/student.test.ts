@@ -188,11 +188,13 @@ describe('/api/student', () => {
     });
 
     it('should return grades for a specified term, or the current term if none provided', async () => {
-      const data = [{ attributes: { term: '201701' } }, { attributes: { term: 'current' } }, { attributes: { term: '201901' } }];
+      const data = [{ attributes: { term: '201701' } }, { attributes: { term: '201901' } }, { attributes: { term: 'current' } }, { attributes: { term: '201901' } },  { attributes: { term: '201803' } }];
 
       const dataSorted = [
         { attributes: { term: 'current' } },
         { attributes: { term: '201901' } },
+        { attributes: { term: '201901' } },
+        { attributes: { term: '201803' } },
         { attributes: { term: '201701' } }
       ];
 
