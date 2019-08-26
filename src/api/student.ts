@@ -11,6 +11,28 @@ import { getPlannerItemsMask, getPlannerItemsOAuth, UpcomingAssignment } from '.
 const BASE_URL: string = `${config.get('osuApi.baseUrl')}/students`;
 const router = Router();
 
+interface GradeTerm {
+  attributes: {
+    term: string;
+  }
+}
+/**
+ * This is a compare function based on the term attribute
+ * @param a Grade data provided by the api
+ * @param b Grade data provided by the api
+ * @returns [number] order in which a is compared to b
+ */
+const sortGradesByTerm = (a: GradeTerm, b: GradeTerm): number => {
+  if (!b) return 0;
+  if (a.attributes.term < b.attributes.term) {
+    return 1
+  }
+  if (a.attributes.term > b.attributes.term) {
+    return -1
+  }
+  return 0;
+};
+
 router.get(
   '/planner-items',
   Auth.hasValidCanvasRefreshToken,
@@ -128,7 +150,9 @@ router.get('/grades', async (req: Request, res: Response) => {
       auth: { bearer: bearerToken },
       json: true
     });
-    res.send(apiResponse.data);
+    // sort and use sortGradesByTerm to sort banner return newest to oldest
+    const sorted = apiResponse.data.sort(sortGradesByTerm);
+    res.send(sorted);
   } catch (err) {
     res.status(500).send('Unable to retrieve grades.');
   }
