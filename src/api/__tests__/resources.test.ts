@@ -1,3 +1,4 @@
+import config from 'config';
 import supertest from 'supertest';
 import nock from 'nock';
 import app from '../../index';
@@ -9,6 +10,7 @@ import {
 } from '../__mocks__/resources.data';
 import { BASE_URL } from '../modules/dx';
 
+const dxApiBaseUrl = config.get('dxApi.baseUrl');
 const request = supertest.agent(app);
 
 describe('/resources', () => {
@@ -19,7 +21,7 @@ describe('/resources', () => {
       {
         id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
         title: 'Student Jobs',
-        icon: 'http://dev-api-dx.pantheonsite.io/sites/default/files/2019-05/logo_sites_128px.png',
+        icon: `${dxApiBaseUrl}/sites/default/files/2019-05/logo_sites_128px.png`,
         uri: '/image'
       }
     ];
@@ -82,7 +84,7 @@ describe('/resources', () => {
         {
           id: '1b9b7a4b-5a64-41af-a40a-8bb01abedd19',
           name: 'Popular',
-          icon: 'http://dev-api-dx.pantheonsite.io/sites/default/files/2019-05/star.svg'
+          icon: `${dxApiBaseUrl}/sites/default/files/2019-05/star.svg`
         }
       ];
 
