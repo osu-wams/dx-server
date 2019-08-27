@@ -171,7 +171,7 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
  * then get a new token. If the user isn't opt-in or somehow hasn't gotten thier refreshToken
  * then disallow access to the route protected by this middleware.
  */
-Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+Auth.hasValidCanvasRefreshToken = async (req: any, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
   if (!user.isCanvasOptIn || !user.refreshToken) {
     console.debug('Canvas opt-in or refresh token missing, returning unauthorized', user); // eslint-disable-line no-console

@@ -74,7 +74,7 @@ app.get('/healthcheck', (req, res) => {
   res.status(200).end();
 });
 
-app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
+app.post('/login/saml', passport.authenticate('saml'), async (req: any, res: Response) => {
   const { user, isNew } = await findOrCreateUser(req.user);
   req.session.passport.user = user;
   if (isNew) {
@@ -105,7 +105,7 @@ app.get(
     res.redirect('/');
   }
 );
-app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
+app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: any, res: Response) => {
   req.user = await getOAuthToken(req.user);
   res.redirect('/');
 });
