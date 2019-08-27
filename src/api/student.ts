@@ -110,7 +110,7 @@ router.get('/grades', async (req: Request, res: Response) => {
 router.get('/holds', async (req: Request, res: Response) => {
   try {
     const response = await getHolds(req.user);
-    res.send(response.data);
+    res.send(response);
   } catch (err) {
     res.status(500).send('Unable to retrieve account holds.');
   }

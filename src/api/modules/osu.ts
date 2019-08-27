@@ -113,9 +113,37 @@ export const getGpa = async (user: any) => {
   }
 };
 
-export const getHolds = async (user: any) => {
+interface Hold {
+  toDate: string;
+  description: string;
+  webDisplay: boolean;
+}
+interface HoldsResponse {
+  links: { self: string };
+  data: {
+    attributes: {
+      holds: Hold[];
+    };
+  };
+}
+
+export const getHolds = async (user: any): Promise<[{ description: string }] | []> => {
   try {
-    return await getJson(`${BASE_URL}/${user.masqueradeId || user.osuId}/holds`);
+    const response: HoldsResponse = await getJson(
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/holds`
+    );
+    if (response.data && response.data.attributes.holds.length > 0) {
+      const { holds } = response.data.attributes;
+      const currentHolds = holds
+        .filter(h => h.webDisplay)
+        .filter(h => {
+          const toDate = Date.parse(h.toDate);
+          return toDate >= Date.now();
+        });
+      if (currentHolds.length === 0) return [];
+      return currentHolds.map(h => ({ description: h.description })) as [{ description: string }];
+    }
+    return [];
   } catch (err) {
     console.error(err); // eslint-disable-line no-console
     throw err;

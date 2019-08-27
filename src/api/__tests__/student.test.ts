@@ -3,6 +3,7 @@ import nock from 'nock';
 import config from 'config';
 import app from '../../index';
 import { academicStatusData } from '../__mocks__/student.data';
+import { holdsData } from '../__mocks__/holds.data';
 
 jest.mock('../util.ts');
 
@@ -254,14 +255,11 @@ describe('/api/student', () => {
 
   describe('/holds', () => {
     it('should return account holds for the current user', async () => {
-      const data = ['holds'];
-
-      // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/holds/)
-        .reply(200, { data });
+        .reply(200, holdsData);
 
-      await request.get('/api/student/holds').expect(200, data);
+      await request.get('/api/student/holds').expect(200, [{ description: 'Permanent Hold' }]);
     });
 
     it('should return an error if the user is not logged in', async () => {
