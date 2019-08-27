@@ -32,9 +32,10 @@ services:
       - external
   dynamodb:
     image: amazon/dynamodb-local
+    working_dir: /home/dynamodblocal
     command: -jar DynamoDBLocal.jar -sharedDb -dbPath .
     volumes:
-      - dynamodbdata:/data
+      - dynamodbdata:/home/dynamodblocal
     networks:
       - internal
       - external
