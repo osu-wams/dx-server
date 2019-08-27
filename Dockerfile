@@ -10,6 +10,7 @@ WORKDIR ${appDir}
 
 # Add our package.json and install *before* adding our application files
 ADD ./package.json ./
+ADD ./yarn.lock ./
 RUN yarn install
 RUN yarn global add nodemon ts-node typescript pm2
 RUN pm2 install typescript
