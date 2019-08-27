@@ -44,9 +44,10 @@ router.get(
 
 router.get('/academic-status', async (req: Request, res: Response) => {
   try {
-    const term = req.query.term || 'current';
-    const response = await getAcademicStatus(req.user, term);
-    res.send(response.data);
+    let termQueryString = '';
+    if (req.query.term) termQueryString = `?term=${req.query.term}`;
+    const response = await getAcademicStatus(req.user, termQueryString);
+    res.send(response);
   } catch (err) {
     res.status(500).send('Unable to retrieve academic status.');
   }

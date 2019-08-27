@@ -2,6 +2,7 @@ import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import app from '../../index';
+import { academicStatusData } from '../__mocks__/student.data';
 
 jest.mock('../util.ts');
 
@@ -20,34 +21,44 @@ describe('/api/student', () => {
 
   describe('/academic-status', () => {
     it('should return academic status data for the current user', async () => {
-      const data = ['academic-status'];
-
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(true)
-        .reply(200, { data });
-      await request.get('/api/student/academic-status').expect(200, data);
+        .reply(200, academicStatusData);
+      await request.get('/api/student/academic-status').expect(200, {
+        academicStanding: 'Good Standing',
+        term: '202001',
+        creditHoursAttempted: 14
+      });
     });
 
     it('should return data for a specified term, or the current term if none provided', async () => {
-      const data = [{ term: 'current' }, { term: '201701' }];
+      const data = [{ term: 'current' }, { term: '201901' }];
 
       // Mock default (term=current) response
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(true)
-        .reply(200, { data: data[0] })
+        .reply(200, academicStatusData)
         // Mock specified term response
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(data[1])
-        .reply(200, { data: data[1] });
+        .reply(200, { links: { self: 'bogus' }, data: [academicStatusData.data[0]] });
 
       // Get current term
-      await request.get('/api/student/academic-status').expect(200, data[0]);
+      await request.get('/api/student/academic-status').expect(200, {
+        academicStanding: 'Good Standing',
+        term: '202001',
+        creditHoursAttempted: 14
+      });
 
       // Get specified term
-      await request.get('/api/student/academic-status?term=201701').expect(200, data[1]);
+      await request.get('/api/student/academic-status?term=201901').expect(200, {
+        academicStanding: 'Good Standing',
+        term: '201901',
+        creditHoursAttempted: 99
+      });
     });
 
     it('should return an error if the user is not logged in', async () => {
@@ -188,7 +199,13 @@ describe('/api/student', () => {
     });
 
     it('should return grades for a specified term, or the current term if none provided', async () => {
-      const data = [{ attributes: { term: '201701' } }, { attributes: { term: '201901' } }, { attributes: { term: 'current' } }, { attributes: { term: '201901' } },  { attributes: { term: '201803' } }];
+      const data = [
+        { attributes: { term: '201701' } },
+        { attributes: { term: '201901' } },
+        { attributes: { term: 'current' } },
+        { attributes: { term: '201901' } },
+        { attributes: { term: '201803' } }
+      ];
 
       const dataSorted = [
         { attributes: { term: 'current' } },
@@ -207,11 +224,10 @@ describe('/api/student', () => {
         // Mock specified term response
         .get(/v1\/students\/[0-9]+\/grades/)
         .query(data[0].attributes)
-        .reply(200, { data: [data[0]] })
+        .reply(200, { data: [data[0]] });
 
       await request.get('/api/student/grades').expect(200, dataSorted);
       await request.get('/api/student/grades?term=201701').expect(200, [data[0]]);
-
     });
 
     it('should return an error if the user is not logged in', async () => {
