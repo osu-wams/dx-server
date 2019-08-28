@@ -84,7 +84,7 @@ router.get('/class-schedule', async (req: Request, res: Response) => {
 router.get('/gpa', async (req: Request, res: Response) => {
   try {
     const response = await getGpa(req.user);
-    res.send(response.data);
+    res.send(response);
   } catch (err) {
     res.status(500).send('Unable to retrieve GPA data.');
   }

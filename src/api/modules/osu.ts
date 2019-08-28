@@ -36,7 +36,7 @@ export const getAcademicStatus = async (
     const response: AcademicStatusResponse = await getJson(
       `${BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`
     );
-    if (response.data) {
+    if (response.data.length > 0) {
       // Sort the academic status data in descending order based on the id to get the most recent terms first.
       // * id format : <osuId>-<YYYYMM>
       const sorted = response.data.sort((a, b) => {
@@ -104,9 +104,31 @@ export const getGrades = async (user: any, term: any) => {
   }
 };
 
-export const getGpa = async (user: any) => {
+interface GpaLevel {
+  gpa: string;
+  gpaType: string;
+}
+
+interface GpaResponse {
+  links: { self: string };
+  data: {
+    attributes: {
+      gpaLevels: GpaLevel[];
+    };
+  };
+}
+
+export const getGpa = async (user: any): Promise<{ gpa: string } | {}> => {
   try {
-    return await getJson(`${BASE_URL}/${user.masqueradeId || user.osuId}/gpa`);
+    const response: GpaResponse = await getJson(
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/gpa`
+    );
+    if (response.data && response.data.attributes.gpaLevels.length > 0) {
+      const { gpaLevels } = response.data.attributes;
+      const overallGpaLevel = gpaLevels.find(g => g.gpaType.toLowerCase() === 'overall');
+      if (overallGpaLevel.gpa) return { gpa: overallGpaLevel.gpa };
+    }
+    return {};
   } catch (err) {
     console.error(err); // eslint-disable-line no-console
     throw err;
