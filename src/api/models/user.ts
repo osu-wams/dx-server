@@ -20,6 +20,8 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   phone?: { S: string };
   canvasRefreshToken?: { S: string };
   canvasOptIn?: { BOOL: boolean };
+  nameID?: { S: string };
+  nameIDFormat?: { S: string };
 }
 
 class User {
@@ -42,6 +44,10 @@ class User {
   canvasOauthToken?: string = '';
 
   isCanvasOptIn?: boolean = false;
+
+  nameIDFormat?: string = '';
+
+  nameID?: string = '';
 
   static TABLE_NAME: string = `${tablePrefix}-Users`;
 
@@ -245,6 +251,8 @@ class User {
     }
     if (props.phone) Item.phone = { S: props.phone };
     if (props.refreshToken) Item.canvasRefreshToken = { S: props.refreshToken };
+    if (props.nameID) Item.nameID = { S: props.nameID };
+    if (props.nameIDFormat) Item.nameIDFormat = { S: props.nameIDFormat };
     return Item;
   };
 }
