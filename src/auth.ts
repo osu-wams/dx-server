@@ -135,14 +135,16 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
 Auth.logout = (req: Request, res: Response) => {
   try {
     if (!req.user) res.redirect('/');
-    req.session.destroy(err => console.error(`Failed to destroy the session: ${err}`)); // eslint-disable-line no-console
-    req.logout();
     if (ENV === 'production') {
       const strategy: SamlStrategy = Auth.passportStrategy;
       strategy.logout(req, (err, uri) => {
+        req.session.destroy(console.error); // eslint-disable-line no-console
+        req.logout();
         return res.redirect(uri);
       });
     } else {
+      req.session.destroy(console.error); // eslint-disable-line no-console
+      req.logout();
       res.redirect('/');
     }
   } catch (err) {
