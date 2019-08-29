@@ -1,3 +1,5 @@
+import { BASE_URL } from '../modules/dx';
+
 export const resourcesData = {
   data: [
     {
@@ -169,6 +171,183 @@ export const categoriesData = {
     }
   ]
 };
+
+export const resourcesEntityQueueData = {
+  data: [
+    {
+      id: '87b3927f-89c3-43bb-ab5d-ddecaf52c8b6',
+      attributes: {
+        title: 'Academic'
+      },
+      relationships: {
+        items: {
+          data: [
+            {
+              type: 'node--services',
+              id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805'
+            },
+            {
+              type: 'node--services',
+              id: '9fb802d8-cf4e-4916-8a72-9881f8b97879'
+            }
+          ]
+        }
+      }
+    }
+  ],
+  included: [
+    {
+      type: 'node--services',
+      id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805',
+      attributes: {
+        title: 'Google Drive',
+        field_service_url: {
+          uri: 'https://drive.google.com/a/oregonstate.edu/'
+        }
+      },
+      relationships: {
+        field_icon: {
+          data: {
+            type: 'media--image',
+            id: 'd89295b5-de09-4ae3-b057-aa84ed4ebbaf'
+          }
+        }
+      }
+    },
+    {
+      type: 'node--services',
+      id: '9fb802d8-cf4e-4916-8a72-9881f8b97879',
+      attributes: {
+        title: 'Canvas',
+        field_service_url: {
+          uri: 'https://oregonstate.instructure.com'
+        }
+      },
+      relationships: {
+        field_icon: {
+          data: null
+        }
+      }
+    },
+    {
+      type: 'media--image',
+      id: 'd89295b5-de09-4ae3-b057-aa84ed4ebbaf',
+      attributes: {
+        name: 'logo_drive_128px'
+      },
+      relationships: {
+        field_media_image: {
+          data: {
+            type: 'file--file',
+            id: '6b6618f8-2b57-47a8-83c6-3e855de551b5'
+          }
+        }
+      }
+    },
+    {
+      type: 'file--file',
+      id: '6b6618f8-2b57-47a8-83c6-3e855de551b5',
+      attributes: {
+        filename: 'logo_drive_128px.png',
+        uri: {
+          url: '/sites/default/files/2019-05/logo_drive_128px.png'
+        }
+      }
+    }
+  ]
+};
+
+export const resourcesEntityQueueDataNoMatchingMedia = {
+  data: [
+    {
+      id: '87b3927f-89c3-43bb-ab5d-ddecaf52c8b6',
+      attributes: {
+        title: 'Academic'
+      },
+      relationships: {
+        items: {
+          data: [
+            {
+              type: 'node--services',
+              id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805'
+            },
+            {
+              type: 'node--services',
+              id: 'serviceThatDoesntMatch'
+            }
+          ]
+        }
+      }
+    }
+  ],
+  included: [
+    {
+      type: 'node--services',
+      id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805',
+      attributes: {
+        title: 'Google Drive',
+        field_service_url: {
+          uri: 'https://drive.google.com/a/oregonstate.edu/'
+        }
+      },
+      relationships: {
+        field_icon: {
+          data: {
+            type: 'media--image',
+            id: 'noMatchingMedia'
+          }
+        }
+      }
+    },
+    {
+      type: 'media--image',
+      id: 'mediaThatDoesntMatch',
+      attributes: {
+        name: 'logo_drive_128px'
+      },
+      relationships: {
+        field_media_image: {
+          data: {
+            type: 'file--file',
+            id: 'noMatchingFile'
+          }
+        }
+      }
+    },
+    {
+      type: 'file--file',
+      id: 'fileThatDoesntMatch',
+      attributes: {
+        filename: 'logo_drive_128px.png',
+        uri: {
+          url: '/sites/default/files/2019-05/logo_drive_128px.png'
+        }
+      }
+    }
+  ]
+};
+
+export const filteredResourcesEntityQueueData = [
+  {
+    id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805',
+    title: 'Google Drive',
+    icon: `${BASE_URL}/sites/default/files/2019-05/logo_drive_128px.png`,
+    uri: 'https://drive.google.com/a/oregonstate.edu/'
+  },
+  {
+    id: '9fb802d8-cf4e-4916-8a72-9881f8b97879',
+    title: 'Canvas',
+    uri: 'https://oregonstate.instructure.com'
+  }
+];
+
+export const filteredResourcesEntityQueueDataNoMatchingMedia = [
+  {
+    id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805',
+    title: 'Google Drive',
+    uri: 'https://drive.google.com/a/oregonstate.edu/'
+  }
+];
 
 export const emptyData: any = {
   data: []
