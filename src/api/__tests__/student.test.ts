@@ -154,14 +154,12 @@ describe('/api/student', () => {
 
   describe('/gpa', () => {
     it('should return GPA data for the current user', async () => {
-      const data = ['gpa'];
-
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
-        .reply(200, { data: ['gpa'] });
+        .reply(200, { data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'overall' }] } } });
 
-      await request.get('/api/student/gpa').expect(200, data);
+      await request.get('/api/student/gpa').expect(200, { gpa: '3.2' });
     });
 
     it('should return an error if the user is not logged in', async () => {
