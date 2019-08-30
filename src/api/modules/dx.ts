@@ -11,6 +11,7 @@ export const ANNOUNCEMENTS_URL = `${BASE_URL}/jsonapi/node/announcement?${INCLUD
 export const QUEUE_URL = `${BASE_URL}/jsonapi/entity_subqueue/announcements`;
 export const RESOURCES_URL = `${BASE_URL}/jsonapi/node/services?include=field_service_category,field_icon.field_media_image`;
 export const CATEGORIES_URL = `${BASE_URL}/jsonapi/taxonomy_term/categories?include=field_taxonomy_icon.field_media_image&sort=weight`;
+export const INFO_URL = `${BASE_URL}/jsonapi/node/information`;
 
 // DX API to filter any alerts that have an expiration date >= to the time of execution, sorted descending order on the expiration date
 export const ALERTS_URL = `${BASE_URL}/jsonapi/node/alerts?sort=-field_alert_expiration_date&filter[field_expiration_date][condition][operator]=%3e%3d&filter[field_expiration_date][condition][path]=field_alert_expiration_date&filter[field_expiration_date][condition][value]=${Date.now()}`;
@@ -167,6 +168,15 @@ export const getResources = async (query: any): Promise<any> => {
 export const getCategories = async (): Promise<any> => {
   try {
     return await getResourceData(CATEGORIES_URL, 'field_taxonomy_icon');
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getInfo = async (): Promise<any> => {
+  try {
+    const { data } = await request.get(INFO_URL, { json: true });
+    return data;
   } catch (err) {
     throw err;
   }
