@@ -5,6 +5,10 @@ import app from '../../index';
 import {
   resourcesData,
   categoriesData,
+  resourcesEntityQueueData,
+  resourcesEntityQueueDataNoMatchingMedia,
+  filteredResourcesEntityQueueData,
+  filteredResourcesEntityQueueDataNoMatchingMedia,
   emptyData,
   resourcesDataNoMatchingMedia
 } from '../__mocks__/resources.data';
@@ -101,6 +105,40 @@ describe('/resources', () => {
         .reply(500);
 
       await request.get('/api/resources/categories').expect(500);
+    });
+  });
+
+  describe('/resources/category/:machineName', () => {
+    const query = { machineName: 'academic' };
+
+    const QUEUE_URL = `/jsonapi/entity_subqueue/${query.machineName}`;
+
+    it('should filter the data', async () => {
+      nock(BASE_URL)
+        .get(QUEUE_URL)
+        .query(true)
+        .reply(200, resourcesEntityQueueData);
+      await request
+        .get(`/api/resources/category/${query.machineName}`)
+        .expect(200, filteredResourcesEntityQueueData);
+    });
+
+    it('should filter the data, ignoring media that does not match', async () => {
+      nock(BASE_URL)
+        .get(QUEUE_URL)
+        .query(true)
+        .reply(200, resourcesEntityQueueDataNoMatchingMedia);
+      await request
+        .get(`/api/resources/category/${query.machineName}`)
+        .expect(200, filteredResourcesEntityQueueDataNoMatchingMedia);
+    });
+
+    it('should return a 500 if the site is down', async () => {
+      nock(BASE_URL)
+        .get(/.*/)
+        .reply(500);
+
+      await request.get(`/api/resources/category/${query.machineName}`).expect(500);
     });
   });
 });

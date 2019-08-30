@@ -70,6 +70,47 @@ const getResourceData = async (url: string, match: string) => {
   return data;
 };
 
+const getResourceEntities = async (url: string) => {
+  const { data, included } = await request.get(url, { json: true });
+  const results = [];
+  if (included !== undefined) {
+    data[0].relationships.items.data.forEach((item: any) => {
+      const dataItem = included.find((e: any) => {
+        return e.id === item.id;
+      });
+      if (dataItem === undefined) {
+        return;
+      }
+      // Use find because there's a single iconFile per mediaFile
+      const iconFile =
+        dataItem.relationships.field_icon.data === null
+          ? undefined
+          : included.find((e: any) => {
+              // Use find because there's a single mediaFile per item
+              // (not necessarily the other way though)
+              const mediaFile = included.find((a: any) => {
+                return a.id === dataItem.relationships.field_icon.data.id;
+              });
+              if (mediaFile === undefined) {
+                return false;
+              }
+              return e.id === mediaFile.relationships.field_media_image.data.id;
+            });
+      let icon = iconFile;
+      if (icon !== undefined) {
+        icon = `${BASE_URL}${iconFile.attributes.uri.url}`;
+      }
+      results.push({
+        id: item.id,
+        title: dataItem.attributes.title,
+        icon,
+        uri: dataItem.attributes.field_service_url.uri
+      });
+    });
+  }
+  return results;
+};
+
 export const getAnnouncements = async (): Promise<any> => {
   try {
     return await getAnnouncementData(ANNOUNCEMENTS_URL);
@@ -99,6 +140,11 @@ export const getFinancialAnnouncements = async (): Promise<any> => {
 export const getResources = async (query: any): Promise<any> => {
   try {
     let requestUrl = RESOURCES_URL;
+    if (query.machineName) {
+      const category = query.machineName;
+      requestUrl = `${BASE_URL}/jsonapi/entity_subqueue/${category}?include=items,items.field_icon,items.field_icon.field_media_image&fields[node--services]=title,field_service_url,field_icon`;
+      return await getResourceEntities(requestUrl);
+    }
     if (query.query) {
       requestUrl = `${RESOURCES_URL}&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=${query.query}`;
     } else if (query.category) {

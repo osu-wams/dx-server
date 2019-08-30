@@ -72,6 +72,16 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
+router.get('/category/:machineName', async (req: Request, res: Response) => {
+  try {
+    const data = await getResources(req.params);
+
+    res.send(data);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 router.get('/categories', async (_req: Request, res: Response) => {
   try {
     const data = await getCategories();
