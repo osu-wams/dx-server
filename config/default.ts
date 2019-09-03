@@ -42,6 +42,9 @@ export default {
   },
   aws: {
     region: process.env.AWS_REGION || 'us-west-2',
+    xray: {
+      segmentName: process.env.AWS_XRAY_SEGMENT || 'DX'
+    },
     dynamodb: {
       endpoint: process.env.AWS_DYNAMODB_ENDPOINT || 'https://dynamodb.us-west-2.amazonaws.com',
       apiVersion: process.env.AWS_DYNAMODB_APIVERSION || '2012-08-10',

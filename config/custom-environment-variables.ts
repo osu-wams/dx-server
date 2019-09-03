@@ -31,6 +31,9 @@ export default {
   },
   aws: {
     region: 'AWS_REGION',
+    xray: {
+      segmentName: 'AWS_XRAY_SEGMENTNAME'
+    },
     dynamodb: {
       endpoint: 'AWS_DYNAMODB_ENDPOINT',
       apiVersion: 'AWS_DYNAMODB_APIVERSION',

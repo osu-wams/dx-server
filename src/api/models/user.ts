@@ -4,6 +4,7 @@
 import config from 'config';
 import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
 import { scan, updateItem, getItem, putItem } from '../../db';
+import xray, { captureAsync } from '../../xray';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 
@@ -126,7 +127,14 @@ class User {
           osuId: { N: `${id}` }
         }
       };
-      const dynamoDbUser = await getItem(params);
+      const namespace = xray.getNamespace();
+      const segment = new xray.Segment('user-find');
+      const dynamoDbUser = await namespace.runAndReturn(async () => {
+        xray.setSegment(segment);
+        const user = await captureAsync('dynamodb-getitem', getItem, [params]);
+        segment.close();
+        return user;
+      });
       if (!Object.keys(dynamoDbUser).length) throw new Error('User not found.');
       return new User({ dynamoDbUser });
     } catch (err) {

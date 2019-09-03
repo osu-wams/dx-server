@@ -39,3 +39,12 @@ services:
     networks:
       - internal
       - external
+  xray:
+    image: amazon/aws-xray-daemon
+    environment:
+      AWS_REGION: $AWS_REGION
+    volumes:
+      - $HOME/.aws/credentials:/root/.aws/credentials:ro
+    networks:
+      - internal
+      - external

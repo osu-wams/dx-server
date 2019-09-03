@@ -6,6 +6,7 @@ import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
 import config from 'config';
+import xray from './xray';
 import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
@@ -17,6 +18,7 @@ const RedisStore = redis(session);
 
 // App Configuration
 const app: Application = express();
+app.use(xray.express.openSegment(config.get('aws.xray.segmentName')));
 app.use(expressLogger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -111,6 +113,8 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
 });
 
 app.use('/api', ApiRouter);
+
+app.use(xray.express.closeSegment());
 
 // Start Server
 // Don't capture code coverage for the following block
