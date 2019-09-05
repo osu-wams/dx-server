@@ -3,8 +3,6 @@ import { Request } from 'express'; // eslint-disable-line no-unused-vars
 import config from 'config';
 
 export const BASE_URL = config.get('dxApi.baseUrl');
-export const ACADEMIC_GUID = config.get('dxApi.academicGuid');
-export const FINANCIAL_GUID = config.get('dxApi.financialGuid');
 export const INCLUDES =
   'include=field_announcement_image,field_announcement_image.field_media_image';
 export const ANNOUNCEMENTS_URL = `${BASE_URL}/jsonapi/node/announcement?${INCLUDES}&sort=-created`;
@@ -46,6 +44,62 @@ const getAnnouncementData = async (url: string) => {
     });
   }
   return data;
+};
+
+const getAnnouncementTypeData = async (filter: string) => {
+  const url = `${QUEUE_URL}?include=items,items.field_announcement_image,items.field_announcement_image.field_media_image`;
+  const { data, included } = await request.get(url, { json: true });
+  const results = [];
+  if (included !== undefined) {
+    const selectedData = data.find((item: any) => {
+      return filter === item.attributes.drupal_internal__name;
+    });
+    selectedData.relationships.items.data.forEach((item: any) => {
+      const dataItem = included.find((e: any) => {
+        return e.id === item.id;
+      });
+      if (dataItem === undefined) {
+        return;
+      }
+      // Use find because there's a single iconFile per mediaFile
+      const imageFile =
+        dataItem.relationships.field_announcement_image.data === null
+          ? undefined
+          : included.find((e: any) => {
+              // Use find because there's a single mediaFile per item
+              // (not necessarily the other way though)
+              const mediaFile = included.find((a: any) => {
+                return a.id === dataItem.relationships.field_announcement_image.data.id;
+              });
+              if (mediaFile === undefined) {
+                return false;
+              }
+              return e.id === mediaFile.relationships.field_media_image.data.id;
+            });
+      let bg_image = imageFile;
+      if (bg_image !== undefined) {
+        bg_image = `${BASE_URL}${imageFile.attributes.uri.url}`;
+      }
+      const action = dataItem.attributes.field_announcement_action
+        ? {
+            title: dataItem.attributes.field_announcement_action.title,
+            link: dataItem.attributes.field_announcement_action.uri
+          }
+        : {
+            title: null,
+            link: null
+          };
+      results.push({
+        id: item.id,
+        date: null,
+        title: dataItem.attributes.title,
+        body: dataItem.attributes.field_announcement_body,
+        bg_image,
+        action
+      });
+    });
+  }
+  return results;
 };
 
 const getResourceData = async (url: string, match: string) => {
@@ -122,8 +176,7 @@ export const getAnnouncements = async (): Promise<any> => {
 
 export const getAcademicAnnouncements = async (): Promise<any> => {
   try {
-    const url = `${QUEUE_URL}/${ACADEMIC_GUID}/items?${INCLUDES}`;
-    return await getAnnouncementData(url);
+    return await getAnnouncementTypeData('academic_announcements');
   } catch (err) {
     throw err;
   }
@@ -131,8 +184,7 @@ export const getAcademicAnnouncements = async (): Promise<any> => {
 
 export const getFinancialAnnouncements = async (): Promise<any> => {
   try {
-    const url = `${QUEUE_URL}/${FINANCIAL_GUID}/items?${INCLUDES}`;
-    return await getAnnouncementData(url);
+    return await getAnnouncementTypeData('financial_announcements');
   } catch (err) {
     throw err;
   }

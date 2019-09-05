@@ -25,7 +25,7 @@ interface ICategory {
  * @param data Array of API results
  * @returns Array of filtered results
  */
-const filterResults = (data: any): [IResourceResult] => {
+const filterResults = (data: any): IResourceResult[] => {
   // Map over each element of data returning a new condensed obj.
   return data.map((item: any) => {
     const {
@@ -46,7 +46,7 @@ const filterResults = (data: any): [IResourceResult] => {
   });
 };
 
-const filterCategories = (data: any): [ICategory] => {
+const filterCategories = (data: any): ICategory[] => {
   return data.map((item: any) => {
     const {
       id,
