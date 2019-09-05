@@ -15,7 +15,7 @@ interface IAnnouncementResult {
   date: null;
   title: string;
   body: string;
-  bg_image?: string;
+  bg_image?: string; // eslint-disable-line camelcase
   action: {
     title: string;
     link: string;

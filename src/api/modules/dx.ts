@@ -76,9 +76,9 @@ const getAnnouncementTypeData = async (filter: string) => {
               }
               return e.id === mediaFile.relationships.field_media_image.data.id;
             });
-      let bg_image = imageFile;
-      if (bg_image !== undefined) {
-        bg_image = `${BASE_URL}${imageFile.attributes.uri.url}`;
+      let bgImage = imageFile;
+      if (bgImage !== undefined) {
+        bgImage = `${BASE_URL}${imageFile.attributes.uri.url}`;
       }
       const action = dataItem.attributes.field_announcement_action
         ? {
@@ -94,7 +94,7 @@ const getAnnouncementTypeData = async (filter: string) => {
         date: null,
         title: dataItem.attributes.title,
         body: dataItem.attributes.field_announcement_body,
-        bg_image,
+        bgImage,
         action
       });
     });
