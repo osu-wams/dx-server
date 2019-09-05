@@ -2,6 +2,7 @@
  * /api/announcements
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import logger from '../logger';
 import {
   getAnnouncements,
   getAcademicAnnouncements,
@@ -15,7 +16,7 @@ router.get('/', async (_req: Request, res: Response) => {
     const result = await getAnnouncements();
     res.send(result);
   } catch (err) {
-    console.error(`Fetching announcements failed: ${err}`); // eslint-disable-line no-console
+    logger.error(`api/announcements fetching announcements failed: ${err}`);
     res.status(500).send('Unable to retrieve announcements.');
   }
 });
@@ -25,7 +26,7 @@ router.get('/academic', async (_req: Request, res: Response) => {
     const result = await getAcademicAnnouncements();
     res.send(result);
   } catch (err) {
-    console.error(`Fetching academic announcements failed: ${err}`); // eslint-disable-line no-console
+    logger.error(`api/announcements/academic fetching academic announcements failed: ${err}`);
     res.status(500).send('Unable to retrieve academic announcements.');
   }
 });
@@ -35,7 +36,7 @@ router.get('/financial', async (_req: Request, res: Response) => {
     const result = await getFinancialAnnouncements();
     res.send(result);
   } catch (err) {
-    console.error(`Fetching financial announcements failed: ${err}`); // eslint-disable-line no-console
+    logger.error(`api/announcements/financial fetching financial announcements failed: ${err}`);
     res.status(500).send('Unable to retrieve financial announcements.');
   }
 });

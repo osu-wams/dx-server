@@ -4,6 +4,7 @@ import config from 'config';
 import { AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import dynamoDb from '../index';
 import User from '../../api/models/user';
+import logger from '../../logger';
 
 const createTable = (): void => {
   const params: AWS.DynamoDB.CreateTableInput = {
@@ -21,12 +22,12 @@ const createTable = (): void => {
 
   dynamoDb.createTable(params, (err: AWSError, data: AWS.DynamoDB.CreateTableOutput) => {
     if (err) {
-      console.error(`Error creating ${User.TABLE_NAME} table.`, err);
+      logger.error(`Error creating ${User.TABLE_NAME} table.`, err);
     } else {
-      console.log(`Created ${User.TABLE_NAME} table.`, data);
+      logger.info(`Created ${User.TABLE_NAME} table.`, data);
     }
   });
 };
 
-console.log('Accessing dynamoDb:', config.get('aws.dynamodb'));
+logger.info('Accessing dynamoDb:', config.get('aws.dynamodb'));
 createTable();

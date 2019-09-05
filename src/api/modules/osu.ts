@@ -55,7 +55,6 @@ export const getAcademicStatus = async (
     }
     return {};
   } catch (err) {
-    console.error(err); // eslint-disable-line no-console
     throw err;
   }
 };
@@ -64,7 +63,6 @@ export const getAccountBalance = async (user: any) => {
   try {
     return await getJson(`${BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`);
   } catch (err) {
-    console.error(err); // eslint-disable-line no-console
     throw err;
   }
 };
@@ -75,7 +73,6 @@ export const getAccountTransactions = async (user: any) => {
       `${BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`
     );
   } catch (err) {
-    console.error(err); // eslint-disable-line no-console
     throw err;
   }
 };
@@ -86,7 +83,6 @@ export const getClassSchedule = async (user: any, term: any) => {
       `${BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`
     );
   } catch (err) {
-    console.error(err); // eslint-disable-line no-console
     throw err;
   }
 };
@@ -99,7 +95,6 @@ export const getGrades = async (user: any, term: any) => {
     }
     return await getJson(`${BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`);
   } catch (err) {
-    console.error(err); // eslint-disable-line no-console
     throw err;
   }
 };
@@ -130,7 +125,6 @@ export const getGpa = async (user: any): Promise<{ gpa: string } | {}> => {
     }
     return {};
   } catch (err) {
-    console.error(err); // eslint-disable-line no-console
     throw err;
   }
 };
@@ -167,7 +161,6 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
     }
     return [];
   } catch (err) {
-    console.error(err); // eslint-disable-line no-console
     throw err;
   }
 };

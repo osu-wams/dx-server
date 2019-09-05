@@ -4,6 +4,7 @@
 import config from 'config';
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import redis from 'redis';
+import logger from '../logger';
 import User from './models/user';
 
 const router: Router = Router();
@@ -27,7 +28,7 @@ router.get('/reset-sessions', async (req: Request, res: Response) => {
     redisClient.flushdb();
     res.status(200).send('Tokens reset, session cache is clearing.');
   } catch (err) {
-    console.error('api/admin/reset-sessions failed:', err); // eslint-disable-line no-console
+    logger.error('api/admin/reset-sessions failed:', err);
     res.status(500).send('Error while resetting sessions.');
   }
 });

@@ -7,6 +7,7 @@ import DevStrategy from 'passport-dev';
 import config from 'config';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 import { getOAuthToken } from './api/modules/canvas';
+import logger from './logger';
 
 interface Auth {
   passportStrategy?: any;
@@ -138,17 +139,17 @@ Auth.logout = (req: Request, res: Response) => {
     if (ENV === 'production') {
       const strategy: SamlStrategy = Auth.passportStrategy;
       strategy.logout(req, (err, uri) => {
-        req.session.destroy(console.error); // eslint-disable-line no-console
+        req.session.destroy(error => logger.error(error));
         req.logout();
         return res.redirect(uri);
       });
     } else {
-      req.session.destroy(console.error); // eslint-disable-line no-console
+      req.session.destroy(error => logger.error(error));
       req.logout();
       res.redirect('/');
     }
   } catch (err) {
-    console.error(`Auth.logout error: ${err}`); // eslint-disable-line no-console
+    logger.error(`Auth.logout error: ${err}`);
   }
 };
 
@@ -176,10 +177,13 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
 Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
   if (!user.isCanvasOptIn || !user.refreshToken) {
-    console.debug('Canvas opt-in or refresh token missing, returning unauthorized', user); // eslint-disable-line no-console
+    logger.debug(
+      'Auth.hasValidCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
+      user
+    );
   } else {
     if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
-      console.debug('Canvas oauth token expired, refreshing.', user); // eslint-disable-line no-console
+      logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user);
       await getOAuthToken(user);
     }
     return next();

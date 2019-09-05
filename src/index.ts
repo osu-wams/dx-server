@@ -45,7 +45,7 @@ const sessionOptions: SessionOptions = {
   }
 };
 
-console.info(`${config.get('env')} server started`);
+logger.info(`Server started with ENV=${config.get('env')}`);
 
 if (config.get('env') === 'production') {
   sessionOptions.store = new RedisStore({
@@ -70,7 +70,7 @@ app.get('/logout', Auth.logout);
 
 // Health Check (path configured in cloudformation template)
 app.get('/healthcheck', (req, res) => {
-  console.log('Health Check Request');
+  logger.debug('Health Check Request');
   res.status(200).end();
 });
 
@@ -117,7 +117,7 @@ app.use('/api', ApiRouter);
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => logger.info(`Server listening on port ${PORT}`));
+  app.listen(PORT, () => logger.info(`Server listening with PORT=${PORT}`));
 }
 
 export default app;

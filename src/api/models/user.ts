@@ -1,7 +1,5 @@
-/* eslint-disable no-console */
-// TODO: Replace all console.log/debug/error with winston logging
-
 import config from 'config';
+import logger from '../../logger';
 import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
 import { scan, updateItem, getItem, putItem } from '../../db';
 
@@ -104,10 +102,10 @@ class User {
       };
 
       const result = await putItem(params);
-      console.debug('User.insert succeeded:', result);
+      logger.debug('User.insert succeeded:', result);
       return props;
     } catch (err) {
-      console.error(`User.insert error`, props, err);
+      logger.error(`User.insert failed:`, props, err);
       throw err;
     }
   };
@@ -130,7 +128,7 @@ class User {
       if (!Object.keys(dynamoDbUser).length) throw new Error('User not found.');
       return new User({ dynamoDbUser });
     } catch (err) {
-      console.error(`User.find(${id}) error:`, err);
+      logger.error(`User.find(${id}) failed:`, err);
       return null;
     }
   };
@@ -160,9 +158,9 @@ class User {
           ReturnValues: 'UPDATED_NEW'
         };
         const result = await updateItem(params);
-        console.debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
+        logger.debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
       } catch (err) {
-        console.error(`User.clearAllCanvasRefreshTokens error:`, err);
+        logger.error(`User.clearAllCanvasRefreshTokens error:`, err);
         errors.push([id, err]);
       }
     });
@@ -197,12 +195,12 @@ class User {
         ReturnValues: 'NONE'
       };
       const result: AWS.DynamoDB.UpdateItemOutput = await updateItem(params);
-      console.debug('User.updateCanvasData updated user:', user.osuId, result);
+      logger.debug('User.updateCanvasData updated user:', user.osuId, result);
       user.isCanvasOptIn = canvasOptIn;
       user.refreshToken = canvasRefreshToken;
       return user;
     } catch (err) {
-      console.error(`User.updateCanvasData error:`, err);
+      logger.error(`User.updateCanvasData failed:`, err);
       throw err;
     }
   };
@@ -221,12 +219,12 @@ class User {
         AttributesToGet: ['osuId']
       };
       const results: AWS.DynamoDB.ScanOutput = await scan(params);
-      console.debug(
+      logger.debug(
         `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`
       );
       return results.Items.map((i: AWS.DynamoDB.AttributeMap) => i.osuId.N);
     } catch (err) {
-      console.error('User.allIds error:', err);
+      logger.error('User.allIds error:', err);
       return [];
     }
   };
