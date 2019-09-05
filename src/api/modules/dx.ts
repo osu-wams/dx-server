@@ -94,7 +94,7 @@ const getAnnouncementTypeData = async (filter: string) => {
         date: null,
         title: dataItem.attributes.title,
         body: dataItem.attributes.field_announcement_body,
-        bgImage,
+        bg_image: bgImage,
         action
       });
     });
