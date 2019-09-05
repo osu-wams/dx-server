@@ -4,6 +4,7 @@ import querystring from 'querystring';
 import { format } from 'date-fns';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
+import logger from '../../logger';
 
 export const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
 const CANVAS_TOKEN: string = config.get('canvasApi.token');
@@ -64,10 +65,10 @@ export const performRefresh = async (u: User): Promise<User> => {
     user.canvasOauthToken = response.access_token;
     user.canvasOauthExpire = expireTime;
     user.isCanvasOptIn = true;
-    console.debug('performRefresh token after refreshing:', user.canvasOauthToken); // eslint-disable-line no-console
+    logger.debug('canvas.performRefresh token after refreshing:', user.canvasOauthToken);
     return user;
   } catch (err) {
-    console.error('performRefresh token error:', err); // eslint-disable-line no-console
+    logger.error('canvas.performRefresh token error:', err);
     // Refresh token is no longer valid and we must update the database
     await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: '' } });
     user.canvasOauthToken = null;

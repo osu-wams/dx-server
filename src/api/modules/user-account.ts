@@ -1,4 +1,5 @@
 import User from '../models/user'; // eslint-disable-line no-unused-vars
+import logger from '../../logger';
 
 export interface SamlUser {
   osu_id: string; // eslint-disable-line camelcase
@@ -32,10 +33,10 @@ export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
       isNew = true;
     }
     user.isAdmin = u.isAdmin;
-    console.debug('findOrCreateUser returns:', user); // eslint-disable-line no-console
+    logger.debug('user-account.findOrCreateUser returns:', user);
     return { user, isNew };
   } catch (err) {
-    console.error('findOrCreateUser db failed:', err); // eslint-disable-line no-console
+    logger.error('user-account.findOrCreateUser db failed:', err);
     throw err;
   }
 };
@@ -47,10 +48,10 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
       oAuthData.account.refreshToken,
       oAuthData.isCanvasOptIn
     );
-    console.debug('updateOAuthData returns:', user); // eslint-disable-line no-console
+    logger.debug('user-account.updateOAuthData returns:', user);
     return user;
   } catch (err) {
-    console.error('updateOAuthData db failed:', err); // eslint-disable-line no-console
+    logger.error('user-account.updateOAuthData db failed:', err);
     throw err;
   }
 };

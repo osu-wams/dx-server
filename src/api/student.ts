@@ -2,6 +2,7 @@
  * /api/student
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import logger from '../logger';
 import Auth from '../auth';
 import { getPlannerItemsMask, getPlannerItemsOAuth, UpcomingAssignment } from './modules/canvas'; // eslint-disable-line no-unused-vars
 import {
@@ -36,7 +37,7 @@ router.get(
       }
       res.send(plannerApiResponse);
     } catch (err) {
-      console.error('api/student/planner-items failed:', err); // eslint-disable-line no-console
+      logger.error('api/student/planner-items failed:', err); // eslint-disable-line no-console
       res.status(500).send('Unable to retrieve planner items.');
     }
   }
@@ -49,6 +50,7 @@ router.get('/academic-status', async (req: Request, res: Response) => {
     const response = await getAcademicStatus(req.user, termQueryString);
     res.send(response);
   } catch (err) {
+    logger.error('api/student/academic-status failed:', err); // eslint-disable-line no-console
     res.status(500).send('Unable to retrieve academic status.');
   }
 });
@@ -58,6 +60,7 @@ router.get('/account-balance', async (req: Request, res: Response) => {
     const response = await getAccountBalance(req.user);
     res.send(response.data);
   } catch (err) {
+    logger.error('api/student/account-balance failed:', err); // eslint-disable-line no-console
     res.status(500).send('Unable to retrieve account balance.');
   }
 });
@@ -67,6 +70,7 @@ router.get('/account-transactions', async (req: Request, res: Response) => {
     const response = await getAccountTransactions(req.user);
     res.send(response.data);
   } catch (err) {
+    logger.error('api/student/account-transactions failed:', err); // eslint-disable-line no-console
     res.status(500).send('Unable to retrieve account transactions');
   }
 });
@@ -77,6 +81,7 @@ router.get('/class-schedule', async (req: Request, res: Response) => {
     const response = await getClassSchedule(req.user, term);
     res.send(response.data);
   } catch (err) {
+    logger.error('api/student/class-schedule failed:', err); // eslint-disable-line no-console
     res.status(500).send('Unable to retrieve class schedule.');
   }
 });
@@ -86,6 +91,7 @@ router.get('/gpa', async (req: Request, res: Response) => {
     const response = await getGpa(req.user);
     res.send(response);
   } catch (err) {
+    logger.error('api/student/gpa failed:', err); // eslint-disable-line no-console
     res.status(500).send('Unable to retrieve GPA data.');
   }
 });
@@ -103,6 +109,7 @@ router.get('/grades', async (req: Request, res: Response) => {
     });
     res.send(sorted);
   } catch (err) {
+    logger.error('api/student/grades failed:', err); // eslint-disable-line no-console
     res.status(500).send('Unable to retrieve grades.');
   }
 });
@@ -112,6 +119,7 @@ router.get('/holds', async (req: Request, res: Response) => {
     const response = await getHolds(req.user);
     res.send(response);
   } catch (err) {
+    logger.error('api/student/holds failed:', err); // eslint-disable-line no-console
     res.status(500).send('Unable to retrieve account holds.');
   }
 });
