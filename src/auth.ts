@@ -180,10 +180,10 @@ Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: Next
     logger.debug(
       'Auth.hasValidCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
       user
-    ); // eslint-disable-line no-console
+    );
   } else {
     if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
-      logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user); // eslint-disable-line no-console
+      logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user);
       await getOAuthToken(user);
     }
     return next();
