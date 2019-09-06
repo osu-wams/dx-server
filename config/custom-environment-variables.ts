@@ -1,4 +1,5 @@
 export default {
+  logLevel: 'LOGLEVEL',
   dxApi: {
     baseUrl: 'DX_API_BASE_URL',
     academicGuid: 'DX_API_ACADEMIC_GUID',

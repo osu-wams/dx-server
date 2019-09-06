@@ -33,7 +33,7 @@ export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
       isNew = true;
     }
     user.isAdmin = u.isAdmin;
-    logger.debug('user-account.findOrCreateUser returns:', user);
+    logger.silly('user-account.findOrCreateUser returns:', user);
     return { user, isNew };
   } catch (err) {
     logger.error('user-account.findOrCreateUser db failed:', err);
@@ -48,7 +48,7 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
       oAuthData.account.refreshToken,
       oAuthData.isCanvasOptIn
     );
-    logger.debug('user-account.updateOAuthData returns:', user);
+    logger.silly('user-account.updateOAuthData returns:', user);
     return user;
   } catch (err) {
     logger.error('user-account.updateOAuthData db failed:', err);

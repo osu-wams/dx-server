@@ -1,5 +1,6 @@
 export default {
   env: process.env.NODE_ENV || 'development',
+  logLevel: 'debug',
   dxApi: {
     baseUrl: process.env.DX_API_BASE_URL || 'https://data.dx.oregonstate.edu'
   },

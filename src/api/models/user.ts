@@ -1,5 +1,6 @@
 import config from 'config';
 import logger from '../../logger';
+import { asyncTimedFunction } from '../../tracer';
 import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
 import { scan, updateItem, getItem, putItem } from '../../db';
 
@@ -101,8 +102,8 @@ class User {
         ReturnValues: 'NONE'
       };
 
-      const result = await putItem(params);
-      logger.debug('User.insert succeeded:', result);
+      const result = await asyncTimedFunction(putItem, 'User:putItem', [params]);
+      logger.silly('User.insert succeeded:', result);
       return props;
     } catch (err) {
       logger.error(`User.insert failed:`, props, err);
@@ -124,7 +125,7 @@ class User {
           osuId: { N: `${id}` }
         }
       };
-      const dynamoDbUser = await getItem(params);
+      const dynamoDbUser = await asyncTimedFunction(getItem, 'User:getItem', [params]);
       if (!Object.keys(dynamoDbUser).length) throw new Error('User not found.');
       return new User({ dynamoDbUser });
     } catch (err) {
@@ -157,7 +158,7 @@ class User {
           },
           ReturnValues: 'UPDATED_NEW'
         };
-        const result = await updateItem(params);
+        const result = await asyncTimedFunction(updateItem, 'User:updateItem', [params]);
         logger.debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
       } catch (err) {
         logger.error(`User.clearAllCanvasRefreshTokens error:`, err);
@@ -194,8 +195,12 @@ class User {
         },
         ReturnValues: 'NONE'
       };
-      const result: AWS.DynamoDB.UpdateItemOutput = await updateItem(params);
-      logger.debug('User.updateCanvasData updated user:', user.osuId, result);
+      const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
+        updateItem,
+        'User:updateItem',
+        [params]
+      );
+      logger.silly('User.updateCanvasData updated user:', user.osuId, result);
       user.isCanvasOptIn = canvasOptIn;
       user.refreshToken = canvasRefreshToken;
       return user;
@@ -218,7 +223,9 @@ class User {
         TableName: User.TABLE_NAME,
         AttributesToGet: ['osuId']
       };
-      const results: AWS.DynamoDB.ScanOutput = await scan(params);
+      const results: AWS.DynamoDB.ScanOutput = await asyncTimedFunction(scan, 'User:scan', [
+        params
+      ]);
       logger.debug(
         `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`
       );

@@ -2,7 +2,9 @@
  * /api/info-buttons
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import logger from '../logger';
 import { getInfo } from './modules/dx';
+import { asyncTimedFunction } from '../tracer';
 
 const router = Router();
 
@@ -31,11 +33,12 @@ const filterResults = (data: any): IInfoResult[] => {
 
 router.get('/', async (_req: Request, res: Response) => {
   try {
-    const data = await getInfo();
-    const filteredData = filterResults(data);
+    const result = await asyncTimedFunction(getInfo, 'getInfo', []);
+    const filteredData = filterResults(result);
 
     res.send(filteredData);
   } catch (err) {
+    logger.error(`api/information failed:`, err);
     res.status(500).send(err);
   }
 });
