@@ -11,10 +11,45 @@ import {
 
 const router: Router = Router();
 
+interface IAnnouncementResult {
+  id: string;
+  date: null;
+  title: string;
+  body: string;
+  bg_image?: string; // eslint-disable-line camelcase
+  action: {
+    title: string;
+    link: string;
+  };
+}
+
+const filterResults = (data: any): IAnnouncementResult[] => {
+  return data.map((item: any) => {
+    const action = item.attributes.field_announcement_action
+      ? {
+          title: item.attributes.field_announcement_action.title,
+          link: item.attributes.field_announcement_action.uri
+        }
+      : {
+          title: null,
+          link: null
+        };
+    return {
+      id: item.id,
+      date: null,
+      title: item.attributes.title,
+      body: item.attributes.field_announcement_body,
+      bg_image: item.attributes.background_image,
+      action
+    };
+  });
+};
+
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const result = await getAnnouncements();
-    res.send(result);
+    const filteredResult = filterResults(result);
+    res.send(filteredResult);
   } catch (err) {
     logger.error(`api/announcements fetching announcements failed: ${err}`);
     res.status(500).send('Unable to retrieve announcements.');
