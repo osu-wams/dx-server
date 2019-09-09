@@ -11,6 +11,7 @@ const LOG_DIR = path.join(__dirname, '../logs');
 const { combine, timestamp, json } = format;
 
 interface LoggerOptions {
+  level: string;
   levels: winstonConfig.NpmConfigSetLevels;
   format: Format;
   transports?: Array<any>;
@@ -20,6 +21,7 @@ if (!fs.existsSync(LOG_DIR)) {
 }
 
 const loggerOptions: LoggerOptions = {
+  level: config.get('logLevel'),
   levels: winstonConfig.npm.levels,
   format: combine(timestamp(), json())
 };

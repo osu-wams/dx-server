@@ -8,6 +8,7 @@ import {
   getAcademicAnnouncements,
   getFinancialAnnouncements
 } from './modules/dx';
+import { asyncTimedFunction } from '../tracer';
 
 const router: Router = Router();
 
@@ -47,7 +48,7 @@ const filterResults = (data: any): IAnnouncementResult[] => {
 
 router.get('/', async (_req: Request, res: Response) => {
   try {
-    const result = await getAnnouncements();
+    const result = await asyncTimedFunction(getAnnouncements, 'getAnnouncements', []);
     const filteredResult = filterResults(result);
     res.send(filteredResult);
   } catch (err) {
@@ -58,7 +59,11 @@ router.get('/', async (_req: Request, res: Response) => {
 
 router.get('/academic', async (_req: Request, res: Response) => {
   try {
-    const result = await getAcademicAnnouncements();
+    const result = await asyncTimedFunction(
+      getAcademicAnnouncements,
+      'getAcademicAnnouncements',
+      []
+    );
     res.send(result);
   } catch (err) {
     logger.error(`api/announcements/academic fetching academic announcements failed: ${err}`);
@@ -68,7 +73,11 @@ router.get('/academic', async (_req: Request, res: Response) => {
 
 router.get('/financial', async (_req: Request, res: Response) => {
   try {
-    const result = await getFinancialAnnouncements();
+    const result = await asyncTimedFunction(
+      getFinancialAnnouncements,
+      'getFinancialAnnouncements',
+      []
+    );
     res.send(result);
   } catch (err) {
     logger.error(`api/announcements/financial fetching financial announcements failed: ${err}`);

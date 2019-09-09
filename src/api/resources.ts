@@ -3,6 +3,8 @@
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import { getResources, getCategories } from './modules/dx';
+import { asyncTimedFunction } from '../tracer';
+import logger from '../logger';
 
 const router = Router();
 
@@ -63,32 +65,37 @@ const filterCategories = (data: any): ICategory[] => {
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const data = await getResources(req.query);
+    const data = await asyncTimedFunction(getResources, `getResources`, [req.query]);
     const filteredData = filterResults(data);
 
     res.send(filteredData);
   } catch (err) {
+    logger.error(`api/resources failed:`, err);
     res.status(500).send(err);
   }
 });
 
 router.get('/category/:machineName', async (req: Request, res: Response) => {
   try {
-    const data = await getResources(req.params);
+    const data = await asyncTimedFunction(getResources, `getResources:${req.params.machineName}`, [
+      req.params
+    ]);
 
     res.send(data);
   } catch (err) {
+    logger.error(`api/resources/category/${req.params.machineName} failed:`, err);
     res.status(500).send(err);
   }
 });
 
 router.get('/categories', async (_req: Request, res: Response) => {
   try {
-    const data = await getCategories();
+    const data = await asyncTimedFunction(getCategories, 'getCategories', []);
     const filteredData = filterCategories(data);
 
     res.send(filteredData);
   } catch (err) {
+    logger.error(`api/resources/categories failed:`, err);
     res.status(500).send(err);
   }
 });
