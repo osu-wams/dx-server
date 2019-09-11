@@ -1,9 +1,13 @@
 import supertest from 'supertest';
 import app from '../../index';
 import * as canvas from '../modules/canvas';
+import User from '../models/user';
+import { mockUser } from '../models/__mocks__/user';
 
 jest.mock('../modules/canvas');
 const mockCanvas = canvas as jest.Mocked<any>;
+jest.mock('../models/user');
+const mockUserModel = User as jest.Mocked<any>;
 
 let request: supertest.SuperTest<supertest.Test>;
 
@@ -20,6 +24,15 @@ describe('/healthcheck', () => {
 describe('/login', () => {
   it('redirects the user to /', async () => {
     await request.get('/login').then(res => {
+      expect(res.header.location).toBe('/');
+    });
+  });
+});
+
+describe('/login with local api key', () => {
+  it('redirects the user to /', async () => {
+    mockUserModel.find.mockImplementationOnce(() => Promise.resolve(mockUser));
+    await request.get('/login?username=123456&password=blah').then(res => {
       expect(res.header.location).toBe('/');
     });
   });
@@ -72,7 +85,7 @@ describe('/canvas/auth', () => {
     await request.get('/login');
     await request.get('/canvas/auth').then(res => {
       expect(res.status).toBe(302);
-      expect(res.header.location).toContain('/login/oauth2/auth?')
+      expect(res.header.location).toContain('/login/oauth2/auth?');
     });
   });
 });
@@ -82,7 +95,7 @@ describe('/canvas/login', () => {
     await request.get('/login');
     await request.get('/canvas/login').then(res => {
       expect(res.status).toBe(302);
-      expect(res.header.location).toContain('/login/oauth2/auth?')
+      expect(res.header.location).toContain('/login/oauth2/auth?');
     });
   });
 });

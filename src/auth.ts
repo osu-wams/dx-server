@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express'; // eslint-disable-lin
 import passport from 'passport';
 import { Strategy as SamlStrategy } from 'passport-saml';
 import { Strategy as OAuthStrategy } from 'passport-oauth2';
+import { Strategy as LocalStrategy } from 'passport-local';
 import DevStrategy from 'passport-dev';
 import config from 'config';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
@@ -12,6 +13,7 @@ import logger from './logger';
 interface Auth {
   passportStrategy?: any;
   oAuth2Strategy?: any;
+  localStrategy?: any;
   serializeUser?(user: any, done: any): void;
   deserializeUser?(user: any, done: any): void;
   login?(req: Request, res: Response, next: NextFunction): void;
@@ -19,6 +21,11 @@ interface Auth {
   ensureAuthenticated?(req: Request, res: Response, next: NextFunction): void;
   ensureAdmin?(req: Request, res: Response, next: NextFunction): void;
   hasValidCanvasRefreshToken?(req: Request, res: Response, next: NextFunction): void;
+}
+
+interface ApiKey {
+  key: string;
+  isAdmin: boolean;
 }
 
 const Auth: Auth = {};
@@ -35,6 +42,8 @@ SAML_PVK = SAML_PVK.replace(/\\n/g, '\n');
 // OSU SSO url (saml)
 const samlUrl = 'https://login.oregonstate.edu/idp/profile/';
 const samlLogout = `${samlUrl}Logout`;
+
+const apiKeys: ApiKey[] = JSON.parse(config.get('apiKeys'));
 
 function parseSamlResult(profile: any, done: any) {
   const user = {
@@ -105,6 +114,19 @@ Auth.oAuth2Strategy = new OAuthStrategy(
   }
 );
 
+Auth.localStrategy = new LocalStrategy({}, async (username, password, done) => {
+  // verify the username is a valid user, and the password is the API key
+  const apiKey = apiKeys.filter(k => k.key !== undefined).find(k => k.key === password);
+  if (apiKey) {
+    const user = await User.find(parseInt(username, 10));
+    if (!user) return done(null, false);
+
+    user.isAdmin = apiKey.isAdmin;
+    return done(null, user);
+  }
+  return done(null, false);
+});
+
 Auth.serializeUser = (user, done) => {
   done(null, user);
 };
@@ -114,7 +136,7 @@ Auth.deserializeUser = (user, done) => {
 };
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
-  return passport.authenticate('saml', (err, user) => {
+  return passport.authenticate(['local', 'saml'], (err, user) => {
     if (err) {
       return next(err);
     }

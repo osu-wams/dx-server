@@ -4,7 +4,7 @@ import { scan, updateItem, getItem, putItem, DYNAMODB_ENDPOINT } from '../index'
 describe('scan', () => {
   it('should return an empty promise result', async () => {
     nock(DYNAMODB_ENDPOINT)
-      .get(/.*/)
+      .post(/.*/)
       .reply(200, {});
     expect(scan({ TableName: 'test' })).resolves.toStrictEqual({});
   });
@@ -34,7 +34,7 @@ describe('putItem', () => {
 
 describe('getItem', () => {
   nock(DYNAMODB_ENDPOINT)
-    .get(/.*/)
+    .post(/.*/)
     .reply(200, {});
   it('should return an empty promise result', async () => {
     expect(
