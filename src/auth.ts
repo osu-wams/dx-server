@@ -184,7 +184,9 @@ Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: Next
   } else {
     if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
       logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user);
-      await getOAuthToken(user);
+      const updatedUser = await getOAuthToken(user);
+      req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;
+      req.session.passport.user.canvasOauthExpire = updatedUser.canvasOauthExpire;
     }
     return next();
   }
