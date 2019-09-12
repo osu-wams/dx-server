@@ -29,8 +29,7 @@ describe('/api/student', () => {
         .reply(200, academicStatusData);
       await request.get('/api/student/academic-status').expect(200, {
         academicStanding: 'Good Standing',
-        term: '202001',
-        creditHoursAttempted: 14
+        term: '202001'
       });
     });
 
@@ -50,15 +49,13 @@ describe('/api/student', () => {
       // Get current term
       await request.get('/api/student/academic-status').expect(200, {
         academicStanding: 'Good Standing',
-        term: '202001',
-        creditHoursAttempted: 14
+        term: '202001'
       });
 
       // Get specified term
       await request.get('/api/student/academic-status?term=201901').expect(200, {
         academicStanding: 'Good Standing',
-        term: '201901',
-        creditHoursAttempted: 99
+        term: '201901'
       });
     });
 
