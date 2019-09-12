@@ -157,7 +157,9 @@ describe('/api/student', () => {
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
-        .reply(200, { data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'overall' }] } } });
+        .reply(200, {
+          data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'institution' }] } }
+        });
 
       await request.get('/api/student/gpa').expect(200, { gpa: '3.2' });
     });

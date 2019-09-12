@@ -120,7 +120,7 @@ export const getGpa = async (user: any): Promise<{ gpa: string } | {}> => {
     );
     if (response.data && response.data.attributes.gpaLevels.length > 0) {
       const { gpaLevels } = response.data.attributes;
-      const overallGpaLevel = gpaLevels.find(g => g.gpaType.toLowerCase() === 'overall');
+      const overallGpaLevel = gpaLevels.find(g => g.gpaType.toLowerCase() === 'institution');
       if (overallGpaLevel.gpa) return { gpa: overallGpaLevel.gpa };
     }
     return {};
