@@ -31,7 +31,7 @@ interface AcademicStatusResponse {
 export const getAcademicStatus = async (
   user: any,
   termQueryString: any
-): Promise<{ academicStanding: string; term: string; creditHoursAttempted: number } | {}> => {
+): Promise<{ academicStanding: string; term: string } | {}> => {
   try {
     const response: AcademicStatusResponse = await getJson(
       `${BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`
@@ -49,8 +49,7 @@ export const getAcademicStatus = async (
       const latestTermWithStanding = sorted.find(a => a.attributes.academicStanding !== null);
       return {
         academicStanding: latestTermWithStanding.attributes.academicStanding,
-        term: latestTerm.attributes.term,
-        creditHoursAttempted: latestTerm.attributes.gpa[0].creditHoursAttempted
+        term: latestTerm.attributes.term
       };
     }
     return {};
@@ -120,7 +119,7 @@ export const getGpa = async (user: any): Promise<{ gpa: string } | {}> => {
     );
     if (response.data && response.data.attributes.gpaLevels.length > 0) {
       const { gpaLevels } = response.data.attributes;
-      const overallGpaLevel = gpaLevels.find(g => g.gpaType.toLowerCase() === 'overall');
+      const overallGpaLevel = gpaLevels.find(g => g.gpaType.toLowerCase() === 'institution');
       if (overallGpaLevel.gpa) return { gpa: overallGpaLevel.gpa };
     }
     return {};
