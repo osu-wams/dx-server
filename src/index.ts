@@ -27,6 +27,7 @@ interface SessionOptions {
   secret: string;
   saveUninitialized: boolean;
   resave: boolean;
+  rolling: boolean;
   cookie: {
     httpOnly: boolean;
     maxAge: number;
@@ -41,6 +42,7 @@ const sessionOptions: SessionOptions = {
   secret: process.env.SESSION_SECRET || 'dx',
   saveUninitialized: false,
   resave: false,
+  rolling: true,
   cookie: {
     httpOnly: false,
     maxAge: 1000 * 60 * 60
