@@ -116,7 +116,7 @@ Auth.oAuth2Strategy = new OAuthStrategy(
 
 Auth.localStrategy = new LocalStrategy({}, async (username, password, done) => {
   // verify the username is a valid user, and the password is the API key
-  const apiKey = apiKeys.filter(k => k.key !== undefined).find(k => k.key === password);
+  const apiKey = apiKeys.filter(k => k.key !== '').find(k => k.key === password);
   if (apiKey) {
     const user = await User.find(parseInt(username, 10));
     if (!user) return done(null, false);

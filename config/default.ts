@@ -5,7 +5,7 @@ export default {
    * API_KEYS is stringified json for keys and if they have admin access
    ** eg. '[{"key":"somekey", "isAdmin": true}]'
    */
-  apiKeys: process.env.API_KEYS || '[{"key": undefined, "isAdmin": false}]',
+  apiKeys: process.env.API_KEYS || '[{"key": "", "isAdmin": false}]',
   dxApi: {
     baseUrl: process.env.DX_API_BASE_URL || 'https://data.dx.oregonstate.edu'
   },
