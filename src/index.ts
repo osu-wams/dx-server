@@ -29,6 +29,7 @@ interface SessionOptions {
   resave: boolean;
   cookie: {
     httpOnly: boolean;
+    maxAge: number;
   };
   store?: redis.RedisStore;
 }
@@ -41,7 +42,8 @@ const sessionOptions: SessionOptions = {
   saveUninitialized: false,
   resave: false,
   cookie: {
-    httpOnly: false
+    httpOnly: false,
+    maxAge: 1000 * 60 * 60
   }
 };
 
