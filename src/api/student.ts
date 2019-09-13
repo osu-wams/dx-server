@@ -9,6 +9,7 @@ import {
   getAcademicStatus,
   getAccountBalance,
   getAccountTransactions,
+  getClassification,
   getClassSchedule,
   getGpa,
   getGrades,
@@ -85,7 +86,17 @@ router.get('/account-transactions', async (req: Request, res: Response) => {
     res.send(response.data);
   } catch (err) {
     logger.error('api/student/account-transactions failed:', err);
-    res.status(500).send('Unable to retrieve account transactions');
+    res.status(500).send('Unable to retrieve account transactions.');
+  }
+});
+
+router.get('/classification', async (req: Request, res: Response) => {
+  try {
+    const response = await asyncTimedFunction(getClassification, 'getClassification', [req.user]);
+    res.send(response);
+  } catch (err) {
+    logger.error('api/student/classification failed:', err);
+    res.status(500).send('Unable to retrieve classification.');
   }
 });
 

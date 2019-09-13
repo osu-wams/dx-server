@@ -10,9 +10,12 @@ import {
   filteredResourcesEntityQueueData,
   filteredResourcesEntityQueueDataNoMatchingMedia,
   emptyData,
-  resourcesDataNoMatchingMedia
+  resourcesDataNoMatchingMedia,
+  audienceData
 } from '../__mocks__/resources.data';
 import { BASE_URL } from '../modules/dx';
+
+jest.mock('redis');
 
 const dxApiBaseUrl = config.get('dxApi.baseUrl');
 const request = supertest.agent(app);
@@ -26,12 +29,16 @@ describe('/resources', () => {
         id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
         title: 'Student Jobs',
         icon: `${dxApiBaseUrl}/sites/default/files/2019-05/logo_sites_128px.png`,
-        uri: '/image'
+        uri: '/image',
+        audiences: ['Bend']
       }
     ];
     nock(BASE_URL)
-      .get(/.*/)
+      .get(uri => uri.includes('node/services'))
       .reply(200, resourcesData, { 'Content-Type': 'application/json' });
+    nock(BASE_URL)
+      .get(uri => uri.includes('taxonomy_term/audience'))
+      .reply(200, audienceData, { 'Content-Type': 'application/json' });
 
     await request.get(url).expect(200, data);
   });
@@ -44,12 +51,16 @@ describe('/resources', () => {
         id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
         title: 'Student Jobs',
         icon: 'some-invalid-id-that-is-not-in-the-included-data',
-        uri: '/image'
+        uri: '/image',
+        audiences: []
       }
     ];
     nock(BASE_URL)
-      .get(/.*/)
+      .get(uri => uri.includes('node/services'))
       .reply(200, resourcesDataNoMatchingMedia, { 'Content-Type': 'application/json' });
+    nock(BASE_URL)
+      .get(uri => uri.includes('taxonomy_term/audience'))
+      .reply(200, audienceData, { 'Content-Type': 'application/json' });
 
     await request.get(url).expect(200, data);
   });
@@ -64,8 +75,11 @@ describe('/resources', () => {
 
   it('should return elements with the matching name', async () => {
     nock(BASE_URL)
-      .get(/.*/)
+      .get(uri => uri.includes('node/services'))
       .reply(200, resourcesData, { 'Content-Type': 'application/json' });
+    nock(BASE_URL)
+      .get(uri => uri.includes('taxonomy_term/audience'))
+      .reply(200, audienceData, { 'Content-Type': 'application/json' });
 
     await request
       .get('/api/resources?query=Student')
@@ -73,8 +87,11 @@ describe('/resources', () => {
       .expect(r => r.body.length === 1);
 
     nock(BASE_URL)
-      .get(/.*/)
+      .get(uri => uri.includes('node/services'))
       .reply(200, emptyData, { 'Content-Type': 'application/json' });
+    nock(BASE_URL)
+      .get(uri => uri.includes('taxonomy_term/audience'))
+      .reply(200, audienceData, { 'Content-Type': 'application/json' });
 
     await request
       .get('/api/resources?query=Students')
@@ -118,6 +135,9 @@ describe('/resources', () => {
         .get(QUEUE_URL)
         .query(true)
         .reply(200, resourcesEntityQueueData);
+      nock(BASE_URL)
+        .get(uri => uri.includes('taxonomy_term/audience'))
+        .reply(200, audienceData, { 'Content-Type': 'application/json' });
       await request
         .get(`/api/resources/category/${query.machineName}`)
         .expect(200, filteredResourcesEntityQueueData);
@@ -128,6 +148,9 @@ describe('/resources', () => {
         .get(QUEUE_URL)
         .query(true)
         .reply(200, resourcesEntityQueueDataNoMatchingMedia);
+      nock(BASE_URL)
+        .get(uri => uri.includes('taxonomy_term/audience'))
+        .reply(200, audienceData, { 'Content-Type': 'application/json' });
       await request
         .get(`/api/resources/category/${query.machineName}`)
         .expect(200, filteredResourcesEntityQueueDataNoMatchingMedia);

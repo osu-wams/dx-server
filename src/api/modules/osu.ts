@@ -125,6 +125,7 @@ interface ClassScheduleResponse {
   links: { self: string };
   data: ClassSchedule[];
 }
+
 export const getClassSchedule = async (
   user: any,
   term: any
@@ -147,6 +148,33 @@ export const getClassSchedule = async (
         id: d.id
       }))
     };
+  } catch (err) {
+    throw err;
+  }
+};
+
+interface Classification {
+  id: string;
+  attributes: {
+    level: string;
+    classification: string;
+    campus: string;
+    status: string;
+    isInternational: boolean;
+  };
+}
+
+interface ClassificationResponse {
+  links: { self: string };
+  data: Classification;
+}
+
+export const getClassification = async (user: any): Promise<Classification> => {
+  try {
+    const response: ClassificationResponse = await getJson(
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/classification`
+    );
+    return response.data;
   } catch (err) {
     throw err;
   }

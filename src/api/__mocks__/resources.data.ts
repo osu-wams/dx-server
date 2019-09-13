@@ -12,6 +12,13 @@ export const resourcesData = {
         }
       },
       relationships: {
+        field_audience: {
+          data: [
+            {
+              id: 'ed064109-1d73-40d1-b0bc-6a94b1f70f38'
+            }
+          ]
+        },
         field_icon: {
           data: {
             type: 'media--image',
@@ -74,6 +81,9 @@ export const resourcesDataNoMatchingMedia = {
         }
       },
       relationships: {
+        field_audience: {
+          data: []
+        },
         field_icon: {
           data: {
             type: 'media--image',
@@ -206,6 +216,13 @@ export const resourcesEntityQueueData = {
         }
       },
       relationships: {
+        field_audience: {
+          data: [
+            {
+              id: 'ed064109-1d73-40d1-b0bc-6a94b1f70f38'
+            }
+          ]
+        },
         field_icon: {
           data: {
             type: 'media--image',
@@ -224,6 +241,9 @@ export const resourcesEntityQueueData = {
         }
       },
       relationships: {
+        field_audience: {
+          data: []
+        },
         field_icon: {
           data: null
         }
@@ -291,6 +311,9 @@ export const resourcesEntityQueueDataNoMatchingMedia = {
         }
       },
       relationships: {
+        field_audience: {
+          data: []
+        },
         field_icon: {
           data: {
             type: 'media--image',
@@ -332,12 +355,14 @@ export const filteredResourcesEntityQueueData = [
     id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805',
     title: 'Google Drive',
     icon: `${BASE_URL}/sites/default/files/2019-05/logo_drive_128px.png`,
-    uri: 'https://drive.google.com/a/oregonstate.edu/'
+    uri: 'https://drive.google.com/a/oregonstate.edu/',
+    audiences: ['Bend']
   },
   {
     id: '9fb802d8-cf4e-4916-8a72-9881f8b97879',
     title: 'Canvas',
-    uri: 'https://oregonstate.instructure.com'
+    uri: 'https://oregonstate.instructure.com',
+    audiences: []
   }
 ];
 
@@ -345,12 +370,37 @@ export const filteredResourcesEntityQueueDataNoMatchingMedia = [
   {
     id: '25fbe2ea-006f-4fc9-ba65-d08192fd8805',
     title: 'Google Drive',
-    uri: 'https://drive.google.com/a/oregonstate.edu/'
+    uri: 'https://drive.google.com/a/oregonstate.edu/',
+    audiences: []
   }
 ];
 
 export const emptyData: any = {
   data: []
+};
+
+export const audienceData = {
+  jsonapi: {
+    version: '1.0',
+    meta: { links: { self: { href: 'http://jsonapi.org/format/1.0/' } } }
+  },
+  data: [
+    {
+      type: 'taxonomy_term--audience',
+      id: 'd8fddbf9-c1c3-485d-90b7-291f17161a4b',
+      attributes: {
+        name: 'Corvallis'
+      }
+    },
+    {
+      type: 'taxonomy_term--audience',
+      id: 'ed064109-1d73-40d1-b0bc-6a94b1f70f38',
+      attributes: {
+        name: 'Bend'
+      }
+    }
+  ],
+  links: { self: { href: 'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience' } }
 };
 
 export default resourcesData;

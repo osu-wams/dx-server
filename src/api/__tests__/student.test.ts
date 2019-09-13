@@ -119,6 +119,83 @@ describe('/api/student', () => {
     });
   });
 
+  describe('/account-transactions', () => {
+    it('should return account transactions data for the current user', async () => {
+      const data = ['account-transaction'];
+
+      // Mock response from Apigee
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/account-transactions/)
+        .reply(200, { data });
+
+      await request.get('/api/student/account-transactions').expect(200, data);
+    });
+
+    it('should return an error if the user is not logged in', async () => {
+      // Clear session data - we don't want to be logged in
+      request = supertest.agent(app);
+
+      await request
+        .get('/api/student/account-transactions')
+        .expect(401)
+        .expect('Unauthorized');
+    });
+
+    it('should return "Unable to retrieve account transactions." when there is a 500 error', async () => {
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/account-transactions/)
+        .reply(500);
+
+      await request
+        .get('/api/student/account-transactions')
+        .expect(500)
+        .expect('Unable to retrieve account transactions.');
+    });
+  });
+
+  describe('/classification', () => {
+    it('should return classifications of the current user', async () => {
+      const data = {
+        id: 'id',
+        attributes: {
+          level: 'level',
+          classification: 'classification',
+          campus: 'campus',
+          status: 'status',
+          isInternational: false
+        }
+      };
+
+      // Mock response from Apigee
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/classification/)
+        .reply(200, { data });
+
+      await request.get('/api/student/classification').expect(200, data);
+    });
+
+    it('should return "Unable to retrieve classification." when there is a 500 error', async () => {
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/classification/)
+        .reply(500);
+
+      await request
+        .get('/api/student/classification')
+        .expect(500)
+        .expect('Unable to retrieve classification.');
+    });
+
+    it('should return an error if the user is not logged in', async () => {
+      // Clear session data - we don't want to be logged in
+      request = supertest.agent(app);
+
+      await request
+        .get('/api/student/classification')
+        .expect(401)
+        .expect('Unauthorized');
+    });
+  });
+
   describe('/class-schedule', () => {
     it('should return current term course schedule for the current user', async () => {
       // Mock response from Apigee
