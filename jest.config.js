@@ -3,6 +3,7 @@ module.exports = {
   testEnvironment: 'node',
   testPathIgnorePatterns: ['/node_modules/', '/config/', '/src/types/', '/dist/'],
   modulePathIgnorePatterns: ['/dist/'],
+  globalSetup: '<rootDir>/src/utils/jestSetup.ts',
   coverageDirectory: './coverage/',
   collectCoverage: true,
   collectCoverageFrom: [

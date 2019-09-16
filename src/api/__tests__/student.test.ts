@@ -2,7 +2,11 @@ import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import app from '../../index';
-import { academicStatusData } from '../__mocks__/student.data';
+import {
+  academicStatusData,
+  classScheduleDataResponse,
+  classScheduleDataResult
+} from '../__mocks__/student.data';
 import { holdsData } from '../__mocks__/holds.data';
 
 jest.mock('../util.ts');
@@ -117,14 +121,12 @@ describe('/api/student', () => {
 
   describe('/class-schedule', () => {
     it('should return current term course schedule for the current user', async () => {
-      const data = ['class-schedule'];
-
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/class-schedule/)
-        .reply(200, { data });
+        .reply(200, classScheduleDataResponse);
 
-      await request.get('/api/student/class-schedule').expect(200, data);
+      await request.get('/api/student/class-schedule').expect(200, classScheduleDataResult);
     });
 
     it('should return "Unable to retrieve class schedule." when there is a 500 error', async () => {
