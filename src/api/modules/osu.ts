@@ -76,11 +76,77 @@ export const getAccountTransactions = async (user: any) => {
   }
 };
 
-export const getClassSchedule = async (user: any, term: any) => {
+interface Faculty {
+  email: string;
+  name: string;
+  primary: boolean;
+}
+
+interface MeetingTime {
+  beginDate: string;
+  beginTime: string;
+  building: string;
+  buildingDescription: string;
+  campus: string;
+  creditHourSession: number;
+  endDate: string;
+  endTime: string;
+  hoursPerWeek: number;
+  room: string;
+  scheduleType: string;
+  scheduleDescription: string;
+  weeklySchedule: string[];
+}
+interface ClassSchedule {
+  type: string;
+  id: string;
+  attributes: {
+    academicYear: string;
+    academicYearDescription: string;
+    continuingEducation: boolean;
+    courseNumber: string;
+    courseReferenceNumber: string;
+    courseSubject: string;
+    courseSubjectDescription: string;
+    courseTitle: string;
+    creditHours: number;
+    faculty: Faculty[];
+    gradingMode: string;
+    meetingTimes: MeetingTime[];
+    registrationStatus: string;
+    scheduleDescription: string;
+    scheduleType: string;
+    sectionNumber: string;
+    term: string;
+    termDescription: string;
+  };
+}
+interface ClassScheduleResponse {
+  links: { self: string };
+  data: ClassSchedule[];
+}
+export const getClassSchedule = async (
+  user: any,
+  term: any
+): Promise<{ data: ClassSchedule[] }> => {
   try {
-    return await getJson(
+    const response: ClassScheduleResponse = await getJson(
       `${BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`
     );
+    return {
+      data: response.data.map((d: ClassSchedule) => ({
+        attributes: {
+          ...d.attributes,
+          faculty: d.attributes.faculty.map(f => ({
+            email: f.email,
+            name: f.name,
+            primary: f.primary
+          }))
+        },
+        type: d.type,
+        id: d.id
+      }))
+    };
   } catch (err) {
     throw err;
   }
