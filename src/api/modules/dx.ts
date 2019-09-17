@@ -6,6 +6,7 @@ import { IResourceResult } from '../resources'; // eslint-disable-line no-unused
 import cache from './cache';
 
 export const BASE_URL = config.get('dxApi.baseUrl');
+export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
 export const INCLUDES =
   'include=field_announcement_image,field_announcement_image.field_media_image';
 export const ANNOUNCEMENTS_URL = `${BASE_URL}/jsonapi/node/announcement?${INCLUDES}&sort=-created`;
@@ -40,12 +41,20 @@ const retrieveData = async (
   url: string,
   otherParams: request.RequestPromiseOptions
 ): Promise<{ data: any[]; included: any[] }> => {
-  const { data, included, links } = await cache.get(url, otherParams, true);
+  const { data, included, links } = await cache.get(url, otherParams, true, {
+    key: url,
+    ttlSeconds: CACHE_SEC
+  });
   if (links === undefined || links.next === undefined) return { data, included };
 
   let nextUrl = links.next.href;
   while (nextUrl !== undefined) {
-    const results = await cache.get(nextUrl, otherParams, true); // eslint-disable-line no-await-in-loop
+    /* eslint-disable no-await-in-loop */
+    const results = await cache.get(nextUrl, otherParams, true, {
+      key: nextUrl,
+      ttlSeconds: CACHE_SEC
+    });
+    /* eslint-enable no-await-in-loop */
 
     nextUrl = undefined;
     if (results.links.next !== undefined) nextUrl = results.links.next.href;

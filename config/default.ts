@@ -7,6 +7,7 @@ export default {
    */
   apiKeys: process.env.API_KEYS || '[{"key": "", "isAdmin": false}]',
   dxApi: {
+    cacheEndpointSec: process.env.DX_CACHE_ENDPOINT_SEC || '86400',
     baseUrl: process.env.DX_API_BASE_URL || 'https://data.dx.oregonstate.edu'
   },
   osuApi: {

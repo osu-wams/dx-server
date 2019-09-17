@@ -2,6 +2,7 @@ export default {
   logLevel: 'LOGLEVEL',
   apiKeys: 'API_KEYS',
   dxApi: {
+    cacheEndpointSec: 'DX_CACHE_ENDPOINT_SEC',
     baseUrl: 'DX_API_BASE_URL',
     academicGuid: 'DX_API_ACADEMIC_GUID',
     financialGuid: 'DX_API_FINANCIAL_GUID'
