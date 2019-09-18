@@ -1,20 +1,21 @@
 import supertest from 'supertest';
 import nock from 'nock';
-import config from 'config';
 import app from '../../index';
 import { academicCalendarData } from '../__mocks__/events-academic.data';
 import { eventsData } from '../__mocks__/events.data';
-
-const LOCALIST_BASE_URL = config.get('localist.baseUrl');
-const ACADEMIC_CALENDAR_URL = config.get('localist.academicCalendarRSS');
+import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
+import { LOCALIST_BASE_URL, ACADEMIC_CALENDAR_URL } from '../modules/localist';
 
 const request = supertest.agent(app);
 
 describe('/events', () => {
   it('should return events when one is present', async () => {
+    mockedGetResponse.mockReturnValue({ eventsData });
+    cache.get = mockedGet;
     // Mock response from Localist
     nock(LOCALIST_BASE_URL, { encodedQueryParams: true })
-      .get('/events')
+      .get(/.*/)
       .query(true)
       .reply(200, { eventsData });
 
@@ -22,8 +23,10 @@ describe('/events', () => {
   });
 
   it('should return "Unable to retrieve events." when there is a 500 error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = jest.fn().mockRejectedValue(new Error('boom'));
     nock(LOCALIST_BASE_URL)
-      .get('')
+      .get(/.*/)
       .reply(500);
 
     await request
@@ -35,6 +38,8 @@ describe('/events', () => {
 
 describe('/events/academic-calendar', () => {
   it('should return events when one is present', async () => {
+    mockedGetResponse.mockReturnValue(academicCalendarData.xml);
+    cache.get = mockedGet;
     // Mock response from Localist
     nock(ACADEMIC_CALENDAR_URL)
       .get('')
@@ -47,6 +52,8 @@ describe('/events/academic-calendar', () => {
   });
 
   it('should return "Unable to retrieve academic calendar events." when there is a 500 error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
     nock(ACADEMIC_CALENDAR_URL)
       .get('')
       .reply(500);

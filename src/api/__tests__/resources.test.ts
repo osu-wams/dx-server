@@ -14,11 +14,17 @@ import {
   audienceData
 } from '../__mocks__/resources.data';
 import { BASE_URL } from '../modules/dx';
+import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
 jest.mock('redis');
 
 const dxApiBaseUrl = config.get('dxApi.baseUrl');
-const request = supertest.agent(app);
+let request: supertest.SuperTest<supertest.Test>;
+
+beforeAll(async () => {
+  request = supertest.agent(app);
+});
 
 describe('/resources', () => {
   it('should contain an icon when one exists', async () => {
@@ -33,6 +39,11 @@ describe('/resources', () => {
         audiences: ['Bend']
       }
     ];
+    mockedGetResponse.mockReturnValue({
+      'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
+      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][path]=field_service_category.id&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][value]=1b9b7a4b-5a64-41af-a40a-8bb01abedd19&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][memberOf]=and-group&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][path]=field_service_category.id&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][value]=e2730988-0614-43b7-b3ce-0b047e8219e0': resourcesData
+    });
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get(uri => uri.includes('node/services'))
       .reply(200, resourcesData, { 'Content-Type': 'application/json' });
@@ -55,6 +66,11 @@ describe('/resources', () => {
         audiences: []
       }
     ];
+    mockedGetResponse.mockReturnValue({
+      'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
+      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][path]=field_service_category.id&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][value]=1b9b7a4b-5a64-41af-a40a-8bb01abedd19&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][memberOf]=and-group&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][path]=field_service_category.id&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][value]=e2730988-0614-43b7-b3ce-0b047e8219e0': resourcesDataNoMatchingMedia
+    });
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get(uri => uri.includes('node/services'))
       .reply(200, resourcesDataNoMatchingMedia, { 'Content-Type': 'application/json' });
@@ -66,6 +82,8 @@ describe('/resources', () => {
   });
 
   it('should return a 500 if the site is down', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get(/.*/)
       .reply(500);
@@ -74,6 +92,11 @@ describe('/resources', () => {
   });
 
   it('should return elements with the matching name', async () => {
+    mockedGetResponse.mockReturnValue({
+      'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
+      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=Student': resourcesData
+    });
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get(uri => uri.includes('node/services'))
       .reply(200, resourcesData, { 'Content-Type': 'application/json' });
@@ -85,6 +108,14 @@ describe('/resources', () => {
       .get('/api/resources?query=Student')
       .expect(200)
       .expect(r => r.body.length === 1);
+  });
+
+  it('should not return elements with the mismatching name', async () => {
+    mockedGetResponse.mockReturnValue({
+      'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
+      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&filter[title-filter][condition][path]=title&filter[title-filter][condition][operator]=CONTAINS&filter[title-filter][condition][value]=Students': emptyData
+    });
+    cache.get = mockedGet;
 
     nock(BASE_URL)
       .get(uri => uri.includes('node/services'))
@@ -109,6 +140,11 @@ describe('/resources', () => {
         }
       ];
 
+      mockedGetResponse.mockReturnValue({
+        'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
+        'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories?include=field_taxonomy_icon.field_media_image&sort=weight': categoriesData
+      });
+      cache.get = mockedGet;
       nock(BASE_URL)
         .get(/.*/)
         .reply(200, categoriesData, { 'Content-Type': 'application/json' });
@@ -117,6 +153,8 @@ describe('/resources', () => {
     });
 
     it('should return a 500 if the site is down', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(BASE_URL)
         .get(/.*/)
         .reply(500);
@@ -128,13 +166,17 @@ describe('/resources', () => {
   describe('/resources/category/:machineName', () => {
     const query = { machineName: 'academic' };
 
-    const QUEUE_URL = `/jsonapi/entity_subqueue/${query.machineName}`;
-
     it('should filter the data', async () => {
+      mockedGetResponse.mockReturnValue({
+        'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
+        'https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/academic?include=items,items.field_icon,items.field_icon.field_media_image&fields[node--services]=title,field_service_url,field_icon,field_audience': resourcesEntityQueueData
+      });
+      cache.get = mockedGet;
       nock(BASE_URL)
-        .get(QUEUE_URL)
-        .query(true)
-        .reply(200, resourcesEntityQueueData);
+        .get(uri => uri.includes('entity_subqueue'))
+        .reply(200, resourcesEntityQueueDataNoMatchingMedia, {
+          'Content-Type': 'application/json'
+        });
       nock(BASE_URL)
         .get(uri => uri.includes('taxonomy_term/audience'))
         .reply(200, audienceData, { 'Content-Type': 'application/json' });
@@ -144,10 +186,16 @@ describe('/resources', () => {
     });
 
     it('should filter the data, ignoring media that does not match', async () => {
+      mockedGetResponse.mockReturnValue({
+        'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
+        'https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/academic?include=items,items.field_icon,items.field_icon.field_media_image&fields[node--services]=title,field_service_url,field_icon,field_audience': resourcesEntityQueueDataNoMatchingMedia
+      });
+      cache.get = mockedGet;
       nock(BASE_URL)
-        .get(QUEUE_URL)
-        .query(true)
-        .reply(200, resourcesEntityQueueDataNoMatchingMedia);
+        .get(uri => uri.includes('entity_subqueue'))
+        .reply(200, resourcesEntityQueueDataNoMatchingMedia, {
+          'Content-Type': 'application/json'
+        });
       nock(BASE_URL)
         .get(uri => uri.includes('taxonomy_term/audience'))
         .reply(200, audienceData, { 'Content-Type': 'application/json' });
@@ -157,6 +205,8 @@ describe('/resources', () => {
     });
 
     it('should return a 500 if the site is down', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(BASE_URL)
         .get(/.*/)
         .reply(500);

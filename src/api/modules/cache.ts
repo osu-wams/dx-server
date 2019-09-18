@@ -3,13 +3,11 @@ import redis from 'redis';
 import config from 'config';
 import logger from '../../logger';
 
-interface SetCacheOptions {
+export interface SetCacheOptions {
   mode: string;
   duration: number;
   flag: string;
 }
-
-const env = config.get('env');
 
 const opts = {
   host: config.get('redis.host'),
@@ -24,7 +22,7 @@ const client = redis.createClient(opts);
  * ! typescript..sadly. Old school Promise comes through as the winner.
  * @param key the cache key name
  */
-const getAsync = async (key): Promise<string> => {
+export const getAsync = async (key: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     client.get(key, (err, reply) => {
       if (err) reject(err);
@@ -39,7 +37,11 @@ const getAsync = async (key): Promise<string> => {
  * @param data the data to cache
  * @param options the options to set the cache TTL
  */
-const setAsync = async (key: string, data: string, options: SetCacheOptions): Promise<boolean> => {
+export const setAsync = async (
+  key: string,
+  data: string,
+  options: SetCacheOptions
+): Promise<boolean> => {
   return new Promise((resolve, reject) => {
     client.set(key, data, options.mode, options.duration, options.flag, (err, reply) => {
       if (err) reject(err);
@@ -62,7 +64,7 @@ const setCache = async (key: string, data: string, options: SetCacheOptions): Pr
   return reply;
 };
 
-interface CacheOptions {
+export interface CacheOptions {
   key: string;
   ttlSeconds: number;
 }
@@ -80,7 +82,8 @@ export const get = async (
   performCache?: boolean,
   cacheOptions?: CacheOptions
 ) => {
-  const willCache = (performCache || false) && env !== 'test';
+  // const willCache = (performCache || false) && env !== 'test';
+  const willCache = performCache || false;
   const { key, ttlSeconds } = cacheOptions || { key: url, ttlSeconds: 60 };
   if (willCache) {
     const cached = await getCache(key);
@@ -89,7 +92,6 @@ export const get = async (
   }
 
   const response = await request.get(url, requestOptions);
-  console.log(response);
 
   if (willCache) {
     let cacheString = response;
@@ -102,4 +104,4 @@ export const get = async (
   return response;
 };
 
-export default { get };
+export default { get, getAsync, setAsync };

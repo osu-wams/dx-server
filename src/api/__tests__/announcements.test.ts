@@ -10,6 +10,8 @@ import {
   mockAcademicAnnouncementResult,
   mockFinancialAnnouncementResult
 } from '../__mocks__/announcements.data';
+import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
 const request = supertest.agent(app);
 const testId = 'testid';
@@ -24,6 +26,8 @@ beforeEach(() => {
 
 describe('/api/announcements', () => {
   it('returns announcements', async () => {
+    mockedGetResponse.mockReturnValue(replyData);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/node/announcement')
       .query(true)
@@ -31,6 +35,8 @@ describe('/api/announcements', () => {
     await request.get('/api/announcements').expect(200, expectedData);
   });
   it('does not have included image data', async () => {
+    mockedGetResponse.mockReturnValue({ data: replyData.data });
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/node/announcement')
       .query(true)
@@ -38,6 +44,8 @@ describe('/api/announcements', () => {
     await request.get('/api/announcements').expect(200, mockAnnouncementResultWithoutImage);
   });
   it('does not have a matchingMedia', async () => {
+    mockedGetResponse.mockReturnValue(replyData);
+    cache.get = mockedGet;
     replyData.included[0].relationships.field_media_image.data.id = 'not-already-in-the-mock-data';
     expectedData[0].bg_image = '';
     nock(BASE_URL)
@@ -50,6 +58,8 @@ describe('/api/announcements', () => {
     replyData.data[0].relationships.field_announcement_image.data.id =
       'not-already-in-the-mock-data';
     expectedData[0].bg_image = '';
+    mockedGetResponse.mockReturnValue(replyData);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/node/announcement')
       .query(true)
@@ -57,6 +67,8 @@ describe('/api/announcements', () => {
     await request.get('/api/announcements').expect(200, expectedData);
   });
   it('returns an error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/node/announcement')
       .query(true)
@@ -70,6 +82,8 @@ describe('/api/announcements', () => {
 
 describe('/api/announcements/academic', () => {
   it('returns announcements', async () => {
+    mockedGetResponse.mockReturnValue(mockAnnouncementsEntityQueueData);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/entity_subqueue/announcements')
       .query(true)
@@ -77,6 +91,8 @@ describe('/api/announcements/academic', () => {
     await request.get('/api/announcements/academic').expect(200, mockAcademicAnnouncementResult);
   });
   it('returns an error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/entity_subqueue/announcements')
       .query(true)
@@ -90,6 +106,8 @@ describe('/api/announcements/academic', () => {
 
 describe('/api/announcements/financial', () => {
   it('returns announcements', async () => {
+    mockedGetResponse.mockReturnValue(mockAnnouncementsEntityQueueData);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/entity_subqueue/announcements')
       .query(true)
@@ -97,6 +115,8 @@ describe('/api/announcements/financial', () => {
     await request.get('/api/announcements/financial').expect(200, mockFinancialAnnouncementResult);
   });
   it('returns an error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('/jsonapi/entity_subqueue/announcements')
       .query(true)

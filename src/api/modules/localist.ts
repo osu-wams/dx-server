@@ -5,8 +5,8 @@ import cache from './cache';
 
 const parser = new Parser();
 
-const LOCALIST_BASE_URL: string = config.get('localist.baseUrl');
-const ACADEMIC_CALENDAR_URL: string = config.get('localist.academicCalendarRSS');
+export const LOCALIST_BASE_URL: string = config.get('localist.baseUrl');
+export const ACADEMIC_CALENDAR_URL: string = config.get('localist.academicCalendarRSS');
 const CACHE_SEC = parseInt(config.get('localist.cacheEndpointSec'), 10);
 
 /**

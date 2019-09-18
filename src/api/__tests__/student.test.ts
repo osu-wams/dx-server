@@ -8,6 +8,8 @@ import {
   classScheduleDataResult
 } from '../__mocks__/student.data';
 import { holdsData } from '../__mocks__/holds.data';
+import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
 jest.mock('../util.ts');
 
@@ -22,10 +24,13 @@ describe('/api/student', () => {
   beforeEach(async () => {
     // Authenticate before each request
     await request.get('/login');
+    cache.get = mockedGet;
   });
 
   describe('/academic-status', () => {
     it('should return academic status data for the current user', async () => {
+      mockedGetResponse.mockReturnValue(academicStatusData);
+      cache.get = mockedGet;
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
@@ -37,29 +42,40 @@ describe('/api/student', () => {
       });
     });
 
-    it('should return data for a specified term, or the current term if none provided', async () => {
+    it('should return data for a specified term', async () => {
       const data = [{ term: 'current' }, { term: '201901' }];
+      mockedGetResponse.mockReturnValue({
+        links: { self: 'bogus' },
+        data: [academicStatusData.data[1]]
+      });
+      cache.get = mockedGet;
 
-      // Mock default (term=current) response
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
-        .query(true)
-        .reply(200, academicStatusData)
-        // Mock specified term response
-        .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(data[1])
-        .reply(200, { links: { self: 'bogus' }, data: [academicStatusData.data[0]] });
-
-      // Get current term
-      await request.get('/api/student/academic-status').expect(200, {
-        academicStanding: 'Good Standing',
-        term: '202001'
-      });
+        .reply(200, { links: { self: 'bogus' }, data: [academicStatusData.data[1]] });
 
       // Get specified term
       await request.get('/api/student/academic-status?term=201901').expect(200, {
         academicStanding: 'Good Standing',
         term: '201901'
+      });
+    });
+
+    it('should return data for the current term if none provided', async () => {
+      mockedGetResponse.mockReturnValue(academicStatusData);
+      cache.get = mockedGet;
+
+      // Mock default (term=current) response
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/academic-status/)
+        .query(true)
+        .reply(200, academicStatusData);
+
+      // Get current term
+      await request.get('/api/student/academic-status').expect(200, {
+        academicStanding: 'Good Standing',
+        term: '202001'
       });
     });
 
@@ -74,6 +90,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve academic status." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .reply(500);
@@ -88,6 +106,8 @@ describe('/api/student', () => {
   describe('/account-balance', () => {
     it('should return account balance data for the current user', async () => {
       const data = ['account-balance'];
+      mockedGetResponse.mockReturnValue({ data });
+      cache.get = mockedGet;
 
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
@@ -108,6 +128,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve account balance." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/account-balance/)
         .reply(500);
@@ -122,6 +144,8 @@ describe('/api/student', () => {
   describe('/account-transactions', () => {
     it('should return account transactions data for the current user', async () => {
       const data = ['account-transaction'];
+      mockedGetResponse.mockReturnValue({ data });
+      cache.get = mockedGet;
 
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
@@ -142,6 +166,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve account transactions." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/account-transactions/)
         .reply(500);
@@ -165,6 +191,8 @@ describe('/api/student', () => {
           isInternational: false
         }
       };
+      mockedGetResponse.mockReturnValue({ data });
+      cache.get = mockedGet;
 
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
@@ -175,6 +203,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve classification." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/classification/)
         .reply(500);
@@ -198,6 +228,8 @@ describe('/api/student', () => {
 
   describe('/class-schedule', () => {
     it('should return current term course schedule for the current user', async () => {
+      mockedGetResponse.mockReturnValue(classScheduleDataResponse);
+      cache.get = mockedGet;
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/class-schedule/)
@@ -207,6 +239,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve class schedule." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/class-schedule/)
         .reply(500);
@@ -230,6 +264,10 @@ describe('/api/student', () => {
 
   describe('/gpa', () => {
     it('should return GPA data for the current user', async () => {
+      mockedGetResponse.mockReturnValue({
+        data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'institution' }] } }
+      });
+      cache.get = mockedGet;
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
@@ -251,6 +289,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve GPA data." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
         .reply(500);
@@ -265,6 +305,8 @@ describe('/api/student', () => {
   describe('/grades', () => {
     it('should return grades for the current user', async () => {
       const data = ['grades'];
+      mockedGetResponse.mockReturnValue({ data });
+      cache.get = mockedGet;
 
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
@@ -284,6 +326,27 @@ describe('/api/student', () => {
         { attributes: { term: '201803' } }
       ];
 
+      mockedGetResponse.mockReturnValue({ data: [data[0]] });
+      cache.get = mockedGet;
+
+      // Mock default (term=current) response
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/grades/)
+        .query(data[0].attributes)
+        .reply(200, { data: [data[0]] });
+
+      await request.get('/api/student/grades?term=201701').expect(200, [data[0]]);
+    });
+
+    it('should return grades for a specified term, or the current term if none provided', async () => {
+      const data = [
+        { attributes: { term: '201701' } },
+        { attributes: { term: '201901' } },
+        { attributes: { term: 'current' } },
+        { attributes: { term: '201901' } },
+        { attributes: { term: '201803' } }
+      ];
+
       const dataSorted = [
         { attributes: { term: 'current' } },
         { attributes: { term: '201901' } },
@@ -291,20 +354,17 @@ describe('/api/student', () => {
         { attributes: { term: '201803' } },
         { attributes: { term: '201701' } }
       ];
+      mockedGetResponse.mockReturnValue({ data });
+      cache.get = mockedGet;
 
       // Mock default (term=current) response
       nock(APIGEE_BASE_URL)
         // test sorted
         .get(/v1\/students\/[0-9]+\/grades/)
         .query(true)
-        .reply(200, { data })
-        // Mock specified term response
-        .get(/v1\/students\/[0-9]+\/grades/)
-        .query(data[0].attributes)
-        .reply(200, { data: [data[0]] });
+        .reply(200, { data });
 
       await request.get('/api/student/grades').expect(200, dataSorted);
-      await request.get('/api/student/grades?term=201701').expect(200, [data[0]]);
     });
 
     it('should return an error if the user is not logged in', async () => {
@@ -318,6 +378,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve grades." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/grades/)
         .reply(500);
@@ -331,6 +393,8 @@ describe('/api/student', () => {
 
   describe('/holds', () => {
     it('should return account holds for the current user', async () => {
+      mockedGetResponse.mockReturnValue(holdsData);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/holds/)
         .reply(200, holdsData);
@@ -349,6 +413,8 @@ describe('/api/student', () => {
     });
 
     it('should return "Unable to retrieve account holds." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/holds/)
         .reply(500);

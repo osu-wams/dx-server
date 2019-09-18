@@ -3,6 +3,8 @@ import nock from 'nock';
 import config from 'config';
 import app from '../../index';
 import { alertClear, alertPresent, dxAlert, dxAPIAlerts } from '../__mocks__/alerts.data';
+import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
 const BASE_URL = config.get('raveApi.baseUrl');
 const DX_BASE_URL = config.get('dxApi.baseUrl');
@@ -18,6 +20,8 @@ describe('/alerts', () => {
         type: 'rave'
       }
     ];
+    mockedGetResponse.mockReturnValue(alertPresent.xml);
+    cache.get = mockedGet;
 
     nock(BASE_URL)
       .get('')
@@ -27,6 +31,8 @@ describe('/alerts', () => {
   });
 
   it('should return an empty array [] when "All Clear" is present in the data', async () => {
+    mockedGetResponse.mockReturnValue(alertClear.xml);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('')
       .reply(200, alertClear.xml, { 'Content-Type': 'application/xml' });
@@ -35,6 +41,8 @@ describe('/alerts', () => {
   });
 
   it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
     nock(BASE_URL)
       .get('')
       .reply(500);
@@ -48,6 +56,8 @@ describe('/alerts', () => {
 
 describe('/alerts/dx', () => {
   it('should return alerts when present', async () => {
+    mockedGetResponse.mockReturnValue(dxAPIAlerts);
+    cache.get = mockedGet;
     nock(DX_BASE_URL)
       .get('/jsonapi/node/alerts')
       .query(true)
@@ -57,6 +67,8 @@ describe('/alerts/dx', () => {
   });
 
   it('should return an empty array [] when no alerts are present', async () => {
+    mockedGetResponse.mockReturnValue({ data: [] });
+    cache.get = mockedGet;
     nock(DX_BASE_URL)
       .get('/jsonapi/node/alerts')
       .query(true)
@@ -66,6 +78,8 @@ describe('/alerts/dx', () => {
   });
 
   it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
     nock(DX_BASE_URL)
       .get('/jsonapi/node/alerts')
       .query(true)
