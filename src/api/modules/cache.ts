@@ -84,14 +84,19 @@ export const get = async (
   const { key, ttlSeconds } = cacheOptions || { key: url, ttlSeconds: 60 };
   if (willCache) {
     const cached = await getCache(key);
-    if (cached) return Promise.resolve(JSON.parse(cached));
+    if (cached && requestOptions.json) return Promise.resolve(JSON.parse(cached));
+    if (cached) return Promise.resolve(cached);
   }
 
   const response = await request.get(url, requestOptions);
+  console.log(response);
 
   if (willCache) {
-    const json = JSON.stringify(response);
-    await setCache(key, json, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
+    let cacheString = response;
+    if (requestOptions.json) {
+      cacheString = JSON.stringify(response);
+    }
+    await setCache(key, cacheString, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
   }
 
   return response;

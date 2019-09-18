@@ -2,13 +2,14 @@
  * /api/persons
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
-import request from 'request-promise';
 import config from 'config';
 import logger from '../logger';
 import { getToken } from './util';
 import { asyncTimedFunction } from '../tracer';
+import cache from './modules/cache';
 
 const BASE_URL: string = `${config.get('osuApi.baseUrl')}/persons`;
+const CACHE_SEC = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
 const router: Router = Router();
 
 // Main endpoint with general data about the person
@@ -16,13 +17,21 @@ router.get('/', async (req: Request, res: Response) => {
   try {
     const bearerToken = await getToken();
     const apiResponse = (await asyncTimedFunction(
-      () =>
-        request({
-          method: 'GET',
-          url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}`,
-          auth: { bearer: bearerToken },
-          json: true
-        }),
+      () => {
+        const url = `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}`;
+        return cache.get(
+          url,
+          {
+            auth: { bearer: bearerToken },
+            json: true
+          },
+          true,
+          {
+            key: url,
+            ttlSeconds: CACHE_SEC
+          }
+        );
+      },
       'getPersons',
       []
     )) as { data: any };
@@ -38,13 +47,21 @@ router.get('/meal-plans', async (req: Request, res: Response) => {
   try {
     const bearerToken = await getToken();
     const apiResponse = (await asyncTimedFunction(
-      () =>
-        request({
-          method: 'GET',
-          url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/meal-plans`,
-          auth: { bearer: bearerToken },
-          json: true
-        }),
+      () => {
+        const url = `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/meal-plans`;
+        return cache.get(
+          url,
+          {
+            auth: { bearer: bearerToken },
+            json: true
+          },
+          true,
+          {
+            key: url,
+            ttlSeconds: CACHE_SEC
+          }
+        );
+      },
       'getMealPlans',
       []
     )) as { data: any };
@@ -60,13 +77,21 @@ router.get('/addresses', async (req: Request, res: Response) => {
   try {
     const bearerToken = await getToken();
     const apiResponse = (await asyncTimedFunction(
-      () =>
-        request({
-          method: 'GET',
-          url: `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/addresses`,
-          auth: { bearer: bearerToken },
-          json: true
-        }),
+      () => {
+        const url = `${BASE_URL}/${req.user.masqueradeId || req.user.osuId}/addresses`;
+        return cache.get(
+          url,
+          {
+            auth: { bearer: bearerToken },
+            json: true
+          },
+          true,
+          {
+            key: url,
+            ttlSeconds: CACHE_SEC
+          }
+        );
+      },
       'getAddreses',
       []
     )) as { data: any };

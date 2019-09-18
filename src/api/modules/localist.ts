@@ -1,12 +1,13 @@
-import request from 'request-promise';
 import Parser from 'rss-parser';
 import querystring from 'querystring';
 import config from 'config';
+import cache from './cache';
 
 const parser = new Parser();
 
 const LOCALIST_BASE_URL: string = config.get('localist.baseUrl');
 const ACADEMIC_CALENDAR_URL: string = config.get('localist.academicCalendarRSS');
+const CACHE_SEC = parseInt(config.get('localist.cacheEndpointSec'), 10);
 
 /**
  * Gets events from Localist.
@@ -16,7 +17,8 @@ const ACADEMIC_CALENDAR_URL: string = config.get('localist.academicCalendarRSS')
 export const getEvents = async (query: any): Promise<object[]> => {
   try {
     const urlParams = querystring.stringify(query);
-    const data = await request(`${LOCALIST_BASE_URL}/events?${urlParams}`, { json: true });
+    const url = `${LOCALIST_BASE_URL}/events?${urlParams}`;
+    const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
     if (urlParams) {
       return data.events;
     }
@@ -34,7 +36,11 @@ export const getAcademicCalendarEvents = async (): Promise<object[]> => {
   try {
     // Note: Getting academic calendar items via RSS as a workaround due to
     //       unlisted/restricted events not being visible via API.
-    const { items } = await parser.parseURL(ACADEMIC_CALENDAR_URL);
+    const xml = await cache.get(ACADEMIC_CALENDAR_URL, {}, true, {
+      key: ACADEMIC_CALENDAR_URL,
+      ttlSeconds: CACHE_SEC
+    });
+    const { items } = await parser.parseString(xml);
 
     return items;
   } catch (err) {

@@ -1,17 +1,28 @@
-import request from 'request-promise';
 import config from 'config';
 import { getToken } from '../util';
+import cache from './cache';
 
 export const BASE_URL = `${config.get('osuApi.baseUrl')}/students`;
+const CACHE_SEC = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
 
 const getJson = async (url: string) => {
+  // TODO: Can we cache this for a period of time and reuse the token reliably?
   const bearerToken = await getToken();
-  const response = await request({
-    method: 'GET',
+
+  // * Cached API call will not use the token until the time it's called
+  // * after the cache had expired.
+  const response = await cache.get(
     url,
-    auth: { bearer: bearerToken },
-    json: true
-  });
+    {
+      auth: { bearer: bearerToken },
+      json: true
+    },
+    true,
+    {
+      key: url,
+      ttlSeconds: CACHE_SEC
+    }
+  );
   return response;
 };
 
