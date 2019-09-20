@@ -164,7 +164,7 @@ export const getClassSchedule = async (
   }
 };
 
-interface Classification {
+export interface Classification {
   id: string;
   attributes: {
     level: string;
