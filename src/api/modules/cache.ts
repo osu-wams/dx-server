@@ -82,7 +82,6 @@ export const get = async (
   performCache?: boolean,
   cacheOptions?: CacheOptions
 ) => {
-  // const willCache = (performCache || false) && env !== 'test';
   const willCache = performCache || false;
   const { key, ttlSeconds } = cacheOptions || { key: url, ttlSeconds: 60 };
   if (willCache) {
