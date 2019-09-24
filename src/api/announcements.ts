@@ -12,7 +12,7 @@ import { asyncTimedFunction } from '../tracer';
 
 const router: Router = Router();
 
-interface IAnnouncementResult {
+export interface IAnnouncementResult {
   id: string;
   date: null;
   title: string;

@@ -1,17 +1,28 @@
-import request from 'request-promise';
 import config from 'config';
 import { getToken } from '../util';
+import cache from './cache';
 
 export const BASE_URL = `${config.get('osuApi.baseUrl')}/students`;
+const CACHE_SEC = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
 
 const getJson = async (url: string) => {
+  // TODO: Can we cache this for a period of time and reuse the token reliably?
   const bearerToken = await getToken();
-  const response = await request({
-    method: 'GET',
+
+  // * Cached API call will not use the token until the time it's called
+  // * after the cache had expired.
+  const response = await cache.get(
     url,
-    auth: { bearer: bearerToken },
-    json: true
-  });
+    {
+      auth: { bearer: bearerToken },
+      json: true
+    },
+    true,
+    {
+      key: url,
+      ttlSeconds: CACHE_SEC
+    }
+  );
   return response;
 };
 
@@ -125,6 +136,7 @@ interface ClassScheduleResponse {
   links: { self: string };
   data: ClassSchedule[];
 }
+
 export const getClassSchedule = async (
   user: any,
   term: any
@@ -147,6 +159,33 @@ export const getClassSchedule = async (
         id: d.id
       }))
     };
+  } catch (err) {
+    throw err;
+  }
+};
+
+export interface Classification {
+  id: string;
+  attributes: {
+    level: string;
+    classification: string;
+    campus: string;
+    status: string;
+    isInternational: boolean;
+  };
+}
+
+interface ClassificationResponse {
+  links: { self: string };
+  data: Classification;
+}
+
+export const getClassification = async (user: any): Promise<Classification> => {
+  try {
+    const response: ClassificationResponse = await getJson(
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/classification`
+    );
+    return response.data;
   } catch (err) {
     throw err;
   }

@@ -7,6 +7,8 @@ import {
   personsAddressesData,
   personsMailingAddressData
 } from '../__mocks__/persons-addresses.data';
+import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
 jest.mock('../util.ts');
 
@@ -21,6 +23,8 @@ describe('/api/persons', () => {
 
   describe('/', () => {
     it('should return person general information', async () => {
+      mockedGetResponse.mockReturnValue(personsData);
+      cache.get = mockedGet;
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/persons\/[0-9]/)
@@ -41,6 +45,8 @@ describe('/api/persons', () => {
     });
 
     it('should return "Unable to retrieve person information." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/persons\/[0-9]/)
         .reply(500);
@@ -55,6 +61,8 @@ describe('/api/persons', () => {
   // Addresses
   describe('/addresses', () => {
     it('should return the mailing address only', async () => {
+      mockedGetResponse.mockReturnValue(personsAddressesData);
+      cache.get = mockedGet;
       // Mock response from apigee
       nock(APIGEE_BASE_URL)
         .get(/persons\/[0-9]+\/addresses/)
@@ -75,6 +83,8 @@ describe('/api/persons', () => {
     });
 
     it('should return "Unable to retrieve addresses" when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/persons\/[0-9]+\/addresses/)
         .reply(500);
@@ -89,6 +99,8 @@ describe('/api/persons', () => {
   // Meal Plan Balances
   describe('/meal-plans', () => {
     it('should return meal plans', async () => {
+      mockedGetResponse.mockReturnValue({ data: { plan: 'Orange Rewards' } });
+      cache.get = mockedGet;
       // Mock response from apigee
       nock(APIGEE_BASE_URL)
         .get(/persons\/[0-9]+\/meal-plans/)
@@ -109,6 +121,8 @@ describe('/api/persons', () => {
     });
 
     it('should return "Unable to retrieve meal plans." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
       nock(APIGEE_BASE_URL)
         .get(/persons\/[0-9]+\/meal-plans/)
         .reply(500);

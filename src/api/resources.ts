@@ -8,11 +8,12 @@ import logger from '../logger';
 
 const router = Router();
 
-interface IResourceResult {
+export interface IResourceResult {
   id: string;
   title: string;
   icon?: string;
   uri: string;
+  audiences: string[];
 }
 
 interface ICategory {
@@ -36,14 +37,16 @@ const filterResults = (data: any): IResourceResult[] => {
         title,
         icon,
         field_service_url: { uri }
-      }
+      },
+      audiences
     } = item;
 
     return {
       id,
       title,
       icon,
-      uri
+      uri,
+      audiences
     };
   });
 };
