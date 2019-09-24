@@ -5,8 +5,10 @@ import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import app from '../../index';
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
-let request: supertest.SuperTest<supertest.Test>;
+jest.mock('../util.ts');
+
 const APIGEE_BASE_URL = config.get('osuApi.baseUrl');
+let request: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   request = supertest.agent(app);
 });
@@ -30,7 +32,6 @@ describe('/api/user', () => {
     };
     mockedGetResponse.mockReturnValue({ data });
     cache.get = mockedGet;
-
     nock(APIGEE_BASE_URL)
       .get(/v1\/students\/[0-9]+\/classification/)
       .reply(200, { data })
