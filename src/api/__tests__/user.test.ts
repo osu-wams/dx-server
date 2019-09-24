@@ -1,8 +1,8 @@
 import supertest from 'supertest';
-import app from '../../index';
+import nock from 'nock';
 import config from 'config';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
-import nock from 'nock';
+import app from '../../index';
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
 let request: supertest.SuperTest<supertest.Test>;
