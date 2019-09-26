@@ -134,8 +134,8 @@ describe('/resources', () => {
     it('should contain an icon when one exists', async () => {
       const data = [
         {
-          id: '1b9b7a4b-5a64-41af-a40a-8bb01abedd19',
-          name: 'Popular',
+          id: '6b7cd598-d71e-45f7-911c-d71551ec0a7c',
+          name: 'Featured',
           icon: `${dxApiBaseUrl}/sites/default/files/2019-05/star.svg`
         }
       ];

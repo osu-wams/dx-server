@@ -138,9 +138,9 @@ export const categoriesData = {
   data: [
     {
       type: 'taxonomy_term--categories',
-      id: '1b9b7a4b-5a64-41af-a40a-8bb01abedd19',
+      id: '6b7cd598-d71e-45f7-911c-d71551ec0a7c',
       attributes: {
-        name: 'Popular',
+        name: 'Featured',
         icon: 'e7cda0c1-fbb3-4773-a1d0-3dabae8113a6'
       },
       relationships: {
