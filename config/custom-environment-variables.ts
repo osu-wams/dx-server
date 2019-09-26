@@ -1,6 +1,7 @@
 export default {
   logLevel: 'LOGLEVEL',
   apiKeys: 'API_KEYS',
+  appVersion: 'APP_VERSION',
   dxApi: {
     cacheEndpointSec: 'DX_API_CACHE_ENDPOINT_SEC',
     baseUrl: 'DX_API_BASE_URL',

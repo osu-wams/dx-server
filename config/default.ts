@@ -1,6 +1,7 @@
 export default {
   env: process.env.NODE_ENV || 'development',
   logLevel: 'debug',
+  appVersion: process.env.APP_VERSION || 'development',
   /**
    * API_KEYS is stringified json for keys and if they have admin access
    ** eg. '[{"key":"somekey", "isAdmin": true}]'

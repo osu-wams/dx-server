@@ -12,6 +12,8 @@ import ApiRouter from './api';
 import { findOrCreateUser, updateOAuthData } from './api/modules/user-account';
 import { getOAuthToken } from './api/modules/canvas';
 
+const appVersion = config.get('appVersion');
+
 const RedisStore = redis(session);
 // const ENV = config.get('env');
 
@@ -45,7 +47,7 @@ const sessionOptions: SessionOptions = {
   }
 };
 
-logger.info(`Server started with ENV=${config.get('env')}`);
+logger.info(`Server started with ENV=${config.get('env')}, VERSION=${appVersion}`);
 
 if (config.get('env') === 'production') {
   sessionOptions.store = new RedisStore({
@@ -72,7 +74,9 @@ app.get('/logout', Auth.logout);
 // Health Check (path configured in cloudformation template)
 app.get('/healthcheck', (req, res) => {
   logger.debug('Health Check Request');
-  res.status(200).end();
+  res.send({
+    version: appVersion
+  });
 });
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
