@@ -24,4 +24,8 @@ EXPOSE 4000
 # Default to production unless NODE_ENV is specified
 ENV NODE_ENV=${NODE_ENV:-production}
 
+# Default to development unless APP_VERSION is specified
+ARG APP_VERSION=development
+ENV APP_VERSION=$APP_VERSION
+
 CMD [ "sh", "-c", "pm2-runtime start pm2.config.js --env ${NODE_ENV}" ]
