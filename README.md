@@ -50,6 +50,8 @@ Capture cookies send from the server and use cookies provided by the server happ
 
 ## First, login using an API key
 
+**A valid DX users `osuId` must be provided along with a valid API key (find this in the dx-infrastructure configurations or the ENV in the server service in ECS).**
+
     curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/login?osuId=#########&key=########
 
 ## Then, reset all user sessions?
