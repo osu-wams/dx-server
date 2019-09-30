@@ -20,7 +20,7 @@ export default {
   canvasApi: {
     cacheEndpointSec: process.env.CANVAS_API_CACHE_ENDPOINT_SEC || '86400',
     token: process.env.CANVAS_API_TOKEN || '',
-    baseUrl: process.env.CANVAS_API_BASE_URL || 'https://oregonstate.test.instructure.com/api/v1'
+    baseUrl: process.env.CANVAS_API_BASE_URL || 'https://oregonstate.beta.instructure.com/api/v1'
   },
   canvasOauth: {
     id: process.env.CANVAS_OAUTH_ID || '',
