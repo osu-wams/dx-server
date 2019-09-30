@@ -37,3 +37,23 @@ In a separate terminal window run:
 
 - Copy `.env.example` to `.env` and change NODE_ENV to production
 - Execute `docker-compose up`
+
+# Admin Functions
+
+Key based authentication exists to facilitate automation and to enable administrative
+tooling for performing functions that aren't otherwise exposed through the front-end. An
+approach to performing these functions is to use `curl` to login and call subsequent actions.
+
+Capture cookies send from the server and use cookies provided by the server happens when a `-b` and `-c` parameter is included with the `curl` command.
+
+`curl -b cookie.txt -c cookie.txt ...`
+
+## First, login using an API key
+
+**A valid DX users `osuId` must be provided along with a valid API key (find this in the dx-infrastructure configurations or the ENV in the server service in ECS).**
+
+    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/login?osuId=#########&key=########
+
+## Then, reset all user sessions?
+
+    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/reset-sessions

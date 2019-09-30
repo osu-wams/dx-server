@@ -114,18 +114,27 @@ Auth.oAuth2Strategy = new OAuthStrategy(
   }
 );
 
-Auth.localStrategy = new LocalStrategy({}, async (username, password, done) => {
-  // verify the username is a valid user, and the password is the API key
-  const apiKey = apiKeys.filter(k => k.key !== '').find(k => k.key === password);
-  if (apiKey) {
-    const user = await User.find(parseInt(username, 10));
-    if (!user) return done(null, false);
+Auth.localStrategy = new LocalStrategy(
+  {
+    usernameField: 'osuId',
+    passwordField: 'key'
+  },
+  async (osuId, key, done) => {
+    // verify the username is a valid user, and the password is the API key
+    logger.debug(`API key authentication attempted with osuId:${osuId} and key:${key}`);
+    const apiKey = apiKeys.filter(k => k.key !== '').find(k => k.key === key);
+    if (apiKey) {
+      logger.debug(`API key found: ${apiKey}`);
+      const user = await User.find(parseInt(osuId, 10));
+      if (!user) logger.debug('API user not found, returning unauthenticated.');
+      if (!user) return done(null, false);
 
-    user.isAdmin = apiKey.isAdmin;
-    return done(null, user);
+      user.isAdmin = apiKey.isAdmin;
+      return done(null, user);
+    }
+    return done(null, false);
   }
-  return done(null, false);
-});
+);
 
 Auth.serializeUser = (user, done) => {
   done(null, user);
@@ -137,6 +146,7 @@ Auth.deserializeUser = (user, done) => {
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
   return passport.authenticate(['local', 'saml'], (err, user) => {
+    logger.debug(`User authenticated: ${user.osuId}`);
     if (err) {
       return next(err);
     }
