@@ -26,7 +26,7 @@ export default {
     id: process.env.CANVAS_OAUTH_ID || '',
     secret: process.env.CANVAS_OAUTH_SECRET || '',
     callbackUrl: process.env.CANVAS_OAUTH_CALLBACK || '',
-    baseUrl: process.env.CANVAS_OAUTH_BASE_URL || 'https://oregonstate.test.instructure.com',
+    baseUrl: process.env.CANVAS_OAUTH_BASE_URL || 'https://oregonstate.beta.instructure.com',
     authUrl: process.env.CANVAS_OAUTH_URL || '/login/oauth2/auth',
     tokenUrl: process.env.CANVAS_OAUTH_TOKEN_URL || '/login/oauth2/token'
   },

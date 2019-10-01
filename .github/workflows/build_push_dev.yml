@@ -1,0 +1,74 @@
+name: Build and Push Server Application to AWS DEVELOPMENT
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn install, lint, test
+        run: |
+          yarn install --frozen-lockfile
+          yarn run lint
+          yarn run test:coverage -w 1
+        env:
+          CI: true
+          NODE_ENV: test
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: report code coverage
+        run: npx codecov@3
+        if: matrix.node-version == '10.x'
+        env:
+          CI: true
+          NODE_ENV: test
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Login to AWS
+        run: $(aws ecr get-login --region ${{ secrets.AWS_REGION }} --no-include-email)
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Build and push Docker Image
+        run: |
+          build_date=$(date +%Y%m%d%H%M%S)
+          git_sha=$(git rev-parse --short ${{ github.sha }})
+          app_version=$(expr ${build_date}-${git_sha})
+          expr ${app_version} > app_version
+          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version}
+          docker tag dx:${app_version} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Update task definition to new server image on DEVELOPMENT cluster
+        run: |
+          app_version=`cat app_version`
+          ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}"
+          task_definition=$(aws ecs describe-task-definition --task-definition "osu-dx-development-ecs-task" --region ${{ secrets.AWS_REGION }})
+          new_task_definition=$(echo ${task_definition} | jq --arg IMAGE "${ecr_image}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities)')
+          new_task_info=$(aws ecs register-task-definition --region ${{ secrets.AWS_REGION }} --cli-input-json "${new_task_definition}")
+          new_revision=$(echo ${new_task_info} | jq '.taskDefinition.revision')
+          aws ecs update-service --cluster osu-dx-development-cluster --service osu-dx-development-service --task-definition osu-dx-development-ecs-task:${new_revision}
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
