@@ -12,17 +12,19 @@ config:
     skipHeader: true
   environments:
     development:
-      target: http://api.dev
+      target: https://dev.my.oregonstate.edu
+    stage:
+      target: http://stage.my.oregonstate.edu
     production:
-      target: http://api.prod
+      target: http://prod.my.oregonstate.edu
   variables:
-    username: '{{ $processEnvironment.ARTILLERY_API_USER }}'
-    password: '{{ $processEnvironment.ARTILLERY_API_PASSWORD }}'
+    osuId: '{{ $processEnvironment.ARTILLERY_API_OSUID }}'
+    key: '{{ $processEnvironment.ARTILLERY_API_KEY }}'
 scenarios:
   - name: As a student, visit the Home page
     flow:
       - get:
-          url: '/login?username={{ username }}&password={{ password }}'
+          url: '/login?osuId={{ osuId }}&key={{ key }}'
       - post:
           url: /api/masquerade
           json:
@@ -52,7 +54,7 @@ scenarios:
   - name: As a student, visit the Academics Dashboard page
     flow:
       - get:
-          url: '/login?username={{ username }}&password={{ password }}'
+          url: '/login?osuId={{ osuId }}&key={{ key }}'
       - post:
           url: /api/masquerade
           json:
@@ -80,7 +82,7 @@ scenarios:
   - name: As a student, visit the Academics Academic History page
     flow:
       - get:
-          url: '/login?username={{ username }}&password={{ password }}'
+          url: '/login?osuId={{ osuId }}&key={{ key }}'
       - post:
           url: /api/masquerade
           json:
@@ -92,7 +94,7 @@ scenarios:
   - name: As a student, visit the Resources page
     flow:
       - get:
-          url: '/login?username={{ username }}&password={{ password }}'
+          url: '/login?osuId={{ osuId }}&key={{ key }}'
       - post:
           url: /api/masquerade
           json:
