@@ -27,16 +27,17 @@ _This step is only required the first time you start development and/or if you w
 
     $ yarn exec ts-node src/db/scripts/create_users_table.ts
 
-### Run the server
+### Run the server in Development mode (no CAS authentication)
 
 In a separate terminal window run:
 
     $ yarn start
 
-## OAuth Testing (Running locally in Production)
+### Run the server in Production mode (including CAS authentication)
 
-- Copy `.env.example` to `.env` and change NODE_ENV to production
-- Execute `docker-compose up`
+In a separate terminal window run:
+
+    $ yarn prod
 
 # Admin Functions
 

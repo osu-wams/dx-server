@@ -1,0 +1,31 @@
+@baseUrl = https://oregonstateuniversity-dev.apigee.net
+@client_id = {{$processEnv OSU_API_CLIENT_ID}}
+@client_secret = {{$processEnv OSU_API_CLIENT_SECRET}}
+
+# Temporarily set a valid OSU ID to use for testing the API endpoints
+# !!! DO NOT COMMIT CHANGES TO THE FOLLOWING LINE !!!
+@osuId = 111111111
+
+# @name getToken
+POST {{baseUrl}}/oauth2/token HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{client_id}}
+&client_secret={{client_secret}}
+&grant_type=client_credentials
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getGpa
+GET {{baseUrl}}/v1/students/{{osuId}}/gpa HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getAcademicStatus
+GET {{baseUrl}}/v1/students/{{osuId}}/academic-status HTTP/1.1
+Authorization: Bearer {{token}}
+
+

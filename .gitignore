@@ -11,4 +11,4 @@ config/local.ts
 dist/
 .env
 docker-compose.override.yml
-osuIds.csv
+*osuIds.csv
