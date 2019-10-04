@@ -16,13 +16,14 @@ const CACHE_SEC = parseInt(config.get('localist.cacheEndpointSec'), 10);
  */
 export const getEvents = async (query: any): Promise<object[]> => {
   try {
-    const urlParams = querystring.stringify(query);
+    // Ensure that a today `YYYY-MM-DD` is included in the query parameters for localist
+    const urlParams = querystring.stringify({
+      ...query,
+      start: new Date().toISOString().substr(0, 10)
+    });
     const url = `${LOCALIST_BASE_URL}/events?${urlParams}`;
     const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
-    if (urlParams) {
-      return data.events;
-    }
-    return data;
+    return data.events;
   } catch (err) {
     throw err;
   }

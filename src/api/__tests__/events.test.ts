@@ -11,15 +11,15 @@ const request = supertest.agent(app);
 
 describe('/events', () => {
   it('should return events when one is present', async () => {
-    mockedGetResponse.mockReturnValue({ eventsData });
+    mockedGetResponse.mockReturnValue({ events: eventsData });
     cache.get = mockedGet;
     // Mock response from Localist
     nock(LOCALIST_BASE_URL, { encodedQueryParams: true })
-      .get(/.*/)
+      .get('api/2/events')
       .query(true)
-      .reply(200, { eventsData });
+      .reply(200, { events: eventsData });
 
-    await request.get('/api/events').expect(200, { eventsData });
+    await request.get('/api/events').expect(200, eventsData);
   });
 
   it('should return "Unable to retrieve events." when there is a 500 error', async () => {
