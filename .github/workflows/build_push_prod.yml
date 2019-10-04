@@ -66,7 +66,7 @@ jobs:
           aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_PRODUCTION_PARAMETERS_FILE }} - | jq -r --arg ECR_IMAGE "$ecr_image" 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE} else . end)' > ${{ secrets.CLOUDFORMATION_PRODUCTION_PARAMETERS_FILE }}
           # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3
           aws s3 cp ${{ secrets.CLOUDFORMATION_PRODUCTION_PARAMETERS_FILE }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_PRODUCTION_PARAMETERS_FILE }}
-          aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_PRODUCTION_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters ${{ secrets.CLOUDFORMATION_PRODUCTION_PARAMETERS_FILE }}
+          aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_PRODUCTION_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/${{ secrets.CLOUDFORMATION_PRODUCTION_PARAMETERS_FILE }}
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
