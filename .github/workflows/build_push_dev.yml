@@ -62,11 +62,11 @@ jobs:
         run: |
           app_version=`cat app_version`
           ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}"
-          task_definition=$(aws ecs describe-task-definition --task-definition "osu-dx-development-ecs-task" --region ${{ secrets.AWS_REGION }})
-          new_task_definition=$(echo ${task_definition} | jq --arg IMAGE "${ecr_image}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities)')
-          new_task_info=$(aws ecs register-task-definition --region ${{ secrets.AWS_REGION }} --cli-input-json "${new_task_definition}")
-          new_revision=$(echo ${new_task_info} | jq '.taskDefinition.revision')
-          aws ecs update-service --cluster osu-dx-development-cluster --service osu-dx-development-service --task-definition osu-dx-development-ecs-task:${new_revision}
+          aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS }} ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS }}
+          cat ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS }} | jq 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": "$(ecr_image)"} else . end)' > ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS }}
+          aws s3 cp ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS }}
+          PARAMETERS=$(cat ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS }})
+          aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters $PARAMETERS
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
