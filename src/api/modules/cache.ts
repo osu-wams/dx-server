@@ -20,6 +20,18 @@ const client = redis.createClient(opts);
 /**
  * ! Manual Promise rather than Bluebird or utils.promisify, both failed to do the right thing with
  * ! typescript..sadly. Old school Promise comes through as the winner.
+ */
+export const flushDbAsync = async (): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    client.flushdb((err, reply) => {
+      if (err) reject(err);
+      resolve(reply);
+    });
+  });
+};
+/**
+ * ! Manual Promise rather than Bluebird or utils.promisify, both failed to do the right thing with
+ * ! typescript..sadly. Old school Promise comes through as the winner.
  * @param key the cache key name
  */
 export const getAsync = async (key: string): Promise<string> => {
@@ -103,4 +115,12 @@ export const get = async (
   return response;
 };
 
-export default { get, getAsync, setAsync };
+/**
+ * Flushes the cache database
+ */
+export const flushDb = async (): Promise<boolean> => {
+  const reply = await flushDbAsync();
+  return reply.toLowerCase() === 'ok';
+};
+
+export default { get, flushDb, getAsync, setAsync, flushDbAsync };

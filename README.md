@@ -55,6 +55,14 @@ Capture cookies send from the server and use cookies provided by the server happ
 
     curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/login?osuId=#########&key=########
 
+## Then, reset all API caches?
+
+This feature will clear all of the external API caches in the case that some data changes need to flow out to the front-end ASAP.
+
+    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/reset-api-cache
+
 ## Then, reset all user sessions?
+
+This feature is intended to be used infrequently and will cause all users to have to "opt-in" to Canvas OAuth.. **use sparingly!**
 
     curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/reset-sessions
