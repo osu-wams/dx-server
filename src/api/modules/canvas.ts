@@ -70,7 +70,7 @@ export const performRefresh = async (u: User): Promise<User> => {
   } catch (err) {
     logger.error('canvas.performRefresh token error:', err);
     // Refresh token is no longer valid and we must update the database
-    await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: '' } });
+    await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: null } });
     user.canvasOauthToken = null;
     user.canvasOauthExpire = null;
     user.isCanvasOptIn = false;
