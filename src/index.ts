@@ -103,7 +103,16 @@ app.get('/logout/saml', (req, res) => {
 app.get('/canvas/login', passport.authorize('oauth2'));
 app.get(
   '/canvas/auth',
-  passport.authorize('oauth2', { failureRedirect: '/' }),
+  async (req: any, res: Response, next: NextFunction) => {
+    if (req.query.error) {
+      await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
+      req.user.isCanvasOptIn = false;
+      res.redirect('/');
+    } else {
+      next();
+    }
+  },
+  passport.authorize('oauth2'),
   async (req: any, res: Response) => {
     const { account } = req;
     await updateOAuthData(req.user, { account, isCanvasOptIn: true });
