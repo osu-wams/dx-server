@@ -292,7 +292,7 @@ export const getResources = async (query: any): Promise<IResourceResult[] | any[
       const categories = query.category.split(',');
       requestUrl += `&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND`;
       for (let i = 0; i < categories.length; i += 1) {
-        requestUrl += `&filter[${categories[i]}][condition][path]=field_service_category.id`;
+        requestUrl += `&filter[${categories[i]}][condition][path]=field_service_category.name`;
         requestUrl += `&filter[${categories[i]}][condition][value]=${categories[i]}`;
         if (i === 0) {
           requestUrl += `&filter[${categories[i]}][condition][memberOf]=and-group`;
