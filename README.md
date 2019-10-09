@@ -63,6 +63,6 @@ This feature will clear all of the external API caches in the case that some dat
 
 ## Then, reset all user sessions?
 
-This feature is intended to be used infrequently and will cause all users to have to "opt-in" to Canvas OAuth.. **use sparingly!**
+This feature is intended to be used infrequently and will cause all users to have to "opt-in" to Canvas OAuth. **use sparingly!**
 
     curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/reset-sessions
