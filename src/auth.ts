@@ -9,6 +9,7 @@ import config from 'config';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 import { getOAuthToken } from './api/modules/canvas';
 import logger from './logger';
+import { returnUrl } from './utils/routing';
 
 interface Auth {
   passportStrategy?: any;
@@ -145,6 +146,10 @@ Auth.deserializeUser = (user, done) => {
 };
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
+  if (req.query) {
+    if (req.query.returnTo) req.session.returnUrl = req.query.returnTo;
+  }
+
   return passport.authenticate(['local', 'saml'], (err, user) => {
     logger.debug(`User authenticated: ${user.osuId}`);
     if (err) {
@@ -160,7 +165,9 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
       if (innerErr) {
         return next(innerErr);
       }
-      res.redirect('/');
+      const returnTo = returnUrl(req);
+      logger.debug(`Auth.login redirecting to: ${returnTo}`);
+      res.redirect(returnTo);
     });
   })(req, res, next);
 };
@@ -208,12 +215,7 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
  */
 Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
-  if (!user.isCanvasOptIn || !user.refreshToken) {
-    logger.debug(
-      'Auth.hasValidCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
-      user
-    );
-  } else {
+  if (user.isCanvasOptIn && user.refreshToken) {
     if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
       logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user);
       const updatedUser = await getOAuthToken(user);
@@ -222,7 +224,12 @@ Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: Next
     }
     return next();
   }
-  return res.status(401).send('User must opt-in to Canvas login');
+  logger.debug(
+    'Auth.hasValidCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
+    user
+  );
+  // Return 403 so the front-end knows to react to the change in users canvas opt-in
+  return res.status(403).send('User must opt-in to Canvas login');
 };
 
 export default Auth;

@@ -16,6 +16,7 @@ import {
   getHolds
 } from './modules/osu';
 import { asyncTimedFunction } from '../tracer';
+import { updateOAuthData } from './modules/user-account'; // eslint-disable-line no-unused-vars
 
 const router = Router();
 
@@ -45,8 +46,22 @@ router.get(
       }
       res.send(plannerApiResponse);
     } catch (err) {
-      logger.error('api/student/planner-items failed:', err);
-      res.status(500).send('Unable to retrieve planner items.');
+      if (err.response.statusCode === 401) {
+        logger.error(
+          'api/student/planner-items user with valid canvas refresh token found to have an invalid access token, this seems to indicate that they have opted-out of DX OAuth from the Canvas interface. Resetting users opt-in status.'
+        );
+        await asyncTimedFunction(updateOAuthData, 'updateOAuthData', [
+          req.user,
+          { isCanvasOptIn: false, account: { refreshToken: null } }
+        ]);
+        req.user.canvasOauthToken = null;
+        req.user.canvasOauthExpire = null;
+        req.user.isCanvasOptIn = false;
+        res.status(403).send('Reset users canvas opt-in status.');
+      } else {
+        logger.error('api/student/planner-items failed:', err);
+        res.status(500).send('Unable to retrieve planner items.');
+      }
     }
   }
 );
