@@ -146,9 +146,7 @@ Auth.deserializeUser = (user, done) => {
 };
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
-  if (req.query) {
-    if (req.query.returnTo) req.session.returnUrl = req.query.returnTo;
-  }
+  if (req.query!.returnTo!) req.session.returnUrl = req.query.returnTo;
 
   return passport.authenticate(['local', 'saml'], (err, user) => {
     logger.debug(`User authenticated: ${user.osuId}`);
