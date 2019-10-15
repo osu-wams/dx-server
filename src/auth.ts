@@ -6,6 +6,7 @@ import { Strategy as OAuthStrategy } from 'passport-oauth2';
 import { Strategy as LocalStrategy } from 'passport-local';
 import DevStrategy from 'passport-dev';
 import config from 'config';
+import MockStrategy from './utils/mock-strategy';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 import { getOAuthToken } from './api/modules/canvas';
 import logger from './logger';
@@ -65,34 +66,41 @@ function parseSamlResult(profile: any, done: any) {
   return done(null, user);
 }
 
-if (ENV === 'production') {
-  Auth.passportStrategy = new SamlStrategy(
-    {
-      acceptedClockSkewMs: 500,
-      disableRequestedAuthnContext: true,
-      identifierFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
-      callbackUrl: SAML_CALLBACK_URL,
-      logoutUrl: samlLogout,
-      logoutCallbackUrl: SAML_LOGOUT_CALLBACK_URL,
-      entryPoint: `${samlUrl}SAML2/Redirect/SSO`,
-      issuer: 'https://my.oregonstate.edu',
-      cert: SAML_CERT,
-      privateCert: SAML_PVK,
-      decryptionPvk: SAML_PVK,
-      signatureAlgorithm: 'sha256'
-    },
-    parseSamlResult
-  );
-} else {
-  // Configure Dev Strategy
-  Auth.passportStrategy = new DevStrategy('saml', {
-    email: 'fake-email@oregonstate.edu',
-    firstName: 'Test',
-    lastName: 'User',
-    permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
-    osuId: 111111111,
-    isAdmin: true
-  });
+switch (ENV) {
+  case 'stage':
+  case 'production':
+    Auth.passportStrategy = new SamlStrategy(
+      {
+        acceptedClockSkewMs: 500,
+        disableRequestedAuthnContext: true,
+        identifierFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
+        callbackUrl: SAML_CALLBACK_URL,
+        logoutUrl: samlLogout,
+        logoutCallbackUrl: SAML_LOGOUT_CALLBACK_URL,
+        entryPoint: `${samlUrl}SAML2/Redirect/SSO`,
+        issuer: 'https://my.oregonstate.edu',
+        cert: SAML_CERT,
+        privateCert: SAML_PVK,
+        decryptionPvk: SAML_PVK,
+        signatureAlgorithm: 'sha256'
+      },
+      parseSamlResult
+    );
+    break;
+  case 'development':
+    // Configure Dev Strategy
+    Auth.passportStrategy = new DevStrategy('saml', {
+      email: 'fake-email@oregonstate.edu',
+      firstName: 'Test',
+      lastName: 'User',
+      permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
+      osuId: 111111111,
+      isAdmin: true
+    });
+    break;
+  default:
+    Auth.passportStrategy = new MockStrategy('saml');
+    break;
 }
 
 Auth.oAuth2Strategy = new OAuthStrategy(
@@ -214,7 +222,7 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
 Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
   if (user.isCanvasOptIn && user.refreshToken) {
-    if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
+    if (user.canvasOauthExpire === 0 || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
       logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user);
       const updatedUser = await getOAuthToken(user);
       req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;
