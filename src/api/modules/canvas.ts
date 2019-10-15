@@ -22,11 +22,11 @@ export interface UpcomingAssignment {
  */
 export const getPlannerItemsMask = async (osuId: number): Promise<UpcomingAssignment[]> => {
   const today = format(Date.now(), 'YYYY-MM-DD');
-  return request({
-    method: 'GET',
-    url: `${CANVAS_BASE_URL}/planner/items?as_user_id=sis_user_id:${osuId}&start_date=${today}`,
-    auth: { bearer: CANVAS_TOKEN }
-  }).promise();
+  return request
+    .get(`${CANVAS_BASE_URL}/planner/items?as_user_id=sis_user_id:${osuId}&start_date=${today}`, {
+      auth: { bearer: CANVAS_TOKEN }
+    })
+    .promise();
 };
 
 /**
@@ -35,11 +35,11 @@ export const getPlannerItemsMask = async (osuId: number): Promise<UpcomingAssign
  */
 export const getPlannerItemsOAuth = async (accessToken: string): Promise<UpcomingAssignment[]> => {
   const today = format(Date.now(), 'YYYY-MM-DD');
-  return request({
-    method: 'GET',
-    url: `${CANVAS_BASE_URL}/planner/items?start_date=${today}`,
-    auth: { bearer: accessToken }
-  }).promise();
+  return request
+    .get(`${CANVAS_BASE_URL}/planner/items?start_date=${today}`, {
+      auth: { bearer: accessToken }
+    })
+    .promise();
 };
 
 /**
