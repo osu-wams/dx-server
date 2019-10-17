@@ -99,8 +99,6 @@ function bannerTaxonomyMapping (taxonomy_name: string) {
   map['Graduate'] = 'mapped_graduate'
   map['International'] = 'mapped_international'
 
-  console.log('999 --', map['boop'])
-
   if (typeof map[taxonomy_name] !== 'undefined') {
     console.log(`Mapping found for: ${taxonomy_name}`)
     return map[taxonomy_name]
@@ -127,8 +125,6 @@ const getAnnouncementData = async (url: string): Promise<any[]> => {
     }
   })
 
-  
-
   if (included) {
 
     included.forEach((item: any) => {
@@ -151,8 +147,6 @@ const getAnnouncementData = async (url: string): Promise<any[]> => {
       }
     });
   }
-
-  console.log('rawr',data[0].relationships.field_campus.data);
 
   return data;
 };

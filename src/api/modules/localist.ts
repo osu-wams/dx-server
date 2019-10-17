@@ -17,7 +17,10 @@ const CACHE_SEC = parseInt(config.get('localist.cacheEndpointSec'), 10);
 export const getEvents = async (query: any): Promise<object[]> => {
   try {
     const urlParams = querystring.stringify(query);
-    const url = `${LOCALIST_BASE_URL}/events?${urlParams}`;
+    // const url = `${LOCALIST_BASE_URL}/events?${urlParams}`;
+    const url = `${LOCALIST_BASE_URL}/events/search?search=dxfa&days=30`
+
+    // https://events.oregonstate.edu/api/2/events/search?search=dxfa&days=30
     const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
     if (urlParams) {
       return data.events;
@@ -27,6 +30,21 @@ export const getEvents = async (query: any): Promise<object[]> => {
     throw err;
   }
 };
+
+export const getBendEvents = async (query: any): Promise<object[]> => {
+  try {
+    const urlParams = querystring.stringify(query); // not being used atm
+    const url = `${LOCALIST_BASE_URL}/events?campus_id=273&days=30`
+    const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
+    if (urlParams) {
+      return data.events;
+    }
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+ 
 
 /**
  * Gets academic calendar events from Localist.
