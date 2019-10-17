@@ -4,11 +4,13 @@ import config from 'config';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import cache from './cache';
+import { fdatasync } from 'fs';
+import { arrayExpression } from '@babel/types';
 
 export const BASE_URL = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
 export const INCLUDES =
-  'include=field_announcement_image,field_announcement_image.field_media_image';
+  'include=field_announcement_image,field_announcement_image.field_media_image,field_campus';
 export const ANNOUNCEMENTS_URL = `${BASE_URL}/jsonapi/node/announcement?${INCLUDES}&sort=-created`;
 export const QUEUE_URL = `${BASE_URL}/jsonapi/entity_subqueue/announcements`;
 export const RESOURCES_URL = `${BASE_URL}/jsonapi/node/services?include=field_service_category,field_icon.field_media_image`;
@@ -37,17 +39,20 @@ export interface Audience {
  * @param url the API endpoint to query
  * @param otherParams the API options to include in the request
  */
+
 const retrieveData = async (
   url: string,
   otherParams: request.RequestPromiseOptions
 ): Promise<{ data: any[]; included: any[] }> => {
-  const { data, included, links } = await cache.get(url, otherParams, true, {
+  const { data = [], included = [], links } = await cache.get(url, otherParams, true, {
     key: url,
     ttlSeconds: CACHE_SEC
   });
-  if (links === undefined || links.next === undefined) return { data, included };
 
+  // Checking to see if pagination is necessary, if not return early
+  if (links === undefined || links.next === undefined) return { data, included };
   let nextUrl = links.next.href;
+
   while (nextUrl !== undefined) {
     /* eslint-disable no-await-in-loop */
     const results = await cache.get(nextUrl, otherParams, true, {
@@ -55,19 +60,79 @@ const retrieveData = async (
       ttlSeconds: CACHE_SEC
     });
     /* eslint-enable no-await-in-loop */
-
     nextUrl = undefined;
+
     if (results.links.next !== undefined) nextUrl = results.links.next.href;
-    if (data !== undefined) data.push(...results.data);
-    if (included !== undefined) included.push(...results.included);
+    if (results.data !== undefined) data.push(...results.data);
+    if (results.included !== undefined) included.push(...results.included);
   }
   return { data, included };
 };
 
+// const getCampusNameForId
+
+function buildAudienceMapping (includedArray: any[]) {
+  let audienceArray: any[] = [];
+
+  includedArray.forEach((item: any) => {
+    let audienceId;
+    let audienceName;
+    if (item.type && item.type === 'taxonomy_term--audience') {
+      console.log('item -- ', item)
+      audienceId = item.id;
+      audienceName = item.attributes.name;
+      audienceArray[audienceId] = audienceName;
+      // audienceArray.push({id: audienceId, name: audienceName})
+      // console.log('audienceArray', audienceArray)
+    }
+  });
+
+  return audienceArray;
+}
+
+function bannerTaxonomyMapping (taxonomy_name: string) {
+  let map: any[] = []
+  map['Bend'] = 'Oregon State - Cascades'
+  map['Corvallis'] = 'Oregon State - Corvallis'
+  map['Ecampus'] = 'mapped_ecampus'
+  map['First Year'] = 'mapped_first_year'
+  map['Graduate'] = 'mapped_graduate'
+  map['International'] = 'mapped_international'
+
+  console.log('999 --', map['boop'])
+
+  if (typeof map[taxonomy_name] !== 'undefined') {
+    console.log(`Mapping found for: ${taxonomy_name}`)
+    return map[taxonomy_name]
+  }
+  console.log(`No mapping found for: ${taxonomy_name}`)
+  return taxonomy_name
+}
+
+
 const getAnnouncementData = async (url: string): Promise<any[]> => {
   const { data, included } = await retrieveData(url, { json: true });
+
+  // modifying the data to include a long name for the audience, comes from drupal backend
+  const audienceMapping = buildAudienceMapping(included);
+
+  data.forEach((data: any) => {
+    if (data.relationships!.field_campus) {
+      const fdata = data.relationships.field_campus.data;
+      fdata.forEach((aData: any) =>{
+        const dataId = aData.id
+        console.log(`id:${audienceMapping[dataId]}`)
+        aData.full_name = bannerTaxonomyMapping(audienceMapping[dataId]) 
+      })
+    }
+  })
+
+  
+
   if (included) {
+
     included.forEach((item: any) => {
+      
       const matchingAnnouncement = data.find((e: any) => {
         return (
           e.relationships.field_announcement_image.data &&
@@ -86,6 +151,9 @@ const getAnnouncementData = async (url: string): Promise<any[]> => {
       }
     });
   }
+
+  console.log('rawr',data[0].relationships.field_campus.data);
+
   return data;
 };
 
