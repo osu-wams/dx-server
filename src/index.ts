@@ -11,6 +11,7 @@ import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
 import { findOrCreateUser, updateOAuthData } from './api/modules/user-account';
 import { getOAuthToken } from './api/modules/canvas';
+import { returnUrl } from './utils/routing';
 
 const appVersion = config.get('appVersion');
 
@@ -91,7 +92,9 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
   } else if (user.isCanvasOptIn) {
     res.redirect('/canvas/refresh');
   } else {
-    res.redirect('/');
+    const returnTo = returnUrl(req);
+    logger.debug(`/login/saml redirecting to: ${returnTo}`);
+    res.redirect(returnTo);
   }
 });
 
@@ -107,7 +110,9 @@ app.get(
     if (req.query.error) {
       await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
       req.user.isCanvasOptIn = false;
-      res.redirect('/');
+      const returnTo = returnUrl(req);
+      logger.debug(`/canvas/auth error in OAuth redirecting to: ${returnTo}`);
+      res.redirect(returnTo);
     } else {
       next();
     }
@@ -120,12 +125,16 @@ app.get(
     req.user.canvasOauthExpire = Math.floor(Date.now() / 1000) + parseInt(account.expireTime, 10);
     req.user.isCanvasOptIn = true;
     req.user.refreshToken = account.refreshToken;
-    res.redirect('/');
+    const returnTo = returnUrl(req);
+    logger.debug(`/canvas/auth redirecting to: ${returnTo}`);
+    res.redirect(returnTo);
   }
 );
 app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
   req.user = await getOAuthToken(req.user);
-  res.redirect('/');
+  const returnTo = returnUrl(req);
+  logger.debug(`/canvas/refresh redirecting to: ${returnTo}`);
+  res.redirect(returnTo);
 });
 
 app.use('/api', ApiRouter);
