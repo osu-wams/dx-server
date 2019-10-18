@@ -14,9 +14,12 @@ config:
     development:
       target: https://dev.my.oregonstate.edu
     stage:
-      target: http://stage.my.oregonstate.edu
+      target: https://stage.my.oregonstate.edu
     production:
-      target: http://prod.my.oregonstate.edu
+      target: https://prod.my.oregonstate.edu
+      phases:
+        - duration: 300
+          arrivalRate: 5
   variables:
     osuId: '{{ $processEnvironment.ARTILLERY_API_OSUID }}'
     key: '{{ $processEnvironment.ARTILLERY_API_KEY }}'
