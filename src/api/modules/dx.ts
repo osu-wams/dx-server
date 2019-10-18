@@ -4,6 +4,7 @@ import config from 'config';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import cache from './cache';
+
 export const BASE_URL = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
 export const INCLUDES =
@@ -70,7 +71,7 @@ const retrieveData = async (
  * @param includedArray 
  */
 function buildAudienceMapping (includedArray: any[]) {
-  let audienceArray: any[] = [];
+  const audienceArray: any[] = [];
   includedArray.forEach((item: any) => {
     let audienceId;
     let audienceName;
@@ -90,20 +91,23 @@ function buildAudienceMapping (includedArray: any[]) {
  * If the string doesn't match up, usually because someone changed a value in drupal, it simply
  * returns the strong back to the user.
  * 
- * @param taxonomy_name 
+ * @param taxonomyName 
  */
-function bannerTaxonomyMapping (taxonomy_name: string) {
-  let map: any[] = []
+function bannerTaxonomyMapping (taxonomyName: string) {
+
+  // Not using dot-notation on purpose. It doesn't handle spaces and I didn't want to change the data in drupal
+  const map: any = {}
   map['Bend'] = 'Oregon State - Cascades'
   map['Corvallis'] = 'Oregon State - Corvallis'
   map['Ecampus'] = 'Dist. Degree Corvallis Student'
   map['First Year'] = 'mapped_first_year'
   map['Graduate Student'] = 'Graduate'
   map['International Student'] = 'mapped_international'
-  if (typeof map[taxonomy_name] !== 'undefined') {
-    return map[taxonomy_name]
+
+  if (typeof map[taxonomyName] !== 'undefined') {
+    return map[taxonomyName]
   }
-  return taxonomy_name
+  return taxonomyName
 }
 
 const getAnnouncementData = async (url: string): Promise<any[]> => {
@@ -111,9 +115,9 @@ const getAnnouncementData = async (url: string): Promise<any[]> => {
   const audienceMapping = buildAudienceMapping(included);
 
   // modifying the data to include a long name for the audience, comes from drupal backend
-  data.forEach((data: any) => {
-    if (data.relationships!.field_campus) {
-      const fdata = data.relationships.field_campus.data;
+  data.forEach((d: any) => {
+    if (d.relationships!.field_campus) {
+      const fdata = d.relationships.field_campus.data;
       fdata.forEach((aData: any) =>{
         const dataId = aData.id
         aData.full_name = bannerTaxonomyMapping(audienceMapping[dataId]) 
