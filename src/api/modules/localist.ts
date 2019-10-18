@@ -17,14 +17,18 @@ const CACHE_SEC = parseInt(config.get('localist.cacheEndpointSec'), 10);
 export const getEvents = async (query: any): Promise<object[]> => {
   try {
     // Ensure that a today `YYYY-MM-DD` is included in the query parameters for localist
+
+    /** --IMPORTANT--
+     * This changed slightly i think as of recently. Our query to get events for corvallis got changed to look for this
+     * dxfa code. I'm not sure how this new start field below factors in since I've basically moved away from using
+     * urlParams all together
+     */
+
     const urlParams = querystring.stringify({
       ...query,
       start: new Date().toISOString().substr(0, 10)
     });
-    // const url = `${LOCALIST_BASE_URL}/events?${urlParams}`;
     const url = `${LOCALIST_BASE_URL}/events/search?search=dxfa&days=30`
-
-    // https://events.oregonstate.edu/api/2/events/search?search=dxfa&days=30
     const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
     if (urlParams) {
       return data.events;
@@ -45,7 +49,6 @@ export const getBendEvents = async (query: any): Promise<object[]> => {
   }
 };
  
-
 /**
  * Gets academic calendar events from Localist.
  * @returns {Promise<Object[]>}
