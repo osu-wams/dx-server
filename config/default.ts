@@ -18,7 +18,7 @@ export default {
     baseUrl: process.env.OSU_API_BASE_URL || 'https://oregonstateuniversity-dev.apigee.net/v1'
   },
   canvasApi: {
-    cacheEndpointSec: process.env.CANVAS_API_CACHE_ENDPOINT_SEC || '86400',
+    cacheEndpointSec: process.env.CANVAS_API_CACHE_ENDPOINT_SEC || '3600',
     token: process.env.CANVAS_API_TOKEN || '',
     baseUrl: process.env.CANVAS_API_BASE_URL || 'https://oregonstate.beta.instructure.com/api/v1'
   },
@@ -31,7 +31,7 @@ export default {
     tokenUrl: process.env.CANVAS_OAUTH_TOKEN_URL || '/login/oauth2/token'
   },
   raveApi: {
-    cacheEndpointSec: process.env.RAVE_API_CACHE_ENDPOINT_SEC || '3600',
+    cacheEndpointSec: process.env.RAVE_API_CACHE_ENDPOINT_SEC || '30',
     baseUrl: process.env.RAVE_API_BASE_URL || 'https://www.getrave.com/rss/oregonstate/channel2'
   },
   localist: {
