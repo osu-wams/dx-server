@@ -4,9 +4,6 @@ import config from 'config';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import cache from './cache';
-import { fdatasync } from 'fs';
-import { arrayExpression } from '@babel/types';
-
 export const BASE_URL = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
 export const INCLUDES =
@@ -69,8 +66,11 @@ const retrieveData = async (
   return { data, included };
 };
 
-// const getCampusNameForId
-
+/**
+ * Building out a key/value array from the drupal backend of audience taxonomy terms
+ * 
+ * @param includedArray 
+ */
 function buildAudienceMapping (includedArray: any[]) {
   let audienceArray: any[] = [];
 
@@ -78,18 +78,25 @@ function buildAudienceMapping (includedArray: any[]) {
     let audienceId;
     let audienceName;
     if (item.type && item.type === 'taxonomy_term--audience') {
-      console.log('item -- ', item)
       audienceId = item.id;
       audienceName = item.attributes.name;
       audienceArray[audienceId] = audienceName;
-      // audienceArray.push({id: audienceId, name: audienceName})
-      // console.log('audienceArray', audienceArray)
     }
   });
 
   return audienceArray;
 }
 
+
+/**
+ * Takes a string that should match up with taxonomy terms from Drupal as a key, and returns
+ * the value which should hopefully match up with terminology that comes in from banner.
+ * 
+ * If the string doesn't match up, usually because someone changed a value in drupal, it simply
+ * returns the strong back to the user.
+ * 
+ * @param taxonomy_name 
+ */
 function bannerTaxonomyMapping (taxonomy_name: string) {
   let map: any[] = []
   map['Bend'] = 'Oregon State - Cascades'
@@ -110,16 +117,14 @@ function bannerTaxonomyMapping (taxonomy_name: string) {
 
 const getAnnouncementData = async (url: string): Promise<any[]> => {
   const { data, included } = await retrieveData(url, { json: true });
-
-  // modifying the data to include a long name for the audience, comes from drupal backend
   const audienceMapping = buildAudienceMapping(included);
-
+  
+  // modifying the data to include a long name for the audience, comes from drupal backend
   data.forEach((data: any) => {
     if (data.relationships!.field_campus) {
       const fdata = data.relationships.field_campus.data;
       fdata.forEach((aData: any) =>{
         const dataId = aData.id
-        console.log(`id:${audienceMapping[dataId]}`)
         aData.full_name = bannerTaxonomyMapping(audienceMapping[dataId]) 
       })
     }
