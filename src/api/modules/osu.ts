@@ -206,6 +206,7 @@ export const getGrades = async (user: any, term: any) => {
 interface GpaLevel {
   gpa: string;
   gpaType: string;
+  level: string;
 }
 
 interface GpaResponse {
@@ -217,17 +218,38 @@ interface GpaResponse {
   };
 }
 
-export const getGpa = async (user: any): Promise<{ gpa: string } | {}> => {
+// The levels of GPA ordered by priority for display.
+const gpaLevelsByPriority = [
+  'Postbacc',
+  'Professional',
+  'Graduate',
+  'Undergraduate',
+  'Non-Degree / Credential'
+];
+// The order of each GpaLevel by type for display.
+const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
+
+export const getGpa = async (user: any): Promise<GpaLevel[]> => {
   try {
     const response: GpaResponse = await getJson(
       `${BASE_URL}/${user.masqueradeId || user.osuId}/gpa`
     );
     if (response.data && response.data.attributes.gpaLevels.length > 0) {
       const { gpaLevels } = response.data.attributes;
-      const overallGpaLevel = gpaLevels.find(g => g.gpaType.toLowerCase() === 'institution');
-      if (overallGpaLevel.gpa) return { gpa: overallGpaLevel.gpa };
+      // Produce an array of GpaLevel data to match the order of the levels by priority, and then each to match the order
+      // of the types. The orders of these levels are important as the client expects the first GpaLevel/Type to be
+      // the "preferred" GPA to display while the remaining GpaLevel data might be used in a tabular display.
+      const orderedGpaLevels = gpaLevelsByPriority
+        .map(l => {
+          return gpaLevels
+            .filter(g => g.level.toLowerCase() === l.toLowerCase())
+            .sort((a, b) => gpaTypeOrder.indexOf(a.gpaType) - gpaTypeOrder.indexOf(b.gpaType));
+        })
+        .reduce((p, c) => p.concat(c))
+        .map(g => ({ level: g.level, gpaType: g.gpaType, gpa: g.gpa }));
+      return orderedGpaLevels;
     }
-    return {};
+    return [];
   } catch (err) {
     throw err;
   }

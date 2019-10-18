@@ -5,7 +5,9 @@ import app from '../../index';
 import {
   academicStatusData,
   classScheduleDataResponse,
-  classScheduleDataResult
+  classScheduleDataResult,
+  gpaDataResponse,
+  gpaDataResult
 } from '../__mocks__/student.data';
 import { holdsData } from '../__mocks__/holds.data';
 import { plannerItemsData } from '../__mocks__/planner-items.data';
@@ -287,18 +289,26 @@ describe('/api/student', () => {
 
   describe('/gpa', () => {
     it('should return GPA data for the current user', async () => {
-      mockedGetResponse.mockReturnValue({
-        data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'institution' }] } }
-      });
+      mockedGetResponse.mockReturnValue(gpaDataResponse);
       cache.get = mockedGet;
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
-        .reply(200, {
-          data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'institution' }] } }
-        });
+        .reply(200, gpaDataResponse);
 
-      await request.get('/api/student/gpa').expect(200, { gpa: '3.2' });
+      await request.get('/api/student/gpa').expect(200, gpaDataResult);
+    });
+
+    it('should return no GPA data when none exists', async () => {
+      gpaDataResponse.data.attributes.gpaLevels = [];
+      mockedGetResponse.mockReturnValue(gpaDataResponse);
+      cache.get = mockedGet;
+      // Mock response from Apigee
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/gpa/)
+        .reply(200, gpaDataResponse);
+
+      await request.get('/api/student/gpa').expect(200, []);
     });
 
     it('should return an error if the user is not logged in', async () => {
