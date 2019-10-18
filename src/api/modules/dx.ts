@@ -94,10 +94,10 @@ function bannerTaxonomyMapping (taxonomy_name: string) {
   let map: any[] = []
   map['Bend'] = 'Oregon State - Cascades'
   map['Corvallis'] = 'Oregon State - Corvallis'
-  map['Ecampus'] = 'mapped_ecampus'
+  map['Ecampus'] = 'Dist. Degree Corvallis Student'
   map['First Year'] = 'mapped_first_year'
-  map['Graduate'] = 'mapped_graduate'
-  map['International'] = 'mapped_international'
+  map['Graduate Student'] = 'Graduate'
+  map['International Student'] = 'mapped_international'
 
   if (typeof map[taxonomy_name] !== 'undefined') {
     console.log(`Mapping found for: ${taxonomy_name}`)
