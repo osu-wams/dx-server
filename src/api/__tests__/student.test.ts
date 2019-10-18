@@ -5,19 +5,44 @@ import app from '../../index';
 import {
   academicStatusData,
   classScheduleDataResponse,
-  classScheduleDataResult
+  classScheduleDataResult,
+  gpaDataResponse,
+  gpaDataResult
 } from '../__mocks__/student.data';
 import { holdsData } from '../__mocks__/holds.data';
+import { plannerItemsData } from '../__mocks__/planner-items.data';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
+import mockUser from '../../utils/mock-user';
+import { DYNAMODB_ENDPOINT } from '../../db/index';
 
 jest.mock('../util.ts');
+jest.mock('../../utils/mock-user.ts');
 
-const APIGEE_BASE_URL = config.get('osuApi.baseUrl');
+const mockedUser = mockUser as jest.Mocked<any>;
+
+const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
+const CANVAS_BASE_URL: string = config.get<string>('canvasApi.baseUrl').replace('/api/v1', '');
 let request: supertest.SuperTest<supertest.Test>;
 
 beforeAll(async () => {
   request = supertest.agent(app);
+  mockedUser.mockReturnValue({
+    email: 'fake-email@oregonstate.edu',
+    firstName: 'Test',
+    lastName: 'User',
+    permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
+    osuId: 111111111,
+    isAdmin: true,
+    isCanvasOptIn: true,
+    refreshToken: 'token',
+    canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
+    canvasOauthToken: 'token'
+  });
+  nock(DYNAMODB_ENDPOINT)
+    .post(/.*/)
+    .reply(200, {})
+    .persist();
 });
 
 describe('/api/student', () => {
@@ -264,18 +289,26 @@ describe('/api/student', () => {
 
   describe('/gpa', () => {
     it('should return GPA data for the current user', async () => {
-      mockedGetResponse.mockReturnValue({
-        data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'institution' }] } }
-      });
+      mockedGetResponse.mockReturnValue(gpaDataResponse);
       cache.get = mockedGet;
       // Mock response from Apigee
       nock(APIGEE_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
-        .reply(200, {
-          data: { attributes: { gpaLevels: [{ gpa: '3.2', gpaType: 'institution' }] } }
-        });
+        .reply(200, gpaDataResponse);
 
-      await request.get('/api/student/gpa').expect(200, { gpa: '3.2' });
+      await request.get('/api/student/gpa').expect(200, gpaDataResult);
+    });
+
+    it('should return no GPA data when none exists', async () => {
+      gpaDataResponse.data.attributes.gpaLevels = [];
+      mockedGetResponse.mockReturnValue(gpaDataResponse);
+      cache.get = mockedGet;
+      // Mock response from Apigee
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/gpa/)
+        .reply(200, gpaDataResponse);
+
+      await request.get('/api/student/gpa').expect(200, []);
     });
 
     it('should return an error if the user is not logged in', async () => {
@@ -423,6 +456,129 @@ describe('/api/student', () => {
         .get('/api/student/holds')
         .expect(500)
         .expect('Unable to retrieve account holds.');
+    });
+  });
+
+  describe('/planner-items', () => {
+    beforeEach(() => {
+      nock(CANVAS_BASE_URL)
+        .post('/login/oauth2/token')
+        .query(true)
+        .reply(200, { access_token: 'token', expires_in: Date.now() + 1000 * 60 * 60 * 24 });
+      mockedUser.mockReturnValue({
+        email: 'fake-email@oregonstate.edu',
+        firstName: 'Test',
+        lastName: 'User',
+        permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
+        osuId: 111111111,
+        isAdmin: true,
+        isCanvasOptIn: true,
+        refreshToken: 'token',
+        canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
+        canvasOauthToken: 'token'
+      });
+    });
+    it('should return planner items for the current user', async () => {
+      nock(CANVAS_BASE_URL)
+        .get('/api/v1/planner/items')
+        .query(true)
+        .reply(200, JSON.stringify(plannerItemsData));
+      await request.get('/api/student/planner-items').expect(200, plannerItemsData);
+    });
+    it('should return an error', async () => {
+      nock(CANVAS_BASE_URL)
+        .get('/api/v1/planner/items')
+        .query(true)
+        .reply(500);
+      await request
+        .get('/api/student/planner-items')
+        .expect(500)
+        .expect('Unable to retrieve planner items.');
+    });
+
+    describe('with a masqueraded user', () => {
+      beforeEach(async () => {
+        nock(CANVAS_BASE_URL)
+          .post('/login/oauth2/token')
+          .query(true)
+          .reply(200, { access_token: 'token', expires_in: Date.now() + 1000 * 60 * 60 * 24 });
+        mockedUser.mockReturnValue({
+          email: 'fake-email@oregonstate.edu',
+          firstName: 'Test',
+          lastName: 'User',
+          permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
+          osuId: 111111111,
+          isAdmin: true,
+          isCanvasOptIn: true,
+          refreshToken: 'token',
+          canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
+          canvasOauthToken: 'token',
+          masqueradeId: 111111111
+        });
+        // login the user as masqueraded
+        await request.get('/login');
+      });
+      it('should return planner items for the user', async () => {
+        nock(CANVAS_BASE_URL)
+          .get('/api/v1/planner/items')
+          .query(true)
+          .reply(200, JSON.stringify(plannerItemsData));
+        await request.get('/api/student/planner-items').expect(200, plannerItemsData);
+      });
+    });
+
+    describe('with an invalid canvas refresh token', () => {
+      beforeEach(() => {
+        mockedUser.mockReturnValue({
+          email: 'fake-email@oregonstate.edu',
+          firstName: 'Test',
+          lastName: 'User',
+          permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
+          osuId: 111111111,
+          isAdmin: true,
+          isCanvasOptIn: true,
+          refreshToken: '',
+          canvasOauthExpire: 0,
+          canvasOauthToken: 'token'
+        });
+      });
+      it('should return an error', async () => {
+        nock(CANVAS_BASE_URL)
+          .get(uri => uri.includes('items'))
+          .query(true)
+          .reply(401);
+        await request
+          .get('/api/student/planner-items')
+          .expect(403)
+          .expect('Reset users canvas opt-in status.');
+      });
+    });
+
+    describe('with an expired or invalid Canvas oauth expiration', () => {
+      beforeEach(() => {
+        mockedUser.mockReturnValue({
+          email: 'fake-email@oregonstate.edu',
+          firstName: 'Test',
+          lastName: 'User',
+          permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
+          osuId: 111111111,
+          isAdmin: true,
+          isCanvasOptIn: true,
+          refreshToken: 'token',
+          canvasOauthExpire: 0,
+          canvasOauthToken: 'token'
+        });
+      });
+      it('should return an error', async () => {
+        nock(CANVAS_BASE_URL)
+          .get('/api/v1/planner/items')
+          .query(true)
+          .reply(401);
+        await request
+          .get('/api/student/planner-items')
+          .expect(403)
+          .expect('User must opt-in to Canvas login');
+      });
     });
   });
 });

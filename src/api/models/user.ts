@@ -178,7 +178,7 @@ class User {
    */
   static updateCanvasData = async (
     props: User,
-    canvasRefreshToken: string,
+    canvasRefreshToken: string | null,
     canvasOptIn: boolean
   ): Promise<User> => {
     try {
@@ -188,13 +188,17 @@ class User {
         Key: {
           osuId: { N: user.osuId.toString() }
         },
-        UpdateExpression: 'SET canvasRefreshToken = :crt, canvasOptIn = :coi',
-        ExpressionAttributeValues: {
-          ':coi': { BOOL: canvasOptIn },
-          ':crt': { S: canvasRefreshToken }
-        },
         ReturnValues: 'NONE'
       };
+      params.UpdateExpression = 'SET canvasRefreshToken = :crt, canvasOptIn = :coi';
+      params.ExpressionAttributeValues = {
+        ':coi': { BOOL: canvasOptIn },
+        ':crt': { S: canvasRefreshToken }
+      };
+      if (canvasRefreshToken === null) {
+        params.UpdateExpression = 'SET canvasOptIn = :coi';
+        params.ExpressionAttributeValues = { ':coi': { BOOL: canvasOptIn } };
+      }
       const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
         updateItem,
         'User:updateItem',

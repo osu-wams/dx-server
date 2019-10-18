@@ -34,7 +34,7 @@ describe('/api/user', () => {
     cache.get = mockedGet;
     nock(APIGEE_BASE_URL)
       .get(/v1\/students\/[0-9]+\/classification/)
-      .reply(200, { data })
+      .reply(200, { data });
 
     await request.get('/api/user').expect(200, {
       osuId: 111111111,
@@ -42,6 +42,7 @@ describe('/api/user', () => {
       lastName: 'User',
       email: 'fake-email@oregonstate.edu',
       isAdmin: true,
+      isCanvasOptIn: true,
       classification: {
         id: 'id',
         attributes: {

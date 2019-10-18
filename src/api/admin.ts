@@ -6,6 +6,7 @@ import { Router, Request, Response } from 'express'; // eslint-disable-line no-u
 import redis from 'redis';
 import logger from '../logger';
 import User from './models/user';
+import cache from './modules/cache';
 
 const router: Router = Router();
 const redisClient = redis.createClient({
@@ -30,6 +31,23 @@ router.get('/reset-sessions', async (req: Request, res: Response) => {
   } catch (err) {
     logger.error('api/admin/reset-sessions failed:', err);
     res.status(500).send('Error while resetting sessions.');
+  }
+});
+
+/**
+ * Reset all API endpoint caches
+ */
+router.get('/reset-api-cache', async (req: Request, res: Response) => {
+  try {
+    const flushed = await cache.flushDb();
+    if (flushed) {
+      res.status(200).send('Api cache is resetting.');
+    } else {
+      res.status(304).send();
+    }
+  } catch (err) {
+    logger.error('api/admin/reset-api-cache failed:', err);
+    res.status(500).send('Error while resetting api cache.');
   }
 });
 

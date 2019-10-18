@@ -62,11 +62,11 @@ jobs:
         run: |
           app_version=`cat app_version`
           ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}"
-          task_definition=$(aws ecs describe-task-definition --task-definition "osu-dx-stage-ecs-task" --region ${{ secrets.AWS_REGION }})
-          new_task_definition=$(echo ${task_definition} | jq --arg IMAGE "${ecr_image}" '.taskDefinition | .containerDefinitions[0].image = $IMAGE | del(.taskDefinitionArn) | del(.revision) | del(.status) | del(.requiresAttributes) | del(.compatibilities)')
-          new_task_info=$(aws ecs register-task-definition --region ${{ secrets.AWS_REGION }} --cli-input-json "${new_task_definition}")
-          new_revision=$(echo ${new_task_info} | jq '.taskDefinition.revision')
-          aws ecs update-service --cluster osu-dx-stage-cluster --service osu-dx-stage-service --task-definition osu-dx-stage-ecs-task:${new_revision}
+          # this next line grabs content of parameter file from s3 bucket the "s3 cp file - " acts like cat, jq updates the ServerImage
+          aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }} - | jq -r --arg ECR_IMAGE "$ecr_image" 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE} else . end)' > ${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }}
+          # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3
+          aws s3 cp ${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }}
+          aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }}
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}

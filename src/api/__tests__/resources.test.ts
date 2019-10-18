@@ -28,8 +28,7 @@ beforeAll(async () => {
 
 describe('/resources', () => {
   it('should contain an icon when one exists', async () => {
-    const url =
-      '/api/resources?category=1b9b7a4b-5a64-41af-a40a-8bb01abedd19,e2730988-0614-43b7-b3ce-0b047e8219e0';
+    const url = '/api/resources?category=featured';
     const data = [
       {
         id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
@@ -41,7 +40,7 @@ describe('/resources', () => {
     ];
     mockedGetResponse.mockReturnValue({
       'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
-      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][path]=field_service_category.id&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][value]=1b9b7a4b-5a64-41af-a40a-8bb01abedd19&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][memberOf]=and-group&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][path]=field_service_category.id&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][value]=e2730988-0614-43b7-b3ce-0b047e8219e0': resourcesData
+      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND&filter[featured][condition][path]=field_service_category.name&filter[featured][condition][value]=featured&filter[featured][condition][memberOf]=and-group': resourcesData
     });
     cache.get = mockedGet;
     nock(BASE_URL)
@@ -55,8 +54,7 @@ describe('/resources', () => {
   });
 
   it('should not find an icon when one does not exist', async () => {
-    const url =
-      '/api/resources?category=1b9b7a4b-5a64-41af-a40a-8bb01abedd19,e2730988-0614-43b7-b3ce-0b047e8219e0';
+    const url = '/api/resources?category=featured';
     const data = [
       {
         id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
@@ -68,7 +66,7 @@ describe('/resources', () => {
     ];
     mockedGetResponse.mockReturnValue({
       'https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience': audienceData,
-      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][path]=field_service_category.id&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][value]=1b9b7a4b-5a64-41af-a40a-8bb01abedd19&filter[1b9b7a4b-5a64-41af-a40a-8bb01abedd19][condition][memberOf]=and-group&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][path]=field_service_category.id&filter[e2730988-0614-43b7-b3ce-0b047e8219e0][condition][value]=e2730988-0614-43b7-b3ce-0b047e8219e0': resourcesDataNoMatchingMedia
+      'https://data.dx.oregonstate.edu/jsonapi/node/services?include=field_service_category,field_icon.field_media_image&fields[taxonomy_term--categories]=name&filter[and-group][group][conjunction]=AND&filter[featured][condition][path]=field_service_category.name&filter[featured][condition][value]=featured&filter[featured][condition][memberOf]=and-group': resourcesDataNoMatchingMedia
     });
     cache.get = mockedGet;
     nock(BASE_URL)

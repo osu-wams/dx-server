@@ -16,6 +16,7 @@ import {
   getHolds
 } from './modules/osu';
 import { asyncTimedFunction } from '../tracer';
+import { updateOAuthData } from './modules/user-account'; // eslint-disable-line no-unused-vars
 
 const router = Router();
 
@@ -30,23 +31,39 @@ router.get(
   Auth.hasValidCanvasRefreshToken,
   async (req: Request, res: Response) => {
     try {
-      let plannerApiResponse: UpcomingAssignment[] = [];
       // Administrators that have masqueraded get access to this endpoint (else you get oauth)
       if (req.user.isAdmin && req.user.masqueradeId) {
-        plannerApiResponse = (await asyncTimedFunction(getPlannerItemsMask, 'getPlannerItemsMask', [
-          req.user.masqueradeId
-        ])) as UpcomingAssignment[];
+        const response: string = await asyncTimedFunction(
+          getPlannerItemsMask,
+          'getPlannerItemsMask',
+          [req.user.masqueradeId]
+        );
+        res.json(JSON.parse(response));
       } else if (req.user.canvasOauthToken) {
-        plannerApiResponse = (await asyncTimedFunction(
+        const response: string = await asyncTimedFunction(
           getPlannerItemsOAuth,
           'getPlannerItemsOAuth',
           [req.user.canvasOauthToken]
-        )) as UpcomingAssignment[];
+        );
+        res.json(JSON.parse(response));
       }
-      res.send(plannerApiResponse);
     } catch (err) {
-      logger.error('api/student/planner-items failed:', err);
-      res.status(500).send('Unable to retrieve planner items.');
+      if (err!.response!.statusCode === 401) {
+        logger.error(
+          'api/student/planner-items user with valid canvas refresh token found to have an invalid access token, this seems to indicate that they have opted-out of DX OAuth from the Canvas interface. Resetting users opt-in status.'
+        );
+        await asyncTimedFunction(updateOAuthData, 'updateOAuthData', [
+          req.user,
+          { isCanvasOptIn: false, account: { refreshToken: null } }
+        ]);
+        req.user.canvasOauthToken = null;
+        req.user.canvasOauthExpire = null;
+        req.user.isCanvasOptIn = false;
+        res.status(403).send('Reset users canvas opt-in status.');
+      } else {
+        logger.error('api/student/planner-items failed:', err);
+        res.status(500).send('Unable to retrieve planner items.');
+      }
     }
   }
 );

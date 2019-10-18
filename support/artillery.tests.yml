@@ -14,9 +14,12 @@ config:
     development:
       target: https://dev.my.oregonstate.edu
     stage:
-      target: http://stage.my.oregonstate.edu
+      target: https://stage.my.oregonstate.edu
     production:
-      target: http://prod.my.oregonstate.edu
+      target: https://prod.my.oregonstate.edu
+      phases:
+        - duration: 300
+          arrivalRate: 5
   variables:
     osuId: '{{ $processEnvironment.ARTILLERY_API_OSUID }}'
     key: '{{ $processEnvironment.ARTILLERY_API_KEY }}'
@@ -34,6 +37,12 @@ scenarios:
       - get:
           url: /api/alerts/dx
       - get:
+          url: /api/info-buttons
+      - get:
+          url: /api/healthcheck
+      - get:
+          url: /api/user
+      - get:
           url: /api/student/class-schedule?term=current
       - get:
           url: /api/student/planner-items
@@ -47,10 +56,6 @@ scenarios:
           url: /api/announcements
       - get:
           url: /api/events?type=115613&days=30
-      - get:
-          url: /api/user
-      - get:
-          url: /api/info-buttons
   - name: As a student, visit the Academics Dashboard page
     flow:
       - get:
@@ -59,6 +64,16 @@ scenarios:
           url: /api/masquerade
           json:
             masqueradeId: '{{ id }}'
+      - get:
+          url: /api/alerts
+      - get:
+          url: /api/alerts/dx
+      - get:
+          url: /api/info-buttons
+      - get:
+          url: /api/healthcheck
+      - get:
+          url: /api/user
       - get:
           url: /api/student/class-schedule?term=current
       - get:
@@ -88,6 +103,16 @@ scenarios:
           json:
             masqueradeId: '{{ id }}'
       - get:
+          url: /api/alerts
+      - get:
+          url: /api/alerts/dx
+      - get:
+          url: /api/info-buttons
+      - get:
+          url: /api/healthcheck
+      - get:
+          url: /api/user
+      - get:
           url: /api/student/grades
       - get:
           url: /api/student/grades
@@ -100,6 +125,46 @@ scenarios:
           json:
             masqueradeId: '{{ id }}'
       - get:
+          url: /api/alerts
+      - get:
+          url: /api/alerts/dx
+      - get:
+          url: /api/info-buttons
+      - get:
+          url: /api/healthcheck
+      - get:
+          url: /api/user
+      - get:
           url: /api/resources/categories
       - get:
           url: /api/resources
+  - name: As a student, visit the Finances
+    flow:
+      - get:
+          url: '/login?osuId={{ osuId }}&key={{ key }}'
+      - post:
+          url: /api/masquerade
+          json:
+            masqueradeId: '{{ id }}'
+      - get:
+          url: /api/alerts
+      - get:
+          url: /api/alerts/dx
+      - get:
+          url: /api/info-buttons
+      - get:
+          url: /api/healthcheck
+      - get:
+          url: /api/user
+      - get:
+          url: /api/student/account-balance
+      - get:
+          url: /api/persons/meal-plans
+      - get:
+          url: /api/student/account-transactions
+      - get:
+          url: /api/resources/category/financial
+      - get:
+          url: /api/resources/categories
+      - get:
+          url: /api/announcements/financial

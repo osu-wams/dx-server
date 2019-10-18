@@ -136,3 +136,89 @@ export const classScheduleDataResult = [
     id: '999999999-202001-14683'
   }
 ];
+
+export const gpaDataResponse = {
+  links: {
+    self: 'https://bogus.url'
+  },
+  data: {
+    type: 'gpa',
+    id: '111111111',
+    links: {
+      self: null
+    },
+    attributes: {
+      gpaLevels: [
+        {
+          gpa: '0.00',
+          gpaCreditHours: 0,
+          gpaType: 'Institution',
+          creditHoursAttempted: 3,
+          creditHoursEarned: 0,
+          creditHoursPassed: 0,
+          level: 'Undergraduate',
+          qualityPoints: '0.00'
+        },
+        {
+          gpa: '0.00',
+          gpaCreditHours: 0,
+          gpaType: 'Overall',
+          creditHoursAttempted: 3,
+          creditHoursEarned: 0,
+          creditHoursPassed: 0,
+          level: 'Undergraduate',
+          qualityPoints: '0.00'
+        },
+        {
+          gpa: '3.27',
+          gpaCreditHours: 36,
+          gpaType: 'Institution',
+          creditHoursAttempted: 36,
+          creditHoursEarned: 36,
+          creditHoursPassed: 36,
+          level: 'Graduate',
+          qualityPoints: '117.90'
+        },
+        {
+          gpa: '3.27',
+          gpaCreditHours: 36,
+          gpaType: 'Overall',
+          creditHoursAttempted: 36,
+          creditHoursEarned: 36,
+          creditHoursPassed: 36,
+          level: 'Graduate',
+          qualityPoints: '117.90'
+        },
+        {
+          gpa: '3.00',
+          gpaCreditHours: 3,
+          gpaType: 'Institution',
+          creditHoursAttempted: 3,
+          creditHoursEarned: 3,
+          creditHoursPassed: 3,
+          level: 'Non-Degree / Credential',
+          qualityPoints: '9.00'
+        },
+        {
+          gpa: '3.00',
+          gpaCreditHours: 3,
+          gpaType: 'Overall',
+          creditHoursAttempted: 3,
+          creditHoursEarned: 3,
+          creditHoursPassed: 3,
+          level: 'Non-Degree / Credential',
+          qualityPoints: '9.00'
+        }
+      ]
+    }
+  }
+};
+
+export const gpaDataResult = [
+  { level: 'Graduate', gpaType: 'Institution', gpa: '3.27' },
+  { level: 'Graduate', gpaType: 'Overall', gpa: '3.27' },
+  { level: 'Undergraduate', gpaType: 'Institution', gpa: '0.00' },
+  { level: 'Undergraduate', gpaType: 'Overall', gpa: '0.00' },
+  { level: 'Non-Degree / Credential', gpaType: 'Institution', gpa: '3.00' },
+  { level: 'Non-Degree / Credential', gpaType: 'Overall', gpa: '3.00' }
+];

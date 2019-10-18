@@ -5,6 +5,7 @@ import cache, { CacheOptions, SetCacheOptions } from '../cache';
 
 export const mockCacheUrl = 'http://key';
 const mockCachedData = { 'http://key': '{"key":"value"}' };
+const mockFlushDbData = 'Ok';
 
 export const getAsync = jest.fn().mockImplementation((key: string) => {
   return new Promise((resolve, reject) => {
@@ -43,4 +44,20 @@ export const mockedGet = jest.fn().mockImplementation(
   }
 );
 
-export default { setAsync, getAsync };
+export const flushDbAsync = jest.fn().mockImplementation(() => {
+  return new Promise((resolve, reject) => {
+    process.nextTick(() => {
+      if (mockFlushDbData) resolve(mockFlushDbData);
+      else reject(new Error('happy little accident'));
+    });
+  });
+});
+
+export const mockedFlushDbResponse = jest.fn();
+export const mockedFlushDb = jest.fn().mockImplementation(
+  (): Promise<boolean> => {
+    return Promise.resolve(mockedFlushDbResponse());
+  }
+);
+
+export default { setAsync, getAsync, flushDbAsync };
