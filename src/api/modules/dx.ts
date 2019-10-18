@@ -49,7 +49,6 @@ const retrieveData = async (
   // Checking to see if pagination is necessary, if not return early
   if (links === undefined || links.next === undefined) return { data, included };
   let nextUrl = links.next.href;
-
   while (nextUrl !== undefined) {
     /* eslint-disable no-await-in-loop */
     const results = await cache.get(nextUrl, otherParams, true, {
@@ -58,7 +57,6 @@ const retrieveData = async (
     });
     /* eslint-enable no-await-in-loop */
     nextUrl = undefined;
-
     if (results.links.next !== undefined) nextUrl = results.links.next.href;
     if (results.data !== undefined) data.push(...results.data);
     if (results.included !== undefined) included.push(...results.included);
@@ -73,7 +71,6 @@ const retrieveData = async (
  */
 function buildAudienceMapping (includedArray: any[]) {
   let audienceArray: any[] = [];
-
   includedArray.forEach((item: any) => {
     let audienceId;
     let audienceName;
@@ -83,10 +80,8 @@ function buildAudienceMapping (includedArray: any[]) {
       audienceArray[audienceId] = audienceName;
     }
   });
-
   return audienceArray;
 }
-
 
 /**
  * Takes a string that should match up with taxonomy terms from Drupal as a key, and returns
@@ -105,20 +100,16 @@ function bannerTaxonomyMapping (taxonomy_name: string) {
   map['First Year'] = 'mapped_first_year'
   map['Graduate Student'] = 'Graduate'
   map['International Student'] = 'mapped_international'
-
   if (typeof map[taxonomy_name] !== 'undefined') {
-    console.log(`Mapping found for: ${taxonomy_name}`)
     return map[taxonomy_name]
   }
-  console.log(`No mapping found for: ${taxonomy_name}`)
   return taxonomy_name
 }
-
 
 const getAnnouncementData = async (url: string): Promise<any[]> => {
   const { data, included } = await retrieveData(url, { json: true });
   const audienceMapping = buildAudienceMapping(included);
-  
+
   // modifying the data to include a long name for the audience, comes from drupal backend
   data.forEach((data: any) => {
     if (data.relationships!.field_campus) {
@@ -131,9 +122,7 @@ const getAnnouncementData = async (url: string): Promise<any[]> => {
   })
 
   if (included) {
-
     included.forEach((item: any) => {
-      
       const matchingAnnouncement = data.find((e: any) => {
         return (
           e.relationships.field_announcement_image.data &&
@@ -152,7 +141,6 @@ const getAnnouncementData = async (url: string): Promise<any[]> => {
       }
     });
   }
-
   return data;
 };
 
