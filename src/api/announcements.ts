@@ -9,7 +9,6 @@ import {
   getFinancialAnnouncements
 } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';
-import { ConfigurationServicePlaceholders } from 'aws-sdk/lib/config_service_placeholders';
 
 const router: Router = Router();
 
@@ -27,7 +26,6 @@ export interface IAnnouncementResult {
 }
 
 const filterResults = (data: any): IAnnouncementResult[] => {
-
   return data.map((item: any) => {
     let audiences: string[] = [];
     const action = item.attributes.field_announcement_action
@@ -39,19 +37,13 @@ const filterResults = (data: any): IAnnouncementResult[] => {
           title: null,
           link: null
         };
-        
-    // console.log('data -> ', item)
     const myAudience = item.relationships.field_campus.data;
-
-    // console.log('Audiences -> ', audiences)
-
+    /**
+     * Pushing the full name of each audience into an array to bundle in with the data
+     */
     myAudience.forEach( e => {
       audiences.push(e.full_name)
     })
-
-    // console.log('NEW Audiences -> ', audiences)
-
-    
     return {
       id: item.id,
       date: null,
@@ -68,9 +60,6 @@ router.get('/', async (_req: Request, res: Response) => {
   try {
     const result = await asyncTimedFunction(getAnnouncements, 'getAnnouncements', []);
     const filteredResult = filterResults(result);
-    console.log('non-filtered results --', result[0].relationships.field_campus)
-    console.log('filtered results --', filteredResult)
-    
     res.send(filteredResult);
   } catch (err) {
     logger.error(`api/announcements fetching announcements failed: ${err}`);
