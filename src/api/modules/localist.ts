@@ -28,7 +28,7 @@ export const getEvents = async (query: any): Promise<object[]> => {
       ...query,
       start: new Date().toISOString().substr(0, 10)
     });
-    const url = `${LOCALIST_BASE_URL}/events/search?search=dxfa&days=30`
+    const url = `${LOCALIST_BASE_URL}/events/search?search=dxfa&days=30`;
     const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
     if (urlParams) {
       return data.events;
@@ -39,16 +39,16 @@ export const getEvents = async (query: any): Promise<object[]> => {
   }
 };
 
-export const getBendEvents = async (query: any): Promise<object[]> => {
+export const getBendEvents = async (): Promise<object[]> => {
   try {
-    const url = `${LOCALIST_BASE_URL}/events?campus_id=273&days=30`
+    const url = `${LOCALIST_BASE_URL}/events?campus_id=273&days=30`;
     const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
     return data.events;
   } catch (err) {
     throw err;
   }
 };
- 
+
 /**
  * Gets academic calendar events from Localist.
  * @returns {Promise<Object[]>}
