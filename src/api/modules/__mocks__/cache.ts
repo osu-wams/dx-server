@@ -4,13 +4,15 @@ import { RequestPromiseOptions } from 'request-promise';
 import cache, { CacheOptions, SetCacheOptions } from '../cache';
 
 export const mockCacheUrl = 'http://key';
-const mockCachedData = { 'http://key': '{"key":"value"}' };
-const mockFlushDbData = 'Ok';
+export const mockCachedData: any = jest.fn(() => {
+  return { 'http://key': '{"key":"value"}' };
+});
+export const mockFlushDbData = 'Ok';
 
 export const getAsync = jest.fn().mockImplementation((key: string) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
-      if (mockCachedData) resolve(mockCachedData);
+      if (mockCachedData) resolve(mockCachedData());
       else reject(new Error('happy little accident'));
     });
   });
@@ -21,7 +23,7 @@ export const setAsync = jest
   .mockImplementation((key: string, data: string, options: SetCacheOptions) => {
     return new Promise((resolve, reject) => {
       process.nextTick(() => {
-        if (mockCachedData) resolve(mockCachedData);
+        if (mockCachedData) resolve(mockCachedData());
         else reject(new Error('happy little accident'));
       });
     });

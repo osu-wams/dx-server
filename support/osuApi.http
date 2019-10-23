@@ -28,4 +28,12 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/v1/students/{{osuId}}/academic-status HTTP/1.1
 Authorization: Bearer {{token}}
 
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getClassification
+GET {{baseUrl}}/v1/students/{{osuId}}/classification HTTP/1.1
+Authorization: Bearer {{token}}
+
+
 

@@ -14,6 +14,7 @@ const router: Router = Router();
 
 export interface IAnnouncementResult {
   id: string;
+  type: string;
   date: null;
   title: string;
   body: string;
@@ -22,45 +23,13 @@ export interface IAnnouncementResult {
     title: string;
     link: string;
   };
-  audiences:string[]; 
+  audiences: string[];
 }
-
-const filterResults = (data: any): IAnnouncementResult[] => {
-  return data.map((item: any) => {
-    let audiences: string[] = [];
-    const action = item.attributes.field_announcement_action
-      ? {
-          title: item.attributes.field_announcement_action.title,
-          link: item.attributes.field_announcement_action.uri
-        }
-      : {
-          title: null,
-          link: null
-        };
-    const myAudience = item.relationships.field_campus.data;
-    /**
-     * Pushing the full name of each audience into an array to bundle in with the data
-     */
-    myAudience.forEach( e => {
-      audiences.push(e.full_name)
-    })
-    return {
-      id: item.id,
-      date: null,
-      title: item.attributes.title,
-      body: item.attributes.field_announcement_body,
-      bg_image: item.attributes.background_image,
-      action,
-      audiences,
-    };
-  });
-};
 
 router.get('/', async (_req: Request, res: Response) => {
   try {
     const result = await asyncTimedFunction(getAnnouncements, 'getAnnouncements', []);
-    const filteredResult = filterResults(result);
-    res.send(filteredResult);
+    res.send(result);
   } catch (err) {
     logger.error(`api/announcements fetching announcements failed: ${err}`);
     res.status(500).send('Unable to retrieve announcements.');

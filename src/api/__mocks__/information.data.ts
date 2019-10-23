@@ -1,17 +1,13 @@
-export const infoData = {
-  data: [
-    {
-      type: 'node--information',
-      attributes: {
-        title: 'Canvas',
-        body: {
-          processed: '<p>This is a description of the card</p>'
-        },
-        field_machine_name: 'canvas'
-      }
-    }
-  ]
-};
+export const infoData = [
+  {
+    type: 'node--information',
+    title: 'Canvas',
+    body: {
+      processed: '<p>This is a description of the card</p>'
+    },
+    field_machine_name: 'canvas'
+  }
+];
 
 export const filteredInfoData = [
   {
