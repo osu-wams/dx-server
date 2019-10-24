@@ -3,7 +3,7 @@
  */
 import { Router, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
-import { getEvents, getBendEvents, getAcademicCalendarEvents } from './modules/localist';
+import { getEvents, getCampusEvents, getAcademicCalendarEvents } from './modules/localist';
 import { asyncTimedFunction } from '../tracer';
 
 const router: Router = Router();
@@ -18,13 +18,13 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/bend-events', async (req: Request, res: Response) => {
+router.get('/campus/:name', async (req: Request, res: Response) => {
   try {
-    const result = await asyncTimedFunction(getBendEvents, 'getBendEvents', [req.query]);
+    const result = await asyncTimedFunction(getCampusEvents, 'getCampusEvents', [req.params.name]);
     res.send(result);
   } catch (err) {
-    logger.error(`api/events/bend-events failed:`, err);
-    res.status(500).send('Unable to retrieve events.');
+    logger.error(`api/events/campus failed:`, err);
+    res.status(500).send('Unable to retrieve campus events.');
   }
 });
 

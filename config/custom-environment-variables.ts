@@ -30,7 +30,10 @@ export default {
   localist: {
     cacheEndpointSec: 'LOCALIST_CACHE_ENDPOINT_SEC',
     baseUrl: 'LOCALIST_BASE_URL',
-    academicCalendarRSS: 'LOCALIST_ACADEMIC_CALENDAR_RSS'
+    academicCalendarRSS: 'LOCALIST_ACADEMIC_CALENDAR_RSS',
+    campusIds: 'LOCALIST_CAMPUS_IDS',
+    eventDaysAgo: 'LOCALIST_EVENT_DAYS_AGO',
+    eventDxQuery: 'LOCALIST_EVENT_DX_QUERY'
   },
   raveApi: {
     cacheEndpointSec: 'RAVE_API_CACHE_ENDPOINT_SEC',

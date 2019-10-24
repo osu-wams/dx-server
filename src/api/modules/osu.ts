@@ -170,6 +170,7 @@ export interface Classification {
     level: string;
     classification: string;
     campus: string;
+    campusCode: string;
     status: string;
     isInternational: boolean;
   };

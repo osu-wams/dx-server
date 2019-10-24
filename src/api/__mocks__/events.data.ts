@@ -49,7 +49,20 @@ export const eventsData: any = [
         'https://events.oregonstate.edu/event/sea-inspired_paintings_on_exhibit_at_hatfield_visitor_center_until_july_7.ics',
       photo_url:
         'https://images.localist.com/photos/849707/huge/dc9bddd1554ee9119d1109f337d82d700118bba1.jpg',
-      venue_url: 'https://events.oregonstate.edu/hatfield_marine_science_center'
+      venue_url: 'https://events.oregonstate.edu/hatfield_marine_science_center',
+      event_instances: [
+        {
+          event_instance: {
+            id: 31069217151072,
+            ranking: 0,
+            event_id: 31069217135888,
+            start: '2019-10-24T10:00:00-07:00',
+            end: '2019-10-24T11:00:00-07:00',
+            all_day: false,
+            num_attending: 0
+          }
+        }
+      ]
     }
   },
   {
@@ -99,7 +112,20 @@ export const eventsData: any = [
       localist_url: 'https://events.oregonstate.edu/event/pathogetesto',
       localist_ics_url: 'https://events.oregonstate.edu/event/testo.ics',
       photo_url: 'https://images.localist.com/photos/30318536347604/huge/testo.jpg',
-      venue_url: 'https://events.oregonstate.edu/testo'
+      venue_url: 'https://events.oregonstate.edu/testo',
+      event_instances: [
+        {
+          event_instance: {
+            id: 31069217151072,
+            ranking: 0,
+            event_id: 31069217135888,
+            start: '2019-10-24T10:00:00-07:00',
+            end: '2019-10-24T11:00:00-07:00',
+            all_day: false,
+            num_attending: 0
+          }
+        }
+      ]
     }
   },
   {
@@ -149,9 +175,51 @@ export const eventsData: any = [
       localist_url: 'https://events.oregonstate.edu/testo',
       localist_ics_url: 'https://events.oregonstate.edu/testo',
       photo_url: 'https://images.localist.com/photos/30443006289764/huge/testo.jpg',
-      venue_url: 'https://events.oregonstate.edu/testo'
+      venue_url: 'https://events.oregonstate.edu/testo',
+      event_instances: [
+        {
+          event_instance: {
+            id: 31069217151072,
+            ranking: 0,
+            event_id: 31069217135888,
+            start: '2019-10-24T10:00:00-07:00',
+            end: '2019-10-24T11:00:00-07:00',
+            all_day: false,
+            num_attending: 0
+          }
+        }
+      ]
     }
   }
 ];
 
-export default eventsData;
+export const eventsResult = [
+  {
+    action: {
+      link:
+        'https://events.oregonstate.edu/event/sea-inspired_paintings_on_exhibit_at_hatfield_visitor_center_until_july_7'
+    },
+    bg_image:
+      'https://images.localist.com/photos/849707/huge/dc9bddd1554ee9119d1109f337d82d700118bba1.jpg',
+    date: '2019-10-24T10:00:00-07:00',
+    id: 31069217151072,
+    title: 'Sea-inspired paintings on exhibit',
+    type: 'localist'
+  },
+  {
+    action: { link: 'https://events.oregonstate.edu/event/pathogetesto' },
+    bg_image: 'https://images.localist.com/photos/30318536347604/huge/testo.jpg',
+    date: '2019-10-24T10:00:00-07:00',
+    id: 31069217151072,
+    title: 'Pathogen Environmental Monitoring Workshop for Pacific Northwest Food Ind',
+    type: 'localist'
+  },
+  {
+    action: { link: 'https://events.oregonstate.edu/testo' },
+    bg_image: 'https://images.localist.com/photos/30443006289764/huge/testo.jpg',
+    date: '2019-10-24T10:00:00-07:00',
+    id: 31069217151072,
+    title: 'Katherine Dziedzic - Integrative Biology PhD Defense Seminar',
+    type: 'localist'
+  }
+];

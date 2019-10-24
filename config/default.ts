@@ -35,6 +35,9 @@ export default {
     baseUrl: process.env.RAVE_API_BASE_URL || 'https://www.getrave.com/rss/oregonstate/channel2'
   },
   localist: {
+    campusIds: process.env.LOCALIST_CAMPUS_IDS || '{"bend":273,"corvallis":272}',
+    eventDaysAgo: process.env.LOCALIST_EVENT_DAYS_AGO || '30',
+    eventDxQuery: process.env.LOCALIST_EVENT_DX_QUERY || 'dxfa',
     cacheEndpointSec: process.env.LOCALIST_CACHE_ENDPOINT_SEC || '86400',
     baseUrl: process.env.LOCALIST_BASE_URL || 'https://events.oregonstate.edu/api/2',
     academicCalendarRSS:
