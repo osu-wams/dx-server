@@ -4,7 +4,13 @@ import config from 'config';
 import app from '../../index';
 import { alertClear, alertPresent, dxAlert, dxAPIAlerts } from '../__mocks__/alerts.data';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
-import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
+import {
+  mockedGetResponse,
+  mockedGet,
+  setAsync,
+  getAsync,
+  mockCachedData
+} from '../modules/__mocks__/cache';
 
 const BASE_URL = config.get('raveApi.baseUrl');
 const DX_BASE_URL = config.get('dxApi.baseUrl');
@@ -55,20 +61,16 @@ describe('/alerts', () => {
 });
 
 describe('/alerts/dx', () => {
-  it('should return alerts when present', async () => {
-    mockedGetResponse.mockReturnValue(dxAPIAlerts);
-    cache.get = mockedGet;
-    nock(DX_BASE_URL)
-      .get('/jsonapi/node/alerts')
-      .query(true)
-      .reply(200, dxAPIAlerts, { 'Content-Type': 'application/json' });
-
+  it('should fetch cached data and return alerts when present', async () => {
+    mockCachedData.mockReturnValue(JSON.stringify(dxAPIAlerts));
+    cache.getAsync = getAsync;
     await request.get('/api/alerts/dx').expect(200, dxAlert);
   });
 
-  it('should return an empty array [] when no alerts are present', async () => {
-    mockedGetResponse.mockReturnValue({ data: [] });
-    cache.get = mockedGet;
+  it('should fetch uncached data and return an empty array [] when no alerts are present', async () => {
+    mockCachedData.mockReturnValue(null);
+    cache.getAsync = getAsync;
+    cache.setAsync = setAsync;
     nock(DX_BASE_URL)
       .get('/jsonapi/node/alerts')
       .query(true)
@@ -78,8 +80,8 @@ describe('/alerts/dx', () => {
   });
 
   it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
-    mockedGetResponse.mockReturnValue(undefined);
-    cache.get = mockedGet;
+    mockCachedData.mockReturnValue(null);
+    cache.getAsync = getAsync;
     nock(DX_BASE_URL)
       .get('/jsonapi/node/alerts')
       .query(true)

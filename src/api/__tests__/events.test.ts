@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import nock from 'nock';
 import app from '../../index';
 import { academicCalendarData } from '../__mocks__/events-academic.data';
-import { eventsData } from '../__mocks__/events.data';
+import { eventsData, eventsResult } from '../__mocks__/events.data';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import { LOCALIST_BASE_URL, ACADEMIC_CALENDAR_URL } from '../modules/localist';
@@ -19,7 +19,7 @@ describe('/events', () => {
       .query(true)
       .reply(200, { events: eventsData });
 
-    await request.get('/api/events').expect(200, eventsData);
+    await request.get('/api/events').expect(200, eventsResult);
   });
 
   it('should return "Unable to retrieve events." when there is a 500 error', async () => {

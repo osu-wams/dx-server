@@ -64,13 +64,17 @@ export const setAsync = async (
 
 client.on('error', err => logger.error(`cache: redisClient.on('error'): ${err}`));
 
-const getCache = async (key: string): Promise<string | null> => {
+export const getCache = async (key: string): Promise<string | null> => {
   const reply = await getAsync(key);
   if (!reply) logger.debug(`getCache(${key}) failed to find data.`);
   return reply;
 };
 
-const setCache = async (key: string, data: string, options: SetCacheOptions): Promise<boolean> => {
+export const setCache = async (
+  key: string,
+  data: string,
+  options: SetCacheOptions
+): Promise<boolean> => {
   const reply = await setAsync(key, data, options);
   if (!reply) logger.debug(`setCache(${key}, ${data}) failed to set cache.`);
   return reply;

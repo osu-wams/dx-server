@@ -61,6 +61,7 @@
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "express-winston": "^3.2.1",
+    "kitsu": "^7.1.0",
     "logform": "^2.1.2",
     "passport": "^0.4.0",
     "passport-dev": "^1.0.1",
