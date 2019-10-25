@@ -68,16 +68,22 @@ const iconUrl = item => {
  * @param items a list of items to reshape as announcement results
  */
 const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
-  return items.map(d => ({
-    id: d.id,
-    type: d.drupal_internal__name,
-    date: d.date,
-    title: d.title,
-    body: d.field_announcement_body,
-    bg_image: imageUrl(d),
-    audiences: d.field_audience.map(a => a.name),
-    action: itemAction(d)
-  }));
+  return items
+    .filter(d => d.title !== undefined)
+    .map(d => {
+      let audiences = [];
+      if (d.field_audience !== undefined) audiences = d.field_audience.map(a => a.name);
+      return {
+        id: d.id,
+        type: d.drupal_internal__name,
+        date: d.date,
+        title: d.title,
+        body: d.field_announcement_body,
+        bg_image: imageUrl(d),
+        audiences,
+        action: itemAction(d)
+      };
+    });
 };
 
 /**
