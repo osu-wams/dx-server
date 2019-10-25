@@ -321,7 +321,7 @@ export const getDxAlerts = async (): Promise<Alert[]> => {
           condition: {
             operator: '>',
             path: 'field_alert_expiration_date',
-            value: Date.now()
+            value: new Date().toISOString()
           }
         }
       },
