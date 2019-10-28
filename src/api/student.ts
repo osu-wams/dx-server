@@ -44,7 +44,7 @@ router.get(
         res.json(JSON.parse(response));
       }
     } catch (err) {
-      if (err!.response!.statusCode === 401) {
+      if (err.response && err.response.statusCode === 401) {
         logger.error(
           'api/student/planner-items user with valid canvas refresh token found to have an invalid access token, this seems to indicate that they have opted-out of DX OAuth from the Canvas interface. Resetting users opt-in status.'
         );
