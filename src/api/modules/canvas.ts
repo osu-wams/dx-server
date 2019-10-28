@@ -37,6 +37,11 @@ const getRequest = async <T>(url: string, token: string | undefined): Promise<T>
     .promise();
 };
 
+/**
+ * Get a users planner items from the Canvas API.
+ * * https://canvas.instructure.com/doc/api/planner.html
+ * @param params a masqueraded user or a users provide oAuth token
+ */
 export const getPlannerItems = async (params: ICanvasAPIParams): Promise<UpcomingAssignment[]> => {
   const today = format(Date.now(), 'YYYY-MM-DD');
   let url = `${CANVAS_BASE_URL}/planner/items?start_date=${today}`;
