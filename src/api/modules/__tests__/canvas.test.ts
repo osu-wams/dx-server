@@ -2,8 +2,7 @@
 
 import nock from 'nock';
 import {
-  getPlannerItemsMask,
-  getPlannerItemsOAuth,
+  getPlannerItems,
   getOAuthToken,
   performRefresh,
   CANVAS_BASE_URL,
@@ -63,24 +62,24 @@ describe('Canvas module', () => {
     });
   });
 
-  describe('getPlannerItemsOAuth', () => {
+  describe('getPlannerItems using oAuth', () => {
     it('returns upcoming assignments', async () => {
       nock(CANVAS_BASE_URL)
         .get('/planner/items')
         .query(true)
         .reply(200, [assignment]);
-      const result = await getPlannerItemsOAuth('someToken');
+      const result = await getPlannerItems({ oAuthToken: 'someToken' });
       expect(result).toStrictEqual(JSON.stringify([assignment]));
     });
   });
 
-  describe('getPlannerItemsMask', () => {
+  describe('getPlannerItems as user', () => {
     it('returns upcoming assignments', async () => {
       nock(CANVAS_BASE_URL)
         .get('/planner/items')
         .query(true)
         .reply(200, [assignment]);
-      const result = await getPlannerItemsMask(123456);
+      const result = await getPlannerItems({ osuId: 123456 });
       expect(result).toStrictEqual(JSON.stringify([assignment]));
     });
   });

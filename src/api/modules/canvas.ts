@@ -11,35 +11,39 @@ const CANVAS_TOKEN: string = config.get('canvasApi.token');
 export const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
 export const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
 
+export interface ICanvasAPIParams {
+  osuId?: number;
+  oAuthToken?: string;
+}
+
 // TODO: properly specify the interface members
 export interface UpcomingAssignment {
   assignment: any;
 }
 
-/**
- * Fetch the planner items associated to a specific users id
- * @param osuId - a specific users id
- */
-export const getPlannerItemsMask = async (osuId: number): Promise<UpcomingAssignment[]> => {
-  const today = format(Date.now(), 'YYYY-MM-DD');
+const appendUserIdParam = (url: string, osuId: number) => {
+  return `${url}&as_user_id=sis_user_id:${osuId}`;
+};
+
+const authHeader = (accessToken: string | undefined) => {
+  return { bearer: accessToken || CANVAS_TOKEN };
+};
+
+const getRequest = async <T>(url: string, token: string | undefined): Promise<T> => {
   return request
-    .get(`${CANVAS_BASE_URL}/planner/items?as_user_id=sis_user_id:${osuId}&start_date=${today}`, {
-      auth: { bearer: CANVAS_TOKEN }
+    .get(url, {
+      auth: authHeader(token)
     })
     .promise();
 };
 
-/**
- * Fetch the planner items associated to the oauth token provided by the logged in user
- * @param accessToken - the currently valid oauth token
- */
-export const getPlannerItemsOAuth = async (accessToken: string): Promise<UpcomingAssignment[]> => {
+export const getPlannerItems = async (params: ICanvasAPIParams): Promise<UpcomingAssignment[]> => {
   const today = format(Date.now(), 'YYYY-MM-DD');
-  return request
-    .get(`${CANVAS_BASE_URL}/planner/items?start_date=${today}`, {
-      auth: { bearer: accessToken }
-    })
-    .promise();
+  let url = `${CANVAS_BASE_URL}/planner/items?start_date=${today}`;
+  if (params.osuId) {
+    url = appendUserIdParam(url, params.osuId);
+  }
+  return getRequest(url, params.oAuthToken);
 };
 
 /**

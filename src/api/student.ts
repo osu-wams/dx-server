@@ -4,7 +4,7 @@
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import Auth from '../auth';
-import { getPlannerItemsMask, getPlannerItemsOAuth, UpcomingAssignment } from './modules/canvas'; // eslint-disable-line no-unused-vars
+import { getPlannerItems, UpcomingAssignment } from './modules/canvas'; // eslint-disable-line no-unused-vars
 import {
   getAcademicStatus,
   getAccountBalance,
@@ -33,18 +33,14 @@ router.get(
     try {
       // Administrators that have masqueraded get access to this endpoint (else you get oauth)
       if (req.user.isAdmin && req.user.masqueradeId) {
-        const response: string = await asyncTimedFunction(
-          getPlannerItemsMask,
-          'getPlannerItemsMask',
-          [req.user.masqueradeId]
-        );
+        const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsAdmin', [
+          { osuId: req.user.masqueradeId }
+        ]);
         res.json(JSON.parse(response));
-      } else if (req.user.canvasOauthToken) {
-        const response: string = await asyncTimedFunction(
-          getPlannerItemsOAuth,
-          'getPlannerItemsOAuth',
-          [req.user.canvasOauthToken]
-        );
+      } else {
+        const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsOAuth', [
+          { oAuthToken: req.user.canvasOauthToken }
+        ]);
         res.json(JSON.parse(response));
       }
     } catch (err) {
