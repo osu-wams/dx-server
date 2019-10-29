@@ -16,7 +16,7 @@ describe('/masquerade', () => {
   it('starts and stops masquerade session', async () => {
     await request
       .post('/api/masquerade')
-      .send({ masqueradeId: 123123 })
+      .send({ masqueradeId: 123123, masqueradeReason: 'Because' })
       .expect(200, 'Masquerade session started.');
     await request.post('/api/masquerade').expect(200, 'Masquerade session ended.');
   });
@@ -29,14 +29,18 @@ describe('/masquerade', () => {
   });
 
   it('gets a null when there is no session established', async () => {
-    await request.get('/api/masquerade').expect(200, { masqueradeId: null });
+    await request
+      .get('/api/masquerade')
+      .expect(200, { masqueradeId: null, masqueradeReason: null });
   });
 
   it('gets a current masquerade session', async () => {
     await request
       .post('/api/masquerade')
-      .send({ masqueradeId: 123123 })
+      .send({ masqueradeId: 123123, masqueradeReason: 'Because' })
       .expect(200, 'Masquerade session started.');
-    await request.get('/api/masquerade').expect(200, { masqueradeId: 123123 });
+    await request
+      .get('/api/masquerade')
+      .expect(200, { masqueradeId: 123123, masqueradeReason: 'Because' });
   });
 });
