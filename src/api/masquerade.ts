@@ -33,11 +33,11 @@ router.post('/', async (req: Request, res: Response) => {
 router.get('/', (req, res) => {
   if (req.session.passport.user.masqueradeId) {
     return res.send({
-      masqueradeId: req.session.passport.user.masqueradeId,
-      masqueradeReason: req.session.passport.user.masqueradeReason
+      masqueradeId: req.session.passport.user.masqueradeId || '',
+      masqueradeReason: req.session.passport.user.masqueradeReason || ''
     });
   }
-  return res.send({ masqueradeId: null, masqueradeReason: null });
+  return res.send({ masqueradeId: '', masqueradeReason: '' });
 });
 
 export default router;

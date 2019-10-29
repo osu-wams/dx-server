@@ -29,9 +29,7 @@ describe('/masquerade', () => {
   });
 
   it('gets a null when there is no session established', async () => {
-    await request
-      .get('/api/masquerade')
-      .expect(200, { masqueradeId: null, masqueradeReason: null });
+    await request.get('/api/masquerade').expect(200, { masqueradeId: '', masqueradeReason: '' });
   });
 
   it('gets a current masquerade session', async () => {
