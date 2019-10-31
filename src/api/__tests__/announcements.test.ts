@@ -45,8 +45,7 @@ describe('/api/announcements', () => {
       .replyWithError('boom');
     await request
       .get('/api/announcements')
-      .expect(500)
-      .expect(r => r.error.text === 'Unable to retrieve announcements.');
+      .expect(500, { message: 'Unable to retrieve announcements.' });
   });
 });
 
@@ -65,8 +64,7 @@ describe('/api/announcements/academic', () => {
       .replyWithError('boom');
     await request
       .get('/api/announcements/academic')
-      .expect(500)
-      .expect(r => r.error.text === 'Unable to retrieve academic announcements.');
+      .expect(500, { message: 'Unable to retrieve academic announcements.' });
   });
 });
 
@@ -89,7 +87,6 @@ describe('/api/announcements/financial', () => {
       .replyWithError('boom');
     await request
       .get('/api/announcements/financial')
-      .expect(500)
-      .expect(r => r.error.text === 'Unable to retrieve financial announcements.');
+      .expect(500, { message: 'Unable to retrieve financial announcements.' });
   });
 });

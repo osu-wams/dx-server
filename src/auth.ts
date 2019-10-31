@@ -162,9 +162,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
       return next(err);
     }
     if (!user) {
-      return res.status(400).send({
-        message: 'Bad username or password'
-      });
+      return res.status(400).send({ message: 'Bad username or password' });
     }
 
     req.login(user, (innerErr: any) => {
@@ -203,7 +201,7 @@ Auth.ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => 
     return next();
   }
 
-  res.status(401).send('Unauthorized');
+  return res.status(401).send({ message: 'Unauthorized' });
 };
 
 Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
@@ -211,7 +209,7 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
     return next();
   }
 
-  return res.status(401).send('Unauthorized');
+  return res.status(401).send({ message: 'Unauthorized' });
 };
 
 /**
@@ -235,7 +233,7 @@ Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: Next
     user
   );
   // Return 403 so the front-end knows to react to the change in users canvas opt-in
-  return res.status(403).send('User must opt-in to Canvas login');
+  return res.status(403).send({ message: 'User must opt-in to Canvas login' });
 };
 
 export default Auth;

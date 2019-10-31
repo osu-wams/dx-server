@@ -27,10 +27,10 @@ router.get('/reset-sessions', async (req: Request, res: Response) => {
     // in the queue. It will need improvement if/when the queue holds keys that
     // deal with things other than user sessions.
     redisClient.flushdb();
-    res.status(200).send('Tokens reset, session cache is clearing.');
+    res.status(200).send({ message: 'Tokens reset, session cache is clearing.' });
   } catch (err) {
     logger.error('api/admin/reset-sessions failed:', err);
-    res.status(500).send('Error while resetting sessions.');
+    res.status(500).send({ message: 'Error while resetting sessions.' });
   }
 });
 
@@ -41,13 +41,13 @@ router.get('/reset-api-cache', async (req: Request, res: Response) => {
   try {
     const flushed = await cache.flushDb();
     if (flushed) {
-      res.status(200).send('Api cache is resetting.');
+      res.status(200).send({ message: 'Api cache is resetting.' });
     } else {
       res.status(304).send();
     }
   } catch (err) {
     logger.error('api/admin/reset-api-cache failed:', err);
-    res.status(500).send('Error while resetting api cache.');
+    res.status(500).send({ message: 'Error while resetting api cache.' });
   }
 });
 

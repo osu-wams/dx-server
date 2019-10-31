@@ -108,10 +108,7 @@ describe('/api/student', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/student/academic-status')
-        .expect(401)
-        .expect(res => res.error.text === 'Unauthorized');
+      await request.get('/api/student/academic-status').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve academic status." when there is a 500 error', async () => {
@@ -123,8 +120,7 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/academic-status')
-        .expect(500)
-        .expect(res => res.error.text === 'Unable to retrieve academic status.');
+        .expect(500, { message: 'Unable to retrieve academic status.' });
     });
   });
 
@@ -146,10 +142,7 @@ describe('/api/student', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/student/account-balance')
-        .expect(401)
-        .expect('Unauthorized');
+      await request.get('/api/student/account-balance').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve account balance." when there is a 500 error', async () => {
@@ -161,8 +154,7 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/account-balance')
-        .expect(500)
-        .expect('Unable to retrieve account balance.');
+        .expect(500, { message: 'Unable to retrieve account balance.' });
     });
   });
 
@@ -186,8 +178,7 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/account-transactions')
-        .expect(401)
-        .expect('Unauthorized');
+        .expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve account transactions." when there is a 500 error', async () => {
@@ -199,8 +190,7 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/account-transactions')
-        .expect(500)
-        .expect('Unable to retrieve account transactions.');
+        .expect(500, { message: 'Unable to retrieve account transactions.' });
     });
   });
 
@@ -236,18 +226,14 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/classification')
-        .expect(500)
-        .expect('Unable to retrieve classification.');
+        .expect(500, { message: 'Unable to retrieve classification.' });
     });
 
     it('should return an error if the user is not logged in', async () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/student/classification')
-        .expect(401)
-        .expect('Unauthorized');
+      await request.get('/api/student/classification').expect(401, { message: 'Unauthorized' });
     });
   });
 
@@ -272,18 +258,14 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/class-schedule')
-        .expect(500)
-        .expect('Unable to retrieve class schedule.');
+        .expect(500, { message: 'Unable to retrieve class schedule.' });
     });
 
     it('should return an error if the user is not logged in', async () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/student/class-schedule')
-        .expect(401)
-        .expect('Unauthorized');
+      await request.get('/api/student/class-schedule').expect(401, { message: 'Unauthorized' });
     });
   });
 
@@ -315,10 +297,7 @@ describe('/api/student', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/student/class-schedule')
-        .expect(401)
-        .expect('Unauthorized');
+      await request.get('/api/student/class-schedule').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve GPA data." when there is a 500 error', async () => {
@@ -330,8 +309,7 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/gpa')
-        .expect(500)
-        .expect('Unable to retrieve GPA data.');
+        .expect(500, { message: 'Unable to retrieve GPA data.' });
     });
   });
 
@@ -404,10 +382,7 @@ describe('/api/student', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/student/grades')
-        .expect(401)
-        .expect('Unauthorized');
+      await request.get('/api/student/grades').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve grades." when there is a 500 error', async () => {
@@ -419,8 +394,7 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/grades')
-        .expect(500)
-        .expect('Unable to retrieve grades.');
+        .expect(500, { message: 'Unable to retrieve grades.' });
     });
   });
 
@@ -439,10 +413,7 @@ describe('/api/student', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/student/holds')
-        .expect(401)
-        .expect('Unauthorized');
+      await request.get('/api/student/holds').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve account holds." when there is a 500 error', async () => {
@@ -454,8 +425,7 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/holds')
-        .expect(500)
-        .expect('Unable to retrieve account holds.');
+        .expect(500, { message: 'Unable to retrieve account holds.' });
     });
   });
 
@@ -492,8 +462,7 @@ describe('/api/student', () => {
         .reply(500);
       await request
         .get('/api/student/planner-items')
-        .expect(500)
-        .expect('Unable to retrieve planner items.');
+        .expect(500, { message: 'Unable to retrieve planner items.' });
     });
 
     describe('with a masqueraded user', () => {
@@ -549,8 +518,7 @@ describe('/api/student', () => {
           .reply(401);
         await request
           .get('/api/student/planner-items')
-          .expect(403)
-          .expect('Reset users canvas opt-in status.');
+          .expect(403, { message: 'Reset users canvas opt-in status.' });
       });
     });
 
@@ -576,8 +544,7 @@ describe('/api/student', () => {
           .reply(401);
         await request
           .get('/api/student/planner-items')
-          .expect(403)
-          .expect('User must opt-in to Canvas login');
+          .expect(403, { message: 'User must opt-in to Canvas login' });
       });
     });
   });

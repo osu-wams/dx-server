@@ -32,7 +32,7 @@ router.get('/', async (_req: Request, res: Response) => {
     res.send(result);
   } catch (err) {
     logger.error(`api/announcements fetching announcements failed: ${err}`);
-    res.status(500).send('Unable to retrieve announcements.');
+    res.status(500).send({ message: 'Unable to retrieve announcements.' });
   }
 });
 
@@ -46,7 +46,7 @@ router.get('/academic', async (_req: Request, res: Response) => {
     res.send(result);
   } catch (err) {
     logger.error(`api/announcements/academic fetching academic announcements failed: ${err}`);
-    res.status(500).send('Unable to retrieve academic announcements.');
+    res.status(500).send({ message: 'Unable to retrieve academic announcements.' });
   }
 });
 
@@ -60,7 +60,7 @@ router.get('/financial', async (_req: Request, res: Response) => {
     res.send(result);
   } catch (err) {
     logger.error(`api/announcements/financial fetching financial announcements failed: ${err}`);
-    res.status(500).send('Unable to retrieve financial announcements.');
+    res.status(500).send({ message: 'Unable to retrieve financial announcements.' });
   }
 });
 
