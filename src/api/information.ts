@@ -20,7 +20,7 @@ router.get('/', async (_req: Request, res: Response) => {
     res.send(result);
   } catch (err) {
     logger.error(`api/information failed:`, err);
-    res.status(500).send(err);
+    res.status(500).send({ message: err });
   }
 });
 

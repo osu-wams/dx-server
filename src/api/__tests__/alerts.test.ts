@@ -53,10 +53,7 @@ describe('/alerts', () => {
       .get('')
       .reply(500);
 
-    await request
-      .get('/api/alerts')
-      .expect(500)
-      .expect(r => r.error.text === 'Unable to retrieve alerts.');
+    await request.get('/api/alerts').expect(500, { message: 'Unable to retrieve rave alerts.' });
   });
 });
 
@@ -87,9 +84,6 @@ describe('/alerts/dx', () => {
       .query(true)
       .reply(500);
 
-    await request
-      .get('/api/alerts/dx')
-      .expect(500)
-      .expect(r => r.error.text === 'Unable to retrieve alerts.');
+    await request.get('/api/alerts/dx').expect(500, { message: 'Unable to retrieve dx alerts.' });
   });
 });

@@ -38,10 +38,7 @@ describe('/api/persons', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/persons/')
-        .expect(401)
-        .expect(r => r.error.text === 'Unauthorized');
+      await request.get('/api/persons/').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve person information." when there is a 500 error', async () => {
@@ -53,8 +50,7 @@ describe('/api/persons', () => {
 
       await request
         .get('/api/persons')
-        .expect(500)
-        .expect(r => r.error.text === 'Unable to retrieve person information.');
+        .expect(500, { message: 'Unable to retrieve person information.' });
     });
   });
 
@@ -76,10 +72,7 @@ describe('/api/persons', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/persons/addresses')
-        .expect(401)
-        .expect(r => r.error.text === 'Unauthorize');
+      await request.get('/api/persons/addresses').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve addresses" when there is a 500 error', async () => {
@@ -91,8 +84,7 @@ describe('/api/persons', () => {
 
       await request
         .get('/api/persons/addresses')
-        .expect(500)
-        .expect(r => r.error.text === 'Unable to retrieve addresses');
+        .expect(500, { message: 'Unable to retrieve addresses' });
     });
   });
 
@@ -114,10 +106,7 @@ describe('/api/persons', () => {
       // Clear session data - we don't want to be logged in
       request = supertest.agent(app);
 
-      await request
-        .get('/api/persons/meal-plans')
-        .expect(401)
-        .expect(r => r.error.text === 'Unauthorized');
+      await request.get('/api/persons/meal-plans').expect(401, { message: 'Unauthorized' });
     });
 
     it('should return "Unable to retrieve meal plans." when there is a 500 error', async () => {
@@ -129,8 +118,7 @@ describe('/api/persons', () => {
 
       await request
         .get('/api/persons/meal-plans')
-        .expect(500)
-        .expect(r => r.error.text === 'Unable to retrieve meal plans.');
+        .expect(500, { message: 'Unable to retrieve meal plans.' });
     });
   });
 });

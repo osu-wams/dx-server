@@ -31,7 +31,7 @@ router.get('/', async (req: Request, res: Response) => {
     res.send(data);
   } catch (err) {
     logger.error(`api/resources failed:`, err);
-    res.status(500).send(err);
+    res.status(500).send({ message: err });
   }
 });
 
@@ -46,7 +46,7 @@ router.get('/category/:machineName', async (req: Request, res: Response) => {
     res.send(data);
   } catch (err) {
     logger.error(`api/resources/category/${req.params.machineName} failed:`, err);
-    res.status(500).send(err);
+    res.status(500).send({ message: err });
   }
 });
 
@@ -56,7 +56,7 @@ router.get('/categories', async (_req: Request, res: Response) => {
     res.send(data);
   } catch (err) {
     logger.error(`api/resources/categories failed:`, err);
-    res.status(500).send(err);
+    res.status(500).send({ message: err });
   }
 });
 

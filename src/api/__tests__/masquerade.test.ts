@@ -24,8 +24,7 @@ describe('/masquerade', () => {
   it('fails to start a session without a masqueradeId', async () => {
     await request
       .post('/api/masquerade')
-      .expect(500)
-      .expect(r => r.error.text === 'No masqueradeId supplied');
+      .expect(500, { message: 'No masqueradeId or masqueradeReason supplied.' });
   });
 
   it('gets a null when there is no session established', async () => {

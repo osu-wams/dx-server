@@ -15,7 +15,7 @@ router.get('/', async (_req: Request, res: Response) => {
     res.send(result);
   } catch (err) {
     logger.error(`api/alerts failed:`, err);
-    res.status(500).send('Unable to retrieve rave alerts.');
+    res.status(500).send({ message: 'Unable to retrieve rave alerts.' });
   }
 });
 
@@ -25,7 +25,7 @@ router.get('/dx', async (_req: Request, res: Response) => {
     res.send(result);
   } catch (err) {
     logger.error(`api/alerts/dx failed:`, err);
-    res.status(500).send('Unable to retrieve dx alerts.');
+    res.status(500).send({ message: 'Unable to retrieve dx alerts.' });
   }
 });
 

@@ -30,7 +30,7 @@ describe('/admin', () => {
       });
       await request
         .get('/api/admin/reset-sessions')
-        .expect(200, 'Tokens reset, session cache is clearing.');
+        .expect(200, { message: 'Tokens reset, session cache is clearing.' });
     });
 
     it('should return an error', async () => {
@@ -38,7 +38,9 @@ describe('/admin', () => {
       mockedUser.clearAllCanvasRefreshTokens.mockImplementation(() => {
         return [false, []];
       });
-      await request.get('/api/admin/reset-sessions').expect(500, 'Error while resetting sessions.');
+      await request
+        .get('/api/admin/reset-sessions')
+        .expect(500, { message: 'Error while resetting sessions.' });
     });
   });
 
@@ -46,7 +48,9 @@ describe('/admin', () => {
     it('should return success', async () => {
       mockedFlushDbResponse.mockReturnValue(true);
       cache.flushDb = mockedFlushDb;
-      await request.get('/api/admin/reset-api-cache').expect(200, 'Api cache is resetting.');
+      await request
+        .get('/api/admin/reset-api-cache')
+        .expect(200, { message: 'Api cache is resetting.' });
     });
     it('should return unsuccessful', async () => {
       mockedFlushDbResponse.mockReturnValue(false);
@@ -60,7 +64,7 @@ describe('/admin', () => {
       };
       await request
         .get('/api/admin/reset-api-cache')
-        .expect(500, 'Error while resetting api cache.');
+        .expect(500, { message: 'Error while resetting api cache.' });
     });
   });
 });

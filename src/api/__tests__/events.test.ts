@@ -29,10 +29,7 @@ describe('/events', () => {
       .get(/.*/)
       .reply(500);
 
-    await request
-      .get('/api/events')
-      .expect(500)
-      .expect(r => r.error.text === 'Unable to retrieve events.');
+    await request.get('/api/events').expect(500, { message: 'Unable to retrieve events.' });
   });
 });
 
@@ -60,7 +57,6 @@ describe('/events/academic-calendar', () => {
 
     await request
       .get('/api/events/academic-calendar')
-      .expect(500)
-      .expect(r => r.error.text === 'Unable to retrieve academic calendar events.');
+      .expect(500, { message: 'Unable to retrieve academic calendar events.' });
   });
 });
