@@ -22,11 +22,6 @@ export interface Alert {
   type: string;
 }
 
-export interface Audience {
-  id: string;
-  name: string;
-}
-
 /**
  * Inspect related field_announcement_image to return the url otherwise undefined
  * @param item drupal item including field_announcement_image.field_media_image
@@ -72,7 +67,9 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
     .filter(d => d.title !== undefined)
     .map(d => {
       let audiences = [];
+      let pages = [];
       if (d.field_audience !== undefined) audiences = d.field_audience.map(a => a.name);
+      if (d.field_pages !== undefined) pages = d.field_pages.map(a => a.name);
       return {
         id: d.id,
         type: d.drupal_internal__name,
@@ -81,6 +78,7 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
         body: d.field_announcement_body,
         bg_image: imageUrl(d),
         audiences,
+        pages,
         action: itemAction(d)
       };
     });
@@ -142,68 +140,16 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
     const data = await retrieveData('node/announcement', {
       fields: {
         'node--announcement':
-          'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience',
+          'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages',
         'taxonomy_term--audience': 'name',
-        'media--image': 'name,field_media_image',
-        'file--file': 'filename,filemime,uri'
-      },
-      include: 'field_announcement_image,field_announcement_image.field_media_image,field_audience'
-    });
-    return mappedAnnouncements(data);
-  } catch (err) {
-    throw err;
-  }
-};
-
-/**
- * Using the entity subqueue, get all of the announcements for a particular type.
- * @param type the name of the entity subqueue to return announcements for
- */
-const getCuratedAnnouncements = async (type: string): Promise<IAnnouncementResult[]> => {
-  try {
-    const data = await retrieveData('entity_subqueue/announcements', {
-      fields: {
-        'entity_subqueue--announcements': 'items,drupal_internal__name',
-        'node--announcement':
-          'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience',
-        'taxonomy_term--audience': 'name',
+        'taxonomy_term--pages': 'name',
         'media--image': 'name,field_media_image',
         'file--file': 'filename,filemime,uri'
       },
       include:
-        'items,items.field_announcement_image,items.field_announcement_image.field_media_image,items.field_audience'
+        'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages'
     });
-
-    // Find the first matching entity subqueue to return its associated items (announcement nodes)
-    /* eslint-disable camelcase */
-    const filtered: { drupal_internal__name: string; items: any[] } = data.find(
-      (d: { drupal_internal__name: string; items: any[] }) =>
-        d.drupal_internal__name.toLowerCase() === type.toLowerCase()
-    );
-    /* eslint-enable camelcase */
-    return mappedAnnouncements(filtered.items);
-  } catch (err) {
-    throw err;
-  }
-};
-
-/**
- * Get the academic announcements from the DX API.
- */
-export const getAcademicAnnouncements = async (): Promise<IAnnouncementResult[]> => {
-  try {
-    return getCuratedAnnouncements('academic_announcements');
-  } catch (err) {
-    throw err;
-  }
-};
-
-/**
- * Get the financial announcements from the DX API.
- */
-export const getFinancialAnnouncements = async (): Promise<IAnnouncementResult[]> => {
-  try {
-    return getCuratedAnnouncements('financial_announcements');
+    return mappedAnnouncements(data);
   } catch (err) {
     throw err;
   }

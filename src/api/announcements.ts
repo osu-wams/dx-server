@@ -2,12 +2,9 @@
  * /api/announcements
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { isNullOrUndefined } from 'util';
 import logger from '../logger';
-import {
-  getAnnouncements,
-  getAcademicAnnouncements,
-  getFinancialAnnouncements
-} from './modules/dx';
+import { getAnnouncements } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';
 
 const router: Router = Router();
@@ -24,43 +21,30 @@ export interface IAnnouncementResult {
     link: string;
   };
   audiences: string[];
+  pages: string[];
 }
 
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/:page?', async (req: Request, res: Response) => {
   try {
-    const result = await asyncTimedFunction(getAnnouncements, 'getAnnouncements', []);
-    res.send(result);
+    const result: IAnnouncementResult[] = await asyncTimedFunction(
+      getAnnouncements,
+      'getAnnouncements',
+      []
+    );
+    if (!isNullOrUndefined(req.params.page) && req.params.page !== '') {
+      res.send(
+        result.filter(
+          r =>
+            r.pages.some(p => p.toLowerCase() === req.params.page.toLowerCase()) ||
+            r.pages.length === 0
+        )
+      );
+    } else {
+      res.send(result);
+    }
   } catch (err) {
     logger.error(`api/announcements fetching announcements failed: ${err}`);
     res.status(500).send({ message: 'Unable to retrieve announcements.' });
-  }
-});
-
-router.get('/academic', async (_req: Request, res: Response) => {
-  try {
-    const result = await asyncTimedFunction(
-      getAcademicAnnouncements,
-      'getAcademicAnnouncements',
-      []
-    );
-    res.send(result);
-  } catch (err) {
-    logger.error(`api/announcements/academic fetching academic announcements failed: ${err}`);
-    res.status(500).send({ message: 'Unable to retrieve academic announcements.' });
-  }
-});
-
-router.get('/financial', async (_req: Request, res: Response) => {
-  try {
-    const result = await asyncTimedFunction(
-      getFinancialAnnouncements,
-      'getFinancialAnnouncements',
-      []
-    );
-    res.send(result);
-  } catch (err) {
-    logger.error(`api/announcements/financial fetching financial announcements failed: ${err}`);
-    res.status(500).send({ message: 'Unable to retrieve financial announcements.' });
   }
 });
 

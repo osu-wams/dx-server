@@ -1,0 +1,4 @@
+@baseUrl = https://data.dx.oregonstate.edu
+
+# @name getAnnouncements
+GET {{baseUrl}}/jsonapi/node/announcement HTTP/1.1
