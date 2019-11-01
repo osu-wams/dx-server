@@ -11,7 +11,6 @@ const router: Router = Router();
 
 export interface IAnnouncementResult {
   id: string;
-  type: string;
   date: null;
   title: string;
   body: string;
