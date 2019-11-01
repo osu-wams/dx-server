@@ -1,32 +1,3 @@
-export const mockAnnouncementResult = [
-  {
-    id: 'testid1',
-    date: '2019-01-01',
-    title: 'Academic Announcement',
-    body: 'Academic announcement body',
-    audiences: [],
-    pages: ['Academics']
-  },
-  {
-    id: 'testid1',
-    date: '2019-01-01',
-    title: 'Financial Announcement',
-    body: 'Financial announcement body',
-    bg_image: 'https://data.dx.oregonstate.edu/image_path',
-    audiences: ['Corvallis', 'Bend'],
-    action: { title: 'Action Title', link: 'http://somelink' },
-    pages: ['Finances']
-  },
-  {
-    id: 'testid3',
-    date: '2019-01-01',
-    title: 'Announcement',
-    body: 'Announcement body',
-    audiences: [],
-    pages: []
-  }
-];
-
 export const mockAnnouncementResultWithoutRelatedData = [
   {
     id: 'testid1',
@@ -124,6 +95,19 @@ export const mockFinancialAnnouncementResult = [
     action: { title: 'Action Title', link: 'http://somelink' },
     pages: ['Finances']
   },
+  {
+    id: 'testall1',
+    date: '2019-01-01',
+    title: 'Announcement',
+    body: 'Announcement body',
+    audiences: [],
+    pages: []
+  }
+];
+
+export const mockAnnouncementResult = [
+  mockAcademicAnnouncementResult[0],
+  mockFinancialAnnouncementResult[0],
   {
     id: 'testall1',
     date: '2019-01-01',
