@@ -4,7 +4,6 @@ import { BASE_URL } from '../modules/dx';
 import app from '../../index';
 import {
   mockAnnouncementsData,
-  mockAnnouncementsEntityQueueData,
   mockAnnouncementResult,
   mockAnnouncementResultWithoutRelatedData,
   mockAcademicAnnouncementResult,
@@ -49,44 +48,44 @@ describe('/api/announcements', () => {
   });
 });
 
-describe('/api/announcements/academic', () => {
+describe('/api/announcements/academics', () => {
   it('returns announcements', async () => {
-    mockCachedData.mockReturnValue(JSON.stringify(mockAnnouncementsEntityQueueData));
+    mockCachedData.mockReturnValue(JSON.stringify(mockAnnouncementsData));
     cache.getAsync = getAsync;
-    await request.get('/api/announcements/academic').expect(200, mockAcademicAnnouncementResult);
+    await request.get('/api/announcements/academics').expect(200, mockAcademicAnnouncementResult);
   });
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
     nock(BASE_URL)
-      .get('/jsonapi/entity_subqueue/announcements')
+      .get('/jsonapi/node/announcement')
       .query(true)
       .replyWithError('boom');
     await request
-      .get('/api/announcements/academic')
-      .expect(500, { message: 'Unable to retrieve academic announcements.' });
+      .get('/api/announcements/academics')
+      .expect(500, { message: 'Unable to retrieve announcements.' });
   });
 });
 
-describe('/api/announcements/financial', () => {
+describe('/api/announcements/finances', () => {
   it('returns announcements', async () => {
-    mockCachedData.mockReturnValue(JSON.stringify(mockAnnouncementsEntityQueueData));
+    mockCachedData.mockReturnValue(JSON.stringify(mockAnnouncementsData));
     cache.getAsync = getAsync;
     nock(BASE_URL)
-      .get('/jsonapi/entity_subqueue/announcements')
+      .get('/jsonapi/node/announcement')
       .query(true)
-      .reply(200, mockAnnouncementsEntityQueueData);
-    await request.get('/api/announcements/financial').expect(200, mockFinancialAnnouncementResult);
+      .reply(200, mockAnnouncementsData);
+    await request.get('/api/announcements/finances').expect(200, mockFinancialAnnouncementResult);
   });
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
     nock(BASE_URL)
-      .get('/jsonapi/entity_subqueue/announcements')
+      .get('/jsonapi/node/announcement')
       .query(true)
       .replyWithError('boom');
     await request
-      .get('/api/announcements/financial')
-      .expect(500, { message: 'Unable to retrieve financial announcements.' });
+      .get('/api/announcements/finances')
+      .expect(500, { message: 'Unable to retrieve announcements.' });
   });
 });
