@@ -216,5 +216,26 @@ describe('User model', () => {
         }
       });
     });
+
+    describe('updateSettings', () => {
+      it('updates audienceOverride settings', async () => {
+        const result = await User.updateSettings(user, {
+          audienceOverride: { campusCode: 'C' }
+        });
+        expect(result.audienceOverride).toStrictEqual({ campusCode: 'C' });
+      });
+      it('throws an error on failure', async () => {
+        mockDynamoDb.updateItem.mockImplementationOnce(() =>
+          Promise.reject(new Error('happy little accident'))
+        );
+        try {
+          await User.updateSettings(user, {
+            audienceOverride: { campusCode: 'C' }
+          });
+        } catch (err) {
+          expect(err.message).toStrictEqual('happy little accident');
+        }
+      });
+    });
   });
 });

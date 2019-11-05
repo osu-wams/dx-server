@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --inspect src/index.ts",
-    "prod": "cross-env NODE_ENV=production ts-node src/index.ts",
+    "start": "truncate -s 0 logs/development.log && nodemon --inspect src/index.ts",
+    "prod": "truncate -s 0 logs/production.log && cross-env NODE_ENV=production ts-node src/index.ts",
     "lint": "eslint --ext .js,.ts src/**",
     "lint:fix": "eslint --ext .js,.ts src/** --fix",
     "test": "NODE_ENV=test jest",

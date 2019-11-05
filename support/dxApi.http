@@ -2,3 +2,9 @@
 
 # @name getAnnouncements
 GET {{baseUrl}}/jsonapi/node/announcement HTTP/1.1
+
+###
+
+# @name getResources
+GET {{baseUrl}}/jsonapi/node/services HTTP/1.1
+
