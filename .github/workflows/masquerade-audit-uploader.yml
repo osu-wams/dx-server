@@ -2,7 +2,7 @@ name: Masquerade Audit Uploader
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "1 0 * * *"
 
 jobs:
   fetch_and_upload:
