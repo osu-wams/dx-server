@@ -1,0 +1,15 @@
+name: Masquerade Audit Uploader
+
+on:
+  schedule:
+    - cron: "0,5,10,15,20,25,30,35,40,45,50,55 0-24 * * *"
+
+jobs:
+  fetch_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Fetch Cloudwatch events and translate to a csv
+      run: aws logs filter-log-events --log-group-name osu-dx-development --filter-pattern '{ $.adminAction="masquerade" }' --start-time $(date --date="yesterday" +%s000) --end-time $(date +%s000) | jq -r '[.events[]?.message | fromjson ]? | (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv' > $(date --date="yesterday" +%Y%m%d).csv
+    - name: Upload csv to S3
+      run: aws s3 cp $(date --date="yesterday" +%Y%m%d).csv s3://osu-dx-masquerade-audit
+      
