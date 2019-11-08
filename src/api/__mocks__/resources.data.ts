@@ -20,6 +20,7 @@ export const resourcesData = [
         name: 'Corvallis'
       }
     ],
+    field_icon_name: 'osu.logo_sites_128px',
     field_icon: {
       field_media_image: {
         uri: {
