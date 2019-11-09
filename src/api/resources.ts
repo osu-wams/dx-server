@@ -12,7 +12,7 @@ export interface IResourceResult {
   id: string;
   type: string;
   title: string;
-  icon?: string;
+  iconName?: string;
   link: string;
   audiences: string[];
   categories: string[];

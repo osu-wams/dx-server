@@ -48,17 +48,6 @@ const itemAction = item => {
 };
 
 /**
- * Inspect the related field_taxonomy_icon to get the images url or default to undefined
- * @param item drupal item including field_taxonomy_icon
- */
-const iconUrl = item => {
-  if (item.field_icon && item.field_icon.field_media_image) {
-    return `${BASE_URL}${item.field_icon!.field_media_image.uri.url}`;
-  }
-  return undefined;
-};
-
-/**
  * Return an array of data reshaped to an array of the announcement results
  * @param items a list of items to reshape as announcement results
  */
@@ -94,7 +83,7 @@ const mappedResources = (items: any[]): IResourceResult[] => {
     type: d.drupal_internal__name,
     title: d.title,
     link: d.field_service_url.uri,
-    icon: iconUrl(d),
+    iconName: d.field_icon_name,
     audiences: d.field_audience.map(a => a.name),
     categories: d.field_service_category.map(c => c.name),
     synonyms: d.field_service_synonyms
@@ -163,13 +152,11 @@ export const getResources = async (): Promise<IResourceResult[]> => {
     const data = await retrieveData('node/services', {
       fields: {
         'node--services':
-          'id,title,field_icon,field_service_category,field_audience,field_service_synonyms,field_service_url',
+          'id,title,field_icon_name,field_service_category,field_audience,field_service_synonyms,field_service_url',
         'taxonomy_term--categories': 'name',
-        'taxonomy_term--audience': 'name',
-        'media--image': 'name,field_media_image',
-        'file--file': 'filename,filemime,uri'
+        'taxonomy_term--audience': 'name'
       },
-      include: 'field_service_category,field_icon.field_media_image,field_audience',
+      include: 'field_service_category,field_audience',
       sort: 'title'
     });
     return mappedResources(data);
@@ -187,14 +174,12 @@ export const getCuratedResources = async (category: string): Promise<IResourceRe
       fields: {
         'entity_subqueue--services': 'items,drupal_internal__name',
         'node--services':
-          'id,title,field_icon,field_service_category,field_audience,field_service_synonyms,field_service_url',
+          'id,title,field_icon_name,field_service_category,field_audience,field_service_synonyms,field_service_url',
         'taxonomy_term--categories': 'name',
-        'taxonomy_term--audience': 'name',
-        'media--image': 'name,field_media_image',
-        'file--file': 'filename,filemime,uri'
+        'taxonomy_term--audience': 'name'
       },
       include:
-        'items,items.field_service_category,items.field_icon.field_media_image,items.field_audience'
+        'items,items.field_service_category,items.field_audience'
     });
 
     return mappedResources(data[0].items);

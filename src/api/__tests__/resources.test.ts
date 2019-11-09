@@ -29,7 +29,7 @@ describe('/resources', () => {
         type: 'service--categories',
         title: 'Student Jobs',
         link: 'http://ask/jeeves',
-        icon: `${BASE_URL}/sites/default/files/2019-05/logo_sites_128px.png`,
+        iconName: 'osu.logo_sites_128px',
         audiences: ['Corvallis'],
         categories: ['category1', 'category2'],
         synonyms: ['blah', 'bob', 'ross']
@@ -105,7 +105,7 @@ describe('/resources', () => {
           type: 'service--categories',
           title: 'Student Jobs',
           link: 'http://ask/jeeves',
-          icon: 'https://data.dx.oregonstate.edu/sites/default/files/2019-05/logo_sites_128px.png',
+          iconName: 'osu.logo_sites_128px',
           audiences: ['Corvallis'],
           categories: ['category1', 'category2'],
           synonyms: ['blah', 'bob', 'ross']
@@ -126,7 +126,7 @@ describe('/resources', () => {
           type: 'service--categories',
           title: 'Student Jobs',
           link: 'http://ask/jeeves',
-          icon: 'https://data.dx.oregonstate.edu/sites/default/files/2019-05/logo_sites_128px.png',
+          iconName: 'osu.logo_sites_128px',
           audiences: ['Corvallis'],
           categories: ['category1', 'category2'],
           synonyms: ['blah', 'bob', 'ross']
