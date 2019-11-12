@@ -35,5 +35,15 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/v1/students/{{osuId}}/classification HTTP/1.1
 Authorization: Bearer {{token}}
 
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getPerson
+GET {{baseUrl}}/v1/persons/{{osuId}} HTTP/1.1
+Authorization: Bearer {{token}}
+
+
+
+
 
 
