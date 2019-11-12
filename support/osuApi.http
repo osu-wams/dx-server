@@ -42,8 +42,9 @@ Authorization: Bearer {{token}}
 GET {{baseUrl}}/v1/persons/{{osuId}} HTTP/1.1
 Authorization: Bearer {{token}}
 
+###
+@token = {{getToken.response.body.$.access_token}}
 
-
-
-
-
+# @name getClassSchedule
+GET {{baseUrl}}/v1/students/{{osuId}}/class-schedule HTTP/1.1
+Authorization: Bearer {{token}}
