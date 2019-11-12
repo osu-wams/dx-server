@@ -221,7 +221,7 @@ interface GpaResponse {
 
 // The levels of GPA ordered by priority for display.
 const gpaLevelsByPriority = [
-  'Postbacc',
+  'Postbac Degree Seeking',
   'Professional',
   'Graduate',
   'Undergraduate',
