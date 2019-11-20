@@ -15,13 +15,13 @@ const getJson = async (url: string) => {
     url,
     {
       auth: { bearer: bearerToken },
-      json: true
+      json: true,
     },
     true,
     {
       key: url,
-      ttlSeconds: CACHE_SEC
-    }
+      ttlSeconds: CACHE_SEC,
+    },
   );
   return response;
 };
@@ -41,11 +41,11 @@ interface AcademicStatusResponse {
 
 export const getAcademicStatus = async (
   user: any,
-  termQueryString: any
+  termQueryString: any,
 ): Promise<{ academicStanding: string; term: string } | {}> => {
   try {
     const response: AcademicStatusResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
     );
     if (response.data.length > 0) {
       // Sort the academic status data in descending order based on the id to get the most recent terms first.
@@ -57,10 +57,10 @@ export const getAcademicStatus = async (
       });
       const latestTerm = sorted[0];
       // Get the most recent term which has a valid academicStanding (at times the upcoming term will not include this)
-      const latestTermWithStanding = sorted.find(a => a.attributes.academicStanding !== null);
+      const latestTermWithStanding = sorted.find((a) => a.attributes.academicStanding !== null);
       return {
         academicStanding: latestTermWithStanding.attributes.academicStanding,
-        term: latestTerm.attributes.term
+        term: latestTerm.attributes.term,
       };
     }
     return {};
@@ -80,7 +80,7 @@ export const getAccountBalance = async (user: any) => {
 export const getAccountTransactions = async (user: any) => {
   try {
     return await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
     );
   } catch (err) {
     throw err;
@@ -139,25 +139,25 @@ interface ClassScheduleResponse {
 
 export const getClassSchedule = async (
   user: any,
-  term: any
+  term: any,
 ): Promise<{ data: ClassSchedule[] }> => {
   try {
     const response: ClassScheduleResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
     );
     return {
       data: response.data.map((d: ClassSchedule) => ({
         attributes: {
           ...d.attributes,
-          faculty: d.attributes.faculty.map(f => ({
+          faculty: d.attributes.faculty.map((f) => ({
             email: f.email,
             name: f.name,
-            primary: f.primary
-          }))
+            primary: f.primary,
+          })),
         },
         type: d.type,
-        id: d.id
-      }))
+        id: d.id,
+      })),
     };
   } catch (err) {
     throw err;
@@ -184,7 +184,7 @@ interface ClassificationResponse {
 export const getClassification = async (user: any): Promise<Classification> => {
   try {
     const response: ClassificationResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/classification`
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/classification`,
     );
     return response.data;
   } catch (err) {
@@ -208,6 +208,7 @@ interface GpaLevel {
   gpa: string;
   gpaType: string;
   level: string;
+  levelCode: string;
 }
 
 interface GpaResponse {
@@ -219,35 +220,46 @@ interface GpaResponse {
   };
 }
 
-// The levels of GPA ordered by priority for display.
-const gpaLevelsByPriority = [
-  'Postbacc',
-  'Professional',
-  'Graduate',
-  'Undergraduate',
-  'Non-Degree / Credential'
+const gpaLevelCodesByPriority = [
+  '03', // Postbac Degree Seeking
+  '05', // Professional
+  '02', // Graduate
+  'D2', // E-Campus Graduate Course
+  'CG', // Cascades Partner Grad Course
+  '01', // Undergraduate
+  'D1', // E-Campus Undergraduate Course
+  'D3', // ECampus CCLP & Counseling PHD
+  'CP', // Cascades Partner
+  '06', // INTO OSU GE/AE/Pathways
+  '04', // Non-Degree / Credential
+  'D0', // E-Campus Overlay Course
+  'DR', // E-Campus Intermediate Course
+  '00', // Level Not Declared
+  'CX', // Obsolete - Do not use
+  'NC', // Non Credit
 ];
+
 // The order of each GpaLevel by type for display.
 const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
 
 export const getGpa = async (user: any): Promise<GpaLevel[]> => {
   try {
     const response: GpaResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/gpa`
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/gpa`,
     );
     if (response.data && response.data.attributes.gpaLevels.length > 0) {
       const { gpaLevels } = response.data.attributes;
       // Produce an array of GpaLevel data to match the order of the levels by priority, and then each to match the order
       // of the types. The orders of these levels are important as the client expects the first GpaLevel/Type to be
       // the "preferred" GPA to display while the remaining GpaLevel data might be used in a tabular display.
-      const orderedGpaLevels = gpaLevelsByPriority
-        .map(l => {
+      const orderedGpaLevels = gpaLevelCodesByPriority
+        .map((l) => {
           return gpaLevels
-            .filter(g => g.level.toLowerCase() === l.toLowerCase())
+            .filter((g) => g.levelCode.toLowerCase() === l.toLowerCase())
             .sort((a, b) => gpaTypeOrder.indexOf(a.gpaType) - gpaTypeOrder.indexOf(b.gpaType));
         })
         .reduce((p, c) => p.concat(c))
-        .map(g => ({ level: g.level, gpaType: g.gpaType, gpa: g.gpa }));
+        .map((g) => ({ levelCode: g.levelCode, level: g.level, gpaType: g.gpaType, gpa: g.gpa }));
       return orderedGpaLevels;
     }
     return [];
@@ -273,18 +285,18 @@ interface HoldsResponse {
 export const getHolds = async (user: any): Promise<[{ description: string }] | []> => {
   try {
     const response: HoldsResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/holds`
+      `${BASE_URL}/${user.masqueradeId || user.osuId}/holds`,
     );
     if (response.data && response.data.attributes.holds.length > 0) {
       const { holds } = response.data.attributes;
       const currentHolds = holds
-        .filter(h => h.webDisplay)
-        .filter(h => {
+        .filter((h) => h.webDisplay)
+        .filter((h) => {
           const toDate = Date.parse(h.toDate);
           return toDate >= Date.now();
         });
       if (currentHolds.length === 0) return [];
-      return currentHolds.map(h => ({ description: h.description })) as [{ description: string }];
+      return currentHolds.map((h) => ({ description: h.description })) as [{ description: string }];
     }
     return [];
   } catch (err) {
