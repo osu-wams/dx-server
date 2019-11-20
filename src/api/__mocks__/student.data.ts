@@ -1,6 +1,6 @@
 export const academicStatusData = {
   links: {
-    self: 'bogus'
+    self: 'bogus',
   },
   data: [
     {
@@ -10,10 +10,10 @@ export const academicStatusData = {
         term: '201901',
         gpa: [
           {
-            creditHoursAttempted: 99
-          }
-        ]
-      }
+            creditHoursAttempted: 99,
+          },
+        ],
+      },
     },
     {
       id: '999999999-202001',
@@ -22,24 +22,24 @@ export const academicStatusData = {
         term: '202001',
         gpa: [
           {
-            creditHoursAttempted: 14
-          }
-        ]
-      }
-    }
-  ]
+            creditHoursAttempted: 14,
+          },
+        ],
+      },
+    },
+  ],
 };
 
 export const classScheduleDataResponse = {
   links: {
-    self: 'bogus'
+    self: 'bogus',
   },
   data: [
     {
       type: 'class-schedule',
       id: '999999999-202001-14683',
       links: {
-        self: null
+        self: null,
       },
       attributes: {
         academicYear: '1920',
@@ -63,8 +63,8 @@ export const classScheduleDataResponse = {
             osuId: '999999999',
             name: 'Lastname, Firstname',
             email: 'noreply@onid.orst.edu',
-            primary: true
-          }
+            primary: true,
+          },
         ],
         meetingTimes: [
           {
@@ -80,12 +80,12 @@ export const classScheduleDataResponse = {
             creditHourSession: 4,
             scheduleType: 'A',
             scheduleDescription: 'Lecture',
-            weeklySchedule: ['M', 'W']
-          }
-        ]
-      }
-    }
-  ]
+            weeklySchedule: ['M', 'W'],
+          },
+        ],
+      },
+    },
+  ],
 };
 
 export const classScheduleDataResult = [
@@ -121,31 +121,31 @@ export const classScheduleDataResult = [
           creditHourSession: 4,
           scheduleType: 'A',
           scheduleDescription: 'Lecture',
-          weeklySchedule: ['M', 'W']
-        }
+          weeklySchedule: ['M', 'W'],
+        },
       ],
       faculty: [
         {
           name: 'Lastname, Firstname',
           email: 'noreply@onid.orst.edu',
-          primary: true
-        }
-      ]
+          primary: true,
+        },
+      ],
     },
     type: 'class-schedule',
-    id: '999999999-202001-14683'
-  }
+    id: '999999999-202001-14683',
+  },
 ];
 
 export const gpaDataResponse = {
   links: {
-    self: 'https://bogus.url'
+    self: 'https://bogus.url',
   },
   data: {
     type: 'gpa',
     id: '111111111',
     links: {
-      self: null
+      self: null,
     },
     attributes: {
       gpaLevels: [
@@ -157,7 +157,8 @@ export const gpaDataResponse = {
           creditHoursEarned: 0,
           creditHoursPassed: 0,
           level: 'Undergraduate',
-          qualityPoints: '0.00'
+          levelCode: '01',
+          qualityPoints: '0.00',
         },
         {
           gpa: '0.00',
@@ -167,7 +168,8 @@ export const gpaDataResponse = {
           creditHoursEarned: 0,
           creditHoursPassed: 0,
           level: 'Undergraduate',
-          qualityPoints: '0.00'
+          levelCode: '01',
+          qualityPoints: '0.00',
         },
         {
           gpa: '3.27',
@@ -177,7 +179,8 @@ export const gpaDataResponse = {
           creditHoursEarned: 36,
           creditHoursPassed: 36,
           level: 'Graduate',
-          qualityPoints: '117.90'
+          levelCode: '02',
+          qualityPoints: '117.90',
         },
         {
           gpa: '3.27',
@@ -187,7 +190,8 @@ export const gpaDataResponse = {
           creditHoursEarned: 36,
           creditHoursPassed: 36,
           level: 'Graduate',
-          qualityPoints: '117.90'
+          levelCode: '02',
+          qualityPoints: '117.90',
         },
         {
           gpa: '3.00',
@@ -197,7 +201,8 @@ export const gpaDataResponse = {
           creditHoursEarned: 3,
           creditHoursPassed: 3,
           level: 'Non-Degree / Credential',
-          qualityPoints: '9.00'
+          levelCode: '04',
+          qualityPoints: '9.00',
         },
         {
           gpa: '3.00',
@@ -207,18 +212,19 @@ export const gpaDataResponse = {
           creditHoursEarned: 3,
           creditHoursPassed: 3,
           level: 'Non-Degree / Credential',
-          qualityPoints: '9.00'
-        }
-      ]
-    }
-  }
+          levelCode: '04',
+          qualityPoints: '9.00',
+        },
+      ],
+    },
+  },
 };
 
 export const gpaDataResult = [
-  { level: 'Graduate', gpaType: 'Institution', gpa: '3.27' },
-  { level: 'Graduate', gpaType: 'Overall', gpa: '3.27' },
-  { level: 'Undergraduate', gpaType: 'Institution', gpa: '0.00' },
-  { level: 'Undergraduate', gpaType: 'Overall', gpa: '0.00' },
-  { level: 'Non-Degree / Credential', gpaType: 'Institution', gpa: '3.00' },
-  { level: 'Non-Degree / Credential', gpaType: 'Overall', gpa: '3.00' }
+  { levelCode: '02', level: 'Graduate', gpaType: 'Institution', gpa: '3.27' },
+  { levelCode: '02', level: 'Graduate', gpaType: 'Overall', gpa: '3.27' },
+  { levelCode: '01', level: 'Undergraduate', gpaType: 'Institution', gpa: '0.00' },
+  { levelCode: '01', level: 'Undergraduate', gpaType: 'Overall', gpa: '0.00' },
+  { levelCode: '04', level: 'Non-Degree / Credential', gpaType: 'Institution', gpa: '3.00' },
+  { levelCode: '04', level: 'Non-Degree / Credential', gpaType: 'Overall', gpa: '3.00' },
 ];
