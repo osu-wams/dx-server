@@ -136,7 +136,10 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
         'file--file': 'filename,filemime,uri'
       },
       include:
-        'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages'
+        'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages',
+      filter: {
+        status: 1
+      }
     });
     return mappedAnnouncements(data);
   } catch (err) {
@@ -157,7 +160,10 @@ export const getResources = async (): Promise<IResourceResult[]> => {
         'taxonomy_term--audience': 'name'
       },
       include: 'field_service_category,field_audience',
-      sort: 'title'
+      sort: 'title',
+      filter: {
+        status: 1
+      }
     });
     return mappedResources(data);
   } catch (err) {
@@ -200,7 +206,10 @@ export const getCategories = async (): Promise<ICategory[]> => {
         'file--file': 'filename,filemime,uri'
       },
       include: 'field_taxonomy_icon.field_media_image',
-      sort: 'weight'
+      sort: 'weight',
+      filter: {
+        status: 1
+      }
     });
 
     const categoryIconUrl = item => {
@@ -225,7 +234,11 @@ export const getCategories = async (): Promise<ICategory[]> => {
  */
 export const getInfo = async (): Promise<IInfoResult[]> => {
   try {
-    const data = await retrieveData('node/information', {});
+    const data = await retrieveData('node/information', {
+      filter: {
+        status: 1
+      }
+    });
     return data.map(d => ({
       title: d.title,
       id: d.field_machine_name,
@@ -254,7 +267,11 @@ export const getDxAlerts = async (): Promise<Alert[]> => {
             path: 'field_alert_expiration_date',
             value: new Date().toISOString()
           }
-        }
+        },
+        status: 1,
+      },
+      fields: {
+        'node--alerts': 'title,created,field_alert_content,field_alert_type'
       },
       sort: '-field_alert_expiration_date'
     });
