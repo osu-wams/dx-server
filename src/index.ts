@@ -10,13 +10,30 @@ import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
 import { findOrCreateUser, updateOAuthData } from './api/modules/user-account';
-import { getOAuthToken } from './api/modules/canvas';
+import { getRefreshToken, getOAuthToken } from './api/modules/canvas';
 import { returnUrl } from './utils/routing';
+import User from './api/models/user'; // eslint-disable-line no-unused-vars
 
 const appVersion = config.get('appVersion');
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
+
+const setUserSession = (user: User, req) => {
+  req.session.passport.user = {
+    osuId: user.osuId,
+    email: user.email,
+    nameID: user.nameID,
+    nameIDFormat: user.nameIDFormat,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    isAdmin: user.isAdmin,
+    canvasOauthToken: user.canvasOauthToken,
+    canvasOauthExpire: user.canvasOauthExpire,
+    isCanvasOptIn: user.isCanvasOptIn,
+    refreshToken: user.refreshToken,
+  };
+};
 
 // App Configuration
 const app: Application = express();
@@ -48,8 +65,8 @@ const sessionOptions: SessionOptions = {
   rolling: true,
   cookie: {
     httpOnly: false,
-    maxAge: 1000 * 60 * 60
-  }
+    maxAge: 1000 * 60 * 60,
+  },
 };
 
 logger.info(`Server started with ENV=${config.get('env')}, VERSION=${appVersion}`);
@@ -58,7 +75,7 @@ if (config.get('env') === 'production') {
   sessionOptions.store = new RedisStore({
     host: config.get('redis.host'),
     port: config.get('redis.port'),
-    logErrors: true
+    logErrors: true,
   });
 }
 
@@ -80,13 +97,13 @@ app.get('/logout', Auth.logout);
 app.get('/healthcheck', (req, res) => {
   logger.debug('Health Check Request');
   res.send({
-    version: appVersion
+    version: appVersion,
   });
 });
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
   const { user, isNew } = await findOrCreateUser(req.user);
-  req.session.passport.user = user;
+  setUserSession(user, req);
   if (isNew) {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
@@ -110,6 +127,7 @@ app.get(
     if (req.query.error) {
       await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
       req.user.isCanvasOptIn = false;
+      req.session.user = req.user;
       const returnTo = returnUrl(req);
       logger.debug(`/canvas/auth error in OAuth redirecting to: ${returnTo}`);
       res.redirect(returnTo);
@@ -117,21 +135,23 @@ app.get(
       next();
     }
   },
-  passport.authorize('oauth2'),
   async (req: any, res: Response) => {
-    const { account } = req;
-    await updateOAuthData(req.user, { account, isCanvasOptIn: true });
-    req.user.canvasOauthToken = account.accessToken;
-    req.user.canvasOauthExpire = Math.floor(Date.now() / 1000) + parseInt(account.expireTime, 10);
-    req.user.isCanvasOptIn = true;
-    req.user.refreshToken = account.refreshToken;
+    const {
+      query: { code },
+    } = req;
+    const user = await getOAuthToken(req.user, code);
+    req.user.canvasOauthToken = user.canvasOauthToken;
+    req.user.canvasOauthExpire = user.canvasOauthExpire;
+    req.user.isCanvasOptIn = user.isCanvasOptIn;
+    req.user.refreshToken = user.refreshToken;
+    setUserSession(user, req);
     const returnTo = returnUrl(req);
     logger.debug(`/canvas/auth redirecting to: ${returnTo}`);
     res.redirect(returnTo);
-  }
+  },
 );
 app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
-  req.user = await getOAuthToken(req.user);
+  req.user = await getRefreshToken(req.user);
   const returnTo = returnUrl(req);
   logger.debug(`/canvas/refresh redirecting to: ${returnTo}`);
   res.redirect(returnTo);

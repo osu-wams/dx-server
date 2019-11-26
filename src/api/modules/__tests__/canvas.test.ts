@@ -1,13 +1,14 @@
 /* eslint-disable no-unused-vars */
 
 import nock from 'nock';
+import querystring from 'querystring';
 import {
   getPlannerItems,
-  getOAuthToken,
+  getRefreshToken,
   performRefresh,
   CANVAS_BASE_URL,
   CANVAS_OAUTH_BASE_URL,
-  CANVAS_OAUTH_TOKEN_URL
+  CANVAS_OAUTH_TOKEN_URL,
 } from '../canvas';
 import User from '../../models/user';
 
@@ -23,7 +24,14 @@ describe('Canvas module', () => {
         .post(CANVAS_OAUTH_TOKEN_URL)
         .query(true)
         .reply(200, { access_token: 'bobross', expires_in: '8675309' });
-      const result = await performRefresh(user);
+      const query = querystring.stringify({
+        grant_type: 'refresh_token',
+        client_id: 'bogus',
+        client_secret: 'bogus',
+        refresh_token: 'bogus',
+        // scope: config.get('canvasOauth.scope'),
+      });
+      const result = await performRefresh(user, query);
       expect(result.isCanvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
       // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)
@@ -36,25 +44,33 @@ describe('Canvas module', () => {
         .query(true)
         .reply(200, '-unparsable-should-blow-up-the.method-');
       mockUserModel.updateCanvasData.mockImplementation(() => new Promise((res, rej) => res(user)));
-      await expect(performRefresh(user)).resolves.toStrictEqual({
+      const query = querystring.stringify({
+        grant_type: 'refresh_token',
+        client_id: 'bogus',
+        client_secret: 'bogus',
+        refresh_token: 'bogus',
+        // scope: config.get('canvasOauth.scope'),
+      });
+      await expect(performRefresh(user, query)).resolves.toStrictEqual({
         canvasOauthExpire: null,
         canvasOauthToken: null,
         email: 'e',
         firstName: 'f',
         isCanvasOptIn: false,
         lastName: 'l',
-        osuId: 123456
+        osuId: 123456,
+        refreshToken: null,
       });
     });
   });
 
-  describe('getOAuthToken', () => {
+  describe('getRefreshToken', () => {
     it('refreshes oauth from canvas', async () => {
       nock(CANVAS_OAUTH_BASE_URL)
         .post(CANVAS_OAUTH_TOKEN_URL)
         .query(true)
         .reply(200, { access_token: 'bobross', expires_in: '8675309' });
-      const result = await getOAuthToken(user);
+      const result = await getRefreshToken(user);
       expect(result.isCanvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
       // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)

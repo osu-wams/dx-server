@@ -1,11 +1,13 @@
 import supertest from 'supertest';
 import app from '../../index';
-import * as canvas from '../modules/canvas';
 import User from '../models/user';
 import { mockUser } from '../models/__mocks__/user';
 
-jest.mock('../modules/canvas');
-const mockCanvas = canvas as jest.Mocked<any>;
+jest.mock('../modules/canvas', () => ({
+  ...jest.requireActual('../modules/canvas'),
+  getRefreshToken: jest.fn(),
+}));
+
 jest.mock('../models/user');
 const mockUserModel = User as jest.Mocked<any>;
 
@@ -23,7 +25,7 @@ describe('/healthcheck', () => {
 
 describe('/login', () => {
   it('redirects the user to /', async () => {
-    await request.get('/login').then(res => {
+    await request.get('/login').then((res) => {
       expect(res.header.location).toBe('/');
     });
   });
@@ -32,7 +34,7 @@ describe('/login', () => {
 describe('/login with local api key', () => {
   it('redirects the user to /', async () => {
     mockUserModel.find.mockImplementationOnce(() => Promise.resolve(mockUser));
-    await request.get('/login?username=123456&password=blah').then(res => {
+    await request.get('/login?username=123456&password=blah').then((res) => {
       expect(res.header.location).toBe('/');
     });
   });
@@ -40,13 +42,13 @@ describe('/login with local api key', () => {
 
 describe('/logout', () => {
   it('redirects the user to / if no user was logged in', async () => {
-    await request.get('/logout').then(res => {
+    await request.get('/logout').then((res) => {
       expect(res.header.location).toBe('/');
     });
   });
   it('logs a user out', async () => {
     await request.get('/login');
-    await request.get('/logout').then(res => {
+    await request.get('/logout').then((res) => {
       expect(res.header.location).toBe('/');
     });
   });
@@ -54,13 +56,13 @@ describe('/logout', () => {
 
 describe('/logout/saml', () => {
   it('redirects the user to / if no user was logged in', async () => {
-    await request.get('/logout/saml').then(res => {
+    await request.get('/logout/saml').then((res) => {
       expect(res.header.location).toBe('/');
     });
   });
   it('logs a user out', async () => {
     await request.get('/login');
-    await request.get('/logout/saml').then(res => {
+    await request.get('/logout/saml').then((res) => {
       expect(res.header.location).toBe('/');
     });
   });
@@ -71,9 +73,8 @@ describe('/canvas/refresh', () => {
     await request.get('/canvas/refresh').expect(401);
   });
   it('redirects logged in user to /', async () => {
-    mockCanvas.getOAuthToken = jest.fn();
     await request.get('/login');
-    await request.get('/canvas/refresh').then(res => {
+    await request.get('/canvas/refresh').then((res) => {
       expect(res.status).toBe(302);
       expect(res.header.location).toBe('/');
     });
@@ -81,11 +82,11 @@ describe('/canvas/refresh', () => {
 });
 
 describe('/canvas/auth', () => {
-  it('redirects browser to oauth2 login', async () => {
+  it('redirects browser to main page', async () => {
     await request.get('/login');
-    await request.get('/canvas/auth').then(res => {
+    await request.get('/canvas/auth').then((res) => {
       expect(res.status).toBe(302);
-      expect(res.header.location).toContain('/login/oauth2/auth?');
+      expect(res.header.location).toBe('/');
     });
   });
 });
@@ -93,7 +94,7 @@ describe('/canvas/auth', () => {
 describe('/canvas/login', () => {
   it('redirects browser to oauth2 login', async () => {
     await request.get('/login');
-    await request.get('/canvas/login').then(res => {
+    await request.get('/canvas/login').then((res) => {
       expect(res.status).toBe(302);
       expect(res.header.location).toContain('/login/oauth2/auth?');
     });

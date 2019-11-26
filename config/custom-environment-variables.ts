@@ -25,7 +25,8 @@ export default {
     callbackUrl: 'CANVAS_OAUTH_CALLBACK',
     baseUrl: 'CANVAS_OAUTH_BASE_URL',
     authUrl: 'CANVAS_OAUTH_URL',
-    tokenUrl: 'CANVAS_OAUTH_TOKEN_URL'
+    tokenUrl: 'CANVAS_OAUTH_TOKEN_URL',
+    scope: 'CANVAS_OAUTH_SCOPE'
   },
   localist: {
     cacheEndpointSec: 'LOCALIST_CACHE_ENDPOINT_SEC',

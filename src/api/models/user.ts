@@ -99,7 +99,7 @@ class User {
       const params: AWS.DynamoDB.PutItemInput = {
         TableName: User.TABLE_NAME,
         Item: User.asDynamoDbItem(props),
-        ReturnValues: 'NONE'
+        ReturnValues: 'NONE',
       };
 
       const result = await asyncTimedFunction(putItem, 'User:putItem', [params]);
@@ -122,8 +122,8 @@ class User {
       const params: AWS.DynamoDB.GetItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
-          osuId: { N: `${id}` }
-        }
+          osuId: { N: `${id}` },
+        },
       };
       const dynamoDbUser = await asyncTimedFunction(getItem, 'User:getItem', [params]);
       if (!Object.keys(dynamoDbUser).length) throw new Error('User not found.');
@@ -145,18 +145,18 @@ class User {
   static clearAllCanvasRefreshTokens = async (): Promise<[boolean, any]> => {
     const errors = [];
     const ids = await User.allIds();
-    ids.forEach(async id => {
+    ids.forEach(async (id) => {
       try {
         const params: AWS.DynamoDB.UpdateItemInput = {
           TableName: User.TABLE_NAME,
           Key: {
-            osuId: { N: id }
+            osuId: { N: id },
           },
           UpdateExpression: 'REMOVE canvasRefreshToken SET canvasOptIn = :coi',
           ExpressionAttributeValues: {
-            ':coi': { BOOL: false }
+            ':coi': { BOOL: false },
           },
-          ReturnValues: 'UPDATED_NEW'
+          ReturnValues: 'UPDATED_NEW',
         };
         const result = await asyncTimedFunction(updateItem, 'User:updateItem', [params]);
         logger.debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
@@ -179,21 +179,21 @@ class User {
   static updateCanvasData = async (
     props: User,
     canvasRefreshToken: string | null,
-    canvasOptIn: boolean
+    canvasOptIn: boolean,
   ): Promise<User> => {
     try {
       const user = props;
       const params: AWS.DynamoDB.UpdateItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
-          osuId: { N: user.osuId.toString() }
+          osuId: { N: user.osuId.toString() },
         },
-        ReturnValues: 'NONE'
+        ReturnValues: 'NONE',
       };
       params.UpdateExpression = 'SET canvasRefreshToken = :crt, canvasOptIn = :coi';
       params.ExpressionAttributeValues = {
         ':coi': { BOOL: canvasOptIn },
-        ':crt': { S: canvasRefreshToken }
+        ':crt': { S: canvasRefreshToken },
       };
       if (canvasRefreshToken === null) {
         params.UpdateExpression = 'SET canvasOptIn = :coi';
@@ -202,7 +202,7 @@ class User {
       const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
         updateItem,
         'User:updateItem',
-        [params]
+        [params],
       );
       logger.silly('User.updateCanvasData updated user:', user.osuId, result);
       user.isCanvasOptIn = canvasOptIn;
@@ -225,13 +225,13 @@ class User {
     try {
       const params: AWS.DynamoDB.ScanInput = {
         TableName: User.TABLE_NAME,
-        AttributesToGet: ['osuId']
+        AttributesToGet: ['osuId'],
       };
       const results: AWS.DynamoDB.ScanOutput = await asyncTimedFunction(scan, 'User:scan', [
-        params
+        params,
       ]);
       logger.debug(
-        `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`
+        `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`,
       );
       return results.Items.map((i: AWS.DynamoDB.AttributeMap) => i.osuId.N);
     } catch (err) {
@@ -251,7 +251,7 @@ class User {
       osuId: { N: `${props.osuId}` },
       firstName: { S: props.firstName },
       lastName: { S: props.lastName },
-      email: { S: props.email }
+      email: { S: props.email },
     };
     if (props.isCanvasOptIn === undefined) {
       Item.canvasOptIn = { BOOL: false };

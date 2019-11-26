@@ -8,7 +8,7 @@ import DevStrategy from 'passport-dev';
 import config from 'config';
 import MockStrategy from './utils/mock-strategy';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
-import { getOAuthToken } from './api/modules/canvas';
+import { getRefreshToken, canvasOAuthConfig } from './api/modules/canvas';
 import logger from './logger';
 import { returnUrl } from './utils/routing';
 
@@ -55,7 +55,7 @@ function parseSamlResult(profile: any, done: any) {
     nameIDFormat: profile.nameIDFormat,
     firstName: profile['urn:oid:2.5.4.42'],
     lastName: profile['urn:oid:2.5.4.4'],
-    isAdmin: false
+    isAdmin: false,
   };
 
   const permissions = profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.7'] || [];
@@ -82,9 +82,9 @@ switch (ENV) {
         cert: SAML_CERT,
         privateCert: SAML_PVK,
         decryptionPvk: SAML_PVK,
-        signatureAlgorithm: 'sha256'
+        signatureAlgorithm: 'sha256',
       },
-      parseSamlResult
+      parseSamlResult,
     );
     break;
   case 'development':
@@ -95,7 +95,7 @@ switch (ENV) {
       lastName: 'User',
       permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
       osuId: 111111111,
-      isAdmin: true
+      isAdmin: true,
     });
     break;
   default:
@@ -103,35 +103,24 @@ switch (ENV) {
     break;
 }
 
-Auth.oAuth2Strategy = new OAuthStrategy(
-  {
-    authorizationURL: `${config.get('canvasOauth.baseUrl')}${config.get('canvasOauth.authUrl')}`,
-    tokenURL: `${config.get('canvasOauth.baseUrl')}${config.get('canvasOauth.tokenUrl')}`,
-    clientID: config.get('canvasOauth.id'),
-    clientSecret: config.get('canvasOauth.secret'),
-    callbackURL: config.get('canvasOauth.callbackUrl')
-  },
-  (accessToken: string, refreshToken: string, params: any, profile: any, done) => {
-    const user = {
-      userId: params.user.id,
-      fullName: params.user.name,
-      accessToken,
-      refreshToken,
-      expireTime: Math.floor(Date.now() / 1000) + parseInt(params.expires_in, 10)
-    };
-    done(null, user);
-  }
-);
+Auth.oAuth2Strategy = new OAuthStrategy(canvasOAuthConfig(), (params: any, done) => {
+  const user = {
+    userId: params.user.id,
+    fullName: params.user.name,
+    expireTime: Math.floor(Date.now() / 1000) + parseInt(params.expires_in, 10),
+  };
+  done(null, user);
+});
 
 Auth.localStrategy = new LocalStrategy(
   {
     usernameField: 'osuId',
-    passwordField: 'key'
+    passwordField: 'key',
   },
   async (osuId, key, done) => {
     // verify the username is a valid user, and the password is the API key
     logger.debug(`API key authentication attempted with osuId:${osuId} and key:${key}`);
-    const apiKey = apiKeys.filter(k => k.key !== '').find(k => k.key === key);
+    const apiKey = apiKeys.filter((k) => k.key !== '').find((k) => k.key === key);
     if (apiKey) {
       logger.debug(`API key found: ${apiKey}`);
       const user = await User.find(parseInt(osuId, 10));
@@ -142,7 +131,7 @@ Auth.localStrategy = new LocalStrategy(
       return done(null, user);
     }
     return done(null, false);
-  }
+  },
 );
 
 Auth.serializeUser = (user, done) => {
@@ -182,12 +171,12 @@ Auth.logout = (req: Request, res: Response) => {
     if (ENV === 'production') {
       const strategy: SamlStrategy = Auth.passportStrategy;
       strategy.logout(req, (err, uri) => {
-        req.session.destroy(error => logger.error(error));
+        req.session.destroy((error) => logger.error(error));
         req.logout();
         return res.redirect(uri);
       });
     } else {
-      req.session.destroy(error => logger.error(error));
+      req.session.destroy((error) => logger.error(error));
       req.logout();
       res.redirect('/');
     }
@@ -222,7 +211,7 @@ Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: Next
   if (user.isCanvasOptIn && user.refreshToken) {
     if (user.canvasOauthExpire === 0 || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
       logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user);
-      const updatedUser = await getOAuthToken(user);
+      const updatedUser = await getRefreshToken(user);
       req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;
       req.session.passport.user.canvasOauthExpire = updatedUser.canvasOauthExpire;
     }
@@ -230,7 +219,7 @@ Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: Next
   }
   logger.debug(
     'Auth.hasValidCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
-    user
+    user,
   );
   // Return 403 so the front-end knows to react to the change in users canvas opt-in
   return res.status(403).send({ message: 'User must opt-in to Canvas login' });
