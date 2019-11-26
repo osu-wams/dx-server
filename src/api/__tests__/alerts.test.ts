@@ -9,11 +9,11 @@ import {
   mockedGet,
   setAsync,
   getAsync,
-  mockCachedData
+  mockCachedData,
 } from '../modules/__mocks__/cache';
 
-const BASE_URL = config.get('raveApi.baseUrl');
-const DX_BASE_URL = config.get('dxApi.baseUrl');
+const BASE_URL: string = config.get('raveApi.baseUrl');
+const DX_BASE_URL: string = config.get('dxApi.baseUrl');
 const request = supertest.agent(app);
 
 describe('/alerts', () => {
@@ -23,8 +23,8 @@ describe('/alerts', () => {
         date: '2018-05-29T18:47:39Z',
         title: 'Weather closure 10/12',
         content: 'Snow causes dangerous road conditions',
-        type: 'rave'
-      }
+        type: 'rave',
+      },
     ];
     mockedGetResponse.mockReturnValue(alertPresent.xml);
     cache.get = mockedGet;

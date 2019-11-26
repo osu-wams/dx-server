@@ -12,7 +12,7 @@ const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unu
 
 jest.mock('../util.ts');
 
-const APIGEE_BASE_URL = config.get('osuApi.baseUrl');
+const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
 let request: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   request = supertest.agent(app);
@@ -32,8 +32,8 @@ describe('/api/user', () => {
         classification: 'classification',
         campus: 'campus',
         status: 'status',
-        isInternational: false
-      }
+        isInternational: false,
+      },
     };
     mockedGetResponse.mockReturnValue({ data });
     cache.get = mockedGet;
@@ -55,18 +55,18 @@ describe('/api/user', () => {
           classification: 'classification',
           campus: 'campus',
           status: 'status',
-          isInternational: false
-        }
+          isInternational: false,
+        },
       },
-      audienceOverride: {}
+      audienceOverride: {},
     });
   });
 
   describe('/settings', () => {
     const settings: UserSettings = {
       audienceOverride: {
-        campusCode: 'C'
-      }
+        campusCode: 'C',
+      },
     };
 
     it('updates audienceOverride settings', async () => {
@@ -78,7 +78,7 @@ describe('/api/user', () => {
 
     it('returns an error for failed audienceOverride settings', async () => {
       mockDynamoDb.updateItem.mockImplementationOnce(() =>
-        Promise.reject(new Error('happy little accident'))
+        Promise.reject(new Error('happy little accident')),
       );
       await request
         .post('/api/user/settings')
