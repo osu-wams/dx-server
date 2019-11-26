@@ -5,14 +5,14 @@ import { IInfoResult } from '../information'; // eslint-disable-line no-unused-v
 import { IResourceResult, ICategory } from '../resources'; // eslint-disable-line no-unused-vars
 import cache, { setCache } from './cache';
 
-export const BASE_URL = config.get('dxApi.baseUrl');
+export const BASE_URL: string = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
 
 const api = new Kitsu({
   baseURL: `${BASE_URL}/jsonapi`,
   pluralize: false,
   camelCaseTypes: false,
-  resourceCase: 'none'
+  resourceCase: 'none',
 });
 
 export interface Alert {
@@ -26,7 +26,7 @@ export interface Alert {
  * Inspect related field_announcement_image to return the url otherwise undefined
  * @param item drupal item including field_announcement_image.field_media_image
  */
-const imageUrl = item => {
+const imageUrl = (item) => {
   if (item.field_announcement_image && item.field_announcement_image.field_media_image) {
     return `${BASE_URL}${item.field_announcement_image!.field_media_image.uri.url}`;
   }
@@ -37,11 +37,11 @@ const imageUrl = item => {
  * Inspect related field_announcement_action to return the title and link otherwise undefined
  * @param item drupal item including field_announcement_action
  */
-const itemAction = item => {
+const itemAction = (item) => {
   if (item.field_announcement_action) {
     return {
       title: item.field_announcement_action.title,
-      link: item.field_announcement_action.uri
+      link: item.field_announcement_action.uri,
     };
   }
   return undefined;
@@ -53,12 +53,12 @@ const itemAction = item => {
  */
 const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
   return items
-    .filter(d => d.title !== undefined)
-    .map(d => {
+    .filter((d) => d.title !== undefined)
+    .map((d) => {
       let audiences = [];
       let pages = [];
-      if (d.field_audience !== undefined) audiences = d.field_audience.map(a => a.name);
-      if (d.field_pages !== undefined) pages = d.field_pages.map(a => a.name);
+      if (d.field_audience !== undefined) audiences = d.field_audience.map((a) => a.name);
+      if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name);
       return {
         id: d.id,
         type: d.drupal_internal__name,
@@ -68,7 +68,7 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
         bg_image: imageUrl(d),
         audiences,
         pages,
-        action: itemAction(d)
+        action: itemAction(d),
       };
     });
 };
@@ -78,15 +78,15 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
  * @param items a list of items to reshape as resource results
  */
 const mappedResources = (items: any[]): IResourceResult[] => {
-  return items.map(d => ({
+  return items.map((d) => ({
     id: d.id,
     type: d.drupal_internal__name,
     title: d.title,
     link: d.field_service_url.uri,
     iconName: d.field_icon_name,
-    audiences: d.field_audience.map(a => a.name),
-    categories: d.field_service_category.map(c => c.name),
-    synonyms: d.field_service_synonyms
+    audiences: d.field_audience.map((a) => a.name),
+    categories: d.field_service_category.map((c) => c.name),
+    synonyms: d.field_service_synonyms,
   }));
 };
 
@@ -133,13 +133,13 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
         'taxonomy_term--audience': 'name',
         'taxonomy_term--pages': 'name',
         'media--image': 'name,field_media_image',
-        'file--file': 'filename,filemime,uri'
+        'file--file': 'filename,filemime,uri',
       },
       include:
         'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages',
       filter: {
-        status: 1
-      }
+        status: 1,
+      },
     });
     return mappedAnnouncements(data);
   } catch (err) {
@@ -157,13 +157,13 @@ export const getResources = async (): Promise<IResourceResult[]> => {
         'node--services':
           'id,title,field_icon_name,field_service_category,field_audience,field_service_synonyms,field_service_url',
         'taxonomy_term--categories': 'name',
-        'taxonomy_term--audience': 'name'
+        'taxonomy_term--audience': 'name',
       },
       include: 'field_service_category,field_audience',
       sort: 'title',
       filter: {
-        status: 1
-      }
+        status: 1,
+      },
     });
     return mappedResources(data);
   } catch (err) {
@@ -182,10 +182,9 @@ export const getCuratedResources = async (category: string): Promise<IResourceRe
         'node--services':
           'id,title,field_icon_name,field_service_category,field_audience,field_service_synonyms,field_service_url',
         'taxonomy_term--categories': 'name',
-        'taxonomy_term--audience': 'name'
+        'taxonomy_term--audience': 'name',
       },
-      include:
-        'items,items.field_service_category,items.field_audience'
+      include: 'items,items.field_service_category,items.field_audience',
     });
 
     return mappedResources(data[0].items);
@@ -203,26 +202,26 @@ export const getCategories = async (): Promise<ICategory[]> => {
       fields: {
         'taxonomy_term--categories': 'id,name,field_taxonomy_icon',
         'media--image': 'name,field_media_image',
-        'file--file': 'filename,filemime,uri'
+        'file--file': 'filename,filemime,uri',
       },
       include: 'field_taxonomy_icon.field_media_image',
       sort: 'weight',
       filter: {
-        status: 1
-      }
+        status: 1,
+      },
     });
 
-    const categoryIconUrl = item => {
+    const categoryIconUrl = (item) => {
       if (item.field_taxonomy_icon && item.field_taxonomy_icon.field_media_image) {
         return `${BASE_URL}${item.field_taxonomy_icon!.field_media_image.uri.url}`;
       }
       return undefined;
     };
 
-    return data.map(d => ({
+    return data.map((d) => ({
       id: d.id,
       name: d.name,
-      icon: categoryIconUrl(d)
+      icon: categoryIconUrl(d),
     }));
   } catch (err) {
     throw err;
@@ -236,13 +235,13 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
   try {
     const data = await retrieveData('node/information', {
       filter: {
-        status: 1
-      }
+        status: 1,
+      },
     });
-    return data.map(d => ({
+    return data.map((d) => ({
       title: d.title,
       id: d.field_machine_name,
-      content: d.body.processed
+      content: d.body.processed,
     }));
   } catch (err) {
     throw err;
@@ -265,15 +264,15 @@ export const getDxAlerts = async (): Promise<Alert[]> => {
           condition: {
             operator: '>',
             path: 'field_alert_expiration_date',
-            value: new Date().toISOString()
-          }
+            value: new Date().toISOString(),
+          },
         },
         status: 1,
       },
       fields: {
-        'node--alerts': 'title,created,field_alert_content,field_alert_type'
+        'node--alerts': 'title,created,field_alert_content,field_alert_type',
       },
-      sort: '-field_alert_expiration_date'
+      sort: '-field_alert_expiration_date',
     });
     if (data.length === 0) return [];
 
@@ -284,8 +283,8 @@ export const getDxAlerts = async (): Promise<Alert[]> => {
         content: field_alert_content as string,
         title: title as string,
         date: created as Date,
-        type: field_alert_type as string
-      }
+        type: field_alert_type as string,
+      },
     ];
     /* eslint-enable camelcase */
   } catch (err) {

@@ -5,14 +5,14 @@ import app from '../../index';
 import { personsData } from '../__mocks__/persons.data';
 import {
   personsAddressesData,
-  personsMailingAddressData
+  personsMailingAddressData,
 } from '../__mocks__/persons-addresses.data';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
 jest.mock('../util.ts');
 
-const APIGEE_BASE_URL = config.get('osuApi.baseUrl');
+const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
 let request = supertest.agent(app);
 
 describe('/api/persons', () => {
