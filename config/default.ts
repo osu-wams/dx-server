@@ -28,7 +28,8 @@ export default {
     callbackUrl: process.env.CANVAS_OAUTH_CALLBACK || '',
     baseUrl: process.env.CANVAS_OAUTH_BASE_URL || 'https://oregonstate.beta.instructure.com',
     authUrl: process.env.CANVAS_OAUTH_URL || '/login/oauth2/auth',
-    tokenUrl: process.env.CANVAS_OAUTH_TOKEN_URL || '/login/oauth2/token'
+    tokenUrl: process.env.CANVAS_OAUTH_TOKEN_URL || '/login/oauth2/token',
+    scope: process.env.CANVAS_OAUTH_SCOPE || ''
   },
   raveApi: {
     cacheEndpointSec: process.env.RAVE_API_CACHE_ENDPOINT_SEC || '30',
