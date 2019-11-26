@@ -6,6 +6,25 @@ import { scan, updateItem, getItem, putItem } from '../../db';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 
+export interface AudienceOverride {
+  campusCode?: string;
+  firstYear?: boolean;
+  international?: boolean;
+  graduate?: boolean;
+}
+
+export interface UserSettings {
+  audienceOverride?: AudienceOverride;
+  theme?: string;
+}
+
+interface AudienceOverrideItem extends AWS.DynamoDB.MapAttributeValue {
+  campusCode?: { S: string };
+  firstYear?: { BOOL: boolean };
+  international?: { BOOL: boolean };
+  graduate?: { BOOL: boolean };
+}
+
 interface UserParams {
   samlUser?: SamlUser;
   dynamoDbUser?: AWS.DynamoDB.GetItemOutput;
@@ -21,6 +40,8 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   canvasOptIn?: { BOOL: boolean };
   nameID?: { S: string };
   nameIDFormat?: { S: string };
+  audienceOverride?: { M: AudienceOverrideItem };
+  theme?: { S: string };
 }
 
 class User {
@@ -47,6 +68,10 @@ class User {
   nameIDFormat?: string = '';
 
   nameID?: string = '';
+
+  audienceOverride?: AudienceOverride = {};
+
+  theme?: string = 'light';
 
   static TABLE_NAME: string = `${tablePrefix}-Users`;
 
@@ -80,6 +105,15 @@ class User {
       } else {
         this.isCanvasOptIn = false;
       }
+      if (params.Item.audienceOverride !== undefined) {
+        this.audienceOverride = {
+          campusCode: params.Item.audienceOverride.M.campusCode.S,
+          firstYear: params.Item.audienceOverride.M.firstYear.BOOL,
+          international: params.Item.audienceOverride.M.international.BOOL,
+          graduate: params.Item.audienceOverride.M.graduate.BOOL,
+        };
+      }
+      if (params.Item.theme) this.theme = params.Item.theme.S;
     }
   }
 
@@ -214,6 +248,51 @@ class User {
     }
   };
 
+  static updateSettings = async (props: User, settings: UserSettings): Promise<User> => {
+    try {
+      const user = props;
+      const theme: string = settings.theme || user.theme;
+      const params: AWS.DynamoDB.UpdateItemInput = {
+        TableName: User.TABLE_NAME,
+        Key: {
+          osuId: { N: user.osuId.toString() },
+        },
+        ReturnValues: 'NONE',
+      };
+      params.UpdateExpression = 'SET theme = :t';
+      params.ExpressionAttributeValues = {
+        ':t': { S: theme },
+      };
+      if (settings.audienceOverride !== undefined) {
+        const { campusCode, firstYear, international, graduate } = settings.audienceOverride;
+        const audienceOverrideItem: AudienceOverrideItem = {};
+        if (campusCode !== undefined) audienceOverrideItem.campusCode = { S: campusCode };
+        if (firstYear !== undefined) audienceOverrideItem.firstYear = { BOOL: firstYear };
+        if (international !== undefined)
+          audienceOverrideItem.international = { BOOL: international };
+        if (graduate !== undefined) audienceOverrideItem.graduate = { BOOL: graduate };
+
+        params.UpdateExpression = 'SET audienceOverride = :ao, theme = :t';
+        params.ExpressionAttributeValues = {
+          ':ao': { M: audienceOverrideItem },
+          ':t': { S: theme },
+        };
+      }
+      const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
+        updateItem,
+        'User:updateItem',
+        [params],
+      );
+      logger.silly('User.updateSettings updated user:', user.osuId, result);
+      if (settings.audienceOverride) user.audienceOverride = settings.audienceOverride;
+      user.theme = theme;
+      return user;
+    } catch (err) {
+      logger.error(`User.updateSettings failed:`, err);
+      throw err;
+    }
+  };
+
   /**
    * Query a list of all IDs from the Users table.
    * ! This is an expensive (cost-wise and computationally) because it
@@ -262,6 +341,17 @@ class User {
     if (props.refreshToken) Item.canvasRefreshToken = { S: props.refreshToken };
     if (props.nameID) Item.nameID = { S: props.nameID };
     if (props.nameIDFormat) Item.nameIDFormat = { S: props.nameIDFormat };
+    if (props.audienceOverride) {
+      Item.audienceOverride = {
+        M: {
+          campusCode: { S: props.audienceOverride.campusCode },
+          firstYear: { BOOL: props.audienceOverride.firstYear },
+          international: { BOOL: props.audienceOverride.international },
+          graduate: { BOOL: props.audienceOverride.graduate },
+        },
+      };
+    }
+    if (props.theme) Item.theme = { S: props.theme };
     return Item;
   };
 }
