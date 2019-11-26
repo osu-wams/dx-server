@@ -27,6 +27,10 @@ _This step is only required the first time you start development and/or if you w
 
     $ yarn exec ts-node src/db/scripts/create_users_table.ts
 
+### OSX MAC install truncate (via homebrew)
+
+    $ brew install truncate
+
 ### Run the server in Development mode (no CAS authentication)
 
 In a separate terminal window run:
