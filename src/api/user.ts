@@ -20,6 +20,7 @@ router.get('/', async (req: Request, res: Response) => {
     const { id, attributes } = response;
     classification = { id, attributes };
   } catch (err) {
+    classification = {};
     logger.error('api/user getClassification failed:', err);
   }
   res.send({
@@ -30,7 +31,7 @@ router.get('/', async (req: Request, res: Response) => {
     isAdmin: req.user.isAdmin,
     isCanvasOptIn: req.user.isCanvasOptIn,
     audienceOverride: req.user.audienceOverride || {},
-    classification: classification || undefined,
+    classification,
     theme: req.user.theme,
   });
 });
