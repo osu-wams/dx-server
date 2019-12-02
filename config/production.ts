@@ -11,6 +11,9 @@ export default {
     academicCalendarRSS:
       'https://events.oregonstate.edu/widget/view?schools=oregonstate&days=365&num=10&tags=academic+calendar&format=rss',
   },
+  canvasApi: {
+    baseUrl: 'https://oregonstate.instructure.com/api/v1',
+  },
   canvasOauth: {
     scope: 'url:GET|/api/v1/planner/items',
   },
