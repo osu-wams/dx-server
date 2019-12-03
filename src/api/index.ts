@@ -10,6 +10,7 @@ import AnnouncementsRouter from './announcements';
 import PersonsRouter from './persons';
 import AdminRouter from './admin';
 import InformationRouter from './information';
+import ErrorRouter from './errors';
 
 const router = Router();
 
@@ -23,5 +24,6 @@ router.use('/resources', ResourcesRouter);
 router.use('/alerts', AlertsRouter);
 router.use('/announcements', AnnouncementsRouter);
 router.use('/info-buttons', InformationRouter);
+router.use('/errors', ErrorRouter);
 
 export default router;
