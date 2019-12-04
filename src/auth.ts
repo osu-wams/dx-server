@@ -6,12 +6,12 @@ import { Strategy as OAuthStrategy } from 'passport-oauth2';
 import { Strategy as LocalStrategy } from 'passport-local';
 import DevStrategy from 'passport-dev';
 import config from 'config';
+import { isNullOrUndefined } from 'util';
 import MockStrategy from './utils/mock-strategy';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 import { refreshOAuthToken, canvasOAuthConfig } from './api/modules/canvas';
 import logger from './logger';
 import { returnUrl } from './utils/routing';
-import { isNullOrUndefined } from 'util';
 
 interface Auth {
   passportStrategy?: any;
