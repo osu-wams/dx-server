@@ -6,9 +6,10 @@ import { Strategy as OAuthStrategy } from 'passport-oauth2';
 import { Strategy as LocalStrategy } from 'passport-local';
 import DevStrategy from 'passport-dev';
 import config from 'config';
+import { isNullOrUndefined } from 'util';
 import MockStrategy from './utils/mock-strategy';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
-import { getRefreshToken, canvasOAuthConfig } from './api/modules/canvas';
+import { refreshOAuthToken, canvasOAuthConfig } from './api/modules/canvas';
 import logger from './logger';
 import { returnUrl } from './utils/routing';
 
@@ -22,7 +23,7 @@ interface Auth {
   logout?(req: Request, res: Response): void;
   ensureAuthenticated?(req: Request, res: Response, next: NextFunction): void;
   ensureAdmin?(req: Request, res: Response, next: NextFunction): void;
-  hasValidCanvasRefreshToken?(req: Request, res: Response, next: NextFunction): void;
+  hasCanvasRefreshToken?(req: Request, res: Response, next: NextFunction): void;
 }
 
 interface ApiKey {
@@ -206,19 +207,25 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
  * then get a new token. If the user isn't opt-in or somehow hasn't gotten thier refreshToken
  * then disallow access to the route protected by this middleware.
  */
-Auth.hasValidCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
   if (user.isCanvasOptIn && user.refreshToken) {
-    if (user.canvasOauthExpire === 0 || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
-      logger.debug('Auth.hasValidCanvasRefreshToken oauth token expired, refreshing.', user);
-      const updatedUser = await getRefreshToken(user);
+    if (
+      isNullOrUndefined(user.canvasOauthExpire) ||
+      user.canvasOauthExpire === 0 ||
+      Math.floor(Date.now() / 1000) >= user.canvasOauthExpire
+    ) {
+      logger.debug('Auth.hasCanvasRefreshToken oauth token expired, refreshing.', user);
+      const updatedUser = await refreshOAuthToken(user);
       req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;
       req.session.passport.user.canvasOauthExpire = updatedUser.canvasOauthExpire;
+      req.user.canvasOauthToken = updatedUser.canvasOauthToken;
+      req.user.canvasOauthExpire = updatedUser.canvasOauthExpire;
     }
     return next();
   }
   logger.debug(
-    'Auth.hasValidCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
+    'Auth.hasCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
     user,
   );
   // Return 403 so the front-end knows to react to the change in users canvas opt-in

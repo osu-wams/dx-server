@@ -5,7 +5,7 @@ import { mockUser } from '../models/__mocks__/user';
 
 jest.mock('../modules/canvas', () => ({
   ...jest.requireActual('../modules/canvas'),
-  getRefreshToken: jest.fn(),
+  refreshOAuthToken: jest.fn(),
 }));
 
 jest.mock('../models/user');

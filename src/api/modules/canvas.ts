@@ -99,7 +99,7 @@ export const getPlannerItems = async (params: ICanvasAPIParams): Promise<Upcomin
 /**
  * Performs a oauth2 token fetch against canvas.
  */
-export const performRefresh = async (u: User, query: string): Promise<User> => {
+export const postRequest = async (u: User, query: string): Promise<User> => {
   const user: User = u;
   try {
     const body = await request({
@@ -116,10 +116,10 @@ export const performRefresh = async (u: User, query: string): Promise<User> => {
       isCanvasOptIn: user.isCanvasOptIn,
       account: { refreshToken: user.refreshToken },
     });
-    logger.debug(`canvas.performRefresh refreshed user (${user.osuId}) OAuth credentials.`);
+    logger.debug(`canvas.postRequest refreshed user (${user.osuId}) OAuth credentials.`);
     return user;
   } catch (err) {
-    logger.error('canvas.performRefresh token error:', err);
+    logger.error('canvas.postRequest token error:', err);
     // Refresh token is no longer valid and we must update the database
     await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: null } });
     user.canvasOauthToken = null;
@@ -145,11 +145,11 @@ export const getOAuthToken = async (u: User, code: string): Promise<User> => {
     params.scope = CANVAS_OAUTH_SCOPE;
   }
   const query = querystring.stringify(params as any);
-  return performRefresh(user, query);
+  return postRequest(user, query);
 };
 
 // If token is valid return token else refresh and return the updated token
-export const getRefreshToken = async (u: User): Promise<User> => {
+export const refreshOAuthToken = async (u: User): Promise<User> => {
   const user: User = u;
   /* eslint-disable camelcase */
   const params: ICanvasRefreshTokenGrant = {
@@ -164,5 +164,5 @@ export const getRefreshToken = async (u: User): Promise<User> => {
   }
 
   const query = querystring.stringify(params as any);
-  return performRefresh(user, query);
+  return postRequest(user, query);
 };

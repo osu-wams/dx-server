@@ -4,7 +4,7 @@
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import Auth from '../auth';
-import { getPlannerItems, UpcomingAssignment } from './modules/canvas'; // eslint-disable-line no-unused-vars
+import { getPlannerItems } from './modules/canvas'; // eslint-disable-line no-unused-vars
 import {
   getAcademicStatus,
   getAccountBalance,
@@ -13,7 +13,7 @@ import {
   getClassSchedule,
   getGpa,
   getGrades,
-  getHolds
+  getHolds,
 } from './modules/osu';
 import { asyncTimedFunction } from '../tracer';
 import { updateOAuthData } from './modules/user-account'; // eslint-disable-line no-unused-vars
@@ -26,43 +26,39 @@ interface GradeTerm {
   };
 }
 
-router.get(
-  '/planner-items',
-  Auth.hasValidCanvasRefreshToken,
-  async (req: Request, res: Response) => {
-    try {
-      // Administrators that have masqueraded get access to this endpoint (else you get oauth)
-      if (req.user.isAdmin && req.user.masqueradeId) {
-        const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsAdmin', [
-          { osuId: req.user.masqueradeId }
-        ]);
-        res.json(JSON.parse(response));
-      } else {
-        const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsOAuth', [
-          { oAuthToken: req.user.canvasOauthToken }
-        ]);
-        res.json(JSON.parse(response));
-      }
-    } catch (err) {
-      if (err.response && err.response.statusCode === 401) {
-        logger.error(
-          'api/student/planner-items user with valid canvas refresh token found to have an invalid access token, this seems to indicate that they have opted-out of DX OAuth from the Canvas interface. Resetting users opt-in status.'
-        );
-        await asyncTimedFunction(updateOAuthData, 'updateOAuthData', [
-          req.user,
-          { isCanvasOptIn: false, account: { refreshToken: null } }
-        ]);
-        req.user.canvasOauthToken = null;
-        req.user.canvasOauthExpire = null;
-        req.user.isCanvasOptIn = false;
-        res.status(403).send({ message: 'Reset users canvas opt-in status.' });
-      } else {
-        logger.error('api/student/planner-items failed:', err);
-        res.status(500).send({ message: 'Unable to retrieve planner items.' });
-      }
+router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, res: Response) => {
+  try {
+    // Administrators that have masqueraded get access to this endpoint (else you get oauth)
+    if (req.user.isAdmin && req.user.masqueradeId) {
+      const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsAdmin', [
+        { osuId: req.user.masqueradeId },
+      ]);
+      res.json(JSON.parse(response));
+    } else {
+      const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsOAuth', [
+        { oAuthToken: req.user.canvasOauthToken },
+      ]);
+      res.json(JSON.parse(response));
+    }
+  } catch (err) {
+    if (err.response && err.response.statusCode === 401) {
+      logger.error(
+        `Canvas Planner Items API call failed for user ${req.user.osuId}, error: ${err.response}`,
+      );
+      await asyncTimedFunction(updateOAuthData, 'updateOAuthData', [
+        req.user,
+        { isCanvasOptIn: false, account: { refreshToken: null } },
+      ]);
+      req.user.canvasOauthToken = null;
+      req.user.canvasOauthExpire = null;
+      req.user.isCanvasOptIn = false;
+      res.status(403).send({ message: 'Reset users canvas opt-in status.' });
+    } else {
+      logger.error('api/student/planner-items failed:', err);
+      res.status(500).send({ message: 'Unable to retrieve planner items.' });
     }
   }
-);
+});
 
 router.get('/academic-status', async (req: Request, res: Response) => {
   try {
@@ -70,7 +66,7 @@ router.get('/academic-status', async (req: Request, res: Response) => {
     if (req.query.term) termQueryString = `?term=${req.query.term}`;
     const response = await asyncTimedFunction(getAcademicStatus, 'getAcademicStatus', [
       req.user,
-      termQueryString
+      termQueryString,
     ]);
     res.send(response);
   } catch (err) {
@@ -82,7 +78,7 @@ router.get('/academic-status', async (req: Request, res: Response) => {
 router.get('/account-balance', async (req: Request, res: Response) => {
   try {
     const response = (await asyncTimedFunction(getAccountBalance, 'getAccountBalance', [
-      req.user
+      req.user,
     ])) as { data: any };
     res.send(response.data);
   } catch (err) {
@@ -94,7 +90,7 @@ router.get('/account-balance', async (req: Request, res: Response) => {
 router.get('/account-transactions', async (req: Request, res: Response) => {
   try {
     const response = (await asyncTimedFunction(getAccountTransactions, 'getAccountTransactions', [
-      req.user
+      req.user,
     ])) as { data: any };
     res.send(response.data);
   } catch (err) {
@@ -118,7 +114,7 @@ router.get('/class-schedule', async (req: Request, res: Response) => {
     const term = req.query.term || 'current';
     const response = (await asyncTimedFunction(getClassSchedule, 'getClassSchedule', [
       req.user,
-      term
+      term,
     ])) as { data: any };
     res.send(response.data);
   } catch (err) {

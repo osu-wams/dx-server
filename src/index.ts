@@ -10,7 +10,7 @@ import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
 import { findOrCreateUser, updateOAuthData } from './api/modules/user-account';
-import { getRefreshToken, getOAuthToken } from './api/modules/canvas';
+import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
 import { returnUrl } from './utils/routing';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 
@@ -18,22 +18,6 @@ const appVersion = config.get('appVersion');
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
-
-const setUserSession = (user: User, req) => {
-  req.session.passport.user = {
-    osuId: user.osuId,
-    email: user.email,
-    nameID: user.nameID,
-    nameIDFormat: user.nameIDFormat,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    isAdmin: user.isAdmin,
-    canvasOauthToken: user.canvasOauthToken,
-    canvasOauthExpire: user.canvasOauthExpire,
-    isCanvasOptIn: user.isCanvasOptIn,
-    refreshToken: user.refreshToken,
-  };
-};
 
 // App Configuration
 const app: Application = express();
@@ -103,7 +87,6 @@ app.get('/healthcheck', (req, res) => {
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
   const { user, isNew } = await findOrCreateUser(req.user);
-  setUserSession(user, req);
   if (isNew) {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
@@ -127,7 +110,6 @@ app.get(
     if (req.query.error) {
       await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
       req.user.isCanvasOptIn = false;
-      req.session.user = req.user;
       const returnTo = returnUrl(req);
       logger.debug(`/canvas/auth error in OAuth redirecting to: ${returnTo}`);
       res.redirect(returnTo);
@@ -144,14 +126,13 @@ app.get(
     req.user.canvasOauthExpire = user.canvasOauthExpire;
     req.user.isCanvasOptIn = user.isCanvasOptIn;
     req.user.refreshToken = user.refreshToken;
-    setUserSession(user, req);
     const returnTo = returnUrl(req);
     logger.debug(`/canvas/auth redirecting to: ${returnTo}`);
     res.redirect(returnTo);
   },
 );
 app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
-  req.user = await getRefreshToken(req.user);
+  req.user = await refreshOAuthToken(req.user);
   const returnTo = returnUrl(req);
   logger.debug(`/canvas/refresh redirecting to: ${returnTo}`);
   res.redirect(returnTo);
