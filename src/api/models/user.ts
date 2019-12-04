@@ -251,7 +251,7 @@ class User {
   static updateSettings = async (props: User, settings: UserSettings): Promise<User> => {
     try {
       const user = props;
-      const theme: string = settings.theme || user.theme;
+      const theme: string = settings.theme || user.theme || 'light';
       const params: AWS.DynamoDB.UpdateItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
