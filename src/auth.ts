@@ -214,6 +214,8 @@ Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunct
       const updatedUser = await refreshOAuthToken(user);
       req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;
       req.session.passport.user.canvasOauthExpire = updatedUser.canvasOauthExpire;
+      req.user.canvasOauthToken = updatedUser.canvasOauthToken;
+      req.user.canvasOauthExpire = updatedUser.canvasOauthExpire;
     }
     return next();
   }
