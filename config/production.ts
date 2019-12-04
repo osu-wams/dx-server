@@ -15,6 +15,6 @@ export default {
     baseUrl: 'https://oregonstate.instructure.com/api/v1',
   },
   canvasOauth: {
-    scope: 'url:GET|/api/v1/planner/items',
+    scope: process.env.CANVAS_OAUTH_SCOPE || 'url:GET|/api/v1/planner/items',
   },
 };
