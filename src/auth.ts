@@ -11,6 +11,7 @@ import User from './api/models/user'; // eslint-disable-line no-unused-vars
 import { refreshOAuthToken, canvasOAuthConfig } from './api/modules/canvas';
 import logger from './logger';
 import { returnUrl } from './utils/routing';
+import { isNullOrUndefined } from 'util';
 
 interface Auth {
   passportStrategy?: any;
@@ -209,7 +210,11 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
 Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
   if (user.isCanvasOptIn && user.refreshToken) {
-    if (user.canvasOauthExpire === 0 || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
+    if (
+      isNullOrUndefined(user.canvasOauthExpire) ||
+      user.canvasOauthExpire === 0 ||
+      Math.floor(Date.now() / 1000) >= user.canvasOauthExpire
+    ) {
       logger.debug('Auth.hasCanvasRefreshToken oauth token expired, refreshing.', user);
       const updatedUser = await refreshOAuthToken(user);
       req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;
