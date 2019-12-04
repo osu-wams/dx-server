@@ -224,21 +224,25 @@ class User {
         },
         ReturnValues: 'NONE',
       };
-      params.UpdateExpression = 'SET canvasRefreshToken = :crt, canvasOptIn = :coi';
-      params.ExpressionAttributeValues = {
-        ':coi': { BOOL: canvasOptIn },
-        ':crt': { S: canvasRefreshToken },
-      };
-      if (canvasRefreshToken === null) {
-        params.UpdateExpression = 'SET canvasOptIn = :coi';
-        params.ExpressionAttributeValues = { ':coi': { BOOL: canvasOptIn } };
+      params.UpdateExpression = 'SET canvasOptIn = :coi';
+      params.ExpressionAttributeValues = { ':coi': { BOOL: canvasOptIn } };
+
+      if (canvasRefreshToken !== null) {
+        params.UpdateExpression = 'SET canvasRefreshToken = :crt, canvasOptIn = :coi';
+        params.ExpressionAttributeValues = {
+          ':coi': { BOOL: canvasOptIn },
+          ':crt': { S: canvasRefreshToken },
+        };
       }
       const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
         updateItem,
         'User:updateItem',
         [params],
       );
-      logger.silly('User.updateCanvasData updated user:', user.osuId, result);
+      logger.debug(
+        `User.updateCanvasData updated user:${user.osuId}, canvasOptIn:${canvasOptIn}, canvasRefreshToken:${canvasRefreshToken}`,
+      );
+      logger.silly(result);
       user.isCanvasOptIn = canvasOptIn;
       user.refreshToken = canvasRefreshToken;
       return user;

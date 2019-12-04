@@ -4,8 +4,8 @@ import nock from 'nock';
 import querystring from 'querystring';
 import {
   getPlannerItems,
-  getRefreshToken,
-  performRefresh,
+  refreshOAuthToken,
+  postRequest,
   CANVAS_BASE_URL,
   CANVAS_OAUTH_BASE_URL,
   CANVAS_OAUTH_TOKEN_URL,
@@ -18,7 +18,7 @@ const user = { osuId: 123456, firstName: 'f', lastName: 'l', email: 'e' };
 const assignment = { assignment: 'test' };
 
 describe('Canvas module', () => {
-  describe('performRefresh', () => {
+  describe('postRequest', () => {
     it('refreshes oauth from canvas', async () => {
       nock(CANVAS_OAUTH_BASE_URL)
         .post(CANVAS_OAUTH_TOKEN_URL)
@@ -31,7 +31,7 @@ describe('Canvas module', () => {
         refresh_token: 'bogus',
         // scope: config.get('canvasOauth.scope'),
       });
-      const result = await performRefresh(user, query);
+      const result = await postRequest(user, query);
       expect(result.isCanvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
       // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)
@@ -51,7 +51,7 @@ describe('Canvas module', () => {
         refresh_token: 'bogus',
         // scope: config.get('canvasOauth.scope'),
       });
-      await expect(performRefresh(user, query)).resolves.toStrictEqual({
+      await expect(postRequest(user, query)).resolves.toStrictEqual({
         canvasOauthExpire: null,
         canvasOauthToken: null,
         email: 'e',
@@ -64,13 +64,13 @@ describe('Canvas module', () => {
     });
   });
 
-  describe('getRefreshToken', () => {
+  describe('refreshOAuthToken', () => {
     it('refreshes oauth from canvas', async () => {
       nock(CANVAS_OAUTH_BASE_URL)
         .post(CANVAS_OAUTH_TOKEN_URL)
         .query(true)
         .reply(200, { access_token: 'bobross', expires_in: '8675309' });
-      const result = await getRefreshToken(user);
+      const result = await refreshOAuthToken(user);
       expect(result.isCanvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
       // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)
