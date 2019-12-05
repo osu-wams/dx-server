@@ -6,6 +6,7 @@ import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
 import config from 'config';
+import { isNullOrUndefined } from 'util';
 import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
@@ -45,7 +46,7 @@ const sessionOptions: SessionOptions = {
   //       during deploy. Do not use the default value in production.
   secret: process.env.SESSION_SECRET || 'dx',
   saveUninitialized: false,
-  resave: false,
+  resave: true,
   rolling: true,
   cookie: {
     httpOnly: false,
@@ -90,6 +91,7 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
   if (isNew) {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
+    if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
     res.redirect('/canvas/refresh');
   } else {
     const returnTo = returnUrl(req);
