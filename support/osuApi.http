@@ -1,4 +1,4 @@
-@baseUrl = https://oregonstateuniversity-dev.apigee.net
+@baseUrl = https://api.oregonstate.edu
 @client_id = {{$processEnv OSU_API_CLIENT_ID}}
 @client_secret = {{$processEnv OSU_API_CLIENT_SECRET}}
 
@@ -47,4 +47,18 @@ Authorization: Bearer {{token}}
 
 # @name getClassSchedule
 GET {{baseUrl}}/v1/students/{{osuId}}/class-schedule HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getMealPlans
+GET {{baseUrl}}/v1/persons/{{osuId}}/meal-plans HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getMealPlans
+GET {{baseUrl}}/v1/persons/{{osuId}}/addresses HTTP/1.1
 Authorization: Bearer {{token}}
