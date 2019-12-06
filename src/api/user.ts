@@ -22,6 +22,7 @@ router.get('/', async (req: Request, res: Response) => {
     firstName: req.user.firstName,
     lastName: req.user.lastName,
     email: req.user.email,
+    primaryAffiliation: req.user.primaryAffiliation,
     isAdmin: req.user.isAdmin,
     isCanvasOptIn: req.user.isCanvasOptIn,
     audienceOverride: req.user.audienceOverride || {},
