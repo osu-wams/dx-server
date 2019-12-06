@@ -31,14 +31,21 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
 
     if (user === null) {
       isNew = true;
+      user = await User.upsert(u);
+    } else if (
+      user.email !== u.email ||
+      user.firstName !== u.firstName ||
+      user.lastName !== u.lastName ||
+      user.primaryAffiliation !== u.primaryAffiliation
+    ) {
+      user = await User.upsert(u);
     }
 
-    user = await User.upsert(u);
     user.isAdmin = u.isAdmin;
-    logger.silly('user-account.findOrUpsertUser returns:', user);
+    logger.silly('user-account.findOrUpsertUser returned user.', user);
     return { user, isNew };
   } catch (err) {
-    logger.error('user-account.findOrUpsertUser db failed:', err);
+    logger.error(`user-account.findOrUpsertUser db failed: ${err.message}`);
     throw err;
   }
 };
@@ -50,10 +57,10 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
       oAuthData.account.refreshToken,
       oAuthData.isCanvasOptIn,
     );
-    logger.silly('user-account.updateOAuthData returns:', user);
+    logger.silly('user-account.updateOAuthData returned user.', user);
     return user;
   } catch (err) {
-    logger.error('user-account.updateOAuthData db failed:', err);
+    logger.error(`user-account.updateOAuthData db failed: ${err.message}`);
     throw err;
   }
 };
