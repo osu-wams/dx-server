@@ -27,7 +27,7 @@ const getJson = async (url: string) => {
   return response;
 };
 
-interface Address {
+export interface Address {
   id: string;
   type: string;
   attributes: {
@@ -57,7 +57,7 @@ interface AddressesResponse {
   data: Address[];
 }
 
-export const getAddresses = async (user: any): Promise<any> => {
+export const getAddresses = async (user: any): Promise<Address[]> => {
   try {
     const response: AddressesResponse = await getJson(
       `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`,
@@ -68,7 +68,7 @@ export const getAddresses = async (user: any): Promise<any> => {
   }
 };
 
-interface MealPlan {
+export interface MealPlan {
   id: string;
   type: string;
   attributes: {
@@ -96,7 +96,7 @@ export const getMealPlan = async (user: any): Promise<MealPlan[]> => {
   }
 };
 
-interface Profile {
+export interface Profile {
   id: string;
   type: string;
   attributes: {

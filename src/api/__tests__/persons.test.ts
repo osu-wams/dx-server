@@ -2,7 +2,7 @@ import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
 import app from '../../index';
-import { personsData } from '../__mocks__/persons.data';
+import * as personsData from '../../mocks/osu/persons.json';
 import {
   personsAddressesData,
   personsMailingAddressData,
