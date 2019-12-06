@@ -3,7 +3,7 @@
 const mockScanReturn = {
   ScannedCount: 1,
   Count: 1,
-  Items: [{ osuId: { N: '123456' } }]
+  Items: [{ osuId: { N: '123456' } }],
 };
 
 export const scan = jest.fn((params: AWS.DynamoDB.ScanInput) => {
@@ -16,7 +16,7 @@ export const scan = jest.fn((params: AWS.DynamoDB.ScanInput) => {
 });
 
 const mockUpdateItemReturn = {
-  thisIsnt: 'used, or necessary yet.'
+  thisIsnt: 'used, or necessary yet.',
 };
 
 export const updateItem = jest.fn((params: AWS.DynamoDB.UpdateItemInput) => {
@@ -35,9 +35,10 @@ const mockGetItemReturn = {
     lastName: { S: 'Ross' },
     email: { S: 'bob@bobross.com' },
     phone: { S: '5551212' },
+    primaryAffiliation: { S: 'employee' },
     canvasRefreshToken: { S: '' },
-    canvasOptIn: { BOOL: false }
-  }
+    canvasOptIn: { BOOL: false },
+  },
 };
 
 export const getItem = jest.fn((params: AWS.DynamoDB.GetItemInput) => {
@@ -50,7 +51,7 @@ export const getItem = jest.fn((params: AWS.DynamoDB.GetItemInput) => {
 });
 
 const mockPutItemReturn = {
-  thisIsnt: 'used, or necessary yet.'
+  thisIsnt: 'used, or necessary yet.',
 };
 
 export const putItem = jest.fn((params: AWS.DynamoDB.PutItemInput) => {

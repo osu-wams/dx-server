@@ -7,9 +7,10 @@ export interface SamlUser {
   last_name: string; // eslint-disable-line camelcase
   email: string;
   phone: string;
+  primaryAffiliation: string;
 }
 
-interface FindOrCreateUser {
+interface FindOrUpsertUser {
   user: User;
   isNew: boolean;
 }
@@ -23,20 +24,21 @@ interface OAuthData {
   isCanvasOptIn: boolean;
 }
 
-export const findOrCreateUser = async (u: User): Promise<FindOrCreateUser> => {
+export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
   try {
     let user: User = await User.find(u.osuId);
     let isNew = false;
 
     if (user === null) {
-      user = await User.insert(u);
       isNew = true;
     }
+
+    user = await User.upsert(u);
     user.isAdmin = u.isAdmin;
-    logger.silly('user-account.findOrCreateUser returns:', user);
+    logger.silly('user-account.findOrUpsertUser returns:', user);
     return { user, isNew };
   } catch (err) {
-    logger.error('user-account.findOrCreateUser db failed:', err);
+    logger.error('user-account.findOrUpsertUser db failed:', err);
     throw err;
   }
 };
@@ -46,7 +48,7 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
     const user = await User.updateCanvasData(
       u,
       oAuthData.account.refreshToken,
-      oAuthData.isCanvasOptIn
+      oAuthData.isCanvasOptIn,
     );
     logger.silly('user-account.updateOAuthData returns:', user);
     return user;

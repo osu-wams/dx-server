@@ -14,7 +14,13 @@ import User from '../../models/user';
 
 jest.mock('../../models/user');
 const mockUserModel = User as jest.Mocked<typeof User>;
-const user = { osuId: 123456, firstName: 'f', lastName: 'l', email: 'e' };
+const user = {
+  osuId: 123456,
+  firstName: 'f',
+  lastName: 'l',
+  email: 'e',
+  primaryAffiliation: 'employee',
+};
 const assignment = { assignment: 'test' };
 
 describe('Canvas module', () => {
@@ -59,6 +65,7 @@ describe('Canvas module', () => {
         isCanvasOptIn: false,
         lastName: 'l',
         osuId: 123456,
+        primaryAffiliation: 'employee',
         refreshToken: null,
       });
     });

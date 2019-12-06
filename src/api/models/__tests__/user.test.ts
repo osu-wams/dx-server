@@ -11,7 +11,8 @@ const samlUser: SamlUser = {
   first_name: 'Bob',
   last_name: 'Ross',
   email: 'bob@bobross.com',
-  phone: '5551212'
+  phone: '5551212',
+  primaryAffiliation: 'employee',
 };
 
 let dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
@@ -21,9 +22,10 @@ let dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
     lastName: { S: 'Ross' },
     email: { S: 'bob@bobross.com' },
     phone: { S: '5551212' },
+    primaryAffiliation: { S: 'employee' },
     canvasRefreshToken: { S: 'refresh-me' },
-    canvasOptIn: { BOOL: true }
-  }
+    canvasOptIn: { BOOL: true },
+  },
 };
 
 describe('User model', () => {
@@ -44,6 +46,7 @@ describe('User model', () => {
       expect(user.isAdmin).toEqual(false);
       expect(user.isCanvasOptIn).toEqual(false);
       expect(user.refreshToken).toEqual('');
+      expect(user.primaryAffiliation).toEqual('employee');
     });
 
     describe('with DynamoDb data', () => {
@@ -59,12 +62,13 @@ describe('User model', () => {
         expect(user.isAdmin).toEqual(false);
         expect(user.isCanvasOptIn).toEqual(dynamoDbUser.Item.canvasOptIn.BOOL);
         expect(user.refreshToken).toEqual(dynamoDbUser.Item.canvasRefreshToken.S);
+        expect(user.primaryAffiliation).toEqual(dynamoDbUser.Item.primaryAffiliation.S);
       });
       it('builds a User missing some data', () => {
         dynamoDbUser = {
           Item: {
-            osuId: { N: '8675309' }
-          }
+            osuId: { N: '8675309' },
+          },
         };
         const user = new User({ dynamoDbUser });
         expect(user.osuId).toEqual(parseInt(dynamoDbUser.Item.osuId.N, 10));
@@ -93,6 +97,7 @@ describe('User model', () => {
       expect(item.firstName.S).toBe(samlUser.first_name);
       expect(item.lastName.S).toBe(samlUser.last_name);
       expect(item.email.S).toBe(samlUser.email);
+      expect(item.primaryAffiliation.S).toBe(samlUser.primaryAffiliation);
     });
     it('builds an item with a phone', () => {
       const item = User.asDynamoDbItem(user);
@@ -129,7 +134,7 @@ describe('User model', () => {
       });
       it('returns an empty array on error', async () => {
         mockDynamoDb.scan.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident'))
+          Promise.reject(new Error('happy little accident')),
         );
         const ids = await User.allIds();
         expect(ids).toStrictEqual([]);
@@ -145,7 +150,7 @@ describe('User model', () => {
       });
       it('throws an error on failure', async () => {
         mockDynamoDb.updateItem.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident'))
+          Promise.reject(new Error('happy little accident')),
         );
         try {
           await User.updateCanvasData(user, 'bob-ross', true);
@@ -163,7 +168,7 @@ describe('User model', () => {
       });
       it('throws an error on failure', async () => {
         mockDynamoDb.updateItem.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident'))
+          Promise.reject(new Error('happy little accident')),
         );
         try {
           await User.clearAllCanvasRefreshTokens();
@@ -181,7 +186,7 @@ describe('User model', () => {
       });
       it('throws an error on failure', async () => {
         mockDynamoDb.getItem.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident'))
+          Promise.reject(new Error('happy little accident')),
         );
         try {
           await User.find(user.osuId);
@@ -199,18 +204,26 @@ describe('User model', () => {
       });
     });
 
-    describe('insert', () => {
+    describe('upsert', () => {
       it('returns user with no errors ', async () => {
         expect.assertions(1);
-        const result = await User.insert(user);
+        const result = await User.upsert(user);
         expect(result).toStrictEqual(user);
+      });
+      it('returns user with updated attributes ', async () => {
+        expect.assertions(2);
+        const original = await User.upsert(user);
+        expect(original).toStrictEqual(user);
+        user.primaryAffiliation = 'student';
+        const updated = await User.upsert(user);
+        expect(updated).toStrictEqual(user);
       });
       it('throws an error on failure', async () => {
         mockDynamoDb.putItem.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident'))
+          Promise.reject(new Error('happy little accident')),
         );
         try {
-          await User.insert(user);
+          await User.upsert(user);
         } catch (err) {
           expect(err.message).toStrictEqual('happy little accident');
         }
@@ -220,17 +233,17 @@ describe('User model', () => {
     describe('updateSettings', () => {
       it('updates audienceOverride settings', async () => {
         const result = await User.updateSettings(user, {
-          audienceOverride: { campusCode: 'C' }
+          audienceOverride: { campusCode: 'C' },
         });
         expect(result.audienceOverride).toStrictEqual({ campusCode: 'C' });
       });
       it('throws an error on failure', async () => {
         mockDynamoDb.updateItem.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident'))
+          Promise.reject(new Error('happy little accident')),
         );
         try {
           await User.updateSettings(user, {
-            audienceOverride: { campusCode: 'C' }
+            audienceOverride: { campusCode: 'C' },
           });
         } catch (err) {
           expect(err.message).toStrictEqual('happy little accident');
