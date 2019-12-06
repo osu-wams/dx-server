@@ -2,7 +2,8 @@ import config from 'config';
 import { getToken } from '../util';
 import cache from './cache';
 
-export const BASE_URL = `${config.get('osuApi.baseUrl')}/students`;
+const STUDENT_BASE_URL = `${config.get('osuApi.baseUrl')}/students`;
+const PERSON_BASE_URL = `${config.get('osuApi.baseUrl')}/persons`;
 const CACHE_SEC = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
 
 const getJson = async (url: string) => {
@@ -26,6 +27,123 @@ const getJson = async (url: string) => {
   return response;
 };
 
+export interface Address {
+  id: string;
+  type: string;
+  attributes: {
+    id: string;
+    addressType: string;
+    addressTypeDescription: string;
+    addressLine1: string;
+    addressLine2: string | null;
+    addressLine3: string | null;
+    addressLine4: string | null;
+    houseNumber: string | null;
+    city: string;
+    stateCode: string;
+    state: string;
+    postalCode: string;
+    countyCode: string;
+    county: string;
+    nationCode: string | null;
+    nation: string | null;
+    lastModified: string;
+  };
+  links: { self: string };
+}
+
+interface AddressesResponse {
+  links: { self: string };
+  data: Address[];
+}
+
+export const getAddresses = async (user: any): Promise<Address[]> => {
+  try {
+    const response: AddressesResponse = await getJson(
+      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`,
+    );
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export interface MealPlan {
+  id: string;
+  type: string;
+  attributes: {
+    mealPlans: string;
+    balance: number;
+    lastUsedDate: string;
+    lastUsedPlace: string;
+  };
+  links: { self: string };
+}
+
+interface MealPlansResponse {
+  links: { self: string };
+  data: MealPlan[];
+}
+
+export const getMealPlan = async (user: any): Promise<MealPlan[]> => {
+  try {
+    const response: MealPlansResponse = await getJson(
+      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`,
+    );
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export interface Profile {
+  id: string;
+  type: string;
+  attributes: {
+    birthDate: string;
+    firstName: string;
+    middleName: string | null;
+    lastName: string | null;
+    preferredName: string | null;
+    previousRecords: {
+      osuID: string;
+      firstName: string;
+      middleName: string | null;
+      lastName: string;
+      preferredName: string | null;
+    }[];
+    citizen: string;
+    sex: string;
+    homePhone: string | null;
+    alternatePhone: string | null;
+    osuUID: string;
+    primaryPhone: string | null;
+    mobilePhone: string | null;
+    employeeStatus: string;
+    email: string;
+    username: string;
+    confidential: boolean;
+    ssnStatus: string;
+  };
+  links: { self: string };
+}
+
+interface ProfileResponse {
+  links: { self: string };
+  data: Profile;
+}
+
+export const getProfile = async (user: any): Promise<Profile> => {
+  try {
+    const response: ProfileResponse = await getJson(
+      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`,
+    );
+    return response.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
 interface AcademicStatus {
   id: string;
   attributes: {
@@ -45,7 +163,7 @@ export const getAcademicStatus = async (
 ): Promise<{ academicStanding: string; term: string } | {}> => {
   try {
     const response: AcademicStatusResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
+      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
     );
     if (response.data.length > 0) {
       // Sort the academic status data in descending order based on the id to get the most recent terms first.
@@ -71,7 +189,7 @@ export const getAcademicStatus = async (
 
 export const getAccountBalance = async (user: any) => {
   try {
-    return await getJson(`${BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`);
+    return await getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`);
   } catch (err) {
     throw err;
   }
@@ -80,7 +198,7 @@ export const getAccountBalance = async (user: any) => {
 export const getAccountTransactions = async (user: any) => {
   try {
     return await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
+      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
     );
   } catch (err) {
     throw err;
@@ -143,7 +261,7 @@ export const getClassSchedule = async (
 ): Promise<{ data: ClassSchedule[] }> => {
   try {
     const response: ClassScheduleResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
+      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
     );
     return {
       data: response.data.map((d: ClassSchedule) => ({
@@ -184,7 +302,7 @@ interface ClassificationResponse {
 export const getClassification = async (user: any): Promise<Classification> => {
   try {
     const response: ClassificationResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/classification`,
+      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`,
     );
     return response.data;
   } catch (err) {
@@ -198,7 +316,9 @@ export const getGrades = async (user: any, term: any) => {
     if (term) {
       termParam = `?term=${term}`;
     }
-    return await getJson(`${BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`);
+    return await getJson(
+      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`,
+    );
   } catch (err) {
     throw err;
   }
@@ -245,7 +365,7 @@ const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
 export const getGpa = async (user: any): Promise<GpaLevel[]> => {
   try {
     const response: GpaResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/gpa`,
+      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`,
     );
     if (response.data && response.data.attributes.gpaLevels.length > 0) {
       const { gpaLevels } = response.data.attributes;
@@ -285,7 +405,7 @@ interface HoldsResponse {
 export const getHolds = async (user: any): Promise<[{ description: string }] | []> => {
   try {
     const response: HoldsResponse = await getJson(
-      `${BASE_URL}/${user.masqueradeId || user.osuId}/holds`,
+      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`,
     );
     if (response.data && response.data.attributes.holds.length > 0) {
       const { holds } = response.data.attributes;

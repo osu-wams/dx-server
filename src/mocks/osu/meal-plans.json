@@ -1,0 +1,20 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/persons/111111111/meal-plans"
+  },
+  "data": [
+    {
+      "id": "2",
+      "type": "meal-plans",
+      "attributes": {
+        "mealPlan": "Orange Cash",
+        "balance": 21.99,
+        "lastUsedDate": "2019-11-26T02:56:28Z",
+        "lastUsedPlace": "Panda Express"
+      },
+      "links": {
+        "self": "https://api.oregonstate.edu/v1/persons/111111111/meal-plans/2"
+      }
+    }
+  ]
+}

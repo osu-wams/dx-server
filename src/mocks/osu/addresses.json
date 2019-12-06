@@ -1,0 +1,59 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/persons/111111111/addresses"
+  },
+  "data": [
+    {
+      "id": "12345678-1a41-4e29-9a67-41eb6f64b6c3",
+      "type": "addresses",
+      "attributes": {
+        "id": "12345678-1a41-4e29-9a67-41eb6f64b6c3",
+        "addressType": "CM",
+        "addressTypeDescription": "Current Mailing",
+        "addressLine1": "123 Main St.",
+        "addressLine2": null,
+        "addressLine3": null,
+        "addressLine4": null,
+        "houseNumber": null,
+        "city": "Daytona Beach",
+        "stateCode": "FL",
+        "state": "Florida",
+        "postalCode": "12345-6282",
+        "countyCode": "12345",
+        "county": "Florida",
+        "nationCode": null,
+        "nation": null,
+        "lastModified": "2019-04-02"
+      },
+      "links": {
+        "self": "https://api.oregonstate.edu/v1/persons/111111111/addresses?addressType=CM"
+      }
+    },
+    {
+      "id": "12345678-8e42-4d31-b30d-486cd2963158",
+      "type": "addresses",
+      "attributes": {
+        "id": "12345678-8e42-4d31-b30d-486cd2963158",
+        "addressType": "RN",
+        "addressTypeDescription": "Geographic Origin-First Admit",
+        "addressLine1": "123 Main St.",
+        "addressLine2": null,
+        "addressLine3": null,
+        "addressLine4": null,
+        "houseNumber": null,
+        "city": "Daytona Beach",
+        "stateCode": "FL",
+        "state": "Florida",
+        "postalCode": "12345-6282",
+        "countyCode": "12345",
+        "county": "Florida",
+        "nationCode": null,
+        "nation": null,
+        "lastModified": "2016-06-17"
+      },
+      "links": {
+        "self": "https://api.oregonstate.edu/v1/persons/111111111/addresses?addressType=RN"
+      }
+    }
+  ]
+}
