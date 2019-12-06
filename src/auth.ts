@@ -52,6 +52,7 @@ function parseSamlResult(profile: any, done: any) {
   const user = {
     osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
     email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
+    primaryAffiliation: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.5'],
     nameID: profile.nameID,
     nameIDFormat: profile.nameIDFormat,
     firstName: profile['urn:oid:2.5.4.42'],

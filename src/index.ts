@@ -10,7 +10,7 @@ import { isNullOrUndefined } from 'util';
 import Auth from './auth';
 import logger, { expressLogger } from './logger';
 import ApiRouter from './api';
-import { findOrCreateUser, updateOAuthData } from './api/modules/user-account';
+import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
 import { returnUrl } from './utils/routing';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
@@ -87,7 +87,7 @@ app.get('/healthcheck', (req, res) => {
 });
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
-  const { user, isNew } = await findOrCreateUser(req.user);
+  const { user, isNew } = await findOrUpsertUser(req.user);
   if (isNew) {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {

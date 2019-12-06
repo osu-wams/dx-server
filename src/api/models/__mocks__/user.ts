@@ -5,7 +5,8 @@ export const mockUser = {
   lastName: 'Ross',
   email: 'bob@bobross.com',
   phone: '5551212',
-  isAdmin: false
+  isAdmin: false,
+  primaryAffiliation: 'employee',
 };
 
 export const mockInsertReturn = mockUser;
@@ -21,7 +22,7 @@ export const User = {
       });
     });
   }),
-  insert: jest.fn((u: any) => {
+  upsert: jest.fn((u: any) => {
     return new Promise((resolve, reject) => {
       process.nextTick(() => {
         if (mockInsertReturn) resolve(mockInsertReturn);
@@ -43,6 +44,6 @@ export const User = {
         resolve([true, []]);
       });
     });
-  })
+  }),
 };
 export default User;

@@ -53,6 +53,8 @@ class User {
 
   email: string;
 
+  primaryAffiliation: string;
+
   phone?: string;
 
   isAdmin?: boolean = false;
@@ -88,6 +90,7 @@ class User {
       this.lastName = params.last_name;
       this.email = params.email;
       this.phone = params.phone;
+      this.primaryAffiliation = params.primaryAffiliation;
     }
 
     if (p.dynamoDbUser) {
@@ -98,6 +101,8 @@ class User {
       if (params.Item.lastName) this.lastName = params.Item.lastName.S;
       if (params.Item.email) this.email = params.Item.email.S;
       if (params.Item.phone) this.phone = params.Item.phone.S;
+      if (params.Item.primaryAffiliation)
+        this.primaryAffiliation = params.Item.primaryAffiliation.S;
       if (params.Item.canvasRefreshToken)
         this.refreshToken = params.Item.canvasRefreshToken.S || this.refreshToken;
       if (params.Item.canvasOptIn !== undefined) {
@@ -119,11 +124,11 @@ class User {
 
   /**
    * Insert (or update to match) a User based on the data supplied.
-   * * Example use: User.insert({osuId: 123456, firstName: 'f', lastName:'l', email: 'e', isCanvasOptIn: true, refreshToken: 't'}).then(v => console.log(v))
+   * * Example use: User.upsert({osuId: 123456, firstName: 'f', lastName:'l', email: 'e', isCanvasOptIn: true, refreshToken: 't'}).then(v => console.log(v))
    * @param props - the user properties to translate to a dynamodb user item
    * @returns Promise<User> - a promise with the User that was inserted/updated
    */
-  static insert = async (props: User): Promise<User> => {
+  static upsert = async (props: User): Promise<User> => {
     // ! DynamoDb only supports 'ALL_OLD' or 'NONE' for return values from the
     // ! putItem call, which means the only way to get values from ddb would be to
     // ! getItem with the key after having put the item successfully. The DX use
@@ -137,10 +142,10 @@ class User {
       };
 
       const result = await asyncTimedFunction(putItem, 'User:putItem', [params]);
-      logger.silly('User.insert succeeded:', result);
+      logger.silly('User.upsert succeeded:', result);
       return props;
     } catch (err) {
-      logger.error(`User.insert failed:`, props, err);
+      logger.error(`User.upsert failed:`, props, err);
       throw err;
     }
   };
@@ -160,7 +165,10 @@ class User {
         },
       };
       const dynamoDbUser = await asyncTimedFunction(getItem, 'User:getItem', [params]);
-      if (!Object.keys(dynamoDbUser).length) throw new Error('User not found.');
+      if (!Object.keys(dynamoDbUser).length) {
+        logger.debug(`User.find(${id} not found.)`);
+        return null;
+      }
       return new User({ dynamoDbUser });
     } catch (err) {
       logger.error(`User.find(${id}) failed:`, err);
@@ -342,6 +350,7 @@ class User {
       Item.canvasOptIn = { BOOL: props.isCanvasOptIn };
     }
     if (props.phone) Item.phone = { S: props.phone };
+    if (props.primaryAffiliation) Item.primaryAffiliation = { S: props.primaryAffiliation };
     if (props.refreshToken) Item.canvasRefreshToken = { S: props.refreshToken };
     if (props.nameID) Item.nameID = { S: props.nameID };
     if (props.nameIDFormat) Item.nameIDFormat = { S: props.nameIDFormat };
