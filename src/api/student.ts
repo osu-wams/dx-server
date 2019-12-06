@@ -33,11 +33,23 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
       const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsAdmin', [
         { osuId: req.user.masqueradeId },
       ]);
+      logger.info('Masqueraded Canvas Planner Items', {
+        canvasAction: 'planner-items',
+        masqueradeId: req.user.masqueradedId,
+        osuId: req.session.passport.user.osuId,
+        email: req.session.passport.user.email,
+      });
       res.json(JSON.parse(response));
     } else {
       const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsOAuth', [
         { oAuthToken: req.user.canvasOauthToken },
       ]);
+      logger.info('Canvas Planner Items', {
+        canvasAction: 'planner-items',
+        masqueradeId: '-- OAuth as student --',
+        osuId: req.session.passport.user.osuId,
+        email: req.session.passport.user.email,
+      });
       res.json(JSON.parse(response));
     }
   } catch (err) {

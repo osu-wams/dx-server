@@ -1,0 +1,34 @@
+name: Canvas Audit Uploader
+
+on:
+  schedule:
+    - cron: '1 0 * * *'
+
+jobs:
+  fetch_and_upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch Masquerade Cloudwatch events and translate to a csv
+        run: aws logs filter-log-events --log-group-name ${{ secrets.DX_MASQUERADE_AUDIT_LOG_GROUP }} --filter-pattern '{ $.adminAction="masquerade" }' --start-time $(date --date="yesterday" +%s000) --end-time $(date +%s000) --region ${{ secrets.AWS_REGION }} | jq -r '[.events[]?.message | fromjson ]? | (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv' > $(date --date="yesterday" +%Y%m%d).masquerade.csv
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Upload masquerade csv to S3
+        run: aws s3 cp $(date --date="yesterday" +%Y%m%d).masquerade.csv s3://${{ secrets.DX_MASQUERADE_AUDIT_S3_BUCKET }} --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Fetch Canvas Cloudwatch events and translate to a csv
+        run: aws logs filter-log-events --log-group-name ${{ secrets.DX_MASQUERADE_AUDIT_LOG_GROUP }} --filter-pattern '{ $.canvasAction="planner-items" }' --start-time $(date --date="yesterday" +%s000) --end-time $(date +%s000) --region ${{ secrets.AWS_REGION }} | jq -r '[.events[]?.message | fromjson ]? | (map(keys) | add | unique) as $cols | map(. as $row | $cols | map($row[.])) as $rows | $cols, $rows[] | @csv' > $(date --date="yesterday" +%Y%m%d).planner-items.csv
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+      - name: Upload canvas csv to S3
+        run: aws s3 cp $(date --date="yesterday" +%Y%m%d).planner-items.csv s3://${{ secrets.DX_MASQUERADE_AUDIT_S3_BUCKET }} --region ${{ secrets.AWS_REGION }}
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
