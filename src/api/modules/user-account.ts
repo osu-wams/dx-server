@@ -38,7 +38,11 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
       user.lastName !== u.lastName ||
       user.primaryAffiliation !== u.primaryAffiliation
     ) {
-      user = await User.upsert(u);
+      user.email = u.email;
+      user.firstName = u.firstName;
+      user.lastName = u.lastName;
+      user.primaryAffiliation = u.primaryAffiliation;
+      user = await User.upsert(user);
     }
 
     user.isAdmin = u.isAdmin;
