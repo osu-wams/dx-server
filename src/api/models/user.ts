@@ -101,6 +101,8 @@ class User {
       if (params.Item.lastName) this.lastName = params.Item.lastName.S;
       if (params.Item.email) this.email = params.Item.email.S;
       if (params.Item.phone) this.phone = params.Item.phone.S;
+      if (params.Item.nameID) this.nameID = params.Item.nameID.S;
+      if (params.Item.nameIDFormat) this.nameIDFormat = params.Item.nameIDFormat.S;
       if (params.Item.primaryAffiliation)
         this.primaryAffiliation = params.Item.primaryAffiliation.S;
       if (params.Item.canvasRefreshToken)
@@ -354,7 +356,7 @@ class User {
     if (props.refreshToken) Item.canvasRefreshToken = { S: props.refreshToken };
     if (props.nameID) Item.nameID = { S: props.nameID };
     if (props.nameIDFormat) Item.nameIDFormat = { S: props.nameIDFormat };
-    if (props.audienceOverride) {
+    if (props.audienceOverride && Object.keys(props.audienceOverride).length) {
       Item.audienceOverride = {
         M: {
           campusCode: { S: props.audienceOverride.campusCode },
