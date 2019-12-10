@@ -30,6 +30,7 @@ describe('/resources', () => {
         title: 'Student Jobs',
         link: 'http://ask/jeeves',
         iconName: 'osu.logo_sites_128px',
+        affiliation: [],
         audiences: ['Corvallis'],
         categories: ['category1', 'category2'],
         synonyms: ['blah', 'bob', 'ross']
@@ -48,6 +49,7 @@ describe('/resources', () => {
         type: 'service--categories',
         title: 'Something Bogus',
         link: '',
+        affiliation: [],
         audiences: [],
         categories: [],
         synonyms: []
@@ -106,6 +108,7 @@ describe('/resources', () => {
           title: 'Student Jobs',
           link: 'http://ask/jeeves',
           iconName: 'osu.logo_sites_128px',
+          affiliation: [],
           audiences: ['Corvallis'],
           categories: ['category1', 'category2'],
           synonyms: ['blah', 'bob', 'ross']
@@ -127,6 +130,7 @@ describe('/resources', () => {
           title: 'Student Jobs',
           link: 'http://ask/jeeves',
           iconName: 'osu.logo_sites_128px',
+          affiliation: [],
           audiences: ['Corvallis'],
           categories: ['category1', 'category2'],
           synonyms: ['blah', 'bob', 'ross']
@@ -144,6 +148,7 @@ describe('/resources', () => {
           type: 'service--categories',
           title: 'Something Bogus',
           link: '',
+          affiliation: [],
           audiences: [],
           categories: [],
           synonyms: []

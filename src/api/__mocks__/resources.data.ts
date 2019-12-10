@@ -20,6 +20,7 @@ export const resourcesData = [
         name: 'Corvallis'
       }
     ],
+    field_affiliation: [],
     field_icon_name: 'osu.logo_sites_128px',
     field_icon: {
       field_media_image: {
@@ -41,7 +42,8 @@ export const resourcesDataNoRelatedData = [
     },
     field_service_category: [],
     field_service_synonyms: [],
-    field_audience: []
+    field_audience: [],
+    field_affiliation: []
   }
 ];
 
