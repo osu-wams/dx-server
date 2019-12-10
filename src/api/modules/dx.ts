@@ -57,10 +57,8 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
     .map((d) => {
       let audiences = [];
       let pages = [];
-      let affiliation = [];
       if (d.field_audience !== undefined) audiences = d.field_audience.map((a) => a.name);
       if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name);
-      if (d.affiliation !== undefined) affiliation = d.field_affiliation.map((a) => a.name);
       return {
         id: d.id,
         type: d.drupal_internal__name,
