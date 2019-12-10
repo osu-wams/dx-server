@@ -119,7 +119,7 @@ export const postRequest = async (u: User, query: string): Promise<User> => {
     logger.debug(`canvas.postRequest refreshed user (${user.osuId}) OAuth credentials.`);
     return user;
   } catch (err) {
-    logger.error('canvas.postRequest token error:', err);
+    logger.error(`canvas.postRequest token error: ${err.message}`);
     // Refresh token is no longer valid and we must update the database
     await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: null } });
     user.canvasOauthToken = null;

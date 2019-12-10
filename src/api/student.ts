@@ -16,7 +16,6 @@ import {
   getHolds,
 } from './modules/osu';
 import { asyncTimedFunction } from '../tracer';
-import { updateOAuthData } from './modules/user-account'; // eslint-disable-line no-unused-vars
 
 const router = Router();
 
@@ -55,16 +54,11 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
   } catch (err) {
     if (err.response && err.response.statusCode === 401) {
       logger.error(
-        `Canvas Planner Items API call failed for user ${req.user.osuId}, error: ${err.response}`,
+        `Canvas Planner Items API call failed for user ${req.user.osuId}, error: ${err.message}`,
       );
-      await asyncTimedFunction(updateOAuthData, 'updateOAuthData', [
-        req.user,
-        { isCanvasOptIn: false, account: { refreshToken: null } },
-      ]);
       req.user.canvasOauthToken = null;
       req.user.canvasOauthExpire = null;
-      req.user.isCanvasOptIn = false;
-      res.status(403).send({ message: 'Reset users canvas opt-in status.' });
+      res.status(403).send({ message: 'Reset users canvas oauth.' });
     } else {
       logger.error('api/student/planner-items failed:', err);
       res.status(500).send({ message: 'Unable to retrieve planner items.' });
