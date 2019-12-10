@@ -57,8 +57,10 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
     .map((d) => {
       let audiences = [];
       let pages = [];
+      let affiliation = [];
       if (d.field_audience !== undefined) audiences = d.field_audience.map((a) => a.name);
       if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name);
+      if (d.affiliation !== undefined) affiliation = d.field_affiliation.map((a) => a.name);
       return {
         id: d.id,
         type: d.drupal_internal__name,
@@ -84,6 +86,7 @@ const mappedResources = (items: any[]): IResourceResult[] => {
     title: d.title,
     link: d.field_service_url.uri,
     iconName: d.field_icon_name,
+    affiliation: d.field_affiliation.map((a) => a.name),
     audiences: d.field_audience.map((a) => a.name),
     categories: d.field_service_category.map((c) => c.name),
     synonyms: d.field_service_synonyms,
@@ -155,11 +158,12 @@ export const getResources = async (): Promise<IResourceResult[]> => {
     const data = await retrieveData('node/services', {
       fields: {
         'node--services':
-          'id,title,field_icon_name,field_service_category,field_audience,field_service_synonyms,field_service_url',
+          'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url',
         'taxonomy_term--categories': 'name',
         'taxonomy_term--audience': 'name',
+        'taxonomy_term--affiliation': 'name',
       },
-      include: 'field_service_category,field_audience',
+      include: 'field_affiliation,field_audience,field_service_category',
       sort: 'title',
       filter: {
         status: 1,
@@ -180,11 +184,12 @@ export const getCuratedResources = async (category: string): Promise<IResourceRe
       fields: {
         'entity_subqueue--services': 'items,drupal_internal__name',
         'node--services':
-          'id,title,field_icon_name,field_service_category,field_audience,field_service_synonyms,field_service_url',
+          'id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url',
         'taxonomy_term--categories': 'name',
         'taxonomy_term--audience': 'name',
+        'taxonomy_term--affiliation': 'name'
       },
-      include: 'items,items.field_service_category,items.field_audience',
+      include: 'items,items.field_affiliation,items.field_audience,items.field_service_category',
     });
 
     return mappedResources(data[0].items);

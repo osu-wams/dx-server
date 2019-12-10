@@ -14,6 +14,7 @@ export interface IResourceResult {
   title: string;
   iconName?: string;
   link: string;
+  affiliation: string[];
   audiences: string[];
   categories: string[];
   synonyms: string[];
