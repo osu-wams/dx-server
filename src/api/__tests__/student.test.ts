@@ -7,7 +7,7 @@ import {
   classScheduleDataResponse,
   classScheduleDataResult,
   gpaDataResponse,
-  gpaDataResult
+  gpaDataResult,
 } from '../__mocks__/student.data';
 import { holdsData } from '../__mocks__/holds.data';
 import { plannerItemsData } from '../__mocks__/planner-items.data';
@@ -37,7 +37,7 @@ beforeAll(async () => {
     isCanvasOptIn: true,
     refreshToken: 'token',
     canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
-    canvasOauthToken: 'token'
+    canvasOauthToken: 'token',
   });
   nock(DYNAMODB_ENDPOINT)
     .post(/.*/)
@@ -63,7 +63,7 @@ describe('/api/student', () => {
         .reply(200, academicStatusData);
       await request.get('/api/student/academic-status').expect(200, {
         academicStanding: 'Good Standing',
-        term: '202001'
+        term: '202001',
       });
     });
 
@@ -71,7 +71,7 @@ describe('/api/student', () => {
       const data = [{ term: 'current' }, { term: '201901' }];
       mockedGetResponse.mockReturnValue({
         links: { self: 'bogus' },
-        data: [academicStatusData.data[1]]
+        data: [academicStatusData.data[1]],
       });
       cache.get = mockedGet;
 
@@ -83,7 +83,7 @@ describe('/api/student', () => {
       // Get specified term
       await request.get('/api/student/academic-status?term=201901').expect(200, {
         academicStanding: 'Good Standing',
-        term: '201901'
+        term: '201901',
       });
     });
 
@@ -100,7 +100,7 @@ describe('/api/student', () => {
       // Get current term
       await request.get('/api/student/academic-status').expect(200, {
         academicStanding: 'Good Standing',
-        term: '202001'
+        term: '202001',
       });
     });
 
@@ -203,8 +203,8 @@ describe('/api/student', () => {
           classification: 'classification',
           campus: 'campus',
           status: 'status',
-          isInternational: false
-        }
+          isInternational: false,
+        },
       };
       mockedGetResponse.mockReturnValue({ data });
       cache.get = mockedGet;
@@ -334,7 +334,7 @@ describe('/api/student', () => {
         { attributes: { term: '201901' } },
         { attributes: { term: 'current' } },
         { attributes: { term: '201901' } },
-        { attributes: { term: '201803' } }
+        { attributes: { term: '201803' } },
       ];
 
       mockedGetResponse.mockReturnValue({ data: [data[0]] });
@@ -355,7 +355,7 @@ describe('/api/student', () => {
         { attributes: { term: '201901' } },
         { attributes: { term: 'current' } },
         { attributes: { term: '201901' } },
-        { attributes: { term: '201803' } }
+        { attributes: { term: '201803' } },
       ];
 
       const dataSorted = [
@@ -363,7 +363,7 @@ describe('/api/student', () => {
         { attributes: { term: '201901' } },
         { attributes: { term: '201901' } },
         { attributes: { term: '201803' } },
-        { attributes: { term: '201701' } }
+        { attributes: { term: '201701' } },
       ];
       mockedGetResponse.mockReturnValue({ data });
       cache.get = mockedGet;
@@ -445,7 +445,7 @@ describe('/api/student', () => {
         isCanvasOptIn: true,
         refreshToken: 'token',
         canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
-        canvasOauthToken: 'token'
+        canvasOauthToken: 'token',
       });
     });
     it('should return planner items for the current user', async () => {
@@ -482,7 +482,7 @@ describe('/api/student', () => {
           refreshToken: 'token',
           canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
           canvasOauthToken: 'token',
-          masqueradeId: 111111111
+          masqueradeId: 111111111,
         });
         // login the user as masqueraded
         await request.get('/login');
@@ -508,17 +508,17 @@ describe('/api/student', () => {
           isCanvasOptIn: true,
           refreshToken: '',
           canvasOauthExpire: 0,
-          canvasOauthToken: 'token'
+          canvasOauthToken: 'token',
         });
       });
       it('should return an error', async () => {
         nock(CANVAS_BASE_URL)
-          .get(uri => uri.includes('items'))
+          .get((uri) => uri.includes('items'))
           .query(true)
           .reply(401);
         await request
           .get('/api/student/planner-items')
-          .expect(403, { message: 'Reset users canvas opt-in status.' });
+          .expect(403, { message: 'Reset users canvas oauth.' });
       });
     });
 
@@ -534,7 +534,7 @@ describe('/api/student', () => {
           isCanvasOptIn: true,
           refreshToken: 'token',
           canvasOauthExpire: 0,
-          canvasOauthToken: 'token'
+          canvasOauthToken: 'token',
         });
       });
       it('should return an error', async () => {
