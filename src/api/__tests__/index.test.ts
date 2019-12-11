@@ -3,9 +3,11 @@ import app from '../../index';
 import User from '../models/user';
 import { mockUser } from '../models/__mocks__/user';
 
+const mockRequestOAuthToken = jest.fn();
+
 jest.mock('../modules/canvas', () => ({
   ...jest.requireActual('../modules/canvas'),
-  refreshOAuthToken: jest.fn(),
+  refreshOAuthToken: () => mockRequestOAuthToken,
 }));
 
 jest.mock('../models/user');
@@ -75,6 +77,7 @@ describe('/canvas/refresh', () => {
   it('redirects logged in user to /', async () => {
     await request.get('/login');
     await request.get('/canvas/refresh').then((res) => {
+      mockRequestOAuthToken.mockReturnValue(mockUser);
       expect(res.status).toBe(302);
       expect(res.header.location).toBe('/');
     });

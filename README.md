@@ -31,6 +31,10 @@ _This step is only required the first time you start development and/or if you w
 
     $ brew install truncate
 
+### Install PM2 Typescript module
+
+    $ yarn run pm2 install typescript
+
 ### Run the server in Development mode (no CAS authentication)
 
 In a separate terminal window run:
