@@ -75,11 +75,9 @@ const authHeader = (accessToken: string | undefined) => {
 };
 
 const getRequest = async <T>(url: string, token: string | undefined): Promise<T> => {
-  return request
-    .get(url, {
-      auth: authHeader(token),
-    })
-    .promise();
+  const auth = authHeader(token);
+  logger.debug(`canvas get request url:${url} token:${token} auth:${auth}`);
+  return request.get(url, { auth }).promise();
 };
 
 /**
