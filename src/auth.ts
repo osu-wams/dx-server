@@ -227,7 +227,6 @@ Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunct
   }
   logger.debug(
     'Auth.hasCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
-    user,
   );
   // Return 403 so the front-end knows to react to the change in users canvas opt-in
   return res.status(403).send({ message: 'User must opt-in to Canvas login' });
