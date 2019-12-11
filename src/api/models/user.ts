@@ -244,15 +244,10 @@ class User {
           ':crt': { S: canvasRefreshToken },
         };
       }
-      const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
-        updateItem,
-        'User:updateItem',
-        [params],
-      );
+      await asyncTimedFunction(updateItem, 'User:updateItem', [params]);
       logger.debug(
         `User.updateCanvasData updated user:${user.osuId}, canvasOptIn:${canvasOptIn}, canvasRefreshToken:${canvasRefreshToken}`,
       );
-      logger.silly(result);
       user.isCanvasOptIn = canvasOptIn;
       user.refreshToken = canvasRefreshToken;
       return user;

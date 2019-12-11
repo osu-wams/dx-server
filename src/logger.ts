@@ -15,6 +15,7 @@ interface LoggerOptions {
   levels: winstonConfig.NpmConfigSetLevels;
   format: Format;
   transports?: Array<any>;
+  dynamicMeta?: any;
 }
 if (!fs.existsSync(LOG_DIR)) {
   fs.mkdirSync(LOG_DIR);
@@ -23,13 +24,18 @@ if (!fs.existsSync(LOG_DIR)) {
 const loggerOptions: LoggerOptions = {
   level: config.get('logLevel'),
   levels: winstonConfig.npm.levels,
-  format: combine(timestamp(), json())
+  format: combine(timestamp(), json()),
+  dynamicMeta: (req, res, err) => {
+    return {
+      sessionID: req.session.id,
+    };
+  },
 };
 
 if (ENV === 'development' || ENV === 'production') {
   loggerOptions.transports = [
     new transports.Console(),
-    new transports.File({ filename: `${LOG_DIR}/${ENV}.log` })
+    new transports.File({ filename: `${LOG_DIR}/${ENV}.log` }),
   ];
 } else {
   loggerOptions.transports = [new transports.File({ filename: `${LOG_DIR}/test.log` })];

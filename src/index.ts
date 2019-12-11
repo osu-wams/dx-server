@@ -46,7 +46,7 @@ const sessionOptions: SessionOptions = {
   //       during deploy. Do not use the default value in production.
   secret: process.env.SESSION_SECRET || 'dx',
   saveUninitialized: false,
-  resave: true,
+  resave: false,
   rolling: true,
   cookie: {
     httpOnly: false,
@@ -92,7 +92,14 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
     if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
-    res.redirect('/canvas/refresh');
+    req.session.save((err) => {
+      if (err) {
+        logger.error(`/login/saml session failed: ${err.message}`);
+      } else {
+        logger.debug('/login/saml session saved.');
+      }
+      res.redirect('/canvas/refresh');
+    });
   } else {
     const returnTo = returnUrl(req);
     logger.debug(`/login/saml redirecting to: ${returnTo}`);
@@ -114,7 +121,14 @@ app.get(
       req.user.isCanvasOptIn = false;
       const returnTo = returnUrl(req);
       logger.debug(`/canvas/auth error in OAuth redirecting to: ${returnTo}`);
-      res.redirect(returnTo);
+      req.session.save((err) => {
+        if (err) {
+          logger.error(`/canvas/auth error session failed: ${err.message}`);
+        } else {
+          logger.debug('/canvas/auth error session saved.');
+        }
+        res.redirect(returnTo);
+      });
     } else {
       next();
     }
@@ -130,14 +144,32 @@ app.get(
     req.user.refreshToken = user.refreshToken;
     const returnTo = returnUrl(req);
     logger.debug(`/canvas/auth redirecting to: ${returnTo}`);
-    res.redirect(returnTo);
+    req.session.save((err) => {
+      if (err) {
+        logger.error(`/canvas/auth session failed: ${err.message}`);
+      } else {
+        logger.debug('/canvas/auth session saved.');
+      }
+      res.redirect(returnTo);
+    });
   },
 );
 app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
-  req.user = await refreshOAuthToken(req.user);
+  const user = await refreshOAuthToken(req.user);
+  req.user.canvasOauthToken = user.canvasOauthToken;
+  req.user.canvasOauthExpire = user.canvasOauthExpire;
+  req.user.isCanvasOptIn = user.isCanvasOptIn;
+  req.user.refreshToken = user.refreshToken;
   const returnTo = returnUrl(req);
   logger.debug(`/canvas/refresh redirecting to: ${returnTo}`);
-  res.redirect(returnTo);
+  req.session.save((err) => {
+    if (err) {
+      logger.error(`/canvas/refresh session failed: ${err.message}`);
+    } else {
+      logger.debug('/canvas/refresh session saved.');
+    }
+    res.redirect(returnTo);
+  });
 });
 
 app.use('/api', ApiRouter);
