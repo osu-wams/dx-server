@@ -26,7 +26,9 @@ interface GradeTerm {
 }
 
 router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, res: Response) => {
-  logger.debug(`planner-items request session: ${req.session}, user: ${req.user}`);
+  logger.debug(
+    `planner-items request session: ${req.session.id}, oauth: ${req.user.canvasOauthToken}`,
+  );
   try {
     // Administrators that have masqueraded get access to this endpoint (else you get oauth)
     if (req.user.isAdmin && req.user.masqueradeId) {

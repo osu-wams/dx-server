@@ -98,7 +98,7 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
       } else {
         logger.debug('/login/saml session saved.');
       }
-      logger.debug(`/login/saml user:${req.user} session:${req.session}`);
+      logger.debug(`/login/saml oauth:${req.user.canvasOauthToken} session:${req.session.id}`);
       res.redirect('/canvas/refresh');
     });
   } else {
@@ -128,7 +128,9 @@ app.get(
         } else {
           logger.debug('/canvas/auth error session saved.');
         }
-        logger.debug(`/canvas/auth error user:${req.user} session:${req.session}`);
+        logger.debug(
+          `/canvas/auth error oauth:${req.user.canvasOauthToken} session:${req.session.id}`,
+        );
         res.redirect(returnTo);
       });
     } else {
@@ -152,7 +154,7 @@ app.get(
       } else {
         logger.debug('/canvas/auth session saved.');
       }
-      logger.debug(`/canvas/auth user:${req.user} session:${req.session}`);
+      logger.debug(`/canvas/auth oauth:${req.user.canvasOauthToken} session:${req.session.id}`);
       res.redirect(returnTo);
     });
   },
@@ -171,7 +173,7 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
     } else {
       logger.debug('/canvas/refresh session saved.');
     }
-    logger.debug(`/canvas/refresh user:${req.user} session:${req.session}`);
+    logger.debug(`/canvas/refresh oauth:${req.user.canvasOauthToken} session:${req.session.id}`);
     res.redirect(returnTo);
   });
 });
