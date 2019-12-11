@@ -21,6 +21,7 @@ if (!fs.existsSync(LOG_DIR)) {
   fs.mkdirSync(LOG_DIR);
 }
 
+/* eslint-disable no-unused-vars */
 const loggerOptions: LoggerOptions = {
   level: config.get('logLevel'),
   levels: winstonConfig.npm.levels,
@@ -31,6 +32,7 @@ const loggerOptions: LoggerOptions = {
     };
   },
 };
+/* eslint-enable no-unused-vars */
 
 if (ENV === 'development' || ENV === 'production') {
   loggerOptions.transports = [
