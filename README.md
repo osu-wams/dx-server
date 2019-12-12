@@ -63,6 +63,15 @@ Capture cookies send from the server and use cookies provided by the server happ
 
     curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/login?osuId=#########&key=########
 
+## Then, take a look at the deployed configurations (except sensitive values).
+
+This will return a JSON payload of the deployed configurations except for sensitive values like API keys, IDs, certs, and the like. If you have the commandline
+tool `jq`, pipe the output from the command to `jq` to get a formatted display.
+
+    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/config
+    // or
+    // curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/config | jq
+
 ## Then, reset all API caches?
 
 This feature will clear all of the external API caches in the case that some data changes need to flow out to the front-end ASAP.

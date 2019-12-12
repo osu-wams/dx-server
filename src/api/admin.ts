@@ -4,6 +4,7 @@
 import config from 'config';
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import redis from 'redis';
+import configsForApi from '../utils/config';
 import logger from '../logger';
 import User from './models/user';
 import cache from './modules/cache';
@@ -11,7 +12,7 @@ import cache from './modules/cache';
 const router: Router = Router();
 const redisClient = redis.createClient({
   host: `${config.get('redis.host')}`,
-  port: parseInt(config.get('redis.port'), 10)
+  port: parseInt(config.get('redis.port'), 10),
 });
 
 /**
@@ -49,6 +50,10 @@ router.get('/reset-api-cache', async (req: Request, res: Response) => {
     logger.error('api/admin/reset-api-cache failed:', err);
     res.status(500).send({ message: 'Error while resetting api cache.' });
   }
+});
+
+router.get('/config', async (req: Request, res: Response) => {
+  res.status(200).send(configsForApi(req.user.isAdmin));
 });
 
 export default router;
