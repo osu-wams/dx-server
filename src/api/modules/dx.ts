@@ -57,8 +57,10 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
     .map((d) => {
       let audiences = [];
       let pages = [];
+      let affiliation = [];
       if (d.field_audience !== undefined) audiences = d.field_audience.map((a) => a.name);
       if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name);
+      if (d.field_affiliation !== undefined) affiliation = d.field_affiliation.map((a) => a.name);
       return {
         id: d.id,
         type: d.drupal_internal__name,
@@ -66,6 +68,7 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
         title: d.title,
         body: d.field_announcement_body,
         bg_image: imageUrl(d),
+        affiliation,
         audiences,
         pages,
         action: itemAction(d),
@@ -130,14 +133,15 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
     const data = await retrieveData('node/announcement', {
       fields: {
         'node--announcement':
-          'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages',
+          'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_affiliation,field_audience,field_pages',
+        'taxonomy_term--affiliation': 'name',
         'taxonomy_term--audience': 'name',
         'taxonomy_term--pages': 'name',
         'media--image': 'name,field_media_image',
         'file--file': 'filename,filemime,uri',
       },
       include:
-        'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages',
+        'field_announcement_image,field_announcement_image.field_media_image,field_affiliation,field_audience,field_pages',
       filter: {
         status: 1,
       },
