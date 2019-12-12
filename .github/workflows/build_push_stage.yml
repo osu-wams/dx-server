@@ -51,9 +51,9 @@ jobs:
           git_sha=$(git rev-parse --short ${{ github.sha }})
           app_version=$(expr ${build_date}-${git_sha})
           expr ${app_version} > app_version
-          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version}
-          docker tag dx:${app_version} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}
+          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version} --build-arg NODE_ENV=stage
+          docker tag dx:${app_version} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:stage-${app_version}
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:stage-${app_version}
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -61,7 +61,7 @@ jobs:
       - name: Update task definition to new server image on STAGE cluster
         run: |
           app_version=`cat app_version`
-          ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:${app_version}"
+          ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:stage-${app_version}"
           # this next line grabs content of parameter file from s3 bucket the "s3 cp file - " acts like cat, jq updates the ServerImage
           aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }} - | jq -r --arg ECR_IMAGE "$ecr_image" 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE} else . end)' > ${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }}
           # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3

@@ -34,13 +34,13 @@ const loggerOptions: LoggerOptions = {
 };
 /* eslint-enable no-unused-vars */
 
-if (ENV === 'development' || ENV === 'production') {
+if (ENV === 'test') {
+  loggerOptions.transports = [new transports.File({ filename: `${LOG_DIR}/test.log` })];
+} else {
   loggerOptions.transports = [
     new transports.Console(),
     new transports.File({ filename: `${LOG_DIR}/${ENV}.log` }),
   ];
-} else {
-  loggerOptions.transports = [new transports.File({ filename: `${LOG_DIR}/test.log` })];
 }
 
 export default createLogger(loggerOptions);

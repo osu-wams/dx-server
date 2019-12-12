@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/osu-wams/dx-server/tree/master.svg?style=svg)](https://circleci.com/gh/osu-wams/dx-server/tree/master)[![codecov](https://codecov.io/gh/osu-wams/dx-server/branch/master/graph/badge.svg)](https://codecov.io/gh/osu-wams/dx-server)
+[![codecov](https://codecov.io/gh/osu-wams/dx-server/branch/master/graph/badge.svg)](https://codecov.io/gh/osu-wams/dx-server)
 
 ## Dependencies
 
@@ -35,17 +35,17 @@ _This step is only required the first time you start development and/or if you w
 
     $ yarn run pm2 install typescript
 
-### Run the server in Development mode (no CAS authentication)
+### Run the server for local development (no SAML authentication)
 
 In a separate terminal window run:
 
     $ yarn start
 
-### Run the server in Production mode (including CAS authentication)
+### Run the server with SAML authentication
 
 In a separate terminal window run:
 
-    $ yarn prod
+    $ yarn saml
 
 # Admin Functions
 
