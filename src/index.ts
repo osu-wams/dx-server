@@ -15,7 +15,11 @@ import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
 import { returnUrl } from './utils/routing';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 
-const appVersion = config.get('appVersion');
+const appVersion = config.get('appVersion') as string;
+const env = config.get('env') as string;
+const sessionSecret = config.get('sessionSecret') as string;
+const redisHost = config.get('redis.host') as string;
+const redisPort = parseInt(config.get('redis.port') as string, 10);
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
@@ -44,7 +48,7 @@ const sessionOptions: SessionOptions = {
   name: 'dx',
   // NOTE: Session secret should be set via environment variable
   //       during deploy. Do not use the default value in production.
-  secret: process.env.SESSION_SECRET || 'dx',
+  secret: sessionSecret,
   saveUninitialized: false,
   resave: false,
   rolling: true,
@@ -54,12 +58,12 @@ const sessionOptions: SessionOptions = {
   },
 };
 
-logger.info(`Server started with ENV=${config.get('env')}, VERSION=${appVersion}`);
+logger.info(`Server started with ENV=${env}, VERSION=${appVersion}`);
 
-if (config.get('env') === 'production') {
+if (['production', 'stage', 'development', 'localhost'].includes(env)) {
   sessionOptions.store = new RedisStore({
-    host: config.get('redis.host'),
-    port: config.get('redis.port'),
+    host: redisHost,
+    port: redisPort,
     logErrors: true,
   });
 }

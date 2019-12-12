@@ -1,5 +1,5 @@
 export default {
-  env: 'production',
+  env: 'stage',
   osuApi: {
     baseUrl: 'https://api.oregonstate.edu/v1',
   },
@@ -7,17 +7,17 @@ export default {
     baseUrl: 'https://oregonstate.instructure.com/api/v1',
   },
   saml: {
-    callbackUrl: 'http://my.oregonstate.edu/login/saml',
-    logoutCallbackUrl: 'http://my.oregonstate.edu/logout/saml',
+    callbackUrl: 'http://stage.my.oregonstate.edu/login/saml',
+    logoutCallbackUrl: 'http://stage.my.oregonstate.edu/logout/saml',
   },
   canvasOauth: {
     baseUrl: 'https://oregonstate.instructure.com',
-    callbackUrl: 'https://my.oregonstate.edu/canvas/auth',
+    callbackUrl: 'https://stage.my.oregonstate.edu/canvas/auth',
     scope: 'url:GET|/api/v1/planner/items',
   },
   aws: {
     dynamodb: {
-      tablePrefix: 'production',
+      tablePrefix: 'stage',
     },
   },
 };

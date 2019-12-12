@@ -69,6 +69,7 @@ function parseSamlResult(profile: any, done: any) {
 }
 
 switch (ENV) {
+  case 'development':
   case 'stage':
   case 'production':
     Auth.passportStrategy = new SamlStrategy(
@@ -89,7 +90,7 @@ switch (ENV) {
       parseSamlResult,
     );
     break;
-  case 'development':
+  case 'localhost':
     // Configure Dev Strategy
     Auth.passportStrategy = new DevStrategy('saml', {
       email: 'fake-email@oregonstate.edu',
