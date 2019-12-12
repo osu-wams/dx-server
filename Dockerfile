@@ -21,8 +21,9 @@ ADD . ./
 # Expose the port
 EXPOSE 4000
 
-# Default to production unless NODE_ENV is specified
-ENV NODE_ENV=${NODE_ENV:-production}
+# Default to development unless NODE_ENV is specified
+ARG NODE_ENV=development
+ENV NODE_ENV=$NODE_ENV
 
 # Default to development unless APP_VERSION is specified
 ARG APP_VERSION=development

@@ -51,7 +51,7 @@ jobs:
           git_sha=$(git rev-parse --short ${{ github.sha }})
           app_version=$(expr ${build_date}-${git_sha})
           expr ${app_version} > app_version
-          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version}
+          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version} --build-arg NODE_ENV=development
           docker tag dx:${app_version} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:development-${app_version}
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:development-${app_version}
         env:
