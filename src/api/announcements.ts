@@ -19,6 +19,7 @@ export interface IAnnouncementResult {
     title: string;
     link: string;
   };
+  affiliation: string[];
   audiences: string[];
   pages: string[];
 }
