@@ -2,7 +2,7 @@ import Kitsu from 'kitsu/node';
 import config from 'config';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
-import { IResourceResult, ICategory } from '../resources'; // eslint-disable-line no-unused-vars
+import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import cache, { setCache } from './cache';
 
 export const BASE_URL: string = config.get('dxApi.baseUrl');
@@ -180,7 +180,9 @@ export const getResources = async (): Promise<IResourceResult[]> => {
 /**
  * Get all resources for a specific category with all associated categories, audiences, synonyms and media for display.
  */
-export const getCuratedResources = async (category: string): Promise<IResourceResult[]> => {
+export const getCuratedResources = async (
+  category: string,
+): Promise<IEntityQueueResourceResult> => {
   try {
     const data = await retrieveData(`entity_subqueue/${category}`, {
       fields: {
@@ -189,12 +191,27 @@ export const getCuratedResources = async (category: string): Promise<IResourceRe
           'id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url',
         'taxonomy_term--categories': 'name',
         'taxonomy_term--audience': 'name',
-        'taxonomy_term--affiliation': 'name'
+        'taxonomy_term--affiliation': 'name',
       },
       include: 'items,items.field_affiliation,items.field_audience,items.field_service_category',
     });
 
-    return mappedResources(data[0].items);
+    let entityQueueTitle = data[0]?.title;
+
+    // Remove everything before a colon to clean up the name. "Employee: Featured" becomes simply "Featured"
+    if (entityQueueTitle?.indexOf(':') > -1) {
+      // eslint-disable-next-line no-unused-vars
+      const [affiliationToDiscard, queueTitle] = entityQueueTitle.split(':');
+      entityQueueTitle = queueTitle;
+    }
+
+    // Clean up the results and include the entityque title
+    const entityqueueResources = {
+      entityQueueTitle,
+      items: mappedResources(data[0].items),
+    };
+
+    return entityqueueResources;
   } catch (err) {
     throw err;
   }
