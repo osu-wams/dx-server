@@ -196,20 +196,22 @@ export const getCuratedResources = async (
       include: 'items,items.field_affiliation,items.field_audience,items.field_service_category',
     });
 
-    let entity_queue_title = data[0]?.title;
+    let entityQueueTitle = data[0]?.title;
 
     // Remove everything before a colon to clean up the name. "Employee: Featured" becomes simply "Featured"
-    if (entity_queue_title?.indexOf(':') > -1) {
-      entity_queue_title = entity_queue_title.split(':')[1];
+    if (entityQueueTitle?.indexOf(':') > -1) {
+      // eslint-disable-next-line no-unused-vars
+      const [affiliationToDiscard, queueTitle] = entityQueueTitle.split(':');
+      entityQueueTitle = queueTitle;
     }
 
     // Clean up the results and include the entityque title
-    const entityqueue_resources = {
-      entityQueueTitle: entity_queue_title,
+    const entityqueueResources = {
+      entityQueueTitle,
       items: mappedResources(data[0].items),
     };
 
-    return entityqueue_resources;
+    return entityqueueResources;
   } catch (err) {
     throw err;
   }
