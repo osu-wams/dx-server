@@ -3,9 +3,6 @@
 ## Dependencies
 
 - Docker
-- /etc/hosts entry
-
-      127.0.0.1 dev.my.oregonstate.edu
 
 ## Development Setup
 
