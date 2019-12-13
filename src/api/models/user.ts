@@ -143,8 +143,8 @@ class User {
         ReturnValues: 'NONE',
       };
 
-      const result = await asyncTimedFunction(putItem, 'User:putItem', [params]);
-      logger.silly('User.upsert succeeded:', result);
+      const result = await asyncTimedFunction(undefined, putItem, 'User:putItem', [params]);
+      logger.debug('User.upsert succeeded:', result);
       return props;
     } catch (err) {
       logger.error(`User.upsert failed:`, props, err);
@@ -166,7 +166,7 @@ class User {
           osuId: { N: `${id}` },
         },
       };
-      const dynamoDbUser = await asyncTimedFunction(getItem, 'User:getItem', [params]);
+      const dynamoDbUser = await asyncTimedFunction(undefined, getItem, 'User:getItem', [params]);
       if (!Object.keys(dynamoDbUser).length) {
         logger.debug(`User.find(${id} not found.)`);
         return null;
@@ -202,7 +202,7 @@ class User {
           },
           ReturnValues: 'UPDATED_NEW',
         };
-        const result = await asyncTimedFunction(updateItem, 'User:updateItem', [params]);
+        const result = await asyncTimedFunction(undefined, updateItem, 'User:updateItem', [params]);
         logger.debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
       } catch (err) {
         logger.error(`User.clearAllCanvasRefreshTokens error:`, err);
@@ -244,7 +244,7 @@ class User {
           ':crt': { S: canvasRefreshToken },
         };
       }
-      await asyncTimedFunction(updateItem, 'User:updateItem', [params]);
+      await asyncTimedFunction(undefined, updateItem, 'User:updateItem', [params]);
       logger.debug(
         `User.updateCanvasData updated user:${user.osuId}, canvasOptIn:${canvasOptIn}, canvasRefreshToken:${canvasRefreshToken}`,
       );
@@ -288,11 +288,12 @@ class User {
         };
       }
       const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
+        undefined,
         updateItem,
         'User:updateItem',
         [params],
       );
-      logger.silly('User.updateSettings updated user:', user.osuId, result);
+      logger.debug('User.updateSettings updated user:', user.osuId, result);
       if (settings.audienceOverride) user.audienceOverride = settings.audienceOverride;
       user.theme = theme;
       return user;
@@ -315,9 +316,12 @@ class User {
         TableName: User.TABLE_NAME,
         AttributesToGet: ['osuId'],
       };
-      const results: AWS.DynamoDB.ScanOutput = await asyncTimedFunction(scan, 'User:scan', [
-        params,
-      ]);
+      const results: AWS.DynamoDB.ScanOutput = await asyncTimedFunction(
+        undefined,
+        scan,
+        'User:scan',
+        [params],
+      );
       logger.debug(
         `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`,
       );

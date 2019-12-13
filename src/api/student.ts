@@ -29,9 +29,12 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
   try {
     // Administrators that have masqueraded get access to this endpoint (else you get oauth)
     if (req.user.isAdmin && req.user.masqueradeId) {
-      const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsAdmin', [
-        { osuId: req.user.masqueradeId },
-      ]);
+      const response: string = await asyncTimedFunction(
+        req.session?.id,
+        getPlannerItems,
+        'getPlannerItemsAdmin',
+        [{ osuId: req.user.masqueradeId }],
+      );
       logger.info('Masqueraded Canvas Planner Items', {
         canvasAction: 'planner-items',
         masqueradeId: req.user.masqueradedId,
@@ -40,9 +43,12 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
       });
       res.json(JSON.parse(response));
     } else {
-      const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsOAuth', [
-        { oAuthToken: req.user.canvasOauthToken },
-      ]);
+      const response: string = await asyncTimedFunction(
+        req.session?.id,
+        getPlannerItems,
+        'getPlannerItemsOAuth',
+        [{ oAuthToken: req.user.canvasOauthToken }],
+      );
       logger.info('Canvas Planner Items', {
         canvasAction: 'planner-items',
         masqueradeId: '-- OAuth as student --',
@@ -70,10 +76,12 @@ router.get('/academic-status', async (req: Request, res: Response) => {
   try {
     let termQueryString = '';
     if (req.query.term) termQueryString = `?term=${req.query.term}`;
-    const response = await asyncTimedFunction(getAcademicStatus, 'getAcademicStatus', [
-      req.user,
-      termQueryString,
-    ]);
+    const response = await asyncTimedFunction(
+      req.session?.id,
+      getAcademicStatus,
+      'getAcademicStatus',
+      [req.user, termQueryString],
+    );
     res.send(response);
   } catch (err) {
     logger.error('api/student/academic-status failed:', err);
@@ -83,9 +91,12 @@ router.get('/academic-status', async (req: Request, res: Response) => {
 
 router.get('/account-balance', async (req: Request, res: Response) => {
   try {
-    const response = (await asyncTimedFunction(getAccountBalance, 'getAccountBalance', [
-      req.user,
-    ])) as { data: any };
+    const response = (await asyncTimedFunction(
+      req.session?.id,
+      getAccountBalance,
+      'getAccountBalance',
+      [req.user],
+    )) as { data: any };
     res.send(response.data);
   } catch (err) {
     logger.error('api/student/account-balance failed:', err);
@@ -95,9 +106,12 @@ router.get('/account-balance', async (req: Request, res: Response) => {
 
 router.get('/account-transactions', async (req: Request, res: Response) => {
   try {
-    const response = (await asyncTimedFunction(getAccountTransactions, 'getAccountTransactions', [
-      req.user,
-    ])) as { data: any };
+    const response = (await asyncTimedFunction(
+      req.session?.id,
+      getAccountTransactions,
+      'getAccountTransactions',
+      [req.user],
+    )) as { data: any };
     res.send(response.data);
   } catch (err) {
     logger.error('api/student/account-transactions failed:', err);
@@ -107,7 +121,12 @@ router.get('/account-transactions', async (req: Request, res: Response) => {
 
 router.get('/classification', async (req: Request, res: Response) => {
   try {
-    const response = await asyncTimedFunction(getClassification, 'getClassification', [req.user]);
+    const response = await asyncTimedFunction(
+      req.session?.id,
+      getClassification,
+      'getClassification',
+      [req.user],
+    );
     res.send(response);
   } catch (err) {
     logger.error('api/student/classification failed:', err);
@@ -118,10 +137,12 @@ router.get('/classification', async (req: Request, res: Response) => {
 router.get('/class-schedule', async (req: Request, res: Response) => {
   try {
     const term = req.query.term || 'current';
-    const response = (await asyncTimedFunction(getClassSchedule, 'getClassSchedule', [
-      req.user,
-      term,
-    ])) as { data: any };
+    const response = (await asyncTimedFunction(
+      req.session?.id,
+      getClassSchedule,
+      'getClassSchedule',
+      [req.user, term],
+    )) as { data: any };
     res.send(response.data);
   } catch (err) {
     logger.error('api/student/class-schedule failed:', err);
@@ -131,7 +152,7 @@ router.get('/class-schedule', async (req: Request, res: Response) => {
 
 router.get('/gpa', async (req: Request, res: Response) => {
   try {
-    const response = await asyncTimedFunction(getGpa, 'getGpa', [req.user]);
+    const response = await asyncTimedFunction(req.session?.id, getGpa, 'getGpa', [req.user]);
     res.send(response);
   } catch (err) {
     logger.error('api/student/gpa failed:', err);
@@ -142,7 +163,10 @@ router.get('/gpa', async (req: Request, res: Response) => {
 router.get('/grades', async (req: Request, res: Response) => {
   try {
     const { term } = req.query;
-    const response = (await asyncTimedFunction(getGrades, 'getGrades', [req.user, term])) as {
+    const response = (await asyncTimedFunction(req.session?.id, getGrades, 'getGrades', [
+      req.user,
+      term,
+    ])) as {
       data: any;
     };
     // sort and use sortGradesByTerm to sort banner return newest to oldest
@@ -161,7 +185,7 @@ router.get('/grades', async (req: Request, res: Response) => {
 
 router.get('/holds', async (req: Request, res: Response) => {
   try {
-    const response = await asyncTimedFunction(getHolds, 'getHolds', [req.user]);
+    const response = await asyncTimedFunction(req.session?.id, getHolds, 'getHolds', [req.user]);
     res.send(response);
   } catch (err) {
     logger.error('api/student/holds failed:', err);

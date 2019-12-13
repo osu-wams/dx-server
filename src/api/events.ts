@@ -10,7 +10,7 @@ const router: Router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const result = await asyncTimedFunction(getEvents, 'getEvents', [req.query]);
+    const result = await asyncTimedFunction(req.session?.id, getEvents, 'getEvents', [req.query]);
     res.send(result);
   } catch (err) {
     logger.error(`api/events failed:`, err);
@@ -20,7 +20,9 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/campus/:name', async (req: Request, res: Response) => {
   try {
-    const result = await asyncTimedFunction(getCampusEvents, 'getCampusEvents', [req.params.name]);
+    const result = await asyncTimedFunction(req.session?.id, getCampusEvents, 'getCampusEvents', [
+      req.params.name,
+    ]);
     res.send(result);
   } catch (err) {
     logger.error(`api/events/campus failed:`, err);
@@ -28,12 +30,13 @@ router.get('/campus/:name', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/academic-calendar', async (_req: Request, res: Response) => {
+router.get('/academic-calendar', async (req: Request, res: Response) => {
   try {
     const result = await asyncTimedFunction(
+      req.session?.id,
       getAcademicCalendarEvents,
       'getAcademicCalendarEvents',
-      []
+      [],
     );
     res.send(result);
   } catch (err) {

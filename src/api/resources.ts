@@ -28,7 +28,9 @@ export interface ICategory {
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const data = await asyncTimedFunction(getResources, `getResources`, [req.query]);
+    const data = await asyncTimedFunction(req.session?.id, getResources, `getResources`, [
+      req.query,
+    ]);
     res.send(data);
   } catch (err) {
     logger.error(`api/resources failed:`, err);
@@ -39,9 +41,10 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/category/:machineName', async (req: Request, res: Response) => {
   try {
     const data = await asyncTimedFunction(
+      req.session?.id,
       getCuratedResources,
       `getCuratedResources:${req.params.machineName}`,
-      [req.params.machineName]
+      [req.params.machineName],
     );
 
     res.send(data);
@@ -51,9 +54,9 @@ router.get('/category/:machineName', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/categories', async (_req: Request, res: Response) => {
+router.get('/categories', async (req: Request, res: Response) => {
   try {
-    const data = await asyncTimedFunction(getCategories, 'getCategories', []);
+    const data = await asyncTimedFunction(req.session?.id, getCategories, 'getCategories', []);
     res.send(data);
   } catch (err) {
     logger.error(`api/resources/categories failed:`, err);

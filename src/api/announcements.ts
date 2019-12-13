@@ -26,17 +26,18 @@ export interface IAnnouncementResult {
 router.get('/:page?', async (req: Request, res: Response) => {
   try {
     const result: IAnnouncementResult[] = await asyncTimedFunction(
+      req.session?.id,
       getAnnouncements,
       'getAnnouncements',
-      []
+      [],
     );
     if (!isNullOrUndefined(req.params.page) && req.params.page !== '') {
       res.send(
         result.filter(
-          r =>
-            r.pages.some(p => p.toLowerCase() === req.params.page.toLowerCase()) ||
-            r.pages.length === 0
-        )
+          (r) =>
+            r.pages.some((p) => p.toLowerCase() === req.params.page.toLowerCase()) ||
+            r.pages.length === 0,
+        ),
       );
     } else {
       res.send(result);

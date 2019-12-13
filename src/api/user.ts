@@ -13,6 +13,7 @@ router.get('/', async (req: Request, res: Response) => {
   let classification = {};
   try {
     const classificationPromise: Promise<Classification> = asyncTimedFunction<Classification>(
+      req.session?.id,
       getClassification,
       'getClassification',
       [req.user],

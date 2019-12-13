@@ -11,7 +11,9 @@ const router: Router = Router();
 // Main endpoint with general data about the person
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const response: Profile = await asyncTimedFunction(getProfile, 'getProfile', [req.user]);
+    const response: Profile = await asyncTimedFunction(req.session?.id, getProfile, 'getProfile', [
+      req.user,
+    ]);
     res.send(response);
   } catch (err) {
     logger.error('api/persons failed:', err);
@@ -22,7 +24,12 @@ router.get('/', async (req: Request, res: Response) => {
 // Meal Plan by osu id - Apigee endpoint
 router.get('/meal-plans', async (req: Request, res: Response) => {
   try {
-    const response: MealPlan = await asyncTimedFunction(getMealPlan, 'getMealPlan', [req.user]);
+    const response: MealPlan = await asyncTimedFunction(
+      req.session?.id,
+      getMealPlan,
+      'getMealPlan',
+      [req.user],
+    );
     res.send(response);
   } catch (err) {
     logger.error('api/persons/meal-plans failed:', err);
@@ -33,7 +40,12 @@ router.get('/meal-plans', async (req: Request, res: Response) => {
 // Addresses by osu id - Apigee endpoint
 router.get('/addresses', async (req: Request, res: Response) => {
   try {
-    const response: Address[] = await asyncTimedFunction(getAddresses, 'getAddresses', [req.user]);
+    const response: Address[] = await asyncTimedFunction(
+      req.session?.id,
+      getAddresses,
+      'getAddresses',
+      [req.user],
+    );
     const mailingAddress = response.find((address: any) => {
       return address.attributes.addressType === 'CM';
     });

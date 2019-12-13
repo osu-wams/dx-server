@@ -8,6 +8,7 @@ const CLIENT_SECRET: string = config.get('osuApi.clientSecret');
 export const getToken = async (): Promise<string> => {
   /* eslint-disable camelcase */
   const response = (await asyncTimedFunction(
+    undefined,
     () =>
       request({
         method: 'post',
@@ -16,11 +17,11 @@ export const getToken = async (): Promise<string> => {
         form: {
           client_id: CLIENT_ID,
           client_secret: CLIENT_SECRET,
-          grant_type: 'client_credentials'
-        }
+          grant_type: 'client_credentials',
+        },
       }),
     'getToken',
-    []
+    [],
   )) as { access_token: string };
   return response.access_token;
   /* eslint-enable camelcase */

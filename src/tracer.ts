@@ -1,15 +1,16 @@
 import logger from './logger';
 
 export const asyncTimedFunction = async <T>(
+  sessionID: string,
   fn: Function,
   metricName: string,
-  args: Array<any>
+  args: Array<any>,
 ): Promise<T> => {
   const promised = (): Promise<T> =>
     new Promise((resolve, reject) => {
       fn(...args)
         .then((data: T) => resolve(data))
-        .catch(err => reject(err));
+        .catch((err) => reject(err));
     });
   try {
     const started = process.hrtime();
@@ -18,9 +19,10 @@ export const asyncTimedFunction = async <T>(
     const elapsedMs = (elapsed[0] * 1000000 + elapsed[1] / 1000) / 1000;
     // Logs a useful message along with data that can be used to create charts (Cloudwatch Insights)
     logger.debug(`${metricName} took ${elapsedMs}ms`, {
+      sessionID,
       elapsedMs,
       metricName,
-      metricType: 'timed-function'
+      metricType: 'timed-function',
     });
     return result;
   } catch (err) {

@@ -497,14 +497,12 @@
     "@types/express" "*"
     "@types/node" "*"
 
-"@types/express-winston@^3.0.4":
-  version "3.0.4"
-  resolved "https://registry.yarnpkg.com/@types/express-winston/-/express-winston-3.0.4.tgz#0818399a094374f16c39bcba24ebcea3891791c6"
-  integrity sha512-fCvI4nTs/oYhq7jACnPurepOPMKz//bNuCwMIRCcESix9jEuky93H5KwkyKeEPGNZfQzR3zCUbeGWs6/jvV7Fg==
+"@types/express-winston@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/express-winston/-/express-winston-4.0.0.tgz#d6d2adaf58bae0954f579e22d0860f086384fc48"
+  integrity sha512-CCNvkHIRKIJGgt64naW7XvsXvw4NkVHHa3EDy63uZzruXaFhZb2+AE0HRZx90ph528D1gm+fx9dA1gmZZ2uzLw==
   dependencies:
-    "@types/express" "*"
-    "@types/logform" "*"
-    winston "^3.0.0"
+    express-winston "*"
 
 "@types/express@*", "@types/express@^4.17.0":
   version "4.17.2"
@@ -546,13 +544,6 @@
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.3.tgz#bdfd69d61e464dcc81b25159c270d75a73c1a636"
   integrity sha512-Il2DtDVRGDcqjDtE+rF8iqg1CArehSK84HZJCT7AMITlyXRBpuPhqGLDQMowraqqu1coEaimg4ZOqggt6L6L+A==
-
-"@types/logform@*":
-  version "1.10.1"
-  resolved "https://registry.yarnpkg.com/@types/logform/-/logform-1.10.1.tgz#d7abe0cc8bdc0931fd0072f6a90b7f91cdbb3f4f"
-  integrity sha512-7PFeU3gNsaG80dNWIl9FafSCnc4oYRXlyJ4yM38i0hMuqJaIMGSARS16QKTKfN4nZmNkA2Yy1z3h1WkJxgGbmA==
-  dependencies:
-    logform "*"
 
 "@types/mime@*":
   version "2.0.1"
@@ -2397,10 +2388,10 @@ express-session@^1.16.2:
     safe-buffer "5.2.0"
     uid-safe "~2.1.5"
 
-express-winston@^3.2.1:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/express-winston/-/express-winston-3.4.0.tgz#8131822e0c9cbaa28d9600b5e866bd8edec1628b"
-  integrity sha512-CKo4ESwIV4BpNIsGVNiq2GcAwuomL4dVJRIIH/2K/jMpoRI2DakhkVTtaJACzV7n2I1v+knDJkkjZRCymJ7nmA==
+express-winston@*, express-winston@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/express-winston/-/express-winston-4.0.1.tgz#98c74d099b9a7fdeedc56eb839c223968bc33990"
+  integrity sha512-HQZ/d2UPuZIr/PNiLOHX+CF2Q9srfBy1GDK7yIJ+MvX6MU49ggM25XynSNmC5RRPlD2ju3Zic+mCTQtixP1gzQ==
   dependencies:
     chalk "^2.4.1"
     lodash "^4.17.10"
@@ -4120,7 +4111,7 @@ log-driver@^1.2.7:
   resolved "https://registry.yarnpkg.com/log-driver/-/log-driver-1.2.7.tgz#63b95021f0702fedfa2c9bb0a24e7797d71871d8"
   integrity sha512-U7KCmLdqsGHBLeWqYlFA0V0Sl6P08EE1ZrmA9cxjUE0WVqT9qnyVDPz1kzpFEP0jdJuFnasWIfSd7fsaNXkpbg==
 
-logform@*, logform@^2.1.1, logform@^2.1.2:
+logform@^2.1.1, logform@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/logform/-/logform-2.1.2.tgz#957155ebeb67a13164069825ce67ddb5bb2dd360"
   integrity sha512-+lZh4OpERDBLqjiwDLpAWNQu6KMjnlXH2ByZwCuSqVPJletw0kTWJf5CgSNAUKn1KUkv3m2cUz/LK8zyEy7wzQ==
@@ -6766,7 +6757,7 @@ winston-transport@^4.3.0:
     readable-stream "^2.3.6"
     triple-beam "^1.2.0"
 
-winston@*, winston@^3.0.0, winston@^3.2.1:
+winston@*, winston@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/winston/-/winston-3.2.1.tgz#63061377976c73584028be2490a1846055f77f07"
   integrity sha512-zU6vgnS9dAWCEKg/QYigd6cgMVVNwyTzKs81XZtTFuRwJOcDdBg7AU0mXVyNbs7O5RH2zdv+BdNZUlx7mXPuOw==

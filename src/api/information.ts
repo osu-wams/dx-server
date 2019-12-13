@@ -14,9 +14,9 @@ export interface IInfoResult {
   content: string;
 }
 
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
-    const result = await asyncTimedFunction(getInfo, 'getInfo', []);
+    const result = await asyncTimedFunction(req.session?.id, getInfo, 'getInfo', []);
     res.send(result);
   } catch (err) {
     logger.error(`api/information failed:`, err);

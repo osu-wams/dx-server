@@ -9,9 +9,9 @@ import { asyncTimedFunction } from '../tracer';
 
 const router: Router = Router();
 
-router.get('/', async (_req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
-    const result = await asyncTimedFunction(getAlerts, 'getAlerts', []);
+    const result = await asyncTimedFunction(req.session?.id, getAlerts, 'getAlerts', []);
     res.send(result);
   } catch (err) {
     logger.error(`api/alerts failed:`, err);
@@ -19,9 +19,9 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-router.get('/dx', async (_req: Request, res: Response) => {
+router.get('/dx', async (req: Request, res: Response) => {
   try {
-    const result = await asyncTimedFunction(getDxAlerts, 'getDxAlerts', []);
+    const result = await asyncTimedFunction(req.session?.id, getDxAlerts, 'getDxAlerts', []);
     res.send(result);
   } catch (err) {
     logger.error(`api/alerts/dx failed:`, err);
