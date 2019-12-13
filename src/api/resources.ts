@@ -20,6 +20,11 @@ export interface IResourceResult {
   synonyms: string[];
 }
 
+export interface IEntityQueueResourceResult {
+  entityQueueTitle: string;
+  items: IResourceResult[];
+}
+
 export interface ICategory {
   id: string;
   name: string;
@@ -41,7 +46,7 @@ router.get('/category/:machineName', async (req: Request, res: Response) => {
     const data = await asyncTimedFunction(
       getCuratedResources,
       `getCuratedResources:${req.params.machineName}`,
-      [req.params.machineName]
+      [req.params.machineName],
     );
 
     res.send(data);

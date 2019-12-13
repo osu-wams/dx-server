@@ -6,7 +6,7 @@ import {
   categoriesData,
   resourcesFeaturedEntityQueueData,
   resourcesAcademicEntityQueueData,
-  resourcesDataNoRelatedData
+  resourcesDataNoRelatedData,
 } from '../__mocks__/resources.data';
 import { BASE_URL } from '../modules/dx';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
@@ -33,8 +33,8 @@ describe('/resources', () => {
         affiliation: [],
         audiences: ['Corvallis'],
         categories: ['category1', 'category2'],
-        synonyms: ['blah', 'bob', 'ross']
-      }
+        synonyms: ['blah', 'bob', 'ross'],
+      },
     ];
     mockCachedData.mockReturnValue(JSON.stringify(resourcesData));
     cache.getAsync = getAsync;
@@ -52,8 +52,8 @@ describe('/resources', () => {
         affiliation: [],
         audiences: [],
         categories: [],
-        synonyms: []
-      }
+        synonyms: [],
+      },
     ];
     mockCachedData.mockReturnValue(JSON.stringify(resourcesDataNoRelatedData));
     cache.getAsync = getAsync;
@@ -76,12 +76,12 @@ describe('/resources', () => {
         {
           id: '6b7cd598-d71e-45f7-911c-d71551ec0a7c',
           name: 'Featured',
-          icon: `${BASE_URL}/sites/default/files/2019-05/star.svg`
+          icon: `${BASE_URL}/sites/default/files/2019-05/star.svg`,
         },
         {
           id: '6b7cd598-d71e-45f7-911c-d71551ec0a7c',
-          name: 'BadOne'
-        }
+          name: 'BadOne',
+        },
       ];
       mockCachedData.mockReturnValue(JSON.stringify(categoriesData));
       cache.getAsync = getAsync;
@@ -99,21 +99,24 @@ describe('/resources', () => {
     });
   });
 
-  describe('/resources/category/:machineName', () => {
+  describe('Entityqueue /resources/category/:machineName', () => {
     it('should fetch and filter the data', async () => {
-      const data = [
-        {
-          id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
-          type: 'service--categories',
-          title: 'Student Jobs',
-          link: 'http://ask/jeeves',
-          iconName: 'osu.logo_sites_128px',
-          affiliation: [],
-          audiences: ['Corvallis'],
-          categories: ['category1', 'category2'],
-          synonyms: ['blah', 'bob', 'ross']
-        }
-      ];
+      const data = {
+        entityQueueTitle: 'Liz',
+        items: [
+          {
+            id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
+            type: 'service--categories',
+            title: 'Student Jobs',
+            link: 'http://ask/jeeves',
+            iconName: 'osu.logo_sites_128px',
+            affiliation: [],
+            audiences: ['Corvallis'],
+            categories: ['category1', 'category2'],
+            synonyms: ['blah', 'bob', 'ross'],
+          },
+        ],
+      };
       mockCachedData.mockReturnValue(null);
       cache.getAsync = getAsync;
       cache.setAsync = setAsync;
@@ -123,37 +126,45 @@ describe('/resources', () => {
       await request.get('/api/resources/category/featured').expect(200, data);
     });
     it('should filter cached the data', async () => {
-      const data = [
-        {
-          id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
-          type: 'service--categories',
-          title: 'Student Jobs',
-          link: 'http://ask/jeeves',
-          iconName: 'osu.logo_sites_128px',
-          affiliation: [],
-          audiences: ['Corvallis'],
-          categories: ['category1', 'category2'],
-          synonyms: ['blah', 'bob', 'ross']
-        }
-      ];
+      const data = {
+        entityQueueTitle: 'Liz',
+        items: [
+          {
+            id: '2ff0aaa4-5ca2-4adb-beaa-decc8744396f',
+            type: 'service--categories',
+            title: 'Student Jobs',
+            link: 'http://ask/jeeves',
+            iconName: 'osu.logo_sites_128px',
+            affiliation: [],
+            audiences: ['Corvallis'],
+            categories: ['category1', 'category2'],
+            synonyms: ['blah', 'bob', 'ross'],
+          },
+        ],
+      };
+
       mockCachedData.mockReturnValue(JSON.stringify(resourcesFeaturedEntityQueueData));
+
       cache.getAsync = getAsync;
       await request.get('/api/resources/category/featured').expect(200, data);
     });
 
     it('should filter cached data that does not include related data', async () => {
-      const data = [
-        {
-          id: '2ff0aaa4-5ca2-4ad-beaa-decc8744396f',
-          type: 'service--categories',
-          title: 'Something Bogus',
-          link: '',
-          affiliation: [],
-          audiences: [],
-          categories: [],
-          synonyms: []
-        }
-      ];
+      const data = {
+        entityQueueTitle: 'Liz',
+        items: [
+          {
+            id: '2ff0aaa4-5ca2-4ad-beaa-decc8744396f',
+            type: 'service--categories',
+            title: 'Something Bogus',
+            link: '',
+            affiliation: [],
+            audiences: [],
+            categories: [],
+            synonyms: [],
+          },
+        ],
+      };
       mockCachedData.mockReturnValue(JSON.stringify(resourcesAcademicEntityQueueData));
       cache.getAsync = getAsync;
       await request.get('/api/resources/category/academic').expect(200, data);
