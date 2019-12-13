@@ -10,13 +10,18 @@ import User from './models/user'; // eslint-disable-line no-unused-vars
 const router: Router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-  const classificationPromise: Promise<Classification> = asyncTimedFunction<Classification>(
-    getClassification,
-    'getClassification',
-    [req.user],
-  );
-  const { id, attributes } = await classificationPromise;
-  const classification = { id, attributes };
+  let classification = {};
+  try {
+    const classificationPromise: Promise<Classification> = asyncTimedFunction<Classification>(
+      getClassification,
+      'getClassification',
+      [req.user],
+    );
+    const { id, attributes } = await classificationPromise;
+    classification = { id, attributes };
+  } catch (err) {
+    logger.error(`api/user failed: ${err.message}, trace: ${err.stack}`);
+  }
   res.send({
     osuId: req.user.osuId,
     firstName: req.user.firstName,
