@@ -1,3 +1,4 @@
+import { EMPLOYEE_EVENTS_URL } from './../modules/localist';
 import supertest from 'supertest';
 import nock from 'nock';
 import app from '../../index';
@@ -42,7 +43,7 @@ describe('/events/academic-calendar', () => {
       .get('')
       .query(true)
       .reply(200, academicCalendarData.xml, {
-        'Content-Type': 'application/xml'
+        'Content-Type': 'application/xml',
       });
 
     await request.get('/api/events/academic-calendar').expect(200, academicCalendarData.response);
@@ -58,5 +59,33 @@ describe('/events/academic-calendar', () => {
     await request
       .get('/api/events/academic-calendar')
       .expect(500, { message: 'Unable to retrieve academic calendar events.' });
+  });
+});
+
+describe('/events/employee-events', () => {
+  it('should return events when one is present', async () => {
+    mockedGetResponse.mockReturnValue(academicCalendarData.xml);
+    cache.get = mockedGet;
+    // Mock response from Localist
+    nock(EMPLOYEE_EVENTS_URL)
+      .get('')
+      .query(true)
+      .reply(200, academicCalendarData.xml, {
+        'Content-Type': 'application/xml',
+      });
+
+    await request.get('/api/events/employee-events').expect(200, academicCalendarData.response);
+  });
+
+  it('should return "Unable to retrieve employee events." when there is a 500 error', async () => {
+    mockedGetResponse.mockReturnValue(undefined);
+    cache.get = mockedGet;
+    nock(EMPLOYEE_EVENTS_URL)
+      .get('')
+      .reply(500);
+
+    await request
+      .get('/api/events/employee-events')
+      .expect(500, { message: 'Unable to retrieve employee events.' });
   });
 });
