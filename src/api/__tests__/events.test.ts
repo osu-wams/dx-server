@@ -1,10 +1,10 @@
-import { EMPLOYEE_EVENTS_URL } from './../modules/localist';
 import supertest from 'supertest';
 import nock from 'nock';
+import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import app from '../../index';
+import employeeEventsData, { expectedEmployeeEvents } from '../../mocks/localist/events-employee';
 import { academicCalendarData } from '../__mocks__/events-academic.data';
 import { eventsData, eventsResult } from '../__mocks__/events.data';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import { LOCALIST_BASE_URL, ACADEMIC_CALENDAR_URL } from '../modules/localist';
 
@@ -16,7 +16,7 @@ describe('/events', () => {
     cache.get = mockedGet;
     // Mock response from Localist
     nock(LOCALIST_BASE_URL, { encodedQueryParams: true })
-      .get('api/2/events')
+      .get('')
       .query(true)
       .reply(200, { events: eventsData });
 
@@ -64,23 +64,21 @@ describe('/events/academic-calendar', () => {
 
 describe('/events/employee-events', () => {
   it('should return events when one is present', async () => {
-    mockedGetResponse.mockReturnValue(academicCalendarData.xml);
+    mockedGetResponse.mockReturnValue(employeeEventsData);
     cache.get = mockedGet;
     // Mock response from Localist
-    nock(EMPLOYEE_EVENTS_URL)
+    nock(LOCALIST_BASE_URL)
       .get('')
       .query(true)
-      .reply(200, academicCalendarData.xml, {
-        'Content-Type': 'application/xml',
-      });
+      .reply(200, employeeEventsData);
 
-    await request.get('/api/events/employee-events').expect(200, academicCalendarData.response);
+    await request.get('/api/events/employee-events').expect(200, expectedEmployeeEvents);
   });
 
   it('should return "Unable to retrieve employee events." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = mockedGet;
-    nock(EMPLOYEE_EVENTS_URL)
+    nock(LOCALIST_BASE_URL)
       .get('')
       .reply(500);
 
