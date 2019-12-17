@@ -59,6 +59,7 @@ export default {
   },
   localist: {
     campusIds: '{"bend":273,"corvallis":272}',
+    eventTypes: '{"employee":115615}',
     eventDaysAgo: '30',
     eventDxQuery: 'dxfa',
     cacheEndpointSec: '86400',
