@@ -2,9 +2,19 @@
 
 ## Dependencies
 
-- Docker
+- [Docker](https://docs.docker.com/install/)
+- [NVM](https://github.com/nvm-sh/nvm#installation-and-update)
+- [Yarn (install via NPM)](https://yarnpkg.com/en/docs/install#alternatives-stable)
 
 ## Development Setup
+
+### OSX MAC install truncate (via homebrew)
+
+    $ brew install truncate
+
+### Find `local.ts` and copy into place
+
+_`local.ts` contains overrides for environment variables that contain authentication keys and other secrets. The WAMS group stores a protected copy of this file in Keeper. Place a copy of this file in `config/`._
 
 ### Copy the default docker-compose.override.yml into place
 
@@ -24,23 +34,13 @@ _This step is only required the first time you start development and/or if you w
 
     $ yarn exec ts-node src/db/scripts/create_users_table.ts
 
-### OSX MAC install truncate (via homebrew)
+### Run the server for local development
 
-    $ brew install truncate
-
-### Install PM2 Typescript module
-
-    $ yarn run pm2 install typescript
-
-### Run the server for local development (no SAML authentication)
-
-In a separate terminal window run:
+To run without SAML authentication, in a separate terminal window run:
 
     $ yarn start
 
-### Run the server with SAML authentication
-
-In a separate terminal window run:
+To run with SAML authentication, in a separate terminal window run:
 
     $ yarn saml
 
