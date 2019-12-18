@@ -62,7 +62,7 @@ describe('/events/academic-calendar', () => {
   });
 });
 
-describe('/events/employee-events', () => {
+describe('/events/employee', () => {
   it('should return events when one is present', async () => {
     mockedGetResponse.mockReturnValue(employeeEventsData);
     cache.get = mockedGet;
@@ -72,7 +72,7 @@ describe('/events/employee-events', () => {
       .query(true)
       .reply(200, employeeEventsData);
 
-    await request.get('/api/events/employee-events').expect(200, expectedEmployeeEvents);
+    await request.get('/api/events/employee').expect(200, expectedEmployeeEvents);
   });
 
   it('should return "Unable to retrieve employee events." when there is a 500 error', async () => {
@@ -83,7 +83,7 @@ describe('/events/employee-events', () => {
       .reply(500);
 
     await request
-      .get('/api/events/employee-events')
+      .get('/api/events/employee')
       .expect(500, { message: 'Unable to retrieve employee events.' });
   });
 });
