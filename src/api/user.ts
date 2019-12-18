@@ -20,7 +20,7 @@ router.get('/', async (req: Request, res: Response) => {
     const { id, attributes } = await classificationPromise;
     classification = { id, attributes };
   } catch (err) {
-    logger.error(`api/user failed: ${err.message}, trace: ${err.stack}`);
+    logger().error(`api/user failed: ${err.message}, trace: ${err.stack}`);
   }
   res.send({
     osuId: req.user.osuId,
@@ -46,7 +46,7 @@ router.post('/settings', async (req: Request, res: Response) => {
     if (theme !== undefined) req.session.passport.user.theme = updatedUser.theme;
     res.json({ audienceOverride: updatedUser.audienceOverride, theme: updatedUser.theme });
   } catch (err) {
-    logger.error('api/user/settings failed:', err);
+    logger().error('api/user/settings failed:', err);
     res.status(500).send({ message: 'Failed to update users settings.' });
   }
 });

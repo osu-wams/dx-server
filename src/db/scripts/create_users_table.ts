@@ -22,12 +22,12 @@ const createTable = (): void => {
 
   dynamoDb.createTable(params, (err: AWSError, data: AWS.DynamoDB.CreateTableOutput) => {
     if (err) {
-      logger.error(`Error creating ${User.TABLE_NAME} table.`, err);
+      logger().error(`Error creating ${User.TABLE_NAME} table.`, err);
     } else {
-      logger.info(`Created ${User.TABLE_NAME} table.`, data);
+      logger().info(`Created ${User.TABLE_NAME} table.`, data);
     }
   });
 };
 
-logger.info('Accessing dynamoDb:', config.get('aws.dynamodb'));
+logger().info('Accessing dynamoDb:', config.get('aws.dynamodb'));
 createTable();

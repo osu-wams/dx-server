@@ -122,12 +122,12 @@ Auth.localStrategy = new LocalStrategy(
   },
   async (osuId, key, done) => {
     // verify the username is a valid user, and the password is the API key
-    logger.debug(`API key authentication attempted with osuId:${osuId} and key:${key}`);
+    logger().debug(`API key authentication attempted with osuId:${osuId} and key:${key}`);
     const apiKey = apiKeys.filter((k) => k.key !== '').find((k) => k.key === key);
     if (apiKey) {
-      logger.debug(`API key found: ${apiKey}`);
+      logger().debug(`API key found: ${apiKey}`);
       const user = await User.find(parseInt(osuId, 10));
-      if (!user) logger.debug('API user not found, returning unauthenticated.');
+      if (!user) logger().debug('API user not found, returning unauthenticated.');
       if (!user) return done(null, false);
 
       user.isAdmin = apiKey.isAdmin;
@@ -149,7 +149,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
   if (req.query!.returnTo!) req.session.returnUrl = req.query.returnTo;
 
   return passport.authenticate(['local', 'saml'], (err, user) => {
-    logger.debug(`User authenticated: ${user.osuId}`);
+    logger().debug(`User authenticated: ${user.osuId}`);
     if (err) {
       return next(err);
     }
@@ -162,7 +162,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
         return next(innerErr);
       }
       const returnTo = returnUrl(req);
-      logger.debug(`Auth.login redirecting to: ${returnTo}`);
+      logger().debug(`Auth.login redirecting to: ${returnTo}`);
       res.redirect(returnTo);
     });
   })(req, res, next);
@@ -174,17 +174,17 @@ Auth.logout = (req: Request, res: Response) => {
     if (ENV === 'production') {
       const strategy: SamlStrategy = Auth.passportStrategy;
       strategy.logout(req, (err, uri) => {
-        req.session.destroy((error) => logger.error(error));
+        req.session.destroy((error) => logger().error(error));
         req.logout();
         return res.redirect(uri);
       });
     } else {
-      req.session.destroy((error) => logger.error(error));
+      req.session.destroy((error) => logger().error(error));
       req.logout();
       res.redirect('/');
     }
   } catch (err) {
-    logger.error(`Auth.logout error: ${err}`);
+    logger().error(`Auth.logout error: ${err}`);
   }
 };
 
@@ -217,7 +217,7 @@ Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunct
       user.canvasOauthExpire === 0 ||
       Math.floor(Date.now() / 1000) >= user.canvasOauthExpire
     ) {
-      logger.debug('Auth.hasCanvasRefreshToken oauth token expired, refreshing.', user);
+      logger().debug('Auth.hasCanvasRefreshToken oauth token expired, refreshing.', user);
       const updatedUser = await refreshOAuthToken(user);
       req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;
       req.session.passport.user.canvasOauthExpire = updatedUser.canvasOauthExpire;
@@ -226,7 +226,7 @@ Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunct
     }
     return next();
   }
-  logger.debug(
+  logger().debug(
     'Auth.hasCanvasRefreshToken opt-in or refresh token missing, returning unauthorized',
   );
   // Return 403 so the front-end knows to react to the change in users canvas opt-in

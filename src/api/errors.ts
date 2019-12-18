@@ -8,7 +8,7 @@ const router: Router = Router();
 
 router.post('/', async (req: Request, res: Response) => {
   const { error, stack } = req.body;
-  logger.error('App Error', { error, stack });
+  logger().error('App Error', { error, stack });
   res.status(200).send();
 });
 

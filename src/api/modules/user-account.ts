@@ -46,10 +46,10 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
     }
 
     user.isAdmin = u.isAdmin;
-    logger.silly('user-account.findOrUpsertUser returned user.', user);
+    logger().silly('user-account.findOrUpsertUser returned user.', user);
     return { user, isNew };
   } catch (err) {
-    logger.error(`user-account.findOrUpsertUser db failed: ${err.message}`);
+    logger().error(`user-account.findOrUpsertUser db failed: ${err.message}`);
     throw err;
   }
 };
@@ -61,10 +61,10 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
       oAuthData.account.refreshToken,
       oAuthData.isCanvasOptIn,
     );
-    logger.silly('user-account.updateOAuthData returned user.', user);
+    logger().silly('user-account.updateOAuthData returned user.', user);
     return user;
   } catch (err) {
-    logger.error(`user-account.updateOAuthData db failed: ${err.message}`);
+    logger().error(`user-account.updateOAuthData db failed: ${err.message}`);
     throw err;
   }
 };

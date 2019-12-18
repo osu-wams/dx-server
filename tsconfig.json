@@ -3,16 +3,17 @@
     "module": "commonjs",
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "target": "es6",
+    "target": "es2018",
     "noImplicitAny": false,
-    "moduleResolution": "node",
     "sourceMap": true,
     "rootDir": "src",
     "outDir": "dist",
     "baseUrl": ".",
+    "lib": ["es2018"],
     "paths": {
       "*": ["node_modules/*"]
-    }
+    },
+    "skipLibCheck": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "support"]

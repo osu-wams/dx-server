@@ -42,7 +42,7 @@ router.get('/:page?', async (req: Request, res: Response) => {
       res.send(result);
     }
   } catch (err) {
-    logger.error(`api/announcements fetching announcements failed: ${err}`);
+    logger().error(`api/announcements fetching announcements failed: ${err}`);
     res.status(500).send({ message: 'Unable to retrieve announcements.' });
   }
 });

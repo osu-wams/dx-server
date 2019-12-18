@@ -62,11 +62,11 @@ export const setAsync = async (
   });
 };
 
-client.on('error', err => logger.error(`cache: redisClient.on('error'): ${err}`));
+client.on('error', err => logger().error(`cache: redisClient.on('error'): ${err}`));
 
 export const getCache = async (key: string): Promise<string | null> => {
   const reply = await getAsync(key);
-  if (!reply) logger.debug(`getCache(${key}) failed to find data.`);
+  if (!reply) logger().debug(`getCache(${key}) failed to find data.`);
   return reply;
 };
 
@@ -76,7 +76,7 @@ export const setCache = async (
   options: SetCacheOptions
 ): Promise<boolean> => {
   const reply = await setAsync(key, data, options);
-  if (!reply) logger.debug(`setCache(${key}, ${data}) failed to set cache.`);
+  if (!reply) logger().debug(`setCache(${key}, ${data}) failed to set cache.`);
   return reply;
 };
 

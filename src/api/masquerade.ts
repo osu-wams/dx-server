@@ -11,7 +11,7 @@ router.post('/', async (req: Request, res: Response) => {
   if (masqueradeId && masqueradeReason) {
     req.session.passport.user.masqueradeId = masqueradeId;
     req.session.passport.user.masqueradeReason = masqueradeReason;
-    logger.info(
+    logger().info(
       `User:${req.session.passport.user.osuId}:${req.session.passport.user.email} masqueraded as ${masqueradeId}, '${masqueradeReason}'`,
       {
         adminAction: 'masquerade',
