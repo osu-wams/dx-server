@@ -14,7 +14,7 @@ router.get('/', async (req: Request, res: Response) => {
     const response: Profile = await asyncTimedFunction(getProfile, 'getProfile', [req.user]);
     res.send(response);
   } catch (err) {
-    logger.error('api/persons failed:', err);
+    logger().error('api/persons failed:', err);
     res.status(500).send({ message: 'Unable to retrieve person information.' });
   }
 });
@@ -25,7 +25,7 @@ router.get('/meal-plans', async (req: Request, res: Response) => {
     const response: MealPlan = await asyncTimedFunction(getMealPlan, 'getMealPlan', [req.user]);
     res.send(response);
   } catch (err) {
-    logger.error('api/persons/meal-plans failed:', err);
+    logger().error('api/persons/meal-plans failed:', err);
     res.status(500).send({ message: 'Unable to retrieve meal plans.' });
   }
 });
@@ -39,7 +39,7 @@ router.get('/addresses', async (req: Request, res: Response) => {
     });
     res.send(mailingAddress);
   } catch (err) {
-    logger.error('api/persons/addresses failed:', err);
+    logger().error('api/persons/addresses failed:', err);
     res.status(500).send({ message: 'Unable to retrieve addresses' });
   }
 });

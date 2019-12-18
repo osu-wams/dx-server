@@ -13,7 +13,7 @@ router.get('/', async (req: Request, res: Response) => {
     const result = await asyncTimedFunction(getEvents, 'getEvents', [req.query]);
     res.send(result);
   } catch (err) {
-    logger.error(`api/events failed:`, err);
+    logger().error(`api/events failed:`, err);
     res.status(500).send({ message: 'Unable to retrieve events.' });
   }
 });
@@ -23,7 +23,7 @@ router.get('/campus/:name', async (req: Request, res: Response) => {
     const result = await asyncTimedFunction(getCampusEvents, 'getCampusEvents', [req.params.name]);
     res.send(result);
   } catch (err) {
-    logger.error(`api/events/campus failed:`, err);
+    logger().error(`api/events/campus failed:`, err);
     res.status(500).send({ message: 'Unable to retrieve campus events.' });
   }
 });
@@ -37,7 +37,7 @@ router.get('/academic-calendar', async (_req: Request, res: Response) => {
     );
     res.send(result);
   } catch (err) {
-    logger.error(`api/events/academic-calendar failed:`, err);
+    logger().error(`api/events/academic-calendar failed:`, err);
     res.status(500).send({ message: 'Unable to retrieve academic calendar events.' });
   }
 });

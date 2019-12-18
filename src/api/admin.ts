@@ -30,7 +30,7 @@ router.get('/reset-sessions', async (req: Request, res: Response) => {
     redisClient.flushdb();
     res.status(200).send({ message: 'Tokens reset, session cache is clearing.' });
   } catch (err) {
-    logger.error('api/admin/reset-sessions failed:', err);
+    logger().error('api/admin/reset-sessions failed:', err);
     res.status(500).send({ message: 'Error while resetting sessions.' });
   }
 });
@@ -47,7 +47,7 @@ router.get('/reset-api-cache', async (req: Request, res: Response) => {
       res.status(304).send();
     }
   } catch (err) {
-    logger.error('api/admin/reset-api-cache failed:', err);
+    logger().error('api/admin/reset-api-cache failed:', err);
     res.status(500).send({ message: 'Error while resetting api cache.' });
   }
 });

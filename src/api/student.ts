@@ -32,7 +32,7 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
       const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsAdmin', [
         { osuId: req.user.masqueradeId },
       ]);
-      logger.info('Masqueraded Canvas Planner Items', {
+      logger().info('Masqueraded Canvas Planner Items', {
         canvasAction: 'planner-items',
         masqueradeId: req.user.masqueradedId,
         osuId: req.session.passport.user.osuId,
@@ -43,7 +43,7 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
       const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsOAuth', [
         { oAuthToken: req.user.canvasOauthToken },
       ]);
-      logger.info('Canvas Planner Items', {
+      logger().info('Canvas Planner Items', {
         canvasAction: 'planner-items',
         masqueradeId: '-- OAuth as student --',
         osuId: req.session.passport.user.osuId,
@@ -53,14 +53,14 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
     }
   } catch (err) {
     if (err.response && err.response.statusCode === 401) {
-      logger.error(
+      logger().error(
         `Canvas Planner Items API call failed for user ${req.user.osuId}, error: ${err.message}`,
       );
       req.user.canvasOauthToken = null;
       req.user.canvasOauthExpire = null;
       res.status(403).send({ message: 'Reset users canvas oauth.' });
     } else {
-      logger.error('api/student/planner-items failed:', err);
+      logger().error('api/student/planner-items failed:', err);
       res.status(500).send({ message: 'Unable to retrieve planner items.' });
     }
   }
@@ -76,7 +76,7 @@ router.get('/academic-status', async (req: Request, res: Response) => {
     ]);
     res.send(response);
   } catch (err) {
-    logger.error('api/student/academic-status failed:', err);
+    logger().error('api/student/academic-status failed:', err);
     res.status(500).send({ message: 'Unable to retrieve academic status.' });
   }
 });
@@ -88,7 +88,7 @@ router.get('/account-balance', async (req: Request, res: Response) => {
     ])) as { data: any };
     res.send(response.data);
   } catch (err) {
-    logger.error('api/student/account-balance failed:', err);
+    logger().error('api/student/account-balance failed:', err);
     res.status(500).send({ message: 'Unable to retrieve account balance.' });
   }
 });
@@ -100,7 +100,7 @@ router.get('/account-transactions', async (req: Request, res: Response) => {
     ])) as { data: any };
     res.send(response.data);
   } catch (err) {
-    logger.error('api/student/account-transactions failed:', err);
+    logger().error('api/student/account-transactions failed:', err);
     res.status(500).send({ message: 'Unable to retrieve account transactions.' });
   }
 });
@@ -110,7 +110,7 @@ router.get('/classification', async (req: Request, res: Response) => {
     const response = await asyncTimedFunction(getClassification, 'getClassification', [req.user]);
     res.send(response);
   } catch (err) {
-    logger.error('api/student/classification failed:', err);
+    logger().error('api/student/classification failed:', err);
     res.status(500).send({ message: 'Unable to retrieve classification.' });
   }
 });
@@ -124,7 +124,7 @@ router.get('/class-schedule', async (req: Request, res: Response) => {
     ])) as { data: any };
     res.send(response.data);
   } catch (err) {
-    logger.error('api/student/class-schedule failed:', err);
+    logger().error('api/student/class-schedule failed:', err);
     res.status(500).send({ message: 'Unable to retrieve class schedule.' });
   }
 });
@@ -134,7 +134,7 @@ router.get('/gpa', async (req: Request, res: Response) => {
     const response = await asyncTimedFunction(getGpa, 'getGpa', [req.user]);
     res.send(response);
   } catch (err) {
-    logger.error('api/student/gpa failed:', err);
+    logger().error('api/student/gpa failed:', err);
     res.status(500).send({ message: 'Unable to retrieve GPA data.' });
   }
 });
@@ -154,7 +154,7 @@ router.get('/grades', async (req: Request, res: Response) => {
     });
     res.send(sorted);
   } catch (err) {
-    logger.error('api/student/grades failed:', err);
+    logger().error('api/student/grades failed:', err);
     res.status(500).send({ message: 'Unable to retrieve grades.' });
   }
 });
@@ -164,7 +164,7 @@ router.get('/holds', async (req: Request, res: Response) => {
     const response = await asyncTimedFunction(getHolds, 'getHolds', [req.user]);
     res.send(response);
   } catch (err) {
-    logger.error('api/student/holds failed:', err);
+    logger().error('api/student/holds failed:', err);
     res.status(500).send({ message: 'Unable to retrieve account holds.' });
   }
 });

@@ -8,7 +8,7 @@ import redis from 'connect-redis';
 import config from 'config';
 import { isNullOrUndefined } from 'util';
 import Auth from './auth';
-import logger, { expressLogger } from './logger';
+import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
@@ -58,7 +58,7 @@ const sessionOptions: SessionOptions = {
   },
 };
 
-logger.info(`Server started with ENV=${env}, VERSION=${appVersion}`);
+console.log(`Server started with ENV=${env}, VERSION=${appVersion}`);
 
 if (['production', 'stage', 'development', 'localhost'].includes(env)) {
   sessionOptions.store = new RedisStore({
@@ -69,6 +69,7 @@ if (['production', 'stage', 'development', 'localhost'].includes(env)) {
 }
 
 app.use(session(sessionOptions));
+app.use(sessionLogger);
 
 // Configure Passport
 app.use(passport.initialize());
@@ -84,7 +85,7 @@ app.get('/logout', Auth.logout);
 
 // Health Check (path configured in cloudformation template)
 app.get('/healthcheck', (req, res) => {
-  logger.debug('Health Check Request');
+  logger().debug('Health Check Request');
   res.send({
     version: appVersion,
   });
@@ -98,13 +99,13 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
     if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
     req.session.save((err) => {
       if (err) {
-        logger.error(`/login/saml session failed: ${err.message}`);
+        logger().error(`/login/saml session failed: ${err.message}`);
       }
       res.redirect('/canvas/refresh');
     });
   } else {
     const returnTo = returnUrl(req);
-    logger.debug(`/login/saml redirecting to: ${returnTo}`);
+    logger().debug(`/login/saml redirecting to: ${returnTo}`);
     res.redirect(returnTo);
   }
 });
@@ -122,10 +123,10 @@ app.get(
       await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
       req.user.isCanvasOptIn = false;
       const returnTo = returnUrl(req);
-      logger.debug(`/canvas/auth error in OAuth redirecting to: ${returnTo}`);
+      logger().debug(`/canvas/auth error in OAuth redirecting to: ${returnTo}`);
       req.session.save((err) => {
         if (err) {
-          logger.error(`/canvas/auth error session failed: ${err.message}`);
+          logger().error(`/canvas/auth error session failed: ${err.message}`);
         }
         res.redirect(returnTo);
       });
@@ -143,10 +144,10 @@ app.get(
     req.user.isCanvasOptIn = user.isCanvasOptIn;
     req.user.refreshToken = user.refreshToken;
     const returnTo = returnUrl(req);
-    logger.debug(`/canvas/auth redirecting to: ${returnTo}`);
+    logger().debug(`/canvas/auth redirecting to: ${returnTo}`);
     req.session.save((err) => {
       if (err) {
-        logger.error(`/canvas/auth session failed: ${err.message}`);
+        logger().error(`/canvas/auth session failed: ${err.message}`);
       }
       res.redirect(returnTo);
     });
@@ -159,10 +160,10 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
   req.user.isCanvasOptIn = user.isCanvasOptIn;
   req.user.refreshToken = user.refreshToken;
   const returnTo = returnUrl(req);
-  logger.debug(`/canvas/refresh redirecting to: ${returnTo}`);
+  logger().debug(`/canvas/refresh redirecting to: ${returnTo}`);
   req.session.save((err) => {
     if (err) {
-      logger.error(`/canvas/refresh session failed: ${err.message}`);
+      logger().error(`/canvas/refresh session failed: ${err.message}`);
     }
     res.redirect(returnTo);
   });
@@ -175,7 +176,9 @@ app.use('/api', ApiRouter);
 /* istanbul ignore next */
 if (process.env.NODE_ENV !== 'test') {
   const PORT = process.env.PORT || 4000;
-  app.listen(PORT, () => logger.info(`Server listening with PORT=${PORT}`));
+  app.listen(PORT, () => {
+    console.log(`Server listening with PORT=${PORT}`);
+  });
 }
 
 export default app;

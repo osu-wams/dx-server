@@ -19,7 +19,7 @@ router.get('/', async (_req: Request, res: Response) => {
     const result = await asyncTimedFunction(getInfo, 'getInfo', []);
     res.send(result);
   } catch (err) {
-    logger.error(`api/information failed:`, err);
+    logger().error(`api/information failed:`, err);
     res.status(500).send({ message: err });
   }
 });

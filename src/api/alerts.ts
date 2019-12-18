@@ -14,7 +14,7 @@ router.get('/', async (_req: Request, res: Response) => {
     const result = await asyncTimedFunction(getAlerts, 'getAlerts', []);
     res.send(result);
   } catch (err) {
-    logger.error(`api/alerts failed:`, err);
+    logger().error(`api/alerts failed:`, err);
     res.status(500).send({ message: 'Unable to retrieve rave alerts.' });
   }
 });
@@ -24,7 +24,7 @@ router.get('/dx', async (_req: Request, res: Response) => {
     const result = await asyncTimedFunction(getDxAlerts, 'getDxAlerts', []);
     res.send(result);
   } catch (err) {
-    logger.error(`api/alerts/dx failed:`, err);
+    logger().error(`api/alerts/dx failed:`, err);
     res.status(500).send({ message: 'Unable to retrieve dx alerts.' });
   }
 });

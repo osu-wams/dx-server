@@ -76,7 +76,7 @@ const authHeader = (accessToken: string | undefined) => {
 
 const getRequest = async <T>(url: string, token: string | undefined): Promise<T> => {
   const auth = authHeader(token);
-  logger.debug(`Canvas API GET request url:${url}`);
+  logger().debug(`Canvas API GET request url:${url}`);
   return request.get(url, { auth }).promise();
 };
 
@@ -114,10 +114,10 @@ export const postRequest = async (u: User, query: string): Promise<User> => {
       isCanvasOptIn: user.isCanvasOptIn,
       account: { refreshToken: user.refreshToken },
     });
-    logger.debug(`canvas.postRequest refreshed user (${user.osuId}) OAuth credentials.`);
+    logger().debug(`canvas.postRequest refreshed user (${user.osuId}) OAuth credentials.`);
     return user;
   } catch (err) {
-    logger.error(`canvas.postRequest token error: ${err.message}`);
+    logger().error(`canvas.postRequest token error: ${err.message}`);
     // Refresh token is no longer valid and we must update the database
     await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: null } });
     user.canvasOauthToken = null;

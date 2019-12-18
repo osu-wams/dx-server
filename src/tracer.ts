@@ -17,7 +17,7 @@ export const asyncTimedFunction = async <T>(
     const elapsed = process.hrtime(started);
     const elapsedMs = (elapsed[0] * 1000000 + elapsed[1] / 1000) / 1000;
     // Logs a useful message along with data that can be used to create charts (Cloudwatch Insights)
-    logger.debug(`${metricName} took ${elapsedMs}ms`, {
+    logger().debug(`${metricName} took ${elapsedMs}ms`, {
       elapsedMs,
       metricName,
       metricType: 'timed-function'

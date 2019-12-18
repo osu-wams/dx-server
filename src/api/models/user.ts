@@ -144,10 +144,10 @@ class User {
       };
 
       const result = await asyncTimedFunction(putItem, 'User:putItem', [params]);
-      logger.silly('User.upsert succeeded:', result);
+      logger().silly('User.upsert succeeded:', result);
       return props;
     } catch (err) {
-      logger.error(`User.upsert failed:`, props, err);
+      logger().error(`User.upsert failed:`, props, err);
       throw err;
     }
   };
@@ -168,12 +168,12 @@ class User {
       };
       const dynamoDbUser = await asyncTimedFunction(getItem, 'User:getItem', [params]);
       if (!Object.keys(dynamoDbUser).length) {
-        logger.debug(`User.find(${id} not found.)`);
+        logger().debug(`User.find(${id} not found.)`);
         return null;
       }
       return new User({ dynamoDbUser });
     } catch (err) {
-      logger.error(`User.find(${id}) failed:`, err);
+      logger().error(`User.find(${id}) failed:`, err);
       return null;
     }
   };
@@ -203,9 +203,9 @@ class User {
           ReturnValues: 'UPDATED_NEW',
         };
         const result = await asyncTimedFunction(updateItem, 'User:updateItem', [params]);
-        logger.debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
+        logger().debug('User.clearAllCanvasRefreshTokens updated user:', id, result);
       } catch (err) {
-        logger.error(`User.clearAllCanvasRefreshTokens error:`, err);
+        logger().error(`User.clearAllCanvasRefreshTokens error:`, err);
         errors.push([id, err]);
       }
     });
@@ -245,14 +245,14 @@ class User {
         };
       }
       await asyncTimedFunction(updateItem, 'User:updateItem', [params]);
-      logger.debug(
+      logger().debug(
         `User.updateCanvasData updated user:${user.osuId}, canvasOptIn:${canvasOptIn}, canvasRefreshToken:${canvasRefreshToken}`,
       );
       user.isCanvasOptIn = canvasOptIn;
       user.refreshToken = canvasRefreshToken;
       return user;
     } catch (err) {
-      logger.error(`User.updateCanvasData failed:`, err);
+      logger().error(`User.updateCanvasData failed:`, err);
       throw err;
     }
   };
@@ -292,12 +292,12 @@ class User {
         'User:updateItem',
         [params],
       );
-      logger.silly('User.updateSettings updated user:', user.osuId, result);
+      logger().silly('User.updateSettings updated user:', user.osuId, result);
       if (settings.audienceOverride) user.audienceOverride = settings.audienceOverride;
       user.theme = theme;
       return user;
     } catch (err) {
-      logger.error(`User.updateSettings failed:`, err);
+      logger().error(`User.updateSettings failed:`, err);
       throw err;
     }
   };
@@ -318,12 +318,12 @@ class User {
       const results: AWS.DynamoDB.ScanOutput = await asyncTimedFunction(scan, 'User:scan', [
         params,
       ]);
-      logger.debug(
+      logger().debug(
         `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`,
       );
       return results.Items.map((i: AWS.DynamoDB.AttributeMap) => i.osuId.N);
     } catch (err) {
-      logger.error('User.allIds error:', err);
+      logger().error('User.allIds error:', err);
       return [];
     }
   };
