@@ -47,12 +47,12 @@ router.get('/academic-calendar', async (_req: Request, res: Response) => {
   }
 });
 
-router.get('/employee-events', async (_req: Request, res: Response) => {
+router.get('/employee', async (_req: Request, res: Response) => {
   try {
     const result = await asyncTimedFunction(getEmployeeEvents, 'getEmployeeEvents', []);
     res.send(result);
   } catch (err) {
-    logger.error(`api/events/employee-events failed:`, err);
+    logger.error(`api/events/employee failed:`, err);
     res.status(500).send({ message: 'Unable to retrieve employee events.' });
   }
 });
