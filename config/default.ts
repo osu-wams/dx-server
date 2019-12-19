@@ -57,6 +57,10 @@ export default {
     cacheEndpointSec: '30',
     baseUrl: 'https://www.getrave.com/rss/oregonstate/channel2',
   },
+  cachetApi: {
+    cacheEndpointSec: '900',
+    baseUrl: 'https://status.is.oregonstate.edu/api/v1',
+  },
   localist: {
     campusIds: '{"bend":273,"corvallis":272}',
     eventTypes: '{"employee":115615}',
