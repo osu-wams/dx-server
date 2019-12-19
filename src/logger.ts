@@ -33,7 +33,9 @@ const loggerOptions: LoggerOptions = {
 /* eslint-enable no-unused-vars */
 
 if (ENV === 'test') {
-  loggerOptions.transports = [new transports.File({ filename: `${LOG_DIR}/test.log` })];
+  loggerOptions.transports = [
+    new transports.File({ level: LOG_LEVEL, filename: `${LOG_DIR}/test.log` }),
+  ];
 } else {
   loggerOptions.transports = [
     new transports.Console({ level: LOG_LEVEL }),

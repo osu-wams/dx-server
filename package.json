@@ -3,12 +3,12 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "truncate -s 0 logs/localhost.log && pm2 kill && cross-env NODE_ENV=localhost tsc -p tsconfig.json -w & pm2 --no-daemon start pm2.localhost.config.js",
-    "saml": "truncate -s 0 logs/development.log && pm2 kill && cross-env NODE_ENV=development tsc -p tsconfig.json -w & pm2 --no-daemon start pm2.localhost.config.js",
+    "start": "truncate -s 0 logs/localhost.log && pm2 kill && cross-env NODE_ENV=localhost tsc -p tsconfig.json -w & pm2 --no-daemon --env localhost start pm2.localhost.config.js",
+    "saml": "truncate -s 0 logs/development.log && pm2 kill && cross-env NODE_ENV=development tsc -p tsconfig.json -w & pm2 --no-daemon --env development start pm2.localhost.config.js",
     "monit": "pm2 monit",
     "lint": "eslint --ext .js,.ts 'src/**'",
     "lint:fix": "eslint --ext .js,.ts 'src/**' --fix",
-    "test": "NODE_ENV=test jest",
+    "test": "cross-env NODE_ENV=test jest --no-coverage",
     "test:coverage": "NODE_ENV=test jest --coverage"
   },
   "devDependencies": {
