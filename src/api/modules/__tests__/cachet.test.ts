@@ -38,6 +38,7 @@ describe('Cachet IT System status module', () => {
         statusText: incidentsResponse.data[1].latest_human_status,
         isResolved: incidentsResponse.data[1].is_resolved,
         duration: incidentsResponse.data[1].duration,
+        updatedAt: incidentsResponse.data[1].updated_at,
       },
     ];
     expect(response).not.toMatchObject(improperExpectation);

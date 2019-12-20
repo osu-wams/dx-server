@@ -94,6 +94,7 @@ export interface ICachetIncident {
   status: number;
   statusText: string;
   isResolved: boolean;
+  updatedAt: string;
 }
 
 export interface ICachetComponent {
@@ -139,6 +140,7 @@ const mostRecentIncident = (
       message,
       duration,
       permalink,
+      updatedAt: incident.updated_at,
       isResolved: incident.is_resolved,
       status: incident.latest_status,
       statusText: incident.latest_human_status,
