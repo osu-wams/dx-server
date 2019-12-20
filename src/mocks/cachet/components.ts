@@ -8,6 +8,7 @@ export const expectedResponse: ICachetComponent[] = [
     id: componentsData.data[0].id,
     name: componentsData.data[0].name,
     statusText: componentsData.data[0].status_name,
+    status: componentsData.data[0].status,
     updatedAt: componentsData.data[0].updated_at,
     incidents: [],
   },
@@ -16,6 +17,7 @@ export const expectedResponse: ICachetComponent[] = [
     id: componentsData.data[1].id,
     name: componentsData.data[1].name,
     statusText: componentsData.data[1].status_name,
+    status: componentsData.data[1].status,
     updatedAt: componentsData.data[1].updated_at,
     incidents: [
       // A component marked in a status other than "Operational", having the most recent incident that is marked as stickied=true
@@ -37,6 +39,7 @@ export const expectedResponse: ICachetComponent[] = [
     id: componentsData.data[2].id,
     name: componentsData.data[2].name,
     statusText: componentsData.data[2].status_name,
+    status: componentsData.data[2].status,
     updatedAt: componentsData.data[2].updated_at,
     incidents: [],
   },
