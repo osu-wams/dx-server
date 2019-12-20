@@ -28,6 +28,7 @@ export const expectedResponse: ICachetComponent[] = [
         statusText: incidentData.data[2].latest_human_status,
         isResolved: incidentData.data[2].is_resolved,
         duration: incidentData.data[2].duration,
+        updatedAt: incidentData.data[2].updated_at,
       },
     ],
   },
