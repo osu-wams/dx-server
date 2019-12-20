@@ -102,6 +102,7 @@ export interface ICachetComponent {
   name: string;
   description: string;
   statusText: string;
+  status: number;
   updatedAt: string;
   incidents: ICachetIncident[];
 }
@@ -163,6 +164,7 @@ export const getSystemsStatus = async (): Promise<ICachetComponent[]> => {
       name: c.name,
       description: c.description,
       statusText: c.status_name,
+      status: c.status,
       updatedAt: c.updated_at,
       incidents: mostRecentIncident(incidents.data, c),
     }));
