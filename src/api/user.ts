@@ -31,6 +31,7 @@ router.get('/', async (req: Request, res: Response) => {
     isAdmin: req.user.isAdmin,
     isCanvasOptIn: req.user.isCanvasOptIn,
     audienceOverride: req.user.audienceOverride || {},
+    primaryAffiliationOverride: req.user.primaryAffiliationOverride,
     classification,
     theme: req.user.theme,
   });
@@ -38,13 +39,23 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.post('/settings', async (req: Request, res: Response) => {
   try {
-    const { audienceOverride, theme } = req.body;
+    const { audienceOverride, theme, primaryAffiliationOverride } = req.body;
     const user: User = req.user; // eslint-disable-line prefer-destructuring
-    const updatedUser: User = await User.updateSettings(user, { audienceOverride, theme });
+    const updatedUser: User = await User.updateSettings(user, {
+      audienceOverride,
+      primaryAffiliationOverride,
+      theme,
+    });
     if (audienceOverride !== undefined)
       req.session.passport.user.audienceOverride = updatedUser.audienceOverride;
+    if (primaryAffiliationOverride)
+      req.session.passport.user.primaryAffiliationOverride = updatedUser.primaryAffiliationOverride;
     if (theme !== undefined) req.session.passport.user.theme = updatedUser.theme;
-    res.json({ audienceOverride: updatedUser.audienceOverride, theme: updatedUser.theme });
+    res.json({
+      audienceOverride: updatedUser.audienceOverride,
+      theme: updatedUser.theme,
+      primaryAffiliationOverride: updatedUser.primaryAffiliationOverride,
+    });
   } catch (err) {
     logger().error('api/user/settings failed:', err);
     res.status(500).send({ message: 'Failed to update users settings.' });
