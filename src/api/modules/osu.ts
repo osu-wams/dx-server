@@ -101,10 +101,12 @@ export interface Profile {
   type: string;
   attributes: {
     birthDate: string;
-    firstName: string;
+    firstName: string | null;
     middleName: string | null;
     lastName: string | null;
-    preferredName: string | null;
+    displayFirstName: string | null;
+    displayMiddleName: string | null;
+    displayLastName: string | null;
     previousRecords: {
       osuID: string;
       firstName: string;
