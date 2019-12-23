@@ -43,6 +43,15 @@ export const expectedResponse: ICachetComponent[] = [
     updatedAt: componentsData.data[2].updated_at,
     incidents: [],
   },
+  {
+    description: componentsData.data[3].description,
+    id: componentsData.data[3].id,
+    name: componentsData.data[3].name,
+    statusText: componentsData.data[3].status_name,
+    status: componentsData.data[3].status,
+    updatedAt: componentsData.data[3].updated_at,
+    incidents: [],
+  },
 ];
 
 export default componentsData;
