@@ -5,21 +5,22 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch index.ts",
+      "name": "Launch localhost index.ts",
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
+      "env": { "NODE_ENV": "localhost" },
       "args": ["${workspaceFolder}/src/index.ts"],
       "outFiles": ["${workspaceFolder/dist/**/*.js"]
     },
     {
-      "name": "Launch PROD index.ts",
+      "name": "Launch SAML index.ts",
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
       "runtimeArgs": ["-r", "ts-node/register"],
-      "env": { "NODE_ENV": "production" },
+      "env": { "NODE_ENV": "development" },
       "args": ["${workspaceFolder}/src/index.ts"],
       "outFiles": ["${workspaceFolder/dist/**/*.js"]
     },
