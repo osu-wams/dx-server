@@ -3,7 +3,7 @@ import mockedAccountBalance from '../../mocks/osu/account-balance.data.json';
 import mockedAccountTransactions from '../../mocks/osu/account-transactions.data.json';
 import mockedAddresses from '../../mocks/osu/addresses.data.json';
 import mockedClassification from '../../mocks/osu/classification.data.json';
-import mockedClassSchedule from './class-schedule.data';
+import mockedClassSchedule from '../../mocks/osu/class-schedule.data.json';
 import mockedGpa from '../../mocks/osu/gpa.data.json';
 import mockedGrades from '../../mocks/osu/grades.data.json';
 import mockedHolds from '../../mocks/osu/holds.data.json';
