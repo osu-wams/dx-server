@@ -1,5 +1,6 @@
 export default {
   env: 'NODE_ENV',
+  useMocks: 'USE_MOCKS',
   apiKeys: 'API_KEYS',
   /**
    * Generated during the build process and injected into the container
