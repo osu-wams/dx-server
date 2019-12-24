@@ -10,7 +10,10 @@ import {
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 
-jest.mock('../util.ts');
+jest.mock('../util.ts', () => ({
+  ...jest.requireActual('../util.ts'),
+  getToken: () => Promise.resolve('bearer token'),
+}));
 
 const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
 let request = supertest.agent(app);

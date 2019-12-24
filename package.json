@@ -12,8 +12,8 @@
     "monit": "pm2 monit",
     "lint": "eslint --ext .js,.ts 'src/**'",
     "lint:fix": "eslint --ext .js,.ts 'src/**' --fix",
-    "test": "cross-env NODE_ENV=test jest --no-coverage",
-    "test:coverage": "NODE_ENV=test jest --coverage"
+    "test": "cross-env NODE_ENV=test USE_MOCKS=0 jest --no-coverage",
+    "test:coverage": "NODE_ENV=test USE_MOCKS=0 jest --coverage"
   },
   "devDependencies": {
     "@types/aws-sdk": "^2.7.0",
