@@ -1,7 +1,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testPathIgnorePatterns: ['/node_modules/', '/config/', '/src/types/', '/dist/'],
+  testPathIgnorePatterns: ['/node_modules/', '/config/', '/src/types/', '/src/mocks', '/dist/'],
   modulePathIgnorePatterns: ['/dist/'],
   globalSetup: '<rootDir>/src/utils/jestSetup.ts',
   coverageDirectory: './coverage/',
@@ -10,14 +10,15 @@ module.exports = {
     'src/**/*.{js,ts}',
     '!src/setupTests.ts',
     '!src/types/**/*',
-    '!src/db/scripts/**/*'
+    '!src/mocks/**/*',
+    '!src/db/scripts/**/*',
   ],
   coverageThreshold: {
     global: {
       branches: 30,
       functions: 30,
       lines: 30,
-      statements: 10
-    }
-  }
+      statements: 10,
+    },
+  },
 };
