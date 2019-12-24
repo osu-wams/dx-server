@@ -1,0 +1,499 @@
+{
+  "events": [
+    {
+      "event": {
+        "id": 30637156055529,
+        "title": "Transfer Students: Lunch & Learn",
+        "url": "",
+        "updated_at": "2019-12-24T03:54:49-08:00",
+        "created_at": "2019-06-25T13:36:17-07:00",
+        "facebook_id": null,
+        "first_date": "2019-06-28",
+        "last_date": "2020-01-01",
+        "hashtag": "",
+        "urlname": "transfer_students_lunch_learn",
+        "user_id": 712676,
+        "directions": "",
+        "allows_reviews": true,
+        "allows_attendance": true,
+        "location": "",
+        "room_number": "Welcome Center",
+        "location_name": "OSU-Cascades Residence Hall",
+        "created_by": 712676,
+        "updated_by": 32175446536368,
+        "city_id": null,
+        "neighborhood_id": null,
+        "school_id": 180,
+        "campus_id": 273,
+        "recurring": true,
+        "free": true,
+        "private": false,
+        "verified": true,
+        "rejected": false,
+        "sponsored": false,
+        "venue_id": 489089,
+        "ticket_url": "",
+        "ticket_cost": "Free, drop-ins welcome.",
+        "keywords": [],
+        "tags": [],
+        "description_text": "This quick preview program offers you the opportunity to learn more about the transfer process to OSU-Cascades. Bring your own lunch and come learn about what you need to do to get started. \n\nDetailed Event Schedule:\n12:00 p.m.: Check-In at the Welcome Center\n12:15 p.m.: Information Session \n12:30 p.m.: Option for 15 min tour or Advising Appointment",
+        "photo_id": 650813,
+        "detail_views": 339,
+        "event_instances": [
+          {
+            "event_instance": {
+              "id": 31009587533520,
+              "ranking": 0,
+              "event_id": 30637156055529,
+              "start": "2020-01-01T12:15:00-08:00",
+              "end": "2020-01-01T12:45:00-08:00",
+              "all_day": false,
+              "num_attending": 1
+            }
+          }
+        ],
+        "address": "1500 SW Chandler Avenue, Bend, OR 97702",
+        "description": "<p>This quick preview program offers you the opportunity to learn more about the transfer process to OSU-Cascades. Bring your own lunch and come learn about what you need to do to get started.&nbsp;<br />\r\n<br />\r\nDetailed Event Schedule:<br />\r\n12:00 p.m.: Check-In at the Welcome Center<br />\r\n12:15 p.m.: Information&nbsp;Session&nbsp;<br />\r\n12:30 p.m.: Option for 15 min tour or Advising Appointment<br />\r\n&nbsp;</p>\r\n",
+        "featured": false,
+        "geo": {
+          "latitude": "44.042968",
+          "longitude": "-121.333477",
+          "street": "1500 Southwest Chandler Avenue",
+          "city": "Bend",
+          "state": "OR",
+          "country": "US",
+          "zip": "97702"
+        },
+        "filters": {
+          "event_audience": [
+            {
+              "name": "Student",
+              "id": 115616
+            },
+            {
+              "name": "Future and New",
+              "id": 115617
+            },
+            {
+              "name": "Undergraduate",
+              "id": 115619
+            }
+          ]
+        },
+        "custom_fields": {
+          "contact_name": "No Reply",
+          "contact_email": "noreply@osucascades.edu",
+          "contact_phone": "5415551212"
+        },
+        "localist_url": "https://events.oregonstate.edu/event/transfer_students_lunch_learn",
+        "localist_ics_url": "https://events.oregonstate.edu/event/transfer_students_lunch_learn.ics",
+        "photo_url": "https://images.localist.com/photos/650813/huge/7111e00356bde94278317cd0004ef33c890f31a4.jpg",
+        "venue_url": "https://events.oregonstate.edu/osu-cascades_residence_hall",
+        "departments": [
+          {
+            "id": 15515,
+            "name": "Office of Admissions (OSU-Cascades)"
+          }
+        ]
+      }
+    },
+    {
+      "event": {
+        "id": 31531931716744,
+        "title": "Transfer START",
+        "url": "http://osucascades.edu/transfer-start",
+        "updated_at": "2019-12-24T03:44:56-08:00",
+        "created_at": "2019-10-04T16:50:20-07:00",
+        "facebook_id": null,
+        "first_date": "2020-01-03",
+        "last_date": "2020-01-03",
+        "hashtag": "",
+        "urlname": "transfer_start_4771",
+        "user_id": 708648,
+        "directions": "",
+        "allows_reviews": true,
+        "allows_attendance": true,
+        "location": "",
+        "room_number": "",
+        "location_name": "OSU-Cascades Tykeson Hall",
+        "created_by": 708648,
+        "updated_by": 31461840375740,
+        "city_id": null,
+        "neighborhood_id": null,
+        "school_id": 180,
+        "campus_id": 273,
+        "recurring": false,
+        "free": true,
+        "private": false,
+        "verified": true,
+        "rejected": false,
+        "sponsored": false,
+        "venue_id": 490219,
+        "ticket_url": "",
+        "ticket_cost": "Free",
+        "keywords": [],
+        "tags": [],
+        "description_text": "START is OSU's undergraduate new student orientation.   \n\nThis session is a 1-day session for new transfer students.  At orientation is where you will meet with your academic advisor in a individual appointment, register for fall term courses, begin to understand the expectations of being an OSU student, and learn about valuable resources.\n\nRegistration is required for this event and you must have paid your Advance Tutition Deposit in order to register.",
+        "photo_id": 31531931823457,
+        "detail_views": 127,
+        "event_instances": [
+          {
+            "event_instance": {
+              "id": 31531931722743,
+              "ranking": 0,
+              "event_id": 31531931716744,
+              "start": "2020-01-03T00:00:00-08:00",
+              "end": null,
+              "all_day": true,
+              "num_attending": 2
+            }
+          }
+        ],
+        "address": "1500 SW Chandler Avenue, Bend, OR 97702",
+        "description": "<p><b>START is OSU&#39;s undergraduate new student orientation.&nbsp;&nbsp;&nbsp;</b></p>\r\n\r\n<p><b>This session is a 1-day session for new transfer students.&nbsp; At orientation is where you will meet with your academic advisor in a individual appointment, register for fall term courses, begin to understand the expectations of being an OSU student, and learn about valuable resources.</b></p>\r\n\r\n<p><b><a href=\"http://osucascades.edu/admissions/cascades-start\">Registration</a> is required for this event and you must have paid your <a href=\"http://osucascades.edu/admissions/advance-tuition-deposit\">Advance Tutition Deposit </a>in order to register. </b></p>\r\n",
+        "featured": false,
+        "geo": {
+          "latitude": "44.042968",
+          "longitude": "-121.333477",
+          "street": "1500 Southwest Chandler Avenue",
+          "city": "Bend",
+          "state": "OR",
+          "country": "US",
+          "zip": "97702"
+        },
+        "filters": {
+          "event_audience": [
+            {
+              "name": "Student",
+              "id": 115616
+            },
+            {
+              "name": "Undergraduate",
+              "id": 115619
+            }
+          ]
+        },
+        "custom_fields": {
+          "contact_name": "Office of Admissions",
+          "contact_email": "noreply@osucascades.edu",
+          "contact_phone": "5415551212"
+        },
+        "localist_url": "https://events.oregonstate.edu/event/transfer_start_4771",
+        "localist_ics_url": "https://events.oregonstate.edu/event/transfer_start_4771.ics",
+        "photo_url": "https://images.localist.com/photos/31531931823457/huge/6805859b1742f6d661b6ba4e0eee4e50eed26e21.jpg",
+        "venue_url": "https://events.oregonstate.edu/osu-cascades_tykeson_hall",
+        "departments": [
+          {
+            "id": 15515,
+            "name": "Office of Admissions (OSU-Cascades)"
+          }
+        ]
+      }
+    },
+    {
+      "event": {
+        "id": 32122794820490,
+        "title": "Winter Term Resource Fair",
+        "url": "",
+        "updated_at": "2019-12-10T10:54:20-08:00",
+        "created_at": "2019-12-10T10:39:28-08:00",
+        "facebook_id": null,
+        "first_date": "2020-01-08",
+        "last_date": "2020-01-08",
+        "hashtag": "",
+        "urlname": "winter_term_resource_fair",
+        "user_id": 702981,
+        "directions": "",
+        "allows_reviews": true,
+        "allows_attendance": true,
+        "location": "TYKH atrium",
+        "room_number": "",
+        "location_name": "TYKH atrium",
+        "created_by": 702981,
+        "updated_by": 406542,
+        "city_id": null,
+        "neighborhood_id": null,
+        "school_id": 180,
+        "campus_id": 273,
+        "recurring": false,
+        "free": true,
+        "private": false,
+        "verified": true,
+        "rejected": false,
+        "sponsored": false,
+        "venue_id": null,
+        "ticket_url": "",
+        "ticket_cost": "",
+        "keywords": [],
+        "tags": [],
+        "description_text": "Meet resources and offices around campus. Enjoy a free snack!",
+        "photo_id": 32122812052938,
+        "detail_views": 27,
+        "event_instances": [
+          {
+            "event_instance": {
+              "id": 32122794901231,
+              "ranking": 0,
+              "event_id": 32122794820490,
+              "start": "2020-01-08T11:00:00-08:00",
+              "end": "2020-01-08T12:00:00-08:00",
+              "all_day": false,
+              "num_attending": 0
+            }
+          }
+        ],
+        "address": "1500 sw Chandler dr",
+        "description": "<p>Meet resources and offices around campus. Enjoy a free snack!</p>\r\n",
+        "featured": false,
+        "geo": {
+          "latitude": "44.042968",
+          "longitude": "-121.333477",
+          "street": "1500 Southwest Chandler Avenue",
+          "city": "Bend",
+          "state": "OR",
+          "country": "US",
+          "zip": "97702"
+        },
+        "filters": {},
+        "custom_fields": {
+          "contact_name": "No Reply",
+          "contact_email": "noreply@osucascades.edu"
+        },
+        "localist_url": "https://events.oregonstate.edu/event/winter_term_resource_fair",
+        "localist_ics_url": "https://events.oregonstate.edu/event/winter_term_resource_fair.ics",
+        "photo_url": "https://images.localist.com/photos/32122812052938/huge/c6410cae97b90f3d39962541439479dddfa1bce9.jpg",
+        "venue_url": null,
+        "departments": [
+          {
+            "id": 15522,
+            "name": "Office of Student Life  (OSU-Cascades)"
+          }
+        ]
+      }
+    },
+    {
+      "event": {
+        "id": 32210889543209,
+        "title": "First Friday Float",
+        "url": "https://osucascades.edu/cascades-adventures/outings-schedule",
+        "updated_at": "2019-12-20T15:54:25-08:00",
+        "created_at": "2019-12-20T09:37:48-08:00",
+        "facebook_id": null,
+        "first_date": "2020-01-10",
+        "last_date": "2020-03-06",
+        "hashtag": "",
+        "urlname": "first_friday_float_4865",
+        "user_id": 30750643224487,
+        "directions": "",
+        "allows_reviews": true,
+        "allows_attendance": true,
+        "location": "",
+        "room_number": "",
+        "location_name": "OSU-Cascades Tykeson Hall",
+        "created_by": 30750643224487,
+        "updated_by": 497950,
+        "city_id": null,
+        "neighborhood_id": null,
+        "school_id": 180,
+        "campus_id": 273,
+        "recurring": false,
+        "free": true,
+        "private": false,
+        "verified": true,
+        "rejected": false,
+        "sponsored": false,
+        "venue_id": 490219,
+        "ticket_url": "",
+        "ticket_cost": "FREE",
+        "keywords": [],
+        "tags": [],
+        "description_text": "Join us the first Friday of every month to float the river from River Bend to Drake Park in rafts, tubes and Stand Up Paddleboards! Catch a ride back to campus with Cascades Adventures, or head right downtown for the First Friday Art Walk. Meet on campus at 3:30 p.m.",
+        "photo_id": null,
+        "detail_views": 7,
+        "event_instances": [
+          {
+            "event_instance": {
+              "id": 32210889548439,
+              "ranking": 0,
+              "event_id": 32210889543209,
+              "start": "2020-01-10T15:30:00-08:00",
+              "end": null,
+              "all_day": false,
+              "num_attending": 0
+            }
+          }
+        ],
+        "address": "1500 SW Chandler Avenue, Bend, OR 97702",
+        "description": "<p>Join us the first Friday of every month to float the river from River Bend to Drake&nbsp;Park&nbsp;in rafts, tubes and Stand Up Paddleboards! Catch a ride back to campus with Cascades Adventures, or head right downtown for the First Friday Art Walk. Meet on campus at 3:30 p.m.&nbsp;&nbsp;</p>\r\n",
+        "featured": false,
+        "geo": {
+          "latitude": "44.042968",
+          "longitude": "-121.333477",
+          "street": "1500 Southwest Chandler Avenue",
+          "city": "Bend",
+          "state": "OR",
+          "country": "US",
+          "zip": "97702"
+        },
+        "filters": {
+          "event_audience": [
+            {
+              "name": "Community",
+              "id": 115614
+            },
+            {
+              "name": "Faculty and Staff",
+              "id": 115615
+            },
+            {
+              "name": "Student",
+              "id": 115616
+            },
+            {
+              "name": "Graduate",
+              "id": 115618
+            },
+            {
+              "name": "Undergraduate",
+              "id": 115619
+            }
+          ],
+          "event_county": [
+            {
+              "name": "Deschutes",
+              "id": 115767
+            }
+          ],
+          "event_event_topic": [
+            {
+              "name": "Health and Well-being",
+              "id": 115609
+            },
+            {
+              "name": "Skill Building",
+              "id": 115611
+            },
+            {
+              "name": "Sports and Recreation",
+              "id": 115612
+            },
+            {
+              "name": "Student Experience",
+              "id": 115613
+            }
+          ],
+          "event_types": [
+            {
+              "name": "Outing or Trip",
+              "id": 122235
+            }
+          ]
+        },
+        "custom_fields": {
+          "contact_name": "No Reply",
+          "contact_email": "noreply@osucascades.edu"
+        },
+        "localist_url": "https://events.oregonstate.edu/event/first_friday_float_4865",
+        "localist_ics_url": "https://events.oregonstate.edu/event/first_friday_float_4865.ics",
+        "photo_url": "https://images.localist.com/photos/610416/huge/6782ad98b24c7800aa3f574703149ee8f096f49c.jpg",
+        "venue_url": "https://events.oregonstate.edu/osu-cascades_tykeson_hall",
+        "departments": [
+          {
+            "id": 15517,
+            "name": "Cascades Adventures  (OSU-Cascades)"
+          }
+        ]
+      }
+    },
+    {
+      "event": {
+        "id": 32114600193606,
+        "title": "Winter Welcome Ice Skating",
+        "url": "",
+        "updated_at": "2019-12-18T18:24:22-08:00",
+        "created_at": "2019-12-09T12:25:42-08:00",
+        "facebook_id": null,
+        "first_date": "2020-01-10",
+        "last_date": "2020-01-10",
+        "hashtag": "",
+        "urlname": "winter_welcome_ice_skating",
+        "user_id": 702981,
+        "directions": "",
+        "allows_reviews": true,
+        "allows_attendance": true,
+        "location": "Bend Pavillion",
+        "room_number": "",
+        "location_name": "Bend Pavillion",
+        "created_by": 702981,
+        "updated_by": 32196397082011,
+        "city_id": null,
+        "neighborhood_id": null,
+        "school_id": 180,
+        "campus_id": 273,
+        "recurring": false,
+        "free": true,
+        "private": false,
+        "verified": true,
+        "rejected": false,
+        "sponsored": false,
+        "venue_id": null,
+        "ticket_url": "",
+        "ticket_cost": "",
+        "keywords": [],
+        "tags": [],
+        "description_text": "All new First year and Transfer students (started either Fall 2019 or Winter 2020) are welcome to join us for a night on the ice!",
+        "photo_id": 32114600350852,
+        "detail_views": 71,
+        "event_instances": [
+          {
+            "event_instance": {
+              "id": 32114600240823,
+              "ranking": 0,
+              "event_id": 32114600193606,
+              "start": "2020-01-10T18:00:00-08:00",
+              "end": "2020-01-10T20:00:00-08:00",
+              "all_day": false,
+              "num_attending": 1
+            }
+          }
+        ],
+        "address": "1001 SW Bradbury Dr, Bend, OR 97702",
+        "description": "<p>All new First year and Transfer students (started either Fall 2019 or Winter 2020) are welcome to join us for a night on the ice!&nbsp;</p>\r\n",
+        "featured": false,
+        "geo": {
+          "latitude": "44.048382",
+          "longitude": "-121.323763",
+          "street": "1001 Southwest Bradbury Drive",
+          "city": "Bend",
+          "state": "OR",
+          "country": "US",
+          "zip": "97702"
+        },
+        "filters": {},
+        "custom_fields": {
+          "contact_name": "No Reply",
+          "contact_email": "noreply@osucascades.edu"
+        },
+        "localist_url": "https://events.oregonstate.edu/event/winter_welcome_ice_skating",
+        "localist_ics_url": "https://events.oregonstate.edu/event/winter_welcome_ice_skating.ics",
+        "photo_url": "https://images.localist.com/photos/32114600350852/huge/78ecac5e3dcd96fa86d5f699af38035ea0936285.jpg",
+        "venue_url": null,
+        "departments": [
+          {
+            "id": 15522,
+            "name": "Office of Student Life  (OSU-Cascades)"
+          }
+        ]
+      }
+    }
+  ],
+  "page": {
+    "current": 1,
+    "size": 10,
+    "total": 1
+  },
+  "date": {
+    "first": "2019-12-24",
+    "last": "2020-01-23"
+  }
+}

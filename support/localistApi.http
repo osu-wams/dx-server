@@ -1,0 +1,29 @@
+# @name getEvents
+GET /api/2/events/search?search=dxfa&days=30 HTTP/2
+Host: events.oregonstate.edu
+User-Agent: curl/7.66.0
+Accept: */*
+
+###
+
+# @name getCorvallisCampusEvents
+GET /api/2/events?campus_id=272&days=30 HTTP/2
+Host: events.oregonstate.edu
+User-Agent: curl/7.66.0
+Accept: */*
+
+###
+
+# @name getBendCampusEvents
+GET /api/2/events?campus_id=273&days=30 HTTP/2
+Host: events.oregonstate.edu
+User-Agent: curl/7.66.0
+Accept: */*
+
+###
+
+# @name getAcademicCalendarEvents
+GET /widget/view?schools=oregonstate&days=365&num=10&tags=academic+calendar&format=rss HTTP/2
+Host: events.oregonstate.edu
+User-Agent: curl/7.66.0
+Accept: */*

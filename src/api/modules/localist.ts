@@ -1,6 +1,8 @@
 import Parser from 'rss-parser';
 import config from 'config';
 import cache from './cache';
+import { fetchData } from '../util';
+import { mockedAcademicCalendar, mockedCampusEvents, mockedEventsDx } from '../../mocks/localist';
 
 const parser = new Parser();
 
@@ -48,7 +50,10 @@ const mappedEvents = (events): IEvent[] => {
 export const getEvents = async (): Promise<object[]> => {
   try {
     const url = `${LOCALIST_BASE_URL}/events/search?search=${EVENT_DX_QUERY}&days=${EVENT_DAYS_AGO}`;
-    const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
+    const data = await fetchData(
+      () => cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC }),
+      mockedEventsDx,
+    );
     return mappedEvents(data.events);
   } catch (err) {
     throw err;
@@ -58,7 +63,10 @@ export const getEvents = async (): Promise<object[]> => {
 export const getCampusEvents = async (campus: string): Promise<object[]> => {
   try {
     const url = `${LOCALIST_BASE_URL}/events?campus_id=${CAMPUS_IDS[campus]}&days=${EVENT_DAYS_AGO}`;
-    const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
+    const data = await fetchData(
+      () => cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC }),
+      mockedCampusEvents[campus],
+    );
     return mappedEvents(data.events);
   } catch (err) {
     throw err;
@@ -73,10 +81,14 @@ export const getAcademicCalendarEvents = async (): Promise<object[]> => {
   try {
     // Note: Getting academic calendar items via RSS as a workaround due to
     //       unlisted/restricted events not being visible via API.
-    const xml = await cache.get(ACADEMIC_CALENDAR_URL, {}, true, {
-      key: ACADEMIC_CALENDAR_URL,
-      ttlSeconds: CACHE_SEC,
-    });
+    const xml = await fetchData(
+      () =>
+        cache.get(ACADEMIC_CALENDAR_URL, {}, true, {
+          key: ACADEMIC_CALENDAR_URL,
+          ttlSeconds: CACHE_SEC,
+        }),
+      mockedAcademicCalendar,
+    );
     const { items } = await parser.parseString(xml);
 
     return items;
