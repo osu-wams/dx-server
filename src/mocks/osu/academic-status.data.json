@@ -1,0 +1,107 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/students/111111111/academic-status"
+  },
+  "data": [
+    {
+      "type": "academic-status",
+      "id": "111111111-201701",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "academicStanding": "Good Standing",
+        "term": "201701",
+        "termDescription": "Fall 2016",
+        "gpa": [
+          {
+            "gpa": "2.66",
+            "gpaCreditHours": 12,
+            "gpaType": "Institution",
+            "creditHoursAttempted": 12,
+            "creditHoursEarned": 12,
+            "creditHoursPassed": 12,
+            "levelCode": "01",
+            "level": "Undergraduate",
+            "qualityPoints": "32.00"
+          }
+        ]
+      }
+    },
+    {
+      "type": "academic-status",
+      "id": "111111111-201702",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "academicStanding": "Good Standing",
+        "term": "201702",
+        "termDescription": "Winter 2017",
+        "gpa": [
+          {
+            "gpa": "4.00",
+            "gpaCreditHours": 8,
+            "gpaType": "Institution",
+            "creditHoursAttempted": 12,
+            "creditHoursEarned": 8,
+            "creditHoursPassed": 8,
+            "levelCode": "01",
+            "level": "Undergraduate",
+            "qualityPoints": "32.00"
+          }
+        ]
+      }
+    },
+    {
+      "type": "academic-status",
+      "id": "111111111-201703",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "academicStanding": "Good Standing",
+        "term": "201703",
+        "termDescription": "Spring 2017",
+        "gpa": [
+          {
+            "gpa": "2.78",
+            "gpaCreditHours": 12,
+            "gpaType": "Institution",
+            "creditHoursAttempted": 12,
+            "creditHoursEarned": 12,
+            "creditHoursPassed": 12,
+            "levelCode": "01",
+            "level": "Undergraduate",
+            "qualityPoints": "33.40"
+          }
+        ]
+      }
+    },
+    {
+      "type": "academic-status",
+      "id": "111111111-202001",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "academicStanding": "Good Standing",
+        "term": "202001",
+        "termDescription": "Fall 2019",
+        "gpa": [
+          {
+            "gpa": "3.85",
+            "gpaCreditHours": 8,
+            "gpaType": "Institution",
+            "creditHoursAttempted": 12,
+            "creditHoursEarned": 8,
+            "creditHoursPassed": 8,
+            "levelCode": "01",
+            "level": "Undergraduate",
+            "qualityPoints": "30.80"
+          }
+        ]
+      }
+    }
+  ]
+}

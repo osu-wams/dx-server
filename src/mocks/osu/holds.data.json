@@ -1,0 +1,40 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/students/111111111/holds"
+  },
+  "data": {
+    "type": "holds",
+    "id": "111111111",
+    "links": {
+      "self": null
+    },
+    "attributes": {
+      "holds": [
+        {
+          "fromDate": "2019-11-12",
+          "toDate": "2019-11-17",
+          "code": "BR",
+          "description": "REG RESTRICTED 541-555-1212",
+          "reason": "Account Paid in Full",
+          "organizationCode": "BACO",
+          "organizationDescription": "Business Affairs - Collection",
+          "webDisplay": true,
+          "releasedInd": true,
+          "processesAffected": ["Registration"]
+        },
+        {
+          "fromDate": "2018-04-02",
+          "toDate": "2018-06-21",
+          "code": "HH",
+          "description": "SHS SA Pr noreply@oregonstate.edu",
+          "reason": null,
+          "organizationCode": null,
+          "organizationDescription": null,
+          "webDisplay": true,
+          "releasedInd": true,
+          "processesAffected": ["Grades"]
+        }
+      ]
+    }
+  }
+}

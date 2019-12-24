@@ -1,0 +1,82 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/students/111111111/gpa"
+  },
+  "data": {
+    "type": "gpa",
+    "id": "111111111",
+    "links": {
+      "self": null
+    },
+    "attributes": {
+      "gpaLevels": [
+        {
+          "gpa": "0.00",
+          "gpaCreditHours": 0,
+          "gpaType": "Institution",
+          "creditHoursAttempted": 3,
+          "creditHoursEarned": 0,
+          "creditHoursPassed": 0,
+          "level": "Undergraduate",
+          "levelCode": "01",
+          "qualityPoints": "0.00"
+        },
+        {
+          "gpa": "0.00",
+          "gpaCreditHours": 0,
+          "gpaType": "Overall",
+          "creditHoursAttempted": 3,
+          "creditHoursEarned": 0,
+          "creditHoursPassed": 0,
+          "level": "Undergraduate",
+          "levelCode": "01",
+          "qualityPoints": "0.00"
+        },
+        {
+          "gpa": "3.27",
+          "gpaCreditHours": 36,
+          "gpaType": "Institution",
+          "creditHoursAttempted": 36,
+          "creditHoursEarned": 36,
+          "creditHoursPassed": 36,
+          "level": "Graduate",
+          "levelCode": "02",
+          "qualityPoints": "117.90"
+        },
+        {
+          "gpa": "3.27",
+          "gpaCreditHours": 36,
+          "gpaType": "Overall",
+          "creditHoursAttempted": 36,
+          "creditHoursEarned": 36,
+          "creditHoursPassed": 36,
+          "level": "Graduate",
+          "levelCode": "02",
+          "qualityPoints": "117.90"
+        },
+        {
+          "gpa": "3.00",
+          "gpaCreditHours": 3,
+          "gpaType": "Institution",
+          "creditHoursAttempted": 3,
+          "creditHoursEarned": 3,
+          "creditHoursPassed": 3,
+          "level": "Non-Degree / Credential",
+          "levelCode": "04",
+          "qualityPoints": "9.00"
+        },
+        {
+          "gpa": "3.00",
+          "gpaCreditHours": 3,
+          "gpaType": "Overall",
+          "creditHoursAttempted": 3,
+          "creditHoursEarned": 3,
+          "creditHoursPassed": 3,
+          "level": "Non-Degree / Credential",
+          "levelCode": "04",
+          "qualityPoints": "9.00"
+        }
+      ]
+    }
+  }
+}

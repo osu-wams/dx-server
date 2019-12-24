@@ -1,0 +1,72 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/students/111111111/account-transactions?term=current"
+  },
+  "data": {
+    "type": "account-transactions",
+    "id": "111111111",
+    "links": {
+      "self": null
+    },
+    "attributes": {
+      "transactions": [
+        {
+          "amount": 31,
+          "description": "Building Fee",
+          "entryDate": "2019-12-15T22:45:54Z",
+          "category": "Registration Fees",
+          "term": "202002",
+          "transactionType": "charge"
+        },
+        {
+          "amount": 49,
+          "description": "PE Activity Fee",
+          "entryDate": "2019-12-15T22:45:54Z",
+          "category": "Registration Fees",
+          "term": "202002",
+          "transactionType": "charge"
+        },
+        {
+          "amount": 1160,
+          "description": "Resident Undergrad Tuition",
+          "entryDate": "2019-12-15T22:45:54Z",
+          "category": "Registration Tuition",
+          "term": "202002",
+          "transactionType": "charge"
+        },
+        {
+          "amount": 134.56,
+          "description": "Student Health Service Fee",
+          "entryDate": "2019-12-15T22:45:54Z",
+          "category": "Registration Fees",
+          "term": "202002",
+          "transactionType": "charge"
+        },
+        {
+          "amount": 2472,
+          "description": "Ecampus Undergraduate Course",
+          "entryDate": "2019-12-15T22:45:54Z",
+          "category": "Registration Tuition",
+          "term": "202002",
+          "transactionType": "charge"
+        },
+        {
+          "amount": 363.44,
+          "description": "Incidental Fee",
+          "entryDate": "2019-12-15T22:45:54Z",
+          "category": "Registration Fees",
+          "term": "202002",
+          "transactionType": "charge"
+        },
+        {
+          "amount": 44.86,
+          "description": "Counseling Service Fee",
+          "entryDate": "2019-12-15T22:45:54Z",
+          "category": "Registration Fees",
+          "term": "202002",
+          "transactionType": "charge"
+        }
+      ]
+    }
+  }
+}
