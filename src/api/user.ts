@@ -10,18 +10,6 @@ import User from './models/user'; // eslint-disable-line no-unused-vars
 const router: Router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-  let classification = {};
-  try {
-    const classificationPromise: Promise<Classification> = asyncTimedFunction<Classification>(
-      getClassification,
-      'getClassification',
-      [req.user],
-    );
-    const { id, attributes } = await classificationPromise;
-    classification = { id, attributes };
-  } catch (err) {
-    logger().error(`api/user failed: ${err.message}, trace: ${err.stack}`);
-  }
   res.send({
     osuId: req.user.osuId,
     firstName: req.user.firstName,
@@ -31,9 +19,26 @@ router.get('/', async (req: Request, res: Response) => {
     isAdmin: req.user.isAdmin,
     isCanvasOptIn: req.user.isCanvasOptIn,
     audienceOverride: req.user.audienceOverride || {},
-    classification,
+    classification: req.user.classification || {},
     theme: req.user.theme,
   });
+});
+
+router.get('/classification', async (req: Request, res: Response) => {
+  let classification = {};
+  try {
+    const classificationPromise: Promise<Classification> = asyncTimedFunction<Classification>(
+      getClassification,
+      'getClassification',
+      [req.user],
+    );
+    const { id, attributes } = await classificationPromise;
+    classification = { id, attributes };
+    req.user.classification = classification;
+  } catch (err) {
+    logger().error(`api/user/classification failed: ${err.message}, trace: ${err.stack}`);
+  }
+  res.send(classification);
 });
 
 router.post('/settings', async (req: Request, res: Response) => {
