@@ -4,6 +4,15 @@ import { IAnnouncementResult } from '../announcements'; // eslint-disable-line n
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
 import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import cache, { setCache } from './cache';
+import { fetchData } from '../util';
+import {
+  mockedAnnouncements,
+  mockedAlerts,
+  mockedCategories,
+  mockedCuratedResources,
+  mockedInformation,
+  mockedResources,
+} from '../../mocks/dx';
 
 export const BASE_URL: string = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
@@ -130,22 +139,25 @@ const retrieveData = async (url: string, kitsuOpts: any): Promise<any[]> => {
  */
 export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
   try {
-    const data = await retrieveData('node/announcement', {
-      fields: {
-        'node--announcement':
-          'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_affiliation,field_audience,field_pages',
-        'taxonomy_term--affiliation': 'name',
-        'taxonomy_term--audience': 'name',
-        'taxonomy_term--pages': 'name',
-        'media--image': 'name,field_media_image',
-        'file--file': 'filename,filemime,uri',
-      },
-      include:
-        'field_announcement_image,field_announcement_image.field_media_image,field_affiliation,field_audience,field_pages',
-      filter: {
-        status: 1,
-      },
-    });
+    const data = await fetchData(
+      () =>
+        retrieveData('node/announcement', {
+          fields: {
+            'node--announcement':
+              'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages',
+            'taxonomy_term--audience': 'name',
+            'taxonomy_term--pages': 'name',
+            'media--image': 'name,field_media_image',
+            'file--file': 'filename,filemime,uri',
+          },
+          include:
+            'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages',
+          filter: {
+            status: 1,
+          },
+        }),
+      mockedAnnouncements,
+    );
     return mappedAnnouncements(data);
   } catch (err) {
     throw err;
@@ -157,20 +169,24 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
  */
 export const getResources = async (): Promise<IResourceResult[]> => {
   try {
-    const data = await retrieveData('node/services', {
-      fields: {
-        'node--services':
-          'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url',
-        'taxonomy_term--categories': 'name',
-        'taxonomy_term--audience': 'name',
-        'taxonomy_term--affiliation': 'name',
-      },
-      include: 'field_affiliation,field_audience,field_service_category',
-      sort: 'title',
-      filter: {
-        status: 1,
-      },
-    });
+    const data = await fetchData(
+      () =>
+        retrieveData('node/services', {
+          fields: {
+            'node--services':
+              'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url',
+            'taxonomy_term--categories': 'name',
+            'taxonomy_term--audience': 'name',
+            'taxonomy_term--affiliation': 'name',
+          },
+          include: 'field_affiliation,field_audience,field_service_category',
+          sort: 'title',
+          filter: {
+            status: 1,
+          },
+        }),
+      mockedResources,
+    );
     return mappedResources(data);
   } catch (err) {
     throw err;
@@ -184,17 +200,22 @@ export const getCuratedResources = async (
   category: string,
 ): Promise<IEntityQueueResourceResult> => {
   try {
-    const data = await retrieveData(`entity_subqueue/${category}`, {
-      fields: {
-        'entity_subqueue--services': 'items,drupal_internal__name',
-        'node--services':
-          'id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url',
-        'taxonomy_term--categories': 'name',
-        'taxonomy_term--audience': 'name',
-        'taxonomy_term--affiliation': 'name',
-      },
-      include: 'items,items.field_affiliation,items.field_audience,items.field_service_category',
-    });
+    const data = await fetchData(
+      () =>
+        retrieveData(`entity_subqueue/${category}`, {
+          fields: {
+            'entity_subqueue--services': 'items,drupal_internal__name',
+            'node--services':
+              'id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url',
+            'taxonomy_term--categories': 'name',
+            'taxonomy_term--audience': 'name',
+            'taxonomy_term--affiliation': 'name',
+          },
+          include:
+            'items,items.field_affiliation,items.field_audience,items.field_service_category',
+        }),
+      mockedCuratedResources(category),
+    );
 
     let entityQueueTitle = data[0]?.title;
 
@@ -222,18 +243,22 @@ export const getCuratedResources = async (
  */
 export const getCategories = async (): Promise<ICategory[]> => {
   try {
-    const data = await retrieveData('taxonomy_term/categories', {
-      fields: {
-        'taxonomy_term--categories': 'id,name,field_taxonomy_icon',
-        'media--image': 'name,field_media_image',
-        'file--file': 'filename,filemime,uri',
-      },
-      include: 'field_taxonomy_icon.field_media_image',
-      sort: 'weight',
-      filter: {
-        status: 1,
-      },
-    });
+    const data = await fetchData(
+      () =>
+        retrieveData('taxonomy_term/categories', {
+          fields: {
+            'taxonomy_term--categories': 'id,name,field_taxonomy_icon',
+            'media--image': 'name,field_media_image',
+            'file--file': 'filename,filemime,uri',
+          },
+          include: 'field_taxonomy_icon.field_media_image',
+          sort: 'weight',
+          filter: {
+            status: 1,
+          },
+        }),
+      mockedCategories,
+    );
 
     const categoryIconUrl = (item) => {
       if (item.field_taxonomy_icon && item.field_taxonomy_icon.field_media_image) {
@@ -257,11 +282,18 @@ export const getCategories = async (): Promise<ICategory[]> => {
  */
 export const getInfo = async (): Promise<IInfoResult[]> => {
   try {
-    const data = await retrieveData('node/information', {
-      filter: {
-        status: 1,
-      },
-    });
+    const data = await fetchData(
+      () =>
+        retrieveData('node/information', {
+          fields: {
+            'node--information': 'title,field_machine_name,body',
+          },
+          filter: {
+            status: 1,
+          },
+        }),
+      mockedInformation,
+    );
     return data.map((d) => ({
       title: d.title,
       id: d.field_machine_name,
@@ -282,22 +314,26 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
 export const getDxAlerts = async (): Promise<Alert[]> => {
   // TODO: Round the time up to the next 30 sec interval
   try {
-    const data = await retrieveData('node/alerts', {
-      filter: {
-        field_expiration_date: {
-          condition: {
-            operator: '>',
-            path: 'field_alert_expiration_date',
-            value: new Date().toISOString(),
+    const data = await fetchData(
+      () =>
+        retrieveData('node/alerts', {
+          filter: {
+            field_expiration_date: {
+              condition: {
+                operator: '>',
+                path: 'field_alert_expiration_date',
+                value: new Date().toISOString(),
+              },
+            },
+            status: 1,
           },
-        },
-        status: 1,
-      },
-      fields: {
-        'node--alerts': 'title,created,field_alert_content,field_alert_type',
-      },
-      sort: '-field_alert_expiration_date',
-    });
+          fields: {
+            'node--alerts': 'title,created,field_alert_content,field_alert_type',
+          },
+          sort: '-field_alert_expiration_date',
+        }),
+      mockedAlerts,
+    );
     if (data.length === 0) return [];
 
     /* eslint-disable camelcase */
