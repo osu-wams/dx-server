@@ -20,6 +20,7 @@ const env = config.get('env') as string;
 const sessionSecret = config.get('sessionSecret') as string;
 const redisHost = config.get('redis.host') as string;
 const redisPort = parseInt(config.get('redis.port') as string, 10);
+export const useMocks = parseInt(config.get('useMocks'), 10);
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
@@ -88,6 +89,7 @@ app.get('/healthcheck', (req, res) => {
   logger().debug('Health Check Request');
   res.send({
     version: appVersion,
+    useMocks,
   });
 });
 
