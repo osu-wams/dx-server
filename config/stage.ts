@@ -7,8 +7,8 @@ export default {
     baseUrl: 'https://oregonstate.instructure.com/api/v1',
   },
   saml: {
-    callbackUrl: 'http://stage.my.oregonstate.edu/login/saml',
-    logoutCallbackUrl: 'http://stage.my.oregonstate.edu/logout/saml',
+    callbackUrl: 'https://stage.my.oregonstate.edu/login/saml',
+    logoutCallbackUrl: 'https://stage.my.oregonstate.edu/logout/saml',
   },
   canvasOauth: {
     baseUrl: 'https://oregonstate.instructure.com',
