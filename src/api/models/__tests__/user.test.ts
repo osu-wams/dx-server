@@ -237,6 +237,14 @@ describe('User model', () => {
         });
         expect(result.audienceOverride).toStrictEqual({ campusCode: 'C' });
       });
+
+      it('updates primaryAffiliationOverride settings', async () => {
+        const result = await User.updateSettings(user, {
+          primaryAffiliationOverride: 'student',
+        });
+        expect(result.primaryAffiliationOverride).toStrictEqual('student');
+      });
+
       it('throws an error on failure', async () => {
         mockDynamoDb.updateItem.mockImplementationOnce(() =>
           Promise.reject(new Error('happy little accident')),

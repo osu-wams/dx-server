@@ -1,0 +1,10 @@
+@baseUrl = https://status.is.oregonstate.edu/api/v1
+
+# @name getComponents
+GET {{baseUrl}}/components HTTP/1.1
+
+###
+
+# @name getIncidents
+GET {{baseUrl}}/incidents HTTP/1.1
+

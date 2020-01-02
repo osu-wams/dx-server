@@ -11,6 +11,7 @@ import PersonsRouter from './persons';
 import AdminRouter from './admin';
 import InformationRouter from './information';
 import ErrorRouter from './errors';
+import StatusRouter from './status';
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use('/alerts', AlertsRouter);
 router.use('/announcements', AnnouncementsRouter);
 router.use('/info-buttons', InformationRouter);
 router.use('/errors', ErrorRouter);
+router.use('/status', StatusRouter);
 
 export default router;
