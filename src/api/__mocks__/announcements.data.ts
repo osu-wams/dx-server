@@ -5,6 +5,7 @@ export const mockAnnouncementResultWithoutRelatedData = [
     title: 'Academic Announcement',
     body: 'Academic announcement body',
     audiences: [],
+    affiliation: [],
     pages: ['Academics']
   }
 ];
@@ -17,6 +18,7 @@ export const mockAnnouncementsData = [
     title: 'Academic Announcement',
     field_announcement_action: null,
     field_announcement_body: 'Academic announcement body',
+    field_affiliation: [],
     field_audience: [],
     field_pages: [
       {
@@ -41,6 +43,11 @@ export const mockAnnouncementsData = [
         }
       }
     },
+    field_affiliation: [
+      {
+       name: 'Student'
+      }
+    ],
     field_audience: [
       {
         name: 'Corvallis'
@@ -60,6 +67,7 @@ export const mockAnnouncementsData = [
     title: 'Announcement',
     field_announcement_action: null,
     field_announcement_body: 'Announcement body',
+    field_affiliation: [],
     field_audience: [],
     field_pages: []
   }
@@ -72,6 +80,7 @@ export const mockAcademicAnnouncementResult = [
     title: 'Academic Announcement',
     body: 'Academic announcement body',
     audiences: [],
+    affiliation: [],
     pages: ['Academics']
   },
   {
@@ -79,6 +88,7 @@ export const mockAcademicAnnouncementResult = [
     date: '2019-01-01',
     title: 'Announcement',
     body: 'Announcement body',
+    affiliation: [],
     audiences: [],
     pages: []
   }
@@ -91,6 +101,7 @@ export const mockFinancialAnnouncementResult = [
     title: 'Financial Announcement',
     body: 'Financial announcement body',
     bg_image: 'https://data.dx.oregonstate.edu/image_path',
+    affiliation: ['Student'],
     audiences: ['Corvallis', 'Bend'],
     action: { title: 'Action Title', link: 'http://somelink' },
     pages: ['Finances']
@@ -100,6 +111,7 @@ export const mockFinancialAnnouncementResult = [
     date: '2019-01-01',
     title: 'Announcement',
     body: 'Announcement body',
+    affiliation: [],
     audiences: [],
     pages: []
   }
@@ -113,6 +125,7 @@ export const mockAnnouncementResult = [
     date: '2019-01-01',
     title: 'Announcement',
     body: 'Announcement body',
+    affiliation: [],
     audiences: [],
     pages: []
   }

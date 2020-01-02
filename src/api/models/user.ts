@@ -15,6 +15,7 @@ export interface AudienceOverride {
 
 export interface UserSettings {
   audienceOverride?: AudienceOverride;
+  primaryAffiliationOverride?: string;
   theme?: string;
 }
 
@@ -41,6 +42,7 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   nameID?: { S: string };
   nameIDFormat?: { S: string };
   audienceOverride?: { M: AudienceOverrideItem };
+  primaryAffiliationOverride?: { S: string };
   theme?: { S: string };
 }
 
@@ -72,6 +74,8 @@ class User {
   nameID?: string = '';
 
   audienceOverride?: AudienceOverride = {};
+
+  primaryAffiliationOverride?: string = '';
 
   theme?: string = 'light';
 
@@ -121,6 +125,8 @@ class User {
         };
       }
       if (params.Item.theme) this.theme = params.Item.theme.S;
+      if (params.Item.primaryAffiliationOverride)
+        this.primaryAffiliationOverride = params.Item.primaryAffiliationOverride.S;
     }
   }
 
@@ -261,6 +267,8 @@ class User {
     try {
       const user = props;
       const theme: string = settings.theme || user.theme || 'light';
+      let updateExpressionString = 'SET theme = :t';
+      const updateExpressionValues = { ':t': { S: theme } };
       const params: AWS.DynamoDB.UpdateItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
@@ -268,10 +276,8 @@ class User {
         },
         ReturnValues: 'NONE',
       };
-      params.UpdateExpression = 'SET theme = :t';
-      params.ExpressionAttributeValues = {
-        ':t': { S: theme },
-      };
+
+      // Add Audience Overrides
       if (settings.audienceOverride !== undefined) {
         const { campusCode, firstYear, international, graduate } = settings.audienceOverride;
         const audienceOverrideItem: AudienceOverrideItem = {};
@@ -281,12 +287,22 @@ class User {
           audienceOverrideItem.international = { BOOL: international };
         if (graduate !== undefined) audienceOverrideItem.graduate = { BOOL: graduate };
 
-        params.UpdateExpression = 'SET audienceOverride = :ao, theme = :t';
-        params.ExpressionAttributeValues = {
-          ':ao': { M: audienceOverrideItem },
-          ':t': { S: theme },
+        updateExpressionString += ', audienceOverride = :ao';
+        updateExpressionValues[':ao'] = {
+          M: audienceOverrideItem,
         };
       }
+
+      // Add Primary Affiliation Overrides
+      if (settings.primaryAffiliationOverride !== undefined) {
+        const affiliationOverride = settings.primaryAffiliationOverride;
+        updateExpressionString += ', primaryAffiliationOverride = :pao';
+        updateExpressionValues[':pao'] = { S: affiliationOverride };
+      }
+
+      // Store all the override values
+      params.UpdateExpression = updateExpressionString;
+      params.ExpressionAttributeValues = updateExpressionValues;
       const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
         updateItem,
         'User:updateItem',
@@ -294,6 +310,9 @@ class User {
       );
       logger().silly('User.updateSettings updated user:', user.osuId, result);
       if (settings.audienceOverride) user.audienceOverride = settings.audienceOverride;
+      if (settings.primaryAffiliationOverride) {
+        user.primaryAffiliationOverride = settings.primaryAffiliationOverride;
+      }
       user.theme = theme;
       return user;
     } catch (err) {
@@ -362,6 +381,9 @@ class User {
       };
     }
     if (props.theme) Item.theme = { S: props.theme };
+    if (props.primaryAffiliationOverride) {
+      Item.primaryAffiliationOverride = { S: props.primaryAffiliationOverride };
+    }
     return Item;
   };
 }

@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "pagination": {
+      "total": 3,
+      "count": 3,
+      "per_page": 20,
+      "current_page": 1,
+      "total_pages": 1,
+      "links": {
+        "next_page": null,
+        "previous_page": null
+      }
+    }
+  },
+  "data": [
+    {
+      "id": 1,
+      "name": "Banner",
+      "description": "Includes Banner HRIS, Banner Student, and other systems.",
+      "link": "",
+      "status": 1,
+      "order": 2,
+      "group_id": 0,
+      "enabled": true,
+      "meta": null,
+      "created_at": "2018-06-14 11:20:15",
+      "updated_at": "2018-09-26 14:37:52",
+      "deleted_at": null,
+      "status_name": "Operational",
+      "tags": []
+    },
+    {
+      "id": 2,
+      "name": "G Suite",
+      "description": "Google's suite of productivity tools including Docs, Sheets, Forms and more.",
+      "link": "",
+      "status": 4,
+      "order": 5,
+      "group_id": 0,
+      "enabled": true,
+      "meta": null,
+      "created_at": "2018-06-14 11:20:40",
+      "updated_at": "2019-11-05 10:33:11",
+      "deleted_at": null,
+      "status_name": "Major Outage",
+      "tags": []
+    },
+    {
+      "id": 4,
+      "name": "Canvas",
+      "description": "OSU’s learning management system",
+      "link": "http://learn.oregonstate.edu/canvas",
+      "status": 1,
+      "order": 4,
+      "group_id": 0,
+      "enabled": true,
+      "meta": null,
+      "created_at": "2018-06-15 09:42:21",
+      "updated_at": "2019-11-06 17:45:56",
+      "deleted_at": null,
+      "status_name": "Operational",
+      "tags": []
+    },
+    {
+      "id": 5,
+      "name": "Box",
+      "description": "Storage",
+      "link": "http://box.com",
+      "status": 2,
+      "order": 6,
+      "group_id": 0,
+      "enabled": true,
+      "meta": null,
+      "created_at": "2018-06-15 09:42:21",
+      "updated_at": "2019-11-06 17:45:56",
+      "deleted_at": null,
+      "status_name": "Performance Issues",
+      "tags": []
+    }
+  ]
+}
