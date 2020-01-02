@@ -25,6 +25,19 @@ describe('/api/user', () => {
   });
 
   it('return user session data', async () => {
+    await request.get('/api/user').expect(200, {
+      osuId: 111111111,
+      firstName: 'Test',
+      lastName: 'User',
+      email: 'fake-email@oregonstate.edu',
+      isAdmin: true,
+      isCanvasOptIn: true,
+      classification: {},
+      audienceOverride: {},
+    });
+  });
+
+  it('return user classification data', async () => {
     const data = {
       id: 'id',
       attributes: {
@@ -41,24 +54,15 @@ describe('/api/user', () => {
       .get(/v1\/students\/[0-9]+\/classification/)
       .reply(200, { data });
 
-    await request.get('/api/user').expect(200, {
-      osuId: 111111111,
-      firstName: 'Test',
-      lastName: 'User',
-      email: 'fake-email@oregonstate.edu',
-      isAdmin: true,
-      isCanvasOptIn: true,
-      classification: {
-        id: 'id',
-        attributes: {
-          level: 'level',
-          classification: 'classification',
-          campus: 'campus',
-          status: 'status',
-          isInternational: false,
-        },
+    await request.get('/api/user/classification').expect(200, {
+      id: 'id',
+      attributes: {
+        level: 'level',
+        classification: 'classification',
+        campus: 'campus',
+        status: 'status',
+        isInternational: false,
       },
-      audienceOverride: {},
     });
   });
 
