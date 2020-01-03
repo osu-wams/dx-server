@@ -17,6 +17,7 @@ router.get('/', async (req: Request, res: Response) => {
     email: req.user.email,
     primaryAffiliation: req.user.primaryAffiliation,
     isAdmin: req.user.isAdmin,
+    groups: req.user.groups ?? [],
     isCanvasOptIn: req.user.isCanvasOptIn,
     audienceOverride: req.user.audienceOverride || {},
     classification: req.user.classification || {},

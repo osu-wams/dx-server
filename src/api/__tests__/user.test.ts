@@ -3,7 +3,7 @@ import nock from 'nock';
 import config from 'config';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import app from '../../index';
-import { UserSettings } from '../models/user'; // eslint-disable-line no-unused-vars
+import { UserSettings, GROUPS } from '../models/user'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import * as dynamoDb from '../../db';
 
@@ -31,6 +31,7 @@ describe('/api/user', () => {
       lastName: 'User',
       email: 'fake-email@oregonstate.edu',
       isAdmin: true,
+      groups: Object.keys(GROUPS),
       isCanvasOptIn: true,
       classification: {},
       audienceOverride: {},

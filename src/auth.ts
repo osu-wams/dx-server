@@ -8,7 +8,7 @@ import DevStrategy from 'passport-dev';
 import config from 'config';
 import { isNullOrUndefined } from 'util';
 import MockStrategy from './utils/mock-strategy';
-import User from './api/models/user'; // eslint-disable-line no-unused-vars
+import User, { GROUPS } from './api/models/user'; // eslint-disable-line no-unused-vars
 import { refreshOAuthToken, canvasOAuthConfig } from './api/modules/canvas';
 import logger from './logger';
 import { returnUrl } from './utils/routing';
@@ -48,7 +48,7 @@ const samlLogout = `${samlUrl}Logout`;
 
 const apiKeys: ApiKey[] = JSON.parse(config.get('apiKeys'));
 
-function parseSamlResult(profile: any, done: any) {
+export const parseSamlResult = (profile: any, done: any) => {
   const user = {
     osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
     email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
@@ -57,16 +57,26 @@ function parseSamlResult(profile: any, done: any) {
     nameIDFormat: profile.nameIDFormat,
     firstName: profile['urn:oid:2.5.4.42'],
     lastName: profile['urn:oid:2.5.4.4'],
+    groups: [],
     isAdmin: false,
   };
 
   const permissions = profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.7'] || [];
-  if (permissions.includes('urn:mace:oregonstate.edu:entitlement:dx:dx-admin')) {
+  if (permissions.includes(GROUPS.admin)) {
     user.isAdmin = true;
+    user.groups.push('admin');
   }
-
+  if (permissions.includes(GROUPS.masquerade)) {
+    // On production, only administrators can also have access to masquerade,
+    // regardless of grouper group assignment.
+    if (ENV === 'production') {
+      if (user.isAdmin) user.groups.push('masquerade');
+    } else {
+      user.groups.push('masquerade');
+    }
+  }
   return done(null, user);
-}
+};
 
 switch (ENV) {
   case 'development':
@@ -96,9 +106,10 @@ switch (ENV) {
       email: 'fake-email@oregonstate.edu',
       firstName: 'Test',
       lastName: 'User',
-      permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
+      permissions: [GROUPS.admin, GROUPS.masquerade],
       osuId: 111111111,
       isAdmin: true,
+      groups: Object.keys(GROUPS),
     });
     break;
   default:
@@ -127,10 +138,16 @@ Auth.localStrategy = new LocalStrategy(
     if (apiKey) {
       logger().debug(`API key found: ${apiKey}`);
       const user = await User.find(parseInt(osuId, 10));
-      if (!user) logger().debug('API user not found, returning unauthenticated.');
-      if (!user) return done(null, false);
+      if (!user) {
+        logger().debug('API user not found, returning unauthenticated.');
+        return done(null, false);
+      }
 
       user.isAdmin = apiKey.isAdmin;
+      user.groups = [];
+      if (user.isAdmin) {
+        user.groups = Object.keys(GROUPS);
+      }
       return done(null, user);
     }
     return done(null, false);
@@ -176,7 +193,7 @@ Auth.logout = (req: Request, res: Response) => {
       strategy.logout(req, (err, uri) => {
         req.session.destroy((error) => logger().error(error));
         req.logout();
-        return res.redirect(uri);
+        res.redirect(uri);
       });
     } else {
       req.session.destroy((error) => logger().error(error));
