@@ -48,7 +48,7 @@ const samlLogout = `${samlUrl}Logout`;
 
 const apiKeys: ApiKey[] = JSON.parse(config.get('apiKeys'));
 
-function parseSamlResult(profile: any, done: any) {
+export const parseSamlResult = (profile: any, done: any) => {
   const user = {
     osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
     email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
@@ -76,7 +76,7 @@ function parseSamlResult(profile: any, done: any) {
     }
   }
   return done(null, user);
-}
+};
 
 switch (ENV) {
   case 'development':
