@@ -28,7 +28,7 @@ interface GradeTerm {
 router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, res: Response) => {
   try {
     // Administrators that have masqueraded get access to this endpoint (else you get oauth)
-    if (req.user.isAdmin && req.user.masqueradeId) {
+    if (req.user.groups.includes('masquerade') && req.user.masqueradeId) {
       const response: string = await asyncTimedFunction(getPlannerItems, 'getPlannerItemsAdmin', [
         { osuId: req.user.masqueradeId },
       ]);

@@ -15,11 +15,26 @@ import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
 import { DYNAMODB_ENDPOINT } from '../../db/index';
+import { GROUPS } from '../models/user';
 
 jest.mock('../util.ts');
 jest.mock('../../utils/mock-user.ts');
 
 const mockedUser = mockUser as jest.Mocked<any>;
+
+const user = {
+  email: 'fake-email@oregonstate.edu',
+  firstName: 'Test',
+  lastName: 'User',
+  permissions: [GROUPS.admin, GROUPS.masquerade],
+  osuId: 111111111,
+  isAdmin: true,
+  groups: Object.keys(GROUPS),
+  isCanvasOptIn: true,
+  refreshToken: 'token',
+  canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
+  canvasOauthToken: 'token',
+};
 
 const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
 const CANVAS_BASE_URL: string = config.get<string>('canvasApi.baseUrl').replace('/api/v1', '');
@@ -27,18 +42,7 @@ let request: supertest.SuperTest<supertest.Test>;
 
 beforeAll(async () => {
   request = supertest.agent(app);
-  mockedUser.mockReturnValue({
-    email: 'fake-email@oregonstate.edu',
-    firstName: 'Test',
-    lastName: 'User',
-    permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
-    osuId: 111111111,
-    isAdmin: true,
-    isCanvasOptIn: true,
-    refreshToken: 'token',
-    canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
-    canvasOauthToken: 'token',
-  });
+  mockedUser.mockReturnValue(user);
   nock(DYNAMODB_ENDPOINT)
     .post(/.*/)
     .reply(200, {})
@@ -435,18 +439,7 @@ describe('/api/student', () => {
         .post('/login/oauth2/token')
         .query(true)
         .reply(200, { access_token: 'token', expires_in: Date.now() + 1000 * 60 * 60 * 24 });
-      mockedUser.mockReturnValue({
-        email: 'fake-email@oregonstate.edu',
-        firstName: 'Test',
-        lastName: 'User',
-        permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
-        osuId: 111111111,
-        isAdmin: true,
-        isCanvasOptIn: true,
-        refreshToken: 'token',
-        canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
-        canvasOauthToken: 'token',
-      });
+      mockedUser.mockReturnValue(user);
     });
     it('should return planner items for the current user', async () => {
       nock(CANVAS_BASE_URL)
@@ -471,19 +464,7 @@ describe('/api/student', () => {
           .post('/login/oauth2/token')
           .query(true)
           .reply(200, { access_token: 'token', expires_in: Date.now() + 1000 * 60 * 60 * 24 });
-        mockedUser.mockReturnValue({
-          email: 'fake-email@oregonstate.edu',
-          firstName: 'Test',
-          lastName: 'User',
-          permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
-          osuId: 111111111,
-          isAdmin: true,
-          isCanvasOptIn: true,
-          refreshToken: 'token',
-          canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
-          canvasOauthToken: 'token',
-          masqueradeId: 111111111,
-        });
+        mockedUser.mockReturnValue({ ...user, masqueradeId: 111111111 });
         // login the user as masqueraded
         await request.get('/login');
       });
@@ -498,18 +479,7 @@ describe('/api/student', () => {
 
     describe('with an invalid canvas refresh token', () => {
       beforeEach(() => {
-        mockedUser.mockReturnValue({
-          email: 'fake-email@oregonstate.edu',
-          firstName: 'Test',
-          lastName: 'User',
-          permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
-          osuId: 111111111,
-          isAdmin: true,
-          isCanvasOptIn: true,
-          refreshToken: '',
-          canvasOauthExpire: 0,
-          canvasOauthToken: 'token',
-        });
+        mockedUser.mockReturnValue({ ...user, refreshToken: '', canvasOauthExpire: 0 });
       });
       it('should return an error', async () => {
         nock(CANVAS_BASE_URL)
@@ -524,18 +494,7 @@ describe('/api/student', () => {
 
     describe('with an expired or invalid Canvas oauth expiration', () => {
       beforeEach(() => {
-        mockedUser.mockReturnValue({
-          email: 'fake-email@oregonstate.edu',
-          firstName: 'Test',
-          lastName: 'User',
-          permissions: ['urn:mace:oregonstate.edu:entitlement:dx:dx-admin'],
-          osuId: 111111111,
-          isAdmin: true,
-          isCanvasOptIn: true,
-          refreshToken: 'token',
-          canvasOauthExpire: 0,
-          canvasOauthToken: 'token',
-        });
+        mockedUser.mockReturnValue({ ...user, canvasOauthExpire: 0 });
       });
       it('should return an error', async () => {
         nock(CANVAS_BASE_URL)

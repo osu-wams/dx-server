@@ -44,6 +44,7 @@ describe('User model', () => {
       expect(user.canvasOauthExpire).toEqual(0);
       expect(user.canvasOauthToken).toEqual('');
       expect(user.isAdmin).toEqual(false);
+      expect(user.groups).toEqual([]);
       expect(user.isCanvasOptIn).toEqual(false);
       expect(user.refreshToken).toEqual('');
       expect(user.primaryAffiliation).toEqual('employee');
@@ -60,6 +61,7 @@ describe('User model', () => {
         expect(user.canvasOauthExpire).toEqual(0);
         expect(user.canvasOauthToken).toEqual('');
         expect(user.isAdmin).toEqual(false);
+        expect(user.groups).toEqual([]);
         expect(user.isCanvasOptIn).toEqual(dynamoDbUser.Item.canvasOptIn.BOOL);
         expect(user.refreshToken).toEqual(dynamoDbUser.Item.canvasRefreshToken.S);
         expect(user.primaryAffiliation).toEqual(dynamoDbUser.Item.primaryAffiliation.S);

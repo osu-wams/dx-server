@@ -6,6 +6,11 @@ import { scan, updateItem, getItem, putItem } from '../../db';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 
+export const GROUPS = {
+  admin: 'urn:mace:oregonstate.edu:entitlement:dx:dx-admin',
+  masquerade: 'urn:mace:oregonstate.edu:entitlement:dx:dx-masquerade',
+};
+
 export interface AudienceOverride {
   campusCode?: string;
   firstYear?: boolean;
@@ -59,7 +64,11 @@ class User {
 
   phone?: string;
 
+  /** Grouper group: Admin flag derived from SAML profile, not persisted in the database */
   isAdmin?: boolean = false;
+
+  /** Grouper groups: Derived from SAML profile, not persisted in the database */
+  groups?: string[] = [];
 
   refreshToken?: string = '';
 

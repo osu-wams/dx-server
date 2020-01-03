@@ -46,6 +46,7 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
     }
 
     user.isAdmin = u.isAdmin;
+    user.groups = u.groups;
     logger().silly('user-account.findOrUpsertUser returned user.', user);
     return { user, isNew };
   } catch (err) {
