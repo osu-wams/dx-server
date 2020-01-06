@@ -4,7 +4,9 @@ import querystring from 'querystring';
 import { format } from 'date-fns';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
+import { fetchData } from '../util';
 import logger from '../../logger';
+import mockedCanvasPlannerItems from '../../mocks/canvas/planner-items.data';
 
 export const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
 const CANVAS_TOKEN: string = config.get('canvasApi.token');
@@ -91,7 +93,7 @@ export const getPlannerItems = async (params: ICanvasAPIParams): Promise<Upcomin
   if (params.osuId) {
     url = appendUserIdParam(url, params.osuId);
   }
-  return getRequest(url, params.oAuthToken);
+  return fetchData(() => getRequest(url, params.oAuthToken), mockedCanvasPlannerItems);
 };
 
 /**
