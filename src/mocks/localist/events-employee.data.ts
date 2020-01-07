@@ -1,5 +1,7 @@
 import { addDays } from 'date-fns';
 
+export const startDate = (): Date => new Date();
+
 export default {
   events: [
     {
@@ -48,8 +50,8 @@ export default {
               id: 31839819109196,
               ranking: 0,
               event_id: 31839819074947,
-              start: new Date().toJSON(),
-              end: new Date().toJSON(),
+              start: startDate().toJSON(),
+              end: startDate().toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -143,8 +145,8 @@ export default {
               id: 31902001667478,
               ranking: 0,
               event_id: 31902001649423,
-              start: addDays(new Date(), 2).toJSON(),
-              end: addDays(new Date(), 2).toJSON(),
+              start: addDays(startDate(), 2).toJSON(),
+              end: addDays(startDate(), 2).toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -224,8 +226,8 @@ export default {
               id: 31965230137778,
               ranking: 0,
               event_id: 31965230133015,
-              start: addDays(new Date(), 3).toJSON(),
-              end: addDays(new Date(), 3).toJSON(),
+              start: addDays(startDate(), 3).toJSON(),
+              end: addDays(startDate(), 3).toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -340,8 +342,8 @@ export default {
               id: 32122778290228,
               ranking: 0,
               event_id: 32122778287035,
-              start: addDays(new Date(), 4).toJSON(),
-              end: addDays(new Date(), 4).toJSON(),
+              start: addDays(startDate(), 4).toJSON(),
+              end: addDays(startDate(), 4).toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -440,8 +442,8 @@ export default {
               id: 31709247104655,
               ranking: 0,
               event_id: 30637707684794,
-              start: addDays(new Date(), 5).toJSON(),
-              end: addDays(new Date(), 5).toJSON(),
+              start: addDays(startDate(), 5).toJSON(),
+              end: addDays(startDate(), 5).toJSON(),
               all_day: false,
               num_attending: 0,
             },

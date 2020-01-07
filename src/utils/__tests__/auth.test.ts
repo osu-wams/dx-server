@@ -1,5 +1,5 @@
-import { GROUPS } from '../api/models/user';
-import { parseSamlResult } from '../auth';
+import { GROUPS } from '../../api/models/user';
+import parseSamlResult from '../auth';
 
 const mockedDone = jest.fn();
 const mockSaml = {

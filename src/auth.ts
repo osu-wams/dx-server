@@ -9,9 +9,10 @@ import config from 'config';
 import { isNullOrUndefined } from 'util';
 import MockStrategy from './utils/mock-strategy';
 import User, { GROUPS } from './api/models/user'; // eslint-disable-line no-unused-vars
-import { refreshOAuthToken, canvasOAuthConfig } from './api/modules/canvas';
+import { refreshOAuthToken } from './api/modules/canvas';
 import logger from './logger';
 import { returnUrl } from './utils/routing';
+import parseSamlResult from './utils/auth';
 
 interface Auth {
   passportStrategy?: any;
@@ -31,6 +32,28 @@ interface ApiKey {
   isAdmin: boolean;
 }
 
+const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
+const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
+const CANVAS_OAUTH_AUTH_URL: string = config.get('canvasOauth.authUrl');
+const CANVAS_OAUTH_ID: string = config.get('canvasOauth.id');
+const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
+const CANVAS_OAUTH_CALLBACK_URL: string = config.get('canvasOauth.callbackUrl');
+const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
+const canvasOAuthConfig = () => {
+  const c = {
+    authorizationURL: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_AUTH_URL}`,
+    tokenURL: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_TOKEN_URL}`,
+    clientID: CANVAS_OAUTH_ID,
+    clientSecret: CANVAS_OAUTH_SECRET,
+    callbackURL: CANVAS_OAUTH_CALLBACK_URL,
+    scope: undefined,
+  };
+  if (CANVAS_OAUTH_SCOPE !== '') {
+    c.scope = CANVAS_OAUTH_SCOPE;
+  }
+  return c;
+};
+
 const Auth: Auth = {};
 
 const ENV: string = config.get('env');
@@ -47,36 +70,6 @@ const samlUrl = 'https://login.oregonstate.edu/idp/profile/';
 const samlLogout = `${samlUrl}Logout`;
 
 const apiKeys: ApiKey[] = JSON.parse(config.get('apiKeys'));
-
-export const parseSamlResult = (profile: any, done: any) => {
-  const user = {
-    osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
-    email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
-    primaryAffiliation: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.5'],
-    nameID: profile.nameID,
-    nameIDFormat: profile.nameIDFormat,
-    firstName: profile['urn:oid:2.5.4.42'],
-    lastName: profile['urn:oid:2.5.4.4'],
-    groups: [],
-    isAdmin: false,
-  };
-
-  const permissions = profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.7'] || [];
-  if (permissions.includes(GROUPS.admin)) {
-    user.isAdmin = true;
-    user.groups.push('admin');
-  }
-  if (permissions.includes(GROUPS.masquerade)) {
-    // On production, only administrators can also have access to masquerade,
-    // regardless of grouper group assignment.
-    if (ENV === 'production') {
-      if (user.isAdmin) user.groups.push('masquerade');
-    } else {
-      user.groups.push('masquerade');
-    }
-  }
-  return done(null, user);
-};
 
 switch (ENV) {
   case 'development':

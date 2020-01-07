@@ -12,10 +12,8 @@ export const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
 const CANVAS_TOKEN: string = config.get('canvasApi.token');
 export const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
 export const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
-export const CANVAS_OAUTH_AUTH_URL: string = config.get('canvasOauth.authUrl');
 export const CANVAS_OAUTH_ID: string = config.get('canvasOauth.id');
 export const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
-export const CANVAS_OAUTH_CALLBACK_URL: string = config.get('canvasOauth.callbackUrl');
 export const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 
 export interface ICanvasAPIParams {
@@ -45,28 +43,6 @@ interface ICanvasAuthorizationCodeGrant {
   scope?: string;
 }
 /* eslint-enable camelcase */
-
-interface ICanvasOAuthConfig {
-  authorizationURL: string;
-  tokenURL: string;
-  clientID: string;
-  clientSecret: string;
-  callbackURL: string;
-  scope?: string;
-}
-export const canvasOAuthConfig = (): ICanvasOAuthConfig => {
-  const c: ICanvasOAuthConfig = {
-    authorizationURL: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_AUTH_URL}`,
-    tokenURL: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_TOKEN_URL}`,
-    clientID: CANVAS_OAUTH_ID,
-    clientSecret: CANVAS_OAUTH_SECRET,
-    callbackURL: CANVAS_OAUTH_CALLBACK_URL,
-  };
-  if (CANVAS_OAUTH_SCOPE !== '') {
-    c.scope = CANVAS_OAUTH_SCOPE;
-  }
-  return c;
-};
 
 const appendUserIdParam = (url: string, osuId: number) => {
   return `${url}&as_user_id=sis_user_id:${osuId}`;
