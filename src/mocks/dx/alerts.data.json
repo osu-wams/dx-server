@@ -1,40 +1,8 @@
-{
-  "jsonapi": {
-    "version": "1.0",
-    "meta": {
-      "links": {
-        "self": {
-          "href": "http://jsonapi.org/format/1.0/"
-        }
-      }
-    }
-  },
-  "data": [
-    {
-      "type": "node--alerts",
-      "id": "9c918a27-2925-48a3-8ca1-cd4c465a0a8e",
-      "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/node/alerts/resource/schema"
-        },
-        "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/node/alerts/9c918a27-2925-48a3-8ca1-cd4c465a0a8e?resourceVersion=id%3A8046"
-        }
-      },
-      "attributes": {
-        "title": "Testing the Alert System",
-        "created": "2019-11-21T19:06:57+00:00",
-        "field_alert_content": "Test Test Test",
-        "field_alert_type": "info"
-      }
-    }
-  ],
-  "links": {
-    "describedby": {
-      "href": "https://data.dx.oregonstate.edu/jsonapi/node/alerts/collection/schema"
-    },
-    "self": {
-      "href": "https://data.dx.oregonstate.edu/jsonapi/node/alerts?fields%5Bnode--alerts%5D=title%2Ccreated%2Cfield_alert_content%2Cfield_alert_type\u0026filter%5Bstatus%5D=1\u0026sort=-field_alert_expiration_date"
-    }
+[
+  {
+    "title": "DX Notification",
+    "created": "2019-11-21T19:06:57+00:00",
+    "field_alert_content": "This is mocked data and demonstrates a test informational notification.",
+    "field_alert_type": "info"
   }
-}
+]

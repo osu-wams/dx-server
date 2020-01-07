@@ -88,7 +88,7 @@ const getRequest = async <T>(url: string, token: string | undefined): Promise<T>
  * @param params a masqueraded user or a users provide oAuth token
  */
 export const getPlannerItems = async (params: ICanvasAPIParams): Promise<UpcomingAssignment[]> => {
-  const today = format(Date.now(), 'YYYY-MM-DD');
+  const today = format(Date.now(), 'yyyy-MM-dd');
   let url = `${CANVAS_BASE_URL}/planner/items?start_date=${today}`;
   if (params.osuId) {
     url = appendUserIdParam(url, params.osuId);

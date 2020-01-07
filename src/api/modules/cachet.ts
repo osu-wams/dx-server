@@ -1,5 +1,8 @@
 import config from 'config';
 import cache from './cache';
+import { fetchData } from '../util';
+import mockedIncidents from '../../mocks/cachet/incidents';
+import mockedComponents from '../../mocks/cachet/components';
 
 export const CACHET_BASE_URL: string = config.get('cachetApi.baseUrl');
 const CACHE_SEC: number = parseInt(config.get('cachetApi.cacheEndpointSec'), 10);
@@ -109,18 +112,26 @@ export interface ICachetComponent {
 
 const getComponents = async (): Promise<ICachetComponentResponse> => {
   const url = `${CACHET_BASE_URL}/components`;
-  return cache.get(url, { json: true }, true, {
-    key: url,
-    ttlSeconds: CACHE_SEC,
-  });
+  return fetchData(
+    () =>
+      cache.get(url, { json: true }, true, {
+        key: url,
+        ttlSeconds: CACHE_SEC,
+      }),
+    mockedComponents,
+  );
 };
 
 const getIncidents = async (): Promise<ICachetIncidentResponse> => {
   const url = `${CACHET_BASE_URL}/incidents`;
-  return cache.get(url, { json: true }, true, {
-    key: url,
-    ttlSeconds: CACHE_SEC,
-  });
+  return fetchData(
+    () =>
+      cache.get(url, { json: true }, true, {
+        key: url,
+        ttlSeconds: CACHE_SEC,
+      }),
+    mockedIncidents,
+  );
 };
 
 const mostRecentIncident = (

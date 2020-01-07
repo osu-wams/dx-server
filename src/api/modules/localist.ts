@@ -2,7 +2,12 @@ import Parser from 'rss-parser';
 import config from 'config';
 import cache from './cache';
 import { fetchData } from '../util';
-import { mockedAcademicCalendar, mockedCampusEvents, mockedEventsDx } from '../../mocks/localist';
+import {
+  mockedAcademicCalendar,
+  mockedCampusEvents,
+  mockedEventsDx,
+  mockedEventsEmployee,
+} from '../../mocks/localist';
 
 const parser = new Parser();
 
@@ -104,7 +109,10 @@ export const getAcademicCalendarEvents = async (): Promise<object[]> => {
 export const getEmployeeEvents = async (): Promise<object[]> => {
   try {
     const url = `${LOCALIST_BASE_URL}/events?event_type=${EVENT_TYPES.employee}&days=${EVENT_DAYS_AGO}`;
-    const data = await cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC });
+    const data = await fetchData(
+      () => cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC }),
+      mockedEventsEmployee,
+    );
     return mappedEvents(data.events);
   } catch (err) {
     throw err;

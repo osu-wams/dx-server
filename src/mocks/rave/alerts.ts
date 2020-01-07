@@ -5,10 +5,10 @@ const xmlString = `<?xml version="1.0" encoding="UTF-8"?>
         <link>http://content.getrave.com/rss/oregonstate/channel2</link>
         <description>RSS feed for web pages - Testing</description>
         <item>
-            <title>Weather closure 10/12</title>
+            <title>Mock RAVE Alert</title>
             <link />
-            <description>Snow causes dangerous road conditions</description>
-            <pubDate>Tue, 10 Dec 2018 18:47:39 GMT</pubDate>
+            <description>RAVE Alert notification description goes here.</description>
+            <pubDate>Mon, 20 Apr 2018 16:00:00 GMT</pubDate>
             <guid />
             <dc:date>2018-05-29T18:47:39Z</dc:date>
         </item>

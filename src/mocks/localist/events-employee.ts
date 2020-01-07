@@ -1,4 +1,4 @@
-import * as data from './events-employee.data.json';
+import data from './events-employee.data';
 
 export const expectedEmployeeEvents = [
   {
@@ -44,7 +44,7 @@ export const expectedEmployeeEvents = [
       'https://images.localist.com/photos/584345/huge/c130e0926ea1894f978182ad08511d35ff510696.jpg',
     date: '2019-12-17T09:00:00-08:00',
     id: 32122778290228,
-    title: 'PhD Preliminary Oral Exam – Manjunath Kareppagoudr',
+    title: 'PhD Preliminary Oral Exam',
     type: 'localist',
   },
   {
