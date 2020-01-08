@@ -87,7 +87,7 @@ export default {
         custom_fields: {
           contact_name: 'No Reply',
           contact_email: 'noreply@osucascades.edu',
-          contact_phone: '5415551212',
+          contact_phone: '1234561234',
         },
         localist_url: 'https://events.oregonstate.edu/event/transfer_students_lunch_learn',
         localist_ics_url: 'https://events.oregonstate.edu/event/transfer_students_lunch_learn.ics',
@@ -183,7 +183,7 @@ export default {
         custom_fields: {
           contact_name: 'Office of Admissions',
           contact_email: 'noreply@osucascades.edu',
-          contact_phone: '5415551212',
+          contact_phone: '1234561234',
         },
         localist_url: 'https://events.oregonstate.edu/event/transfer_start_4771',
         localist_ics_url: 'https://events.oregonstate.edu/event/transfer_start_4771.ics',
