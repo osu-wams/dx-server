@@ -59,11 +59,11 @@ export const eventsData: any = [
             start: '2019-10-24T10:00:00-07:00',
             end: '2019-10-24T11:00:00-07:00',
             all_day: false,
-            num_attending: 0
-          }
-        }
-      ]
-    }
+            num_attending: 0,
+          },
+        },
+      ],
+    },
   },
   {
     event: {
@@ -102,12 +102,12 @@ export const eventsData: any = [
       keywords: [],
       tags: [],
       description_text:
-        'Food processing, handling and storage facilities can create\nconditions that allow microorganisms to become established and\nthrive. Some of these microorganisms have the potential to\ncause foodborne illness if they contaminate food products.\nIdentifying niche locations and hotspots that house these\nmicroorganisms through both routine and investigative\nenvironmental programs is critical for producers of ready-to-\neat foods and raw agricultural commodities.\n\nThis two-day workshop is intended to provide you\nwith knowledge and best practices on developing and\nimplementing an effective Pathogen Environmental\nMonitoring (PEM) program.\nWhat to expect?\n● Through hands-on activities you will:\n- Become familiar with environmental foodborne pathogens,\n- Learn how to collect swabs,\n- Identify issues through case studies from the industry,\n- Get tips on how to design and establish a PEM program,\n- Have opportunity to discuss effective controls and\ncorrective action steps in small working groups.\n\n● You will receive:\n- All course materials,\n- Certificate of course attendance,\n- Meals (lunch and refreshments).\n\nREGISTRATION:\nThis workshop is subsidized through OR SCBGP\ngrant ODA-5010-GR.\nPlease note:\nRegistrations are limited. NO substitutions,\ntransfers, or refunds will be issued within one week\nof the training start date.\n\n● Register through Eventbrite\nhttps://www.eventbrite.com/e/pathogen-environmental-monitoring-workshop-tickets-61456616394\n\n\n● Cost:\n$150 per person,\n$125 for multiple registrations\n\nWHEN AND WHERE?\n● Location:\nFood Innovation Center\n1207 NW Naito Parkway, Portland, OR 97209\n● Dates and times:\nDay 1: June 12, 2019 8:00 AM to 5:00 PM\nDay 2: June 13, 2019 8:00 AM to 3:00 PM\n\nJovana Kovacevic\nAssistant Professor and Food Safety Extension Specialist\nOSU Food Innovation Center, Portland OR\njovana.kovacevic@oregonstate.edu | 503.872.6621\n\n\nJoy Waite-Cusic\nAssociate Professor of Food Safety Systems\nOSU Dept. Food Science and Technology, Corvallis OR\njoy.waite-cusic@oregonstate.edu | 541.737.6825\n\nJohn Jorgensen\nGraduate Student, OSU FIC/FST, Portland, OR\njohn.jorgensen@oregonstate.edu',
+        'Food processing, handling and storage facilities can create\nconditions that allow microorganisms to become established and\nthrive. Some of these microorganisms have the potential to\ncause foodborne illness if they contaminate food products.\nIdentifying niche locations and hotspots that house these\nmicroorganisms through both routine and investigative\nenvironmental programs is critical for producers of ready-to-\neat foods and raw agricultural commodities.\n\nThis two-day workshop is intended to provide you\nwith knowledge and best practices on developing and\nimplementing an effective Pathogen Environmental\nMonitoring (PEM) program.\nWhat to expect?\n● Through hands-on activities you will:\n- Become familiar with environmental foodborne pathogens,\n- Learn how to collect swabs,\n- Identify issues through case studies from the industry,\n- Get tips on how to design and establish a PEM program,\n- Have opportunity to discuss effective controls and\ncorrective action steps in small working groups.\n\n● You will receive:\n- All course materials,\n- Certificate of course attendance,\n- Meals (lunch and refreshments).\n\nREGISTRATION:\nThis workshop is subsidized through OR SCBGP\ngrant ODA-5010-GR.\nPlease note:\nRegistrations are limited. NO substitutions,\ntransfers, or refunds will be issued within one week\nof the training start date.\n\n● Register through Eventbrite\nhttps://www.eventbrite.com/e/pathogen-environmental-monitoring-workshop-tickets-61456616394\n\n\n● Cost:\n$150 per person,\n$125 for multiple registrations\n\nWHEN AND WHERE?\n● Location:\nFood Innovation Center\n1207 NW Naito Parkway, Portland, OR 97209\n● Dates and times:\nDay 1: June 12, 2019 8:00 AM to 5:00 PM\nDay 2: June 13, 2019 8:00 AM to 3:00 PM\n\nJovana Kovacevic\nAssistant Professor and Food Safety Extension Specialist\nOSU Food Innovation Center, Portland OR\nno-reply@o.e | 123-456-1234\n\n\nJoy Waite-Cusic\nAssociate Professor of Food Safety Systems\nOSU Dept. Food Science and Technology, Corvallis OR\nno-reply@o.e | 123-456\n\nJohn Jorgensen\nGraduate Student, OSU FIC/FST, Portland, OR\nno-reply@oregonstate.edu',
       photo_id: 123,
       detail_views: 34,
       address: '1207 NW Naito Parkway, Portland, OR 97209',
       description:
-        '<div>Food processing, handling and storage facilities can create<br />\r\nconditions that allow microorganisms to become established and<br />\r\nthrive. Some of these microorganisms have the potential to<br />\r\ncause foodborne illness if they contaminate food products.<br />\r\nIdentifying niche locations and hotspots that house these<br />\r\nmicroorganisms through both routine and investigative<br />\r\nenvironmental programs is critical for producers of ready-to-<br />\r\neat foods and raw agricultural commodities.<br />\r\n<br />\r\nThis two-day workshop is intended to provide you<br />\r\nwith knowledge and best practices on developing and<br />\r\nimplementing an effective Pathogen Environmental<br />\r\nMonitoring (PEM) program.</div>\r\n\r\n<p><br />\r\n<b>What to expect?</b><br />\r\n● Through hands-on activities you will:<br />\r\n- Become familiar with environmental foodborne pathogens,<br />\r\n- Learn how to collect swabs,<br />\r\n- Identify issues through case studies from the industry,<br />\r\n- Get tips on how to design and establish a PEM program,<br />\r\n- Have opportunity to discuss effective controls and<br />\r\ncorrective action steps in small working groups.<br />\r\n<br />\r\n<b>● You will receive:</b><br />\r\n- All course materials,<br />\r\n- Certificate of course attendance,<br />\r\n- Meals (lunch and refreshments).<br />\r\n<br />\r\n<b>REGISTRATION:</b><br />\r\nThis workshop is subsidized through OR SCBGP<br />\r\ngrant ODA-5010-GR.<br />\r\n<i>Please note:</i><br />\r\nRegistrations are limited. NO substitutions,<br />\r\ntransfers, or refunds will be issued within one week<br />\r\nof the training start date.<br />\r\n<br />\r\n● Register through Eventbrite<br />\r\n<a href="https://www.eventbrite.com/e/pathogen-environmental-monitoring-workshop-tickets-61456616394">https://www.eventbrite.com/e/pathogen-environmental-monitoring-workshop-tickets-61456616394</a></p>\r\n\r\n<p><br />\r\n● Cost:<br />\r\n$150 per person,<br />\r\n$125 for multiple registrations<br />\r\n<br />\r\n<b>WHEN AND WHERE?</b><br />\r\n● Location:<br />\r\nFood Innovation Center<br />\r\n1207 NW Naito Parkway, Portland, OR 97209<br />\r\n● Dates and times:<br />\r\nDay 1: June 12, 2019 8:00 AM to 5:00 PM<br />\r\nDay 2: June 13, 2019 8:00 AM to 3:00 PM<br />\r\n<br />\r\n<b>Jovana Kovacevic</b><br />\r\nAssistant Professor and Food Safety Extension Specialist<br />\r\nOSU Food Innovation Center, Portland OR<br />\r\njovana.kovacevic@oregonstate.edu | 503.872.6621</p>\r\n\r\n<p><br />\r\n<b>Joy Waite-Cusic</b><br />\r\nAssociate Professor of Food Safety Systems<br />\r\nOSU Dept. Food Science and Technology, Corvallis OR<br />\r\njoy.waite-cusic@oregonstate.edu | 541.737.6825<br />\r\n<br />\r\n<b>John Jorgensen</b><br />\r\nGraduate Student, OSU FIC/FST, Portland, OR<br />\r\njohn.jorgensen@oregonstate.edu</p>\r\n',
+        '<div>Food processing, handling and storage facilities can create<br />\r\nconditions that allow microorganisms to become established and<br />\r\nthrive. Some of these microorganisms have the potential to<br />\r\ncause foodborne illness if they contaminate food products.<br />\r\nIdentifying niche locations and hotspots that house these<br />\r\nmicroorganisms through both routine and investigative<br />\r\nenvironmental programs is critical for producers of ready-to-<br />\r\neat foods and raw agricultural commodities.<br />\r\n<br />\r\nThis two-day workshop is intended to provide you<br />\r\nwith knowledge and best practices on developing and<br />\r\nimplementing an effective Pathogen Environmental<br />\r\nMonitoring (PEM) program.</div>\r\n\r\n<p><br />\r\n<b>What to expect?</b><br />\r\n● Through hands-on activities you will:<br />\r\n- Become familiar with environmental foodborne pathogens,<br />\r\n- Learn how to collect swabs,<br />\r\n- Identify issues through case studies from the industry,<br />\r\n- Get tips on how to design and establish a PEM program,<br />\r\n- Have opportunity to discuss effective controls and<br />\r\ncorrective action steps in small working groups.<br />\r\n<br />\r\n<b>● You will receive:</b><br />\r\n- All course materials,<br />\r\n- Certificate of course attendance,<br />\r\n- Meals (lunch and refreshments).<br />\r\n<br />\r\n<b>REGISTRATION:</b><br />\r\nThis workshop is subsidized through OR SCBGP<br />\r\ngrant ODA-5010-GR.<br />\r\n<i>Please note:</i><br />\r\nRegistrations are limited. NO substitutions,<br />\r\ntransfers, or refunds will be issued within one week<br />\r\nof the training start date.<br />\r\n<br />\r\n● Register through Eventbrite<br />\r\n<a href="https://www.eventbrite.com/e/pathogen-environmental-monitoring-workshop-tickets-61456616394">https://www.eventbrite.com/e/pathogen-environmental-monitoring-workshop-tickets-61456616394</a></p>\r\n\r\n<p><br />\r\n● Cost:<br />\r\n$150 per person,<br />\r\n$125 for multiple registrations<br />\r\n<br />\r\n<b>WHEN AND WHERE?</b><br />\r\n● Location:<br />\r\nFood Innovation Center<br />\r\n1207 NW Naito Parkway, Portland, OR 97209<br />\r\n● Dates and times:<br />\r\nDay 1: June 12, 2019 8:00 AM to 5:00 PM<br />\r\nDay 2: June 13, 2019 8:00 AM to 3:00 PM<br />\r\n<br />\r\n<b>Jovana Kovacevic</b><br />\r\nAssistant Professor and Food Safety Extension Specialist<br />\r\nOSU Food Innovation Center, Portland OR<br />\r\nno-reply@o.e | 123-456-1234</p>\r\n\r\n<p><br />\r\n<b>Joy Waite-Cusic</b><br />\r\nAssociate Professor of Food Safety Systems<br />\r\nOSU Dept. Food Science and Technology, Corvallis OR<br />\r\nno-reply@o.e | 123-456<br />\r\n<br />\r\n<b>John Jorgensen</b><br />\r\nGraduate Student, OSU FIC/FST, Portland, OR<br />\r\nno-reply@oregonstate.edu</p>\r\n',
       featured: false,
       localist_url: 'https://events.oregonstate.edu/event/pathogetesto',
       localist_ics_url: 'https://events.oregonstate.edu/event/testo.ics',
@@ -122,11 +122,11 @@ export const eventsData: any = [
             start: '2019-10-24T10:00:00-07:00',
             end: '2019-10-24T11:00:00-07:00',
             all_day: false,
-            num_attending: 0
-          }
-        }
-      ]
-    }
+            num_attending: 0,
+          },
+        },
+      ],
+    },
   },
   {
     event: {
@@ -185,26 +185,26 @@ export const eventsData: any = [
             start: '2019-10-24T10:00:00-07:00',
             end: '2019-10-24T11:00:00-07:00',
             all_day: false,
-            num_attending: 0
-          }
-        }
-      ]
-    }
-  }
+            num_attending: 0,
+          },
+        },
+      ],
+    },
+  },
 ];
 
 export const eventsResult = [
   {
     action: {
       link:
-        'https://events.oregonstate.edu/event/sea-inspired_paintings_on_exhibit_at_hatfield_visitor_center_until_july_7'
+        'https://events.oregonstate.edu/event/sea-inspired_paintings_on_exhibit_at_hatfield_visitor_center_until_july_7',
     },
     bg_image:
       'https://images.localist.com/photos/849707/huge/dc9bddd1554ee9119d1109f337d82d700118bba1.jpg',
     date: '2019-10-24T10:00:00-07:00',
     id: 31069217151072,
     title: 'Sea-inspired paintings on exhibit',
-    type: 'localist'
+    type: 'localist',
   },
   {
     action: { link: 'https://events.oregonstate.edu/event/pathogetesto' },
@@ -212,7 +212,7 @@ export const eventsResult = [
     date: '2019-10-24T10:00:00-07:00',
     id: 31069217151072,
     title: 'Pathogen Environmental Monitoring Workshop for Pacific Northwest Food Ind',
-    type: 'localist'
+    type: 'localist',
   },
   {
     action: { link: 'https://events.oregonstate.edu/testo' },
@@ -220,6 +220,6 @@ export const eventsResult = [
     date: '2019-10-24T10:00:00-07:00',
     id: 31069217151072,
     title: 'Katherine Dziedzic - Integrative Biology PhD Defense Seminar',
-    type: 'localist'
-  }
+    type: 'localist',
+  },
 ];

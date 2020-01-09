@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import app from '../../index';
+import app, { useMocks } from '../../index';
 import User from '../models/user';
 import { mockUser } from '../models/__mocks__/user';
 
@@ -21,7 +21,10 @@ beforeAll(async () => {
 
 describe('/healthcheck', () => {
   it('returns success', async () => {
-    await request.get('/healthcheck').expect(200);
+    await request.get('/healthcheck').expect(200, {
+      version: 'test-123',
+      useMocks,
+    });
   });
 });
 

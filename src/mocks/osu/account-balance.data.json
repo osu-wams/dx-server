@@ -1,0 +1,15 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/students/111111111/account-balance"
+  },
+  "data": {
+    "type": "account-balance",
+    "id": "111111111",
+    "links": {
+      "self": null
+    },
+    "attributes": {
+      "currentBalance": 4254.86
+    }
+  }
+}

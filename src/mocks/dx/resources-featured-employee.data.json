@@ -1,0 +1,174 @@
+[
+  {
+    "type": "entity_subqueue--employee_featured",
+    "id": "88642344-e606-4d18-b923-144b7a6b080f",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/employee_featured/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/employee_featured/88642344-e606-4d18-b923-144b7a6b080f"
+      }
+    },
+    "queue": { "id": "8f434f2f-cdf7-4257-b5c0-c0a8e1f73211", "type": "entity_queue--entity_queue" },
+    "items": [
+      {
+        "type": "node--services",
+        "id": "9d615d11-bc00-4f03-a90c-502103928d30",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/9d615d11-bc00-4f03-a90c-502103928d30?resourceVersion=id%3A8176"
+          }
+        },
+        "field_affiliation": [
+          {
+            "type": "taxonomy_term--affiliation",
+            "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+              }
+            },
+            "name": "Employee"
+          }
+        ],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "W-2 Wage and Tax Statement",
+        "field_icon_name": "fal.file-invoice-dollar",
+        "field_service_synonyms": [],
+        "field_service_url": {
+          "uri": "https://xe-duo.ucsadm.oregonstate.edu:9990/ords/prod/bwpkxtxs.P_ChooseW2Key",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "a4997f74-7ae9-46a0-a180-faac22d229be",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/a4997f74-7ae9-46a0-a180-faac22d229be?resourceVersion=id%3A8171"
+          }
+        },
+        "field_affiliation": [
+          {
+            "type": "taxonomy_term--affiliation",
+            "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+              }
+            },
+            "name": "Employee"
+          }
+        ],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Direct Deposit",
+        "field_icon_name": "fal.money-check-alt",
+        "field_service_synonyms": ["bank", "bill", "pay"],
+        "field_service_url": {
+          "uri": "https://xe-duo.ucsadm.oregonstate.edu:9990/ords/prod/bwykdird.P_DirectDeposit",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "d12aa441-d7f1-49a2-b7f6-5dd1644db25a",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/d12aa441-d7f1-49a2-b7f6-5dd1644db25a?resourceVersion=id%3A8166"
+          }
+        },
+        "field_affiliation": [
+          {
+            "type": "taxonomy_term--affiliation",
+            "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+              }
+            },
+            "name": "Employee"
+          }
+        ],
+        "field_audience": [],
+        "field_service_category": [],
+        "title": "Retirement Plans & Tax-Deferred Investments",
+        "field_icon_name": "fal.file-medical",
+        "field_service_synonyms": [],
+        "field_service_url": {
+          "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/bwpkdcmn.P_DispDednCurRet",
+          "title": "",
+          "options": []
+        }
+      }
+    ],
+    "drupal_internal__name": "employee_featured",
+    "title": "Employee: Featured",
+    "langcode": "en",
+    "created": "2019-12-12T18:13:43+00:00",
+    "changed": "2019-12-12T18:17:48+00:00"
+  }
+]

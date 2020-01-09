@@ -4,16 +4,16 @@ import querystring from 'querystring';
 import { format } from 'date-fns';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
+import { fetchData } from '../util';
 import logger from '../../logger';
+import mockedCanvasPlannerItems from '../../mocks/canvas/planner-items.data';
 
 export const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
 const CANVAS_TOKEN: string = config.get('canvasApi.token');
 export const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
 export const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
-export const CANVAS_OAUTH_AUTH_URL: string = config.get('canvasOauth.authUrl');
 export const CANVAS_OAUTH_ID: string = config.get('canvasOauth.id');
 export const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
-export const CANVAS_OAUTH_CALLBACK_URL: string = config.get('canvasOauth.callbackUrl');
 export const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 
 export interface ICanvasAPIParams {
@@ -44,28 +44,6 @@ interface ICanvasAuthorizationCodeGrant {
 }
 /* eslint-enable camelcase */
 
-interface ICanvasOAuthConfig {
-  authorizationURL: string;
-  tokenURL: string;
-  clientID: string;
-  clientSecret: string;
-  callbackURL: string;
-  scope?: string;
-}
-export const canvasOAuthConfig = (): ICanvasOAuthConfig => {
-  const c: ICanvasOAuthConfig = {
-    authorizationURL: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_AUTH_URL}`,
-    tokenURL: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_TOKEN_URL}`,
-    clientID: CANVAS_OAUTH_ID,
-    clientSecret: CANVAS_OAUTH_SECRET,
-    callbackURL: CANVAS_OAUTH_CALLBACK_URL,
-  };
-  if (CANVAS_OAUTH_SCOPE !== '') {
-    c.scope = CANVAS_OAUTH_SCOPE;
-  }
-  return c;
-};
-
 const appendUserIdParam = (url: string, osuId: number) => {
   return `${url}&as_user_id=sis_user_id:${osuId}`;
 };
@@ -86,12 +64,12 @@ const getRequest = async <T>(url: string, token: string | undefined): Promise<T>
  * @param params a masqueraded user or a users provide oAuth token
  */
 export const getPlannerItems = async (params: ICanvasAPIParams): Promise<UpcomingAssignment[]> => {
-  const today = format(Date.now(), 'YYYY-MM-DD');
+  const today = format(Date.now(), 'yyyy-MM-dd');
   let url = `${CANVAS_BASE_URL}/planner/items?start_date=${today}`;
   if (params.osuId) {
     url = appendUserIdParam(url, params.osuId);
   }
-  return getRequest(url, params.oAuthToken);
+  return fetchData(() => getRequest(url, params.oAuthToken), mockedCanvasPlannerItems);
 };
 
 /**

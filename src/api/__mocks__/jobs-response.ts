@@ -19,7 +19,7 @@ export const JobsMockResponse: any = [
       id: 111111,
       aliases: ['OSU', 'Oregon State'],
       name: 'Oregon State University',
-      phone: '541-737-4085',
+      phone: '123-456-1234',
       pitch: '',
       students_can_message: true,
       time_zone: 'Pacific Time (US & Canada)',
@@ -34,7 +34,7 @@ export const JobsMockResponse: any = [
         name: 'Higher Education',
         nubs_category: 'Government/Education',
         type: 'Industry',
-        updated_at: '2016-03-15T22:32:31.997Z'
+        updated_at: '2016-03-15T22:32:31.997Z',
       },
       location: {
         address_line_one: '1500 Southwest Jefferson Way',
@@ -49,8 +49,8 @@ export const JobsMockResponse: any = [
         state: 'Oregon',
         type: 'Location',
         updated_at: '2018-07-23T18:51:13.449Z',
-        zipcode: '97331'
-      }
+        zipcode: '97331',
+      },
     },
     employer_id: 11111,
     employment_type_id: 1,
@@ -77,7 +77,7 @@ export const JobsMockResponse: any = [
     type: 'Job',
     updated_at: '2019-05-21T00:17:47.242Z',
     updated_by_id: 33333,
-    work_study: false
+    work_study: false,
   },
   {
     additional_application_instructions: null,
@@ -98,7 +98,7 @@ export const JobsMockResponse: any = [
       id: 2222,
       aliases: ['OSU', 'Oregon State'],
       name: 'Oregon State University',
-      phone: '541-737-4085',
+      phone: '123-456-1234',
       pitch: '',
       students_can_message: true,
       time_zone: 'Pacific Time (US & Canada)',
@@ -113,7 +113,7 @@ export const JobsMockResponse: any = [
         name: 'Higher Education',
         nubs_category: 'Government/Education',
         type: 'Industry',
-        updated_at: '2016-03-15T22:32:31.997Z'
+        updated_at: '2016-03-15T22:32:31.997Z',
       },
       location: {
         address_line_one: '1500 Southwest Jefferson Way',
@@ -128,8 +128,8 @@ export const JobsMockResponse: any = [
         state: 'Oregon',
         type: 'Location',
         updated_at: '2018-07-23T18:51:13.449Z',
-        zipcode: '97331'
-      }
+        zipcode: '97331',
+      },
     },
     employer_id: 55555,
     employment_type_id: 1,
@@ -156,8 +156,8 @@ export const JobsMockResponse: any = [
     type: 'Job',
     updated_at: '2019-05-21T00:17:47.242Z',
     updated_by_id: 22222,
-    work_study: false
-  }
+    work_study: false,
+  },
 ];
 
 export default JobsMockResponse;

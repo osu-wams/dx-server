@@ -1,0 +1,8 @@
+[
+  {
+    "title": "DX Notification",
+    "created": "2019-11-21T19:06:57+00:00",
+    "field_alert_content": "This is mocked data and demonstrates a test informational notification.",
+    "field_alert_type": "info"
+  }
+]

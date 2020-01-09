@@ -1,0 +1,162 @@
+[
+  {
+    "type": "node--information",
+    "id": "42187bef-d0b0-494e-a910-b6487be5fb68",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/42187bef-d0b0-494e-a910-b6487be5fb68?resourceVersion=id%3A1011"
+      }
+    },
+    "title": "Academic Overview",
+    "body": {
+      "value": "<p><span><span><span>This is where you can keep tabs on your GPA, account holds, number of credits enrolled in and academic standing. Although credits enrolled display the current term, your academic standing and your GPA are calculated through last term; they do not reflect any of your grades or coursework from the current term. </span></span></span></p>\r\n",
+      "format": "full_html",
+      "processed": "<p><span><span><span>This is where you can keep tabs on your GPA, account holds, number of credits enrolled in and academic standing. Although credits enrolled display the current term, your academic standing and your GPA are calculated through last term; they do not reflect any of your grades or coursework from the current term. </span></span></span></p>\n",
+      "summary": ""
+    },
+    "field_machine_name": "academic-overview"
+  },
+  {
+    "type": "node--information",
+    "id": "28c1c56f-2285-41c1-afdf-3db4d56ce5a0",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/28c1c56f-2285-41c1-afdf-3db4d56ce5a0?resourceVersion=id%3A1021"
+      }
+    },
+    "title": "Current Courses",
+    "body": {
+      "value": "<p><span><span><span>This is your in-depth look at the courses you’re taking this term and the breakdown of credits. Click on the course for the class schedule and the instructor’s contact information.</span></span></span></p>\r\n",
+      "format": "basic_html",
+      "processed": "<p><span><span><span>This is your in-depth look at the courses you’re taking this term and the breakdown of credits. Click on the course for the class schedule and the instructor’s contact information.</span></span></span></p>",
+      "summary": ""
+    },
+    "field_machine_name": "current-courses"
+  },
+  {
+    "type": "node--information",
+    "id": "36a6ecae-8188-4a38-a2a0-7cf6c6f25990",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/36a6ecae-8188-4a38-a2a0-7cf6c6f25990?resourceVersion=id%3A1316"
+      }
+    },
+    "title": "Schedule Card",
+    "body": {
+      "value": "<p><span><span><span>This is your at-a-glance look at what’s coming up in the next five&nbsp;days with the courses you’re enrolled in and what assignments are due in Canvas. However, this card only pulls assignments from Canvas; if your professor uses a different system to assign coursework, you will not be able to see it here. </span></span></span></p>\r\n",
+      "format": "basic_html",
+      "processed": "<p><span><span><span>This is your at-a-glance look at what’s coming up in the next five days with the courses you’re enrolled in and what assignments are due in Canvas. However, this card only pulls assignments from Canvas; if your professor uses a different system to assign coursework, you will not be able to see it here. </span></span></span></p>",
+      "summary": ""
+    },
+    "field_machine_name": "schedule-card"
+  },
+  {
+    "type": "node--information",
+    "id": "77dd641b-60e1-43f0-b75f-c2200d6aedc0",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/77dd641b-60e1-43f0-b75f-c2200d6aedc0?resourceVersion=id%3A4541"
+      }
+    },
+    "title": "Academic Calendar",
+    "body": {
+      "value": "<p><span><span><span>This is a quick look at the university’s academic calendar — use it to keep track of important dates and deadlines about when the terms begin, course registration and last day to drop.</span></span></span></p>\r\n",
+      "format": "basic_html",
+      "processed": "<p><span><span><span>This is a quick look at the university’s academic calendar — use it to keep track of important dates and deadlines about when the terms begin, course registration and last day to drop.</span></span></span></p>",
+      "summary": ""
+    },
+    "field_machine_name": "academic-calendar"
+  },
+  {
+    "type": "node--information",
+    "id": "ee4eb0a9-7eae-4253-a426-dd217a9e3175",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/ee4eb0a9-7eae-4253-a426-dd217a9e3175?resourceVersion=id%3A4551"
+      }
+    },
+    "title": "Canvas",
+    "body": {
+      "value": "<p>This is where you can keep track of what's coming up in your classes: assignments due, midterms to prep for, etc. This card only pulls assignments from Canvas; if your professor uses a different system to assign coursework, you will not be able to see it here.</p>\r\n",
+      "format": "limited",
+      "processed": "<p>This is where you can keep track of what's coming up in your classes: assignments due, midterms to prep for, etc. This card only pulls assignments from Canvas; if your professor uses a different system to assign coursework, you will not be able to see it here.</p>\n",
+      "summary": ""
+    },
+    "field_machine_name": "canvas"
+  },
+  {
+    "type": "node--information",
+    "id": "91a3f6ea-c284-4eaa-bfee-1c3d2a0b51f0",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/91a3f6ea-c284-4eaa-bfee-1c3d2a0b51f0?resourceVersion=id%3A4561"
+      }
+    },
+    "title": "Recent Transactions",
+    "body": {
+      "value": "<p><span><span><span>You can review your recent OSU account transactions here.</span></span></span></p>\r\n",
+      "format": "basic_html",
+      "processed": "<p><span><span><span>You can review your recent OSU account transactions here.</span></span></span></p>",
+      "summary": ""
+    },
+    "field_machine_name": "recent-transactions"
+  },
+  {
+    "type": "node--information",
+    "id": "0cf70751-b963-4813-966e-e48c06e7b375",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/0cf70751-b963-4813-966e-e48c06e7b375?resourceVersion=id%3A4591"
+      }
+    },
+    "title": "Financial Overview",
+    "body": {
+      "value": "<p>Financial overview helps you keep track of your OSU and meal plan accounts, and provides you with a quick link to make a payment via MyBill. Your payments won't immediately be reflected in your total balance, however.</p>\r\n",
+      "format": "basic_html",
+      "processed": "<p>Financial overview helps you keep track of your OSU and meal plan accounts, and provides you with a quick link to make a payment via MyBill. Your payments won't immediately be reflected in your total balance, however.</p>",
+      "summary": ""
+    },
+    "field_machine_name": "financial-overview"
+  },
+  {
+    "type": "node--information",
+    "id": "cc81c37b-d1bd-4b1d-9481-52840481faff",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/information/cc81c37b-d1bd-4b1d-9481-52840481faff?resourceVersion=id%3A8901"
+      }
+    },
+    "title": "IT System Status",
+    "body": {
+      "value": "<p>These are IT System Statuses.</p>\r\n",
+      "format": "basic_html",
+      "processed": "<p>These are IT System Statuses.</p>",
+      "summary": ""
+    },
+    "field_machine_name": "it-system-status"
+  }
+]

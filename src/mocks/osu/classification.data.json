@@ -1,0 +1,23 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/students/111111111/classification"
+  },
+  "data": {
+    "type": "classification",
+    "id": "111111111",
+    "links": {
+      "self": null
+    },
+    "attributes": {
+      "levelCode": "01",
+      "level": "Undergraduate",
+      "classification": "Senior",
+      "campusCode": "DSC",
+      "campus": "Dist. Degree Corvallis Student",
+      "status": "Continuing",
+      "isInternational": false,
+      "studentTypeCode": "T",
+      "studentType": "Transfer"
+    }
+  }
+}

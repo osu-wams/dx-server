@@ -17,7 +17,10 @@ import mockUser from '../../utils/mock-user';
 import { DYNAMODB_ENDPOINT } from '../../db/index';
 import { GROUPS } from '../models/user';
 
-jest.mock('../util.ts');
+jest.mock('../util.ts', () => ({
+  ...jest.requireActual('../util.ts'),
+  getToken: () => Promise.resolve('bearer token'),
+}));
 jest.mock('../../utils/mock-user.ts');
 
 const mockedUser = mockUser as jest.Mocked<any>;

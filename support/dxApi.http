@@ -1,10 +1,62 @@
 @baseUrl = https://data.dx.oregonstate.edu
 
+# @name getAlerts
+GET {{baseUrl}}/jsonapi/node/alerts HTTP/1.1
+  ?fields[node--alerts]=title,created,field_alert_content,field_alert_type
+  &sort=-field_alert_expiration_date
+  &filter[status]=1
+
+###
+
 # @name getAnnouncements
 GET {{baseUrl}}/jsonapi/node/announcement HTTP/1.1
+  ?fields[node--announcement]=id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages
+  &fields[taxonomy_term--pages]=name
+  &fields[taxonomy_term--audience]=name
+  &fields[media--image]=name,field_media_image
+  &fields[file--file]=filename,filemime,uri
+  &include=field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages
+  &filter[status]=1
+  &page[limit]=10
+
+###
+
+# @name getCategories
+GET {{baseUrl}}/jsonapi/taxonomy_term/categories HTTP/1.1
+  ?fields[taxonomy_term--categories]=id,name,field_taxonomy_icon
+  &fields[media--image]=name,field_media_image
+  &fields[file--file]=filename,filemime,uri
+  &include=field_taxonomy_icon.field_media_image
+  &sort=weight
+  &filter[status]=1
+
+###
+
+# @name getCuratedResourcesFeatured
+GET {{baseUrl}}/jsonapi/entity_subqueue/featured HTTP/1.1
+  ?fields[entity_subqueue--services]=items,drupal_internal__name
+  &fields[node--services]=id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url
+  &fields[taxonomy_term--categories]=name
+  &fields[taxonomy_term--audience]=name
+  &fields[taxonomy_term--affiliation]=name
+  &include=items,items.field_affiliation,items.field_audience,items.field_service_category
+
+###
+
+# @name getInformation
+GET {{baseUrl}}/jsonapi/node/information HTTP/1.1
+  ?fields[node--information]=title,field_machine_name,body
+  &filter[status]=1
 
 ###
 
 # @name getResources
 GET {{baseUrl}}/jsonapi/node/services HTTP/1.1
+  ?fields[node--services]=id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url
+  &fields[taxonomy_term--categories]=name
+  &fields[taxonomy_term--audience]=name
+  &fields[taxonomy_term--affiliation]=name
+  &include=field_affiliation,field_audience,field_service_category
+  &sort=title
+  &filter[status]=1
 

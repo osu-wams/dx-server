@@ -1,6 +1,7 @@
 export default {
   env: 'development',
   logLevel: 'silly',
+  appVersion: 'development-123',
   osuApi: {
     baseUrl: 'https://oregonstateuniversity-dev.apigee.net/v1',
   },

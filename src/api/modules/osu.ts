@@ -1,6 +1,19 @@
 import config from 'config';
-import { getToken } from '../util';
+import { getToken, fetchData } from '../util';
 import cache from './cache';
+import {
+  mockedAddresses,
+  mockedMealPlans,
+  mockedPersons,
+  mockedGpa,
+  mockedAcademicStatus,
+  mockedClassification,
+  mockedClassSchedule,
+  mockedGrades,
+  mockedHolds,
+  mockedAccountTransactions,
+  mockedAccountBalance,
+} from '../../mocks/osu';
 
 const STUDENT_BASE_URL = `${config.get('osuApi.baseUrl')}/students`;
 const PERSON_BASE_URL = `${config.get('osuApi.baseUrl')}/persons`;
@@ -59,8 +72,9 @@ interface AddressesResponse {
 
 export const getAddresses = async (user: any): Promise<Address[]> => {
   try {
-    const response: AddressesResponse = await getJson(
-      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`,
+    const response: AddressesResponse = await fetchData(
+      () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`),
+      mockedAddresses,
     );
     return response.data;
   } catch (err) {
@@ -87,8 +101,9 @@ interface MealPlansResponse {
 
 export const getMealPlan = async (user: any): Promise<MealPlan[]> => {
   try {
-    const response: MealPlansResponse = await getJson(
-      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`,
+    const response: MealPlansResponse = await fetchData(
+      () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`),
+      mockedMealPlans,
     );
     return response.data;
   } catch (err) {
@@ -137,8 +152,9 @@ interface ProfileResponse {
 
 export const getProfile = async (user: any): Promise<Profile> => {
   try {
-    const response: ProfileResponse = await getJson(
-      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`,
+    const response: ProfileResponse = await fetchData(
+      () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`),
+      mockedPersons,
     );
     return response.data;
   } catch (err) {
@@ -164,8 +180,13 @@ export const getAcademicStatus = async (
   termQueryString: any,
 ): Promise<{ academicStanding: string; term: string } | {}> => {
   try {
-    const response: AcademicStatusResponse = await getJson(
-      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
+    const response: AcademicStatusResponse = await fetchData(
+      () =>
+        getJson(
+          `${STUDENT_BASE_URL}/${user.masqueradeId ||
+            user.osuId}/academic-status${termQueryString}`,
+        ),
+      mockedAcademicStatus,
     );
     if (response.data.length > 0) {
       // Sort the academic status data in descending order based on the id to get the most recent terms first.
@@ -191,7 +212,10 @@ export const getAcademicStatus = async (
 
 export const getAccountBalance = async (user: any) => {
   try {
-    return await getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`);
+    return await fetchData(
+      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`),
+      mockedAccountBalance,
+    );
   } catch (err) {
     throw err;
   }
@@ -199,8 +223,13 @@ export const getAccountBalance = async (user: any) => {
 
 export const getAccountTransactions = async (user: any) => {
   try {
-    return await getJson(
-      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
+    return await fetchData(
+      () =>
+        getJson(
+          `${STUDENT_BASE_URL}/${user.masqueradeId ||
+            user.osuId}/account-transactions?term=current`,
+        ),
+      mockedAccountTransactions,
     );
   } catch (err) {
     throw err;
@@ -262,8 +291,12 @@ export const getClassSchedule = async (
   term: any,
 ): Promise<{ data: ClassSchedule[] }> => {
   try {
-    const response: ClassScheduleResponse = await getJson(
-      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
+    const response: ClassScheduleResponse = await fetchData(
+      () =>
+        getJson(
+          `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
+        ),
+      mockedClassSchedule,
     );
     return {
       data: response.data.map((d: ClassSchedule) => ({
@@ -303,8 +336,9 @@ interface ClassificationResponse {
 
 export const getClassification = async (user: any): Promise<Classification> => {
   try {
-    const response: ClassificationResponse = await getJson(
-      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`,
+    const response: ClassificationResponse = await fetchData(
+      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`),
+      mockedClassification,
     );
     return response.data;
   } catch (err) {
@@ -318,8 +352,9 @@ export const getGrades = async (user: any, term: any) => {
     if (term) {
       termParam = `?term=${term}`;
     }
-    return await getJson(
-      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`,
+    return await fetchData(
+      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`),
+      mockedGrades,
     );
   } catch (err) {
     throw err;
@@ -366,8 +401,9 @@ const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
 
 export const getGpa = async (user: any): Promise<GpaLevel[]> => {
   try {
-    const response: GpaResponse = await getJson(
-      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`,
+    const response: GpaResponse = await fetchData(
+      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`),
+      mockedGpa,
     );
     if (response.data && response.data.attributes.gpaLevels.length > 0) {
       const { gpaLevels } = response.data.attributes;
@@ -406,8 +442,9 @@ interface HoldsResponse {
 
 export const getHolds = async (user: any): Promise<[{ description: string }] | []> => {
   try {
-    const response: HoldsResponse = await getJson(
-      `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`,
+    const response: HoldsResponse = await fetchData(
+      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`),
+      mockedHolds,
     );
     if (response.data && response.data.attributes.holds.length > 0) {
       const { holds } = response.data.attributes;

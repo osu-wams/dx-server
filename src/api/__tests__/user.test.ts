@@ -10,7 +10,10 @@ import * as dynamoDb from '../../db';
 jest.mock('../../db');
 const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
 
-jest.mock('../util.ts');
+jest.mock('../util.ts', () => ({
+  ...jest.requireActual('../util.ts'),
+  getToken: () => Promise.resolve('bearer token'),
+}));
 
 const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
 let request: supertest.SuperTest<supertest.Test>;

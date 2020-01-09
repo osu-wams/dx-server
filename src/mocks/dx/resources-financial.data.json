@@ -1,0 +1,289 @@
+[
+  {
+    "type": "entity_subqueue--financial",
+    "id": "d95a03aa-2cc9-4e96-930e-e99cca0e20dd",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/financial/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/financial/d95a03aa-2cc9-4e96-930e-e99cca0e20dd"
+      }
+    },
+    "queue": { "id": "17f642df-56c5-4fbe-88e5-2756bdb31e06", "type": "entity_queue--entity_queue" },
+    "items": [
+      {
+        "type": "node--services",
+        "id": "62c491e3-4c41-4335-bdff-9b083d6d3acf",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/62c491e3-4c41-4335-bdff-9b083d6d3acf?resourceVersion=id%3A7576"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Pay My Bill",
+        "field_icon_name": "fal.money-check-edit-alt",
+        "field_service_synonyms": ["payment"],
+        "field_service_url": { "uri": "http://mybill.oregonstate.edu", "title": "", "options": [] }
+      },
+      {
+        "type": "node--services",
+        "id": "dda9ff92-4bec-4ea7-88ff-3b43355f80fb",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/dda9ff92-4bec-4ea7-88ff-3b43355f80fb?resourceVersion=id%3A6711"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Financial Aid",
+        "field_icon_name": "fal.envelope-open-dollar",
+        "field_service_synonyms": [],
+        "field_service_url": {
+          "uri": "https://financialaid.oregonstate.edu/financial-aid",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "2441aa52-14d1-4be1-86dd-12f80fea6d5c",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/2441aa52-14d1-4be1-86dd-12f80fea6d5c?resourceVersion=id%3A7021"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "ScholarDollars",
+        "field_icon_name": "fal.hand-holding-usd",
+        "field_service_synonyms": ["money", "aid"],
+        "field_service_url": {
+          "uri": "https://oregonstate.academicworks.com/",
+          "title": null,
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "78ad948c-2aef-4fcc-bfc6-e3a98096ce86",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/78ad948c-2aef-4fcc-bfc6-e3a98096ce86?resourceVersion=id%3A6261"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Human Services Resource Center",
+        "field_icon_name": "fal.apple-crate",
+        "field_service_synonyms": ["hsrc", "help", "Food Assistance", "Textbook Assistance"],
+        "field_service_url": {
+          "uri": "https://studentlife.oregonstate.edu/hsrc",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "87dda5c0-58dd-472c-bcfc-0cfe4c4c8fb4",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/87dda5c0-58dd-472c-bcfc-0cfe4c4c8fb4?resourceVersion=id%3A6426"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Student Jobs",
+        "field_icon_name": "fal.briefcase",
+        "field_service_synonyms": ["employment"],
+        "field_service_url": {
+          "uri": "https://jobs.oregonstate.edu/postings/search?utf8=&query=&query_v0_posted_at_date=&query_position_type_id=5&query_organizational_tier_3_id=any&1970=&1971=&225=&commit=Search",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "4540af72-addf-45b9-b458-6e7585d3d636",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/4540af72-addf-45b9-b458-6e7585d3d636?resourceVersion=id%3A6406"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [],
+        "title": "Career Planning & Guidance",
+        "field_icon_name": "fal.briefcase",
+        "field_service_synonyms": [],
+        "field_service_url": {
+          "uri": "https://career.oregonstate.edu/",
+          "title": null,
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "a000901b-3d5c-4001-820e-f5ee451f16eb",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/a000901b-3d5c-4001-820e-f5ee451f16eb?resourceVersion=id%3A7571"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Cashier's Office ",
+        "field_icon_name": "fal.money-check-edit-alt",
+        "field_service_synonyms": ["payroll", "payment"],
+        "field_service_url": {
+          "uri": "https://fa.oregonstate.edu/business-affairs/studentbilling",
+          "title": "",
+          "options": []
+        }
+      }
+    ],
+    "drupal_internal__name": "financial",
+    "title": "Financial",
+    "langcode": "en",
+    "created": "2019-02-14T16:38:03+00:00",
+    "changed": "2019-11-21T17:51:22+00:00"
+  }
+]

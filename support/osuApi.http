@@ -59,6 +59,34 @@ Authorization: Bearer {{token}}
 ###
 @token = {{getToken.response.body.$.access_token}}
 
-# @name getMealPlans
+# @name getAddresses
 GET {{baseUrl}}/v1/persons/{{osuId}}/addresses HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getGrades
+GET {{baseUrl}}/v1/students/{{osuId}}/grades HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getHolds
+GET {{baseUrl}}/v1/students/{{osuId}}/holds HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getAccountTransactions
+GET {{baseUrl}}/v1/students/{{osuId}}/account-transactions?term=current HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getAccountBalance
+GET {{baseUrl}}/v1/students/{{osuId}}/account-balance HTTP/1.1
 Authorization: Bearer {{token}}

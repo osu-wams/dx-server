@@ -1,12 +1,10 @@
 export default {
-  /**
-   * Overridden by process.env.NODE_ENV
-   */
+  // Overridden by process.env.NODE_ENV
   env: '',
+  // Overridden by process.env.USE_MOCKS
+  useMocks: '0',
   logLevel: 'debug',
-  /**
-   * Overridden by ENV APP_VERSION
-   */
+  // Overridden by ENV APP_VERSION
   appVersion: '',
   /**
    * Overridden by process.env.API_KEYS
@@ -20,32 +18,22 @@ export default {
   },
   osuApi: {
     cacheEndpointSec: '3600',
-    /**
-     * Overridden by process.env.OSU_API_CLIENT_ID
-     */
+    // Overridden by process.env.OSU_API_CLIENT_ID
     clientId: '',
-    /**
-     * Overridden by process.env.OSU_API_CLIENT_SECRET
-     */
+    // Overridden by process.env.OSU_API_CLIENT_SECRET
     clientSecret: '',
     baseUrl: 'https://oregonstateuniversity-dev.apigee.net/v1',
   },
   canvasApi: {
     cacheEndpointSec: '3600',
-    /**
-     * Overridden by process.env.CANVAS_API_TOKEN
-     */
+    // Overridden by process.env.CANVAS_API_TOKEN
     token: '',
     baseUrl: 'https://oregonstate.beta.instructure.com/api/v1',
   },
   canvasOauth: {
-    /**
-     * Overridden by process.env.CANVAS_OAUTH_ID
-     */
+    // Overridden by process.env.CANVAS_OAUTH_ID
     id: '',
-    /**
-     * Overridden by process.env.CANVAS_OAUTH_SECRET
-     */
+    // Overridden by process.env.CANVAS_OAUTH_SECRET
     secret: '',
     callbackUrl: '',
     baseUrl: 'https://oregonstate.beta.instructure.com',
@@ -72,13 +60,9 @@ export default {
       'https://events.oregonstate.edu/widget/view?schools=oregonstate&days=365&num=10&tags=academic+calendar&format=rss',
   },
   saml: {
-    /**
-     * Overridden by process.env.SAML_CERT
-     */
+    // Overridden by process.env.SAML_CERT
     cert: '',
-    /**
-     * Overridden by process.env.SAML_PVK
-     */
+    // Overridden by process.env.SAML_PVK
     pvk: '',
     callbackUrl: '',
     logoutCallbackUrl: '',

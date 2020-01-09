@@ -1,0 +1,11 @@
+@canvasApiToken = {{$processEnv CANVAS_API_TOKEN}}
+
+# Temporarily set a valid OSU ID to use for testing the API endpoints
+# !!! DO NOT COMMIT CHANGES TO THE FOLLOWING LINE !!!
+@osuId = 111111111
+
+###
+# @name getPlannerItems
+GET /api/v1/planner/items?as_user_id=sis_user_id:{{osuId}} HTTP/2
+Host: oregonstate.beta.instructure.com
+Authorization: Bearer {{canvasApiToken}}

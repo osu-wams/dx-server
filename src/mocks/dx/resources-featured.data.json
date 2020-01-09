@@ -1,0 +1,590 @@
+[
+  {
+    "type": "entity_subqueue--featured",
+    "id": "a9283d94-7df6-48c1-b7e5-c27dacf589cc",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/featured/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/entity_subqueue/featured/a9283d94-7df6-48c1-b7e5-c27dacf589cc"
+      }
+    },
+    "queue": { "id": "18477f6a-28fc-4b88-b377-4822623b6858", "type": "entity_queue--entity_queue" },
+    "items": [
+      {
+        "type": "node--services",
+        "id": "75833320-e1ba-4b06-8df5-434855ae94ab",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/75833320-e1ba-4b06-8df5-434855ae94ab?resourceVersion=id%3A6166"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "cf44f3d0-6c17-490b-b3e3-753b5dd9ae6f",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/cf44f3d0-6c17-490b-b3e3-753b5dd9ae6f"
+              }
+            },
+            "name": "Technology"
+          }
+        ],
+        "title": "Gmail",
+        "field_icon_name": "osu.logo-gmail",
+        "field_service_synonyms": ["email", "mail"],
+        "field_service_url": {
+          "uri": "https://mail.google.com/a/oregonstate.edu",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "198917a4-47ad-4d45-9074-3a76dc495de1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/198917a4-47ad-4d45-9074-3a76dc495de1?resourceVersion=id%3A6176"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          }
+        ],
+        "title": "Canvas",
+        "field_icon_name": "osu.logo-canvas",
+        "field_service_synonyms": ["lms", "homework", "assignments", "learn", "learn@oregonstate"],
+        "field_service_url": {
+          "uri": "https://oregonstate.instructure.com/",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "8feb6e93-3376-4190-a981-ec9dc1bd6b67",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/8feb6e93-3376-4190-a981-ec9dc1bd6b67?resourceVersion=id%3A6181"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "cf44f3d0-6c17-490b-b3e3-753b5dd9ae6f",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/cf44f3d0-6c17-490b-b3e3-753b5dd9ae6f"
+              }
+            },
+            "name": "Technology"
+          }
+        ],
+        "title": "Box",
+        "field_icon_name": "osu.logo-box-sync",
+        "field_service_synonyms": ["file storage"],
+        "field_service_url": {
+          "uri": "https://oregonstate.account.box.com/login",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "62c491e3-4c41-4335-bdff-9b083d6d3acf",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/62c491e3-4c41-4335-bdff-9b083d6d3acf?resourceVersion=id%3A7576"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Pay My Bill",
+        "field_icon_name": "fal.money-check-edit-alt",
+        "field_service_synonyms": ["payment"],
+        "field_service_url": { "uri": "http://mybill.oregonstate.edu", "title": "", "options": [] }
+      },
+      {
+        "type": "node--services",
+        "id": "47b94e3c-c09f-48e0-b152-c5cf81d22f97",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/47b94e3c-c09f-48e0-b152-c5cf81d22f97?resourceVersion=id%3A7376"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [
+          {
+            "type": "taxonomy_term--audience",
+            "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
+              }
+            },
+            "name": "Corvallis"
+          }
+        ],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          }
+        ],
+        "title": "OSU Campus Map",
+        "field_icon_name": "fal.map-marked-alt",
+        "field_service_synonyms": [],
+        "field_service_url": { "uri": "https://map.oregonstate.edu/", "title": "", "options": [] }
+      },
+      {
+        "type": "node--services",
+        "id": "76ba8547-d77c-4bb9-a8af-5023ab99dae5",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/76ba8547-d77c-4bb9-a8af-5023ab99dae5?resourceVersion=id%3A8221"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [
+          {
+            "type": "taxonomy_term--audience",
+            "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
+              }
+            },
+            "name": "Corvallis"
+          }
+        ],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          }
+        ],
+        "title": "Food@OSU",
+        "field_icon_name": "fal.cheeseburger",
+        "field_service_synonyms": ["dining", "uhds", "murfs"],
+        "field_service_url": { "uri": "https://food.oregonstate.edu/", "title": "", "options": [] }
+      },
+      {
+        "type": "node--services",
+        "id": "330717f3-0ac4-4e4e-97c2-a4d6360e6f66",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/330717f3-0ac4-4e4e-97c2-a4d6360e6f66?resourceVersion=id%3A7316"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          }
+        ],
+        "title": "Search OSU",
+        "field_icon_name": "fal.search",
+        "field_service_synonyms": ["people", "directory"],
+        "field_service_url": {
+          "uri": "https://search.oregonstate.edu/",
+          "title": null,
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "06607162-c5b6-4ca4-a8af-2cb2e4939fd6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/06607162-c5b6-4ca4-a8af-2cb2e4939fd6?resourceVersion=id%3A8611"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [
+          {
+            "type": "taxonomy_term--audience",
+            "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
+              }
+            },
+            "name": "Corvallis"
+          },
+          {
+            "type": "taxonomy_term--audience",
+            "id": "03ec6d31-8fcf-446a-9c7f-aa7172452f52",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/03ec6d31-8fcf-446a-9c7f-aa7172452f52"
+              }
+            },
+            "name": "Ecampus"
+          }
+        ],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "231ea7e3-cda2-462d-97d4-9e5a5c23e015",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/231ea7e3-cda2-462d-97d4-9e5a5c23e015"
+              }
+            },
+            "name": "Wellness"
+          }
+        ],
+        "title": "Counseling Services",
+        "field_icon_name": "fal.hand-heart",
+        "field_service_synonyms": ["caps", "psychological", "mental", "health", "wellness"],
+        "field_service_url": {
+          "uri": "https://counseling.oregonstate.edu/",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "78ad948c-2aef-4fcc-bfc6-e3a98096ce86",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/78ad948c-2aef-4fcc-bfc6-e3a98096ce86?resourceVersion=id%3A6261"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+              }
+            },
+            "name": "Financial"
+          }
+        ],
+        "title": "Human Services Resource Center",
+        "field_icon_name": "fal.apple-crate",
+        "field_service_synonyms": ["hsrc", "help", "Food Assistance", "Textbook Assistance"],
+        "field_service_url": {
+          "uri": "https://studentlife.oregonstate.edu/hsrc",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "03794c38-d4cb-422f-96e4-6fce8bf4850b",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/03794c38-d4cb-422f-96e4-6fce8bf4850b?resourceVersion=id%3A6771"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "2cd0a3c4-a7f1-4080-bf2e-e458559de2a3",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/2cd0a3c4-a7f1-4080-bf2e-e458559de2a3"
+              }
+            },
+            "name": "Academic"
+          }
+        ],
+        "title": "MyDegrees",
+        "field_icon_name": "fal.file-certificate",
+        "field_service_synonyms": [],
+        "field_service_url": {
+          "uri": "https://mydegrees.oregonstate.edu/DashboardServlet",
+          "title": "",
+          "options": []
+        }
+      },
+      {
+        "type": "node--services",
+        "id": "673c287a-6388-49bc-83e5-e87eba52983a",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/673c287a-6388-49bc-83e5-e87eba52983a?resourceVersion=id%3A8661"
+          }
+        },
+        "field_affiliation": [],
+        "field_audience": [
+          {
+            "type": "taxonomy_term--audience",
+            "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
+              }
+            },
+            "name": "Corvallis"
+          },
+          {
+            "type": "taxonomy_term--audience",
+            "id": "03ec6d31-8fcf-446a-9c7f-aa7172452f52",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/03ec6d31-8fcf-446a-9c7f-aa7172452f52"
+              }
+            },
+            "name": "Ecampus"
+          }
+        ],
+        "field_service_category": [
+          {
+            "type": "taxonomy_term--categories",
+            "id": "6b7cd598-d71e-45f7-911c-d71551ec0a7c",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
+              }
+            },
+            "name": "Featured"
+          },
+          {
+            "type": "taxonomy_term--categories",
+            "id": "382db473-acfc-40b0-80cc-6c2db55d18ea",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/382db473-acfc-40b0-80cc-6c2db55d18ea"
+              }
+            },
+            "name": "Getting Involved"
+          }
+        ],
+        "title": "OSU Events Calendar",
+        "field_icon_name": "fal.calendar-star",
+        "field_service_synonyms": ["corvallis"],
+        "field_service_url": {
+          "uri": "https://events.oregonstate.edu/",
+          "title": "",
+          "options": []
+        }
+      }
+    ],
+    "drupal_internal__name": "featured",
+    "title": "Featured",
+    "langcode": "en",
+    "created": "2019-02-14T16:37:44+00:00",
+    "changed": "2019-10-22T15:22:33+00:00"
+  }
+]

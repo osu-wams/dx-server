@@ -1,0 +1,475 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/students/111111111/grades"
+  },
+  "data": [
+    {
+      "type": "grades",
+      "id": "111111111-201803-59530",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "59530",
+        "gradeFinal": "B",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "381",
+        "courseTitle": "ABNORMAL PSYCHOLOGY",
+        "sectionNumber": "004",
+        "term": "201803",
+        "termDescription": "Spring 2018",
+        "scheduleDescription": "Lecture",
+        "scheduleType": "A",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201803-58866",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "58866",
+        "gradeFinal": "B",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "499",
+        "courseTitle": "ST/ ADDICTION",
+        "sectionNumber": "002",
+        "term": "201803",
+        "termDescription": "Spring 2018",
+        "scheduleDescription": "Lecture",
+        "scheduleType": "A",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201803-57934",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "57934",
+        "gradeFinal": "B+",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "HST",
+        "courseSubjectDescription": "History",
+        "courseNumber": "488",
+        "courseTitle": "*THE US AND VIETNAM 1945-1995",
+        "sectionNumber": "400",
+        "term": "201803",
+        "termDescription": "Spring 2018",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201900-70609",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "70609",
+        "gradeFinal": "B+",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "370",
+        "courseTitle": "PERSONALITY",
+        "sectionNumber": "400",
+        "term": "201900",
+        "termDescription": "Summer 2018",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201901-12917",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "12917",
+        "gradeFinal": "C-",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "433",
+        "courseTitle": "PSYCHOPHARMACOLOGY",
+        "sectionNumber": "001",
+        "term": "201901",
+        "termDescription": "Fall 2018",
+        "scheduleDescription": "Lecture",
+        "scheduleType": "A",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201901-16040",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "16040",
+        "gradeFinal": "C+",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "482",
+        "courseTitle": "PSYCHOTHERAPY",
+        "sectionNumber": "400",
+        "term": "201901",
+        "termDescription": "Fall 2018",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201901-19698",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "19698",
+        "gradeFinal": "D",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "399",
+        "courseTitle": "S/PSYCHOLOGICAL STATISTICS 001",
+        "sectionNumber": "400",
+        "term": "201901",
+        "termDescription": "Fall 2018",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201901-14313",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "14313",
+        "gradeFinal": "C-",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "340",
+        "courseTitle": "COGNITION",
+        "sectionNumber": "400",
+        "term": "201901",
+        "termDescription": "Fall 2018",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201902-36591",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "36591",
+        "gradeFinal": "B",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "SUS",
+        "courseSubjectDescription": "Sustainability",
+        "courseNumber": "304",
+        "courseTitle": "*SUSTAINABILITY ASSESSMENT",
+        "sectionNumber": "400",
+        "term": "201902",
+        "termDescription": "Winter 2019",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201902-36817",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "36817",
+        "gradeFinal": "D+",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "468",
+        "courseTitle": "PSYCH OF CLOSE RELATIONSHIPS",
+        "sectionNumber": "400",
+        "term": "201902",
+        "termDescription": "Winter 2019",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201902-39203",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "39203",
+        "gradeFinal": "C",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "399",
+        "courseTitle": "ST/PSYCHOLOGICAL STATISTICS",
+        "sectionNumber": "400",
+        "term": "201902",
+        "termDescription": "Winter 2019",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": "E"
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201902-39075",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "39075",
+        "gradeFinal": "C",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "301",
+        "courseTitle": "RESEARCH METHS IN PSY",
+        "sectionNumber": "001",
+        "term": "201902",
+        "termDescription": "Winter 2019",
+        "scheduleDescription": "Lecture",
+        "scheduleType": "A",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-201903-59831",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "59831",
+        "gradeFinal": "B",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "480",
+        "courseTitle": "^CLINICAL RESEARCH METHODS",
+        "sectionNumber": "450",
+        "term": "201903",
+        "termDescription": "Spring 2019",
+        "scheduleDescription": "Hybrid",
+        "scheduleType": "HYB",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-202000-74643",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "74643",
+        "gradeFinal": "B",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "437",
+        "courseTitle": "MOTIVATION",
+        "sectionNumber": "400",
+        "term": "202000",
+        "termDescription": "Summer 2019",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-202001-14020",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "14020",
+        "gradeFinal": "B",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PAC",
+        "courseSubjectDescription": "Physical Activity Courses",
+        "courseNumber": "130",
+        "courseTitle": "CONDITIONING/BALANCED FITNESS",
+        "sectionNumber": "400",
+        "term": "202001",
+        "termDescription": "Fall 2019",
+        "scheduleDescription": "Online",
+        "scheduleType": "Y",
+        "creditHours": 1,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "E-Campus Undergraduate Course",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-202001-10722",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "10722",
+        "gradeFinal": "B-",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "H",
+        "courseSubjectDescription": "Public Health",
+        "courseNumber": "312",
+        "courseTitle": "*HIV/AIDS & STIS IN MODERN SOC",
+        "sectionNumber": "001",
+        "term": "202001",
+        "termDescription": "Fall 2019",
+        "scheduleDescription": "Lecture",
+        "scheduleType": "A",
+        "creditHours": 3,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-202001-14683",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "14683",
+        "gradeFinal": "A",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "PSY",
+        "courseSubjectDescription": "Psychology",
+        "courseNumber": "485",
+        "courseTitle": "BEHAVIOR MODIFICATION",
+        "sectionNumber": "001",
+        "term": "202001",
+        "termDescription": "Fall 2019",
+        "scheduleDescription": "Lecture",
+        "scheduleType": "A",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    },
+    {
+      "type": "grades",
+      "id": "111111111-202001-20115",
+      "links": {
+        "self": null
+      },
+      "attributes": {
+        "courseReferenceNumber": "20115",
+        "gradeFinal": "C+",
+        "gradeMode": "N",
+        "gradeModeDescription": "Normal Grading Mode",
+        "courseSubject": "HDFS",
+        "courseSubjectDescription": "Human Dev and Family Sciences",
+        "courseNumber": "447",
+        "courseTitle": "*FAMILIES AND POVERTY",
+        "sectionNumber": "001",
+        "term": "202001",
+        "termDescription": "Fall 2019",
+        "scheduleDescription": "Lecture",
+        "scheduleType": "A",
+        "creditHours": 4,
+        "registrationStatus": "**Web Registered**",
+        "courseLevel": "Undergraduate",
+        "repeatedCourseInd": null
+      }
+    }
+  ]
+}
