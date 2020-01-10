@@ -305,6 +305,40 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
 };
 
 /**
+ * Get Page Content from DX API
+ * @param page string
+ * The page matches the taxonomy term in Drupal and must be added there
+ */
+
+export const getPageContent = async (pageTitle: string): Promise<any> => {
+  try {
+    const data = await fetchData(
+      () =>
+        retrieveData('node/dashboard_content', {
+          fields: {
+            'node--dashboard_content': 'title,body',
+          },
+          filter: {
+            status: 1,
+            'field_pages.name': pageTitle,
+          },
+          page: {
+            limit: 1,
+          },
+        }),
+      mockedInformation,
+    );
+    return data.map((d) => ({
+      title: d.title,
+      id: d.field_machine_name,
+      content: d.body.processed,
+    }));
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
  * Get alerts from DX API.
  * ! The nature of retrieveData method and caching would cause these calls to
  * ! continually fetch new data and cache, so we're rounding the 'Date.now()` to the

@@ -10,6 +10,7 @@ import AnnouncementsRouter from './announcements';
 import PersonsRouter from './persons';
 import AdminRouter from './admin';
 import InformationRouter from './information';
+import PageContentRouter from './pageContent';
 import ErrorRouter from './errors';
 import StatusRouter from './status';
 
@@ -27,5 +28,6 @@ router.use('/announcements', AnnouncementsRouter);
 router.use('/info-buttons', InformationRouter);
 router.use('/errors', ErrorRouter);
 router.use('/status', StatusRouter);
+router.use('/page-content', PageContentRouter);
 
 export default router;
