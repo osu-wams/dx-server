@@ -56,6 +56,16 @@ GET {{baseUrl}}/jsonapi/node/dashboard_content HTTP/1.1
   &filter[field_pages.name]=beta
   &filter[status]=1
 
+###
+
+# @name getReleaseNotes
+# https://data.dx.oregonstate.edu/jsonapi/node/release_notes?filter[status]=1&fields[node--release_notes]=title,body,field_release_notes_date&sort=-created&page[limit]=1
+GET {{baseUrl}}/jsonapi/node/release_notes HTTP/1.1
+  ?fields[node--release_notes]=title,body,field_release_notes_date
+  &filter[status]=1
+  &page[limit]=1
+  &sort=-created
+
 
 ###
 
