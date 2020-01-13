@@ -13,6 +13,7 @@ import InformationRouter from './information';
 import PageContentRouter from './pageContent';
 import ErrorRouter from './errors';
 import StatusRouter from './status';
+import ReleaseNotesRouter from './releaseNotes';
 
 const router = Router();
 
@@ -29,5 +30,6 @@ router.use('/info-buttons', InformationRouter);
 router.use('/errors', ErrorRouter);
 router.use('/status', StatusRouter);
 router.use('/page-content', PageContentRouter);
+router.use('/release-notes', ReleaseNotesRouter);
 
 export default router;

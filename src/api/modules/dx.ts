@@ -326,12 +326,45 @@ export const getPageContent = async (pageTitle: string): Promise<any> => {
             limit: 1,
           },
         }),
-      mockedInformation,
+      // !TODO: add prooper mock
     );
     return data.map((d) => ({
       title: d.title,
-      id: d.field_machine_name,
       content: d.body.processed,
+    }));
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
+ * Get Page Content from DX API
+ * @param page string
+ * The page matches the taxonomy term in Drupal and must be added there
+ */
+
+export const getReleaseNotes = async (): Promise<any> => {
+  try {
+    const data = await fetchData(
+      () =>
+        retrieveData('node/release_notes', {
+          fields: {
+            'node--release_notes': 'title,body,field_release_notes_date',
+          },
+          filter: {
+            status: 1,
+          },
+          sort: '-created',
+          page: {
+            limit: 1,
+          },
+        }),
+      // !TODO: add prooper mock,
+    );
+    return data.map((d) => ({
+      title: d.title,
+      content: d.body.processed,
+      date: d.field_release_notes_date,
     }));
   } catch (err) {
     throw err;
