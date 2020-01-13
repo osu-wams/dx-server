@@ -8,6 +8,7 @@ import mockedCuratedResourcesAcademic from './resources-academic.data.json';
 import mockedInformation from './information.data.json';
 import mockedResources from './resources.data.json';
 import mockedPageContent from './page-content.data.json';
+import mockedReleaseNotes from './release-notes.data.json';
 
 // TODO: Add remaining categories from the entity_queue API
 const mockedCuratedResources = (category: string) => {
@@ -33,4 +34,5 @@ export {
   mockedInformation,
   mockedResources,
   mockedPageContent,
+  mockedReleaseNotes,
 };
