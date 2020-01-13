@@ -12,6 +12,7 @@ import {
   mockedCuratedResources,
   mockedInformation,
   mockedResources,
+  mockedPageContent,
 } from '../../mocks/dx';
 
 export const BASE_URL: string = config.get('dxApi.baseUrl');
@@ -326,7 +327,7 @@ export const getPageContent = async (pageTitle: string): Promise<any> => {
             limit: 1,
           },
         }),
-      // !TODO: add prooper mock
+      mockedPageContent,
     );
     return data.map((d) => ({
       title: d.title,
