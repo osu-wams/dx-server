@@ -1,5 +1,5 @@
 /**
- * /api/info-buttons
+ * /api/page-content
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
@@ -8,10 +8,10 @@ import { asyncTimedFunction } from '../tracer';
 
 const router = Router();
 
-// export interface IInfoResult {
-//   title: string;
-//   content: string;
-// }
+export interface IPageContent {
+  title: string;
+  content: string;
+}
 
 router.get('/:pageTitle', async (req: Request, res: Response) => {
   try {

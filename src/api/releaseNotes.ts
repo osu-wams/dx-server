@@ -1,5 +1,5 @@
 /**
- * /api/info-buttons
+ * /api/release-notes
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
@@ -8,10 +8,11 @@ import { asyncTimedFunction } from '../tracer';
 
 const router = Router();
 
-// export interface IInfoResult {
-//   title: string;
-//   content: string;
-// }
+export interface IReleaseNotes {
+  title: string;
+  content: string;
+  date: string;
+}
 
 router.get('/', async (_req: Request, res: Response) => {
   try {

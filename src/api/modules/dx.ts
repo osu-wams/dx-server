@@ -2,6 +2,8 @@ import Kitsu from 'kitsu/node';
 import config from 'config';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
+import { IReleaseNotes } from '../releaseNotes'; // eslint-disable-line no-unused-vars
+import { IPageContent } from '../pageContent'; // eslint-disable-line no-unused-vars
 import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import cache, { setCache } from './cache';
 import { fetchData } from '../util';
@@ -312,7 +314,7 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
  * The page matches the taxonomy term in Drupal and must be added there
  */
 
-export const getPageContent = async (pageTitle: string): Promise<any> => {
+export const getPageContent = async (pageTitle: string): Promise<IPageContent> => {
   try {
     const data = await fetchData(
       () =>
@@ -345,7 +347,7 @@ export const getPageContent = async (pageTitle: string): Promise<any> => {
  * The page matches the taxonomy term in Drupal and must be added there
  */
 
-export const getReleaseNotes = async (): Promise<any> => {
+export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
   try {
     const data = await fetchData(
       () =>
