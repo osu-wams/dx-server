@@ -7,6 +7,7 @@ export const mockUser = {
   phone: '5551212',
   isAdmin: false,
   primaryAffiliation: 'employee',
+  isStudent: () => false,
 };
 
 export const mockInsertReturn = mockUser;
@@ -14,6 +15,9 @@ export const mockUpdateCanvasDataReturn = mockUser;
 export const mockFindReturn = mockUser;
 
 export const User = {
+  isStudent: () => {
+    return mockUser.primaryAffiliation.toLowerCase() === 'student';
+  },
   find: jest.fn((id: number) => {
     return new Promise((resolve, reject) => {
       process.nextTick(() => {

@@ -20,6 +20,7 @@ const user = {
   lastName: 'l',
   email: 'e',
   primaryAffiliation: 'employee',
+  isStudent: () => false,
 };
 const assignment = { assignment: 'test' };
 
@@ -57,17 +58,21 @@ describe('Canvas module', () => {
         refresh_token: 'bogus',
         // scope: config.get('canvasOauth.scope'),
       });
-      await expect(postRequest(user, query)).resolves.toStrictEqual({
-        canvasOauthExpire: null,
-        canvasOauthToken: null,
-        email: 'e',
-        firstName: 'f',
-        isCanvasOptIn: false,
-        lastName: 'l',
-        osuId: 123456,
-        primaryAffiliation: 'employee',
-        refreshToken: null,
-      });
+      const result = await postRequest(user, query);
+      expect(JSON.stringify(result)).toEqual(
+        JSON.stringify({
+          osuId: 123456,
+          firstName: 'f',
+          lastName: 'l',
+          email: 'e',
+          primaryAffiliation: 'employee',
+          canvasOauthToken: null,
+          canvasOauthExpire: null,
+          isCanvasOptIn: false,
+          refreshToken: null,
+          isStudent: () => false,
+        }),
+      );
     });
   });
 

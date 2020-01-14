@@ -95,7 +95,7 @@ app.get('/healthcheck', (req, res) => {
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
   const { user, isNew } = await findOrUpsertUser(req.user);
-  if (isNew) {
+  if (isNew && user.isStudent()) {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
     if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
