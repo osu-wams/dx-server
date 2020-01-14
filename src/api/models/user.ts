@@ -140,6 +140,13 @@ class User {
   }
 
   /**
+   * Detect if the user is a student, currently by checking only the primaryAffiliation
+   */
+  isStudent = (): boolean => {
+    return this.primaryAffiliation?.toLowerCase() === 'student';
+  };
+
+  /**
    * Insert (or update to match) a User based on the data supplied.
    * * Example use: User.upsert({osuId: 123456, firstName: 'f', lastName:'l', email: 'e', isCanvasOptIn: true, refreshToken: 't'}).then(v => console.log(v))
    * @param props - the user properties to translate to a dynamodb user item

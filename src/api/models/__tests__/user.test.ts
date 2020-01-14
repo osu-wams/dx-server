@@ -43,11 +43,17 @@ describe('User model', () => {
       expect(user.email).toEqual(samlUser.email);
       expect(user.canvasOauthExpire).toEqual(0);
       expect(user.canvasOauthToken).toEqual('');
-      expect(user.isAdmin).toEqual(false);
+      expect(user.isAdmin).toBeFalsy();
       expect(user.groups).toEqual([]);
-      expect(user.isCanvasOptIn).toEqual(false);
+      expect(user.isCanvasOptIn).toBeFalsy();
       expect(user.refreshToken).toEqual('');
       expect(user.primaryAffiliation).toEqual('employee');
+      expect(user.isStudent()).toBeFalsy();
+    });
+
+    it('builds a Student User from SAML data', () => {
+      const studentUser = new User({ samlUser: { ...samlUser, primaryAffiliation: 'student' } });
+      expect(studentUser.isStudent()).toBeTruthy();
     });
 
     describe('with DynamoDb data', () => {
@@ -60,11 +66,12 @@ describe('User model', () => {
         expect(user.email).toEqual(dynamoDbUser.Item.email.S);
         expect(user.canvasOauthExpire).toEqual(0);
         expect(user.canvasOauthToken).toEqual('');
-        expect(user.isAdmin).toEqual(false);
+        expect(user.isAdmin).toBeFalsy();
         expect(user.groups).toEqual([]);
         expect(user.isCanvasOptIn).toEqual(dynamoDbUser.Item.canvasOptIn.BOOL);
         expect(user.refreshToken).toEqual(dynamoDbUser.Item.canvasRefreshToken.S);
         expect(user.primaryAffiliation).toEqual(dynamoDbUser.Item.primaryAffiliation.S);
+        expect(user.isStudent()).toBeFalsy();
       });
       it('builds a User missing some data', () => {
         dynamoDbUser = {
@@ -78,6 +85,7 @@ describe('User model', () => {
         expect(user.lastName).toBeUndefined();
         expect(user.phone).toBeUndefined();
         expect(user.email).toBeUndefined();
+        expect(user.isStudent()).toBeFalsy();
       });
     });
   });
@@ -118,7 +126,7 @@ describe('User model', () => {
     it('builds an item with canvas opt in', () => {
       user.isCanvasOptIn = undefined;
       const item = User.asDynamoDbItem(user);
-      expect(item.canvasOptIn.BOOL).toBe(false);
+      expect(item.canvasOptIn.BOOL).toBeFalsy();
     });
   });
 
@@ -148,7 +156,7 @@ describe('User model', () => {
         expect.assertions(2);
         const result = await User.updateCanvasData(user, 'bob-ross', true);
         expect(result.refreshToken).toBe('bob-ross');
-        expect(result.isCanvasOptIn).toBe(true);
+        expect(result.isCanvasOptIn).toBeTruthy();
       });
       it('throws an error on failure', async () => {
         mockDynamoDb.updateItem.mockImplementationOnce(() =>
@@ -184,7 +192,7 @@ describe('User model', () => {
       it('returns user with no errors ', async () => {
         expect.assertions(1);
         const result = await User.find(user.osuId);
-        expect(result).toStrictEqual(user);
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(user));
       });
       it('throws an error on failure', async () => {
         mockDynamoDb.getItem.mockImplementationOnce(() =>
