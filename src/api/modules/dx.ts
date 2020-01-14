@@ -120,7 +120,7 @@ const retrieveData = async (url: string, kitsuOpts: any): Promise<any[]> => {
 
   const fetchedItems = [];
   let hasItems = true;
-  const paginatedOpts = { page: { limit: 50, offset: 0 } };
+  const paginatedOpts = { page: { limit: kitsuOpts?.page?.limit ?? 50, offset: 0 } };
 
   /* eslint-disable no-await-in-loop */
   while (hasItems) {

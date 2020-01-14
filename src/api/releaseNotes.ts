@@ -19,7 +19,7 @@ router.get('/', async (_req: Request, res: Response) => {
     const result = await asyncTimedFunction(getReleaseNotes, `getReleaseNotes`, []);
     res.send(result);
   } catch (err) {
-    logger().error(`api/releasae-notes failed:`, err);
+    logger().error(`api/release-notes failed:`, err);
     res.status(500).send({ message: err });
   }
 });
