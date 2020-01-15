@@ -2,6 +2,8 @@ import Kitsu from 'kitsu/node';
 import config from 'config';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
+import { IReleaseNotes } from '../releaseNotes'; // eslint-disable-line no-unused-vars
+import { IPageContent } from '../pageContent'; // eslint-disable-line no-unused-vars
 import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import cache, { setCache } from './cache';
 import { fetchData } from '../util';
@@ -12,6 +14,8 @@ import {
   mockedCuratedResources,
   mockedInformation,
   mockedResources,
+  mockedPageContent,
+  mockedReleaseNotes,
 } from '../../mocks/dx';
 
 export const BASE_URL: string = config.get('dxApi.baseUrl');
@@ -116,7 +120,7 @@ const retrieveData = async (url: string, kitsuOpts: any): Promise<any[]> => {
 
   const fetchedItems = [];
   let hasItems = true;
-  const paginatedOpts = { page: { limit: 50, offset: 0 } };
+  const paginatedOpts = { page: { limit: kitsuOpts?.page?.limit ?? 50, offset: 0 } };
 
   /* eslint-disable no-await-in-loop */
   while (hasItems) {
@@ -298,6 +302,73 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
       title: d.title,
       id: d.field_machine_name,
       content: d.body.processed,
+    }));
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
+ * Get Page Content from DX API
+ * @param page string
+ * The page matches the taxonomy term in Drupal and must be added there
+ */
+
+export const getPageContent = async (pageTitle: string): Promise<IPageContent> => {
+  try {
+    const data = await fetchData(
+      () =>
+        retrieveData('node/dashboard_content', {
+          fields: {
+            'node--dashboard_content': 'title,body',
+          },
+          filter: {
+            status: 1,
+            'field_pages.name': pageTitle,
+          },
+          page: {
+            limit: 1,
+          },
+        }),
+      mockedPageContent,
+    );
+    return data.map((d) => ({
+      title: d.title,
+      content: d.body.processed,
+    }));
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
+ * Get Page Content from DX API
+ * @param page string
+ * The page matches the taxonomy term in Drupal and must be added there
+ */
+
+export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
+  try {
+    const data = await fetchData(
+      () =>
+        retrieveData('node/release_notes', {
+          fields: {
+            'node--release_notes': 'title,body,field_release_notes_date',
+          },
+          filter: {
+            status: 1,
+          },
+          sort: '-created',
+          page: {
+            limit: 1,
+          },
+        }),
+      mockedReleaseNotes,
+    );
+    return data.map((d) => ({
+      title: d.title,
+      content: d.body.processed,
+      date: d.field_release_notes_date,
     }));
   } catch (err) {
     throw err;

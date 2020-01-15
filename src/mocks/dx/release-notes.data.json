@@ -1,0 +1,22 @@
+[
+  {
+    "type": "node--release_notes",
+    "id": "683852e0-6321-44a2-9583-68b2d70be6eb",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/release_notes/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/release_notes/683852e0-6321-44a2-9583-68b2d70be6eb?resourceVersion=id%3A8941"
+      }
+    },
+    "title": "Test Relaease Note Title!",
+    "body": {
+      "value": "<p>Check back here for spicy release notes as we update the dashboard!</p>rn",
+      "format": "basic_html",
+      "processed": "<p>Check back here for spicy release notes as we update the dashboard!</p>",
+      "summary": ""
+    },
+    "field_release_notes_date": "Test Release Note date"
+  }
+]

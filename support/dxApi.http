@@ -50,6 +50,23 @@ GET {{baseUrl}}/jsonapi/node/information HTTP/1.1
 
 ###
 
+# @name getPageContent
+GET {{baseUrl}}/jsonapi/node/dashboard_content HTTP/1.1
+  ?fields[node--dashboard_content]=title,body
+  &filter[field_pages.name]=beta
+  &filter[status]=1
+
+###
+
+# @name getReleaseNotes
+GET {{baseUrl}}/jsonapi/node/release_notes HTTP/1.1
+  ?fields[node--release_notes]=title,body,field_release_notes_date
+  &filter[status]=1
+  &page[limit]=1
+  &sort=-created
+
+###
+
 # @name getResources
 GET {{baseUrl}}/jsonapi/node/services HTTP/1.1
   ?fields[node--services]=id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url
