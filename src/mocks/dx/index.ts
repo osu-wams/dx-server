@@ -1,12 +1,16 @@
 import mockedAlerts from './alerts.data.json';
 import mockedAnnouncements from './announcements.data.json';
 import mockedCategories from './categories.data.json';
+import mockedCategoriesExpected from './categories.data.expected';
 import mockedCuratedResourcesFeatured from './resources-featured.data.json';
+import mockedCuratedResourcesFeaturedExpected from './resources-featured.data.expected';
 import mockedCuratedResourcesFeaturedEmployee from './resources-featured-employee.data.json';
 import mockedCuratedResourcesFinancial from './resources-financial.data.json';
 import mockedCuratedResourcesAcademic from './resources-academic.data.json';
+import mockedCuratedResourcesAcademicExpected from './resources-academic.data.expected';
 import mockedInformation from './information.data.json';
 import mockedResources from './resources.data.json';
+import mockedResourcesExpected from './resources.data.expected';
 import mockedPageContent from './page-content.data.json';
 import mockedReleaseNotes from './release-notes.data.json';
 
@@ -30,9 +34,13 @@ export {
   mockedAlerts,
   mockedAnnouncements,
   mockedCategories,
+  mockedCategoriesExpected,
   mockedCuratedResources,
+  mockedCuratedResourcesFeaturedExpected,
+  mockedCuratedResourcesAcademicExpected,
   mockedInformation,
   mockedResources,
+  mockedResourcesExpected,
   mockedPageContent,
   mockedReleaseNotes,
 };

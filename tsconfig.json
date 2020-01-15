@@ -6,11 +6,12 @@
     "target": "es2018",
     "noImplicitAny": false,
     "sourceMap": true,
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "baseUrl": ".",
     "lib": ["es2018"],
     "paths": {
+      "@src/*": ["src/*"],
       "*": ["node_modules/*"]
     },
     "skipLibCheck": true

@@ -398,7 +398,7 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
-    "title": "Advance Standing Report-Official Transfer Credit ",
+    "title": "Advance Standing Report-Official Transfer Credit",
     "field_icon_name": "fal.exchange-alt",
     "field_service_synonyms": [],
     "field_service_url": {
@@ -991,7 +991,7 @@
         "name": "Financial"
       }
     ],
-    "title": "Card Cash / Orange Rewards ",
+    "title": "Card Cash / Orange Rewards",
     "field_icon_name": "fal.credit-card",
     "field_service_synonyms": ["dining", "food"],
     "field_service_url": { "uri": "http://mycard.oregonstate.edu/", "title": "", "options": [] }
@@ -1043,7 +1043,7 @@
         "name": "Financial"
       }
     ],
-    "title": "Cashier's Office ",
+    "title": "Cashier's Office",
     "field_icon_name": "fal.money-check-edit-alt",
     "field_service_synonyms": ["payroll", "payment"],
     "field_service_url": {
@@ -1750,9 +1750,9 @@
       }
     ],
     "field_service_category": [],
-    "title": "Course Catalog",
+    "title": "Resource Without a Link",
     "field_icon_name": "fal.list-alt",
     "field_service_synonyms": [],
-    "field_service_url": { "uri": "https://catalog.oregonstate.edu/", "title": "", "options": [] }
+    "field_service_url": { "uri": "", "title": "", "options": [] }
   }
 ]

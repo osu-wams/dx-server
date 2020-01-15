@@ -13,6 +13,9 @@ module.exports = {
     '!src/mocks/**/*',
     '!src/db/scripts/**/*',
   ],
+  moduleNameMapper: {
+    '^@src/(.*)$': '<rootDir>/src/$1',
+  },
   coverageThreshold: {
     global: {
       branches: 30,
