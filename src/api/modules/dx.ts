@@ -1,12 +1,5 @@
 import Kitsu from 'kitsu/node';
 import config from 'config';
-import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
-import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
-import { IReleaseNotes } from '../releaseNotes'; // eslint-disable-line no-unused-vars
-import { IPageContent } from '../pageContent'; // eslint-disable-line no-unused-vars
-import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
-import cache, { setCache } from './cache';
-import { fetchData } from '../util';
 import {
   mockedAnnouncements,
   mockedAlerts,
@@ -16,7 +9,14 @@ import {
   mockedResources,
   mockedPageContent,
   mockedReleaseNotes,
-} from '../../mocks/dx';
+} from '@src/mocks/dx';
+import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
+import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
+import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
+import { IReleaseNotes } from '../releaseNotes'; // eslint-disable-line no-unused-vars
+import { IPageContent } from '../pageContent'; // eslint-disable-line no-unused-vars
+import cache, { setCache } from './cache';
+import { fetchData } from '../util';
 
 export const BASE_URL: string = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
@@ -40,8 +40,8 @@ export interface Alert {
  * @param item drupal item including field_announcement_image.field_media_image
  */
 const imageUrl = (item) => {
-  if (item.field_announcement_image && item.field_announcement_image.field_media_image) {
-    return `${BASE_URL}${item.field_announcement_image!.field_media_image.uri.url}`;
+  if (item.field_announcement_image?.field_media_image?.uri?.url) {
+    return `${BASE_URL}${item.field_announcement_image.field_media_image.uri.url}`;
   }
   return undefined;
 };
@@ -98,7 +98,7 @@ const mappedResources = (items: any[]): IResourceResult[] => {
     id: d.id,
     type: d.drupal_internal__name,
     title: d.title,
-    link: d.field_service_url.uri,
+    link: d.field_service_url?.uri,
     iconName: d.field_icon_name,
     affiliation: d.field_affiliation.map((a) => a.name),
     audiences: d.field_audience.map((a) => a.name),
@@ -265,8 +265,8 @@ export const getCategories = async (): Promise<ICategory[]> => {
     );
 
     const categoryIconUrl = (item) => {
-      if (item.field_taxonomy_icon && item.field_taxonomy_icon.field_media_image) {
-        return `${BASE_URL}${item.field_taxonomy_icon!.field_media_image.uri.url}`;
+      if (item.field_taxonomy_icon?.field_media_image?.uri?.url) {
+        return `${BASE_URL}${item.field_taxonomy_icon.field_media_image.uri.url}`;
       }
       return undefined;
     };
@@ -301,7 +301,7 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
     return data.map((d) => ({
       title: d.title,
       id: d.field_machine_name,
-      content: d.body.processed,
+      content: d.body?.processed,
     }));
   } catch (err) {
     throw err;
