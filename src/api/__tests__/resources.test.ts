@@ -8,7 +8,7 @@ import {
   mockedResourcesExpected,
   mockedCategories,
   mockedCategoriesExpected,
-} from '@src/mocks/dx';
+} from '../../mocks/dx';
 import app from '../../index';
 import { BASE_URL } from '../modules/dx';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars

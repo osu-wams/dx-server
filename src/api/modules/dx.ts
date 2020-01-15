@@ -9,7 +9,7 @@ import {
   mockedResources,
   mockedPageContent,
   mockedReleaseNotes,
-} from '@src/mocks/dx';
+} from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
 import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
