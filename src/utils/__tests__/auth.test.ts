@@ -11,8 +11,10 @@ const mockSaml = {
   'urn:oid:2.5.4.42': 'Bob',
   'urn:oid:2.5.4.4': 'Ross',
   'urn:oid:1.3.6.1.4.1.5923.1.1.1.7': [GROUPS.admin, GROUPS.masquerade],
+  'urn:oid:1.3.6.1.4.1.5923.1.1.1.1': ['member', 'employee'],
 };
 const mockUser = {
+  affiliations: ['member', 'employee'],
   email: 'test@test.com',
   firstName: 'Bob',
   groups: ['admin', 'masquerade'],

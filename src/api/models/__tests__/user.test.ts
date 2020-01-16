@@ -13,6 +13,8 @@ const samlUser: SamlUser = {
   email: 'bob@bobross.com',
   phone: '5551212',
   primaryAffiliation: 'employee',
+  affiliations: ['employee'],
+  groups: [],
 };
 
 let dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
@@ -23,6 +25,7 @@ let dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
     email: { S: 'bob@bobross.com' },
     phone: { S: '5551212' },
     primaryAffiliation: { S: 'employee' },
+    affiliations: { SS: ['employee'] },
     canvasRefreshToken: { S: 'refresh-me' },
     canvasOptIn: { BOOL: true },
   },
@@ -48,11 +51,25 @@ describe('User model', () => {
       expect(user.isCanvasOptIn).toBeFalsy();
       expect(user.refreshToken).toEqual('');
       expect(user.primaryAffiliation).toEqual('employee');
+      expect(user.affiliations).toEqual(['employee']);
       expect(user.isStudent()).toBeFalsy();
     });
 
     it('builds a Student User from SAML data', () => {
-      const studentUser = new User({ samlUser: { ...samlUser, primaryAffiliation: 'student' } });
+      const studentUser = new User({
+        samlUser: { ...samlUser, primaryAffiliation: 'student', affiliations: ['student'] },
+      });
+      expect(studentUser.isStudent()).toBeTruthy();
+    });
+
+    it('builds a Student Employee User from SAML data', () => {
+      const studentUser = new User({
+        samlUser: {
+          ...samlUser,
+          primaryAffiliation: 'employee',
+          affiliations: ['employee', 'student'],
+        },
+      });
       expect(studentUser.isStudent()).toBeTruthy();
     });
 
@@ -71,6 +88,7 @@ describe('User model', () => {
         expect(user.isCanvasOptIn).toEqual(dynamoDbUser.Item.canvasOptIn.BOOL);
         expect(user.refreshToken).toEqual(dynamoDbUser.Item.canvasRefreshToken.S);
         expect(user.primaryAffiliation).toEqual(dynamoDbUser.Item.primaryAffiliation.S);
+        expect(user.affiliations).toEqual(dynamoDbUser.Item.affiliations.SS);
         expect(user.isStudent()).toBeFalsy();
       });
       it('builds a User missing some data', () => {
@@ -86,6 +104,48 @@ describe('User model', () => {
         expect(user.phone).toBeUndefined();
         expect(user.email).toBeUndefined();
         expect(user.isStudent()).toBeFalsy();
+      });
+      it('builds a Student', () => {
+        dynamoDbUser = {
+          Item: {
+            osuId: { N: '8675309' },
+            primaryAffiliation: { S: 'student' },
+            affiliations: { SS: ['student'] },
+          },
+        };
+        const user = new User({ dynamoDbUser });
+        expect(user.osuId).toEqual(parseInt(dynamoDbUser.Item.osuId.N, 10));
+        expect(user.primaryAffiliation).toEqual('student');
+        expect(user.affiliations).toEqual(['student']);
+        expect(user.isStudent()).toBeTruthy();
+      });
+      it('builds a Student who is also an Employee user', () => {
+        dynamoDbUser = {
+          Item: {
+            osuId: { N: '8675309' },
+            primaryAffiliation: { S: 'student' },
+            affiliations: { SS: ['employee', 'student'] },
+          },
+        };
+        const user = new User({ dynamoDbUser });
+        expect(user.osuId).toEqual(parseInt(dynamoDbUser.Item.osuId.N, 10));
+        expect(user.primaryAffiliation).toEqual('student');
+        expect(user.affiliations).toEqual(['employee', 'student']);
+        expect(user.isStudent()).toBeTruthy();
+      });
+      it('builds an Employee who is also a Student user', () => {
+        dynamoDbUser = {
+          Item: {
+            osuId: { N: '8675309' },
+            primaryAffiliation: { S: 'employee' },
+            affiliations: { SS: ['employee', 'student'] },
+          },
+        };
+        const user = new User({ dynamoDbUser });
+        expect(user.osuId).toEqual(parseInt(dynamoDbUser.Item.osuId.N, 10));
+        expect(user.primaryAffiliation).toEqual('employee');
+        expect(user.affiliations).toEqual(['employee', 'student']);
+        expect(user.isStudent()).toBeTruthy();
       });
     });
   });
@@ -108,6 +168,8 @@ describe('User model', () => {
       expect(item.lastName.S).toBe(samlUser.last_name);
       expect(item.email.S).toBe(samlUser.email);
       expect(item.primaryAffiliation.S).toBe(samlUser.primaryAffiliation);
+      expect(item.affiliations.SS).toBe(samlUser.affiliations);
+      expect(item.groups.SS).toBe(samlUser.groups);
     });
     it('builds an item with a phone', () => {
       const item = User.asDynamoDbItem(user);
