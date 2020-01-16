@@ -36,6 +36,7 @@ const mockGetItemReturn = {
     email: { S: 'bob@bobross.com' },
     phone: { S: '5551212' },
     primaryAffiliation: { S: 'employee' },
+    affiliations: { SS: ['employee'] },
     canvasRefreshToken: { S: '' },
     canvasOptIn: { BOOL: false },
   },

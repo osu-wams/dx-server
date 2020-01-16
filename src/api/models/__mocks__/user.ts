@@ -7,6 +7,8 @@ export const mockUser = {
   phone: '5551212',
   isAdmin: false,
   primaryAffiliation: 'employee',
+  groups: [],
+  affiliations: ['employee'],
   isStudent: () => false,
 };
 
