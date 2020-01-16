@@ -41,6 +41,9 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   firstName: { S: string };
   lastName: { S: string };
   email: { S: string };
+  primaryAffiliation: { S: string };
+  affiliations: { SS: string[] };
+  groups: { SS: string[] };
   phone?: { S: string };
   canvasRefreshToken?: { S: string };
   canvasOptIn?: { BOOL: boolean };
@@ -52,40 +55,60 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
 }
 
 class User {
+  /** From SAML profile */
   osuId: number;
 
+  /** From SAML profile */
   firstName: string;
 
+  /** From SAML profile */
   lastName: string;
 
+  /** From SAML profile */
   email: string;
 
+  /** Primary User affiliation (ie. student or employee) from SAML profile */
   primaryAffiliation: string;
 
+  /** All User affiliations (ie. student, employee) from SAML profile */
+  affiliations: string[] = [];
+
+  /** Groupers group names from the SAML profile */
+  groups: string[] = [];
+
+  /** From SAML profile */
   phone?: string;
 
   /** Grouper group: Admin flag derived from SAML profile, not persisted in the database */
   isAdmin?: boolean = false;
 
-  /** Grouper groups: Derived from SAML profile, not persisted in the database */
-  groups?: string[] = [];
-
+  /** Canvas OAuth refresh token used to fetch new tokens, provided when the user approves DX app to Canvas  */
   refreshToken?: string = '';
 
+  /** Canvas Oauth expiration date in milliseconds */
   canvasOauthExpire?: number = 0;
 
+  /** Canvas Oauth token to use for API calls on behalf of the user */
   canvasOauthToken?: string = '';
 
+  /** User has removed application approval or has not yet clicked to approve integration */
   isCanvasOptIn?: boolean = false;
 
+  /** From SAML profile */
   nameIDFormat?: string = '';
 
+  /** From SAML profile */
   nameID?: string = '';
 
+  /** User initiated setting overrides to view specific audience(s) specific data such as events and announcements */
   audienceOverride?: AudienceOverride = {};
 
+  /** Employee type user initiated setting to view the application how another affiliation (student) would see it, this is
+   * used by student-facing folks
+   */
   primaryAffiliationOverride?: string = '';
 
+  /** User initiated setting to set the application theme, defaults to light theme */
   theme?: string = 'light';
 
   static TABLE_NAME: string = `${tablePrefix}-Users`;
@@ -104,6 +127,8 @@ class User {
       this.email = params.email;
       this.phone = params.phone;
       this.primaryAffiliation = params.primaryAffiliation;
+      this.affiliations = params.affiliations;
+      this.groups = params.groups;
     }
 
     if (p.dynamoDbUser) {
@@ -136,6 +161,8 @@ class User {
       if (params.Item.theme) this.theme = params.Item.theme.S;
       if (params.Item.primaryAffiliationOverride)
         this.primaryAffiliationOverride = params.Item.primaryAffiliationOverride.S;
+      if (params.Item.affiliations) this.affiliations = params.Item.affiliations.SS;
+      if (params.Item.groups) this.groups = params.Item.groups.SS;
     }
   }
 
@@ -143,7 +170,9 @@ class User {
    * Detect if the user is a student, currently by checking only the primaryAffiliation
    */
   isStudent = (): boolean => {
-    return this.primaryAffiliation?.toLowerCase() === 'student';
+    return (
+      this.primaryAffiliation?.toLowerCase() === 'student' || this.affiliations.includes('student')
+    );
   };
 
   /**
@@ -375,6 +404,9 @@ class User {
       firstName: { S: props.firstName },
       lastName: { S: props.lastName },
       email: { S: props.email },
+      primaryAffiliation: { S: props.primaryAffiliation },
+      affiliations: { SS: props.affiliations },
+      groups: { SS: props.groups },
     };
     if (props.isCanvasOptIn === undefined) {
       Item.canvasOptIn = { BOOL: false };
@@ -382,7 +414,6 @@ class User {
       Item.canvasOptIn = { BOOL: props.isCanvasOptIn };
     }
     if (props.phone) Item.phone = { S: props.phone };
-    if (props.primaryAffiliation) Item.primaryAffiliation = { S: props.primaryAffiliation };
     if (props.refreshToken) Item.canvasRefreshToken = { S: props.refreshToken };
     if (props.nameID) Item.nameID = { S: props.nameID };
     if (props.nameIDFormat) Item.nameIDFormat = { S: props.nameIDFormat };
