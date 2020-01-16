@@ -8,6 +8,8 @@ export interface SamlUser {
   email: string;
   phone: string;
   primaryAffiliation: string;
+  affiliations: string[];
+  groups: string[];
 }
 
 interface FindOrUpsertUser {
@@ -24,6 +26,15 @@ interface OAuthData {
   isCanvasOptIn: boolean;
 }
 
+/**
+ * Check if the two arrays of strings match regardless of current order of values
+ * @param a an array of strings to consider
+ * @param b an array of strings to consider
+ */
+const arraysMatch = (a: string[], b: string[]) => {
+  return a.length === b.length && a.sort().every((v, i) => v === b.sort()[i]);
+};
+
 export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
   try {
     let user: User = await User.find(u.osuId);
@@ -36,12 +47,16 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
       user.email !== u.email ||
       user.firstName !== u.firstName ||
       user.lastName !== u.lastName ||
-      user.primaryAffiliation !== u.primaryAffiliation
+      user.primaryAffiliation !== u.primaryAffiliation ||
+      !arraysMatch(user.groups, u.groups) ||
+      !arraysMatch(user.affiliations, u.affiliations)
     ) {
       user.email = u.email;
       user.firstName = u.firstName;
       user.lastName = u.lastName;
       user.primaryAffiliation = u.primaryAffiliation;
+      user.affiliations = u.affiliations;
+      user.groups = u.groups;
       user = await User.upsert(user);
     }
 
