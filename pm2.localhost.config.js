@@ -2,8 +2,8 @@ module.exports = {
   apps: [
     {
       name: 'dx-server',
-      script: 'dist/index.js',
-      watch: ['dist'],
+      script: 'dist/src/index.js',
+      watch: ['dist/src'],
       instances: 2,
       env: {
         NODE_ENV: 'localhost',

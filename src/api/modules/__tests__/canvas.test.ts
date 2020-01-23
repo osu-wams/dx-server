@@ -20,6 +20,8 @@ const user = {
   lastName: 'l',
   email: 'e',
   primaryAffiliation: 'employee',
+  affiliations: ['employee'],
+  groups: [],
   isStudent: () => false,
 };
 const assignment = { assignment: 'test' };
@@ -66,6 +68,8 @@ describe('Canvas module', () => {
           lastName: 'l',
           email: 'e',
           primaryAffiliation: 'employee',
+          affiliations: ['employee'],
+          groups: [],
           canvasOauthToken: null,
           canvasOauthExpire: null,
           isCanvasOptIn: false,

@@ -5,14 +5,15 @@ const ENV: string = config.get('env');
 
 const parseSamlResult = (profile: any, done: any) => {
   const user = {
-    osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10),
-    email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'],
-    primaryAffiliation: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.5'],
+    osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10), // '123456789'
+    email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'], // 'nobody@nobody.nobody'
+    primaryAffiliation: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.5'], // 'employee'
     nameID: profile.nameID,
     nameIDFormat: profile.nameIDFormat,
-    firstName: profile['urn:oid:2.5.4.42'],
-    lastName: profile['urn:oid:2.5.4.4'],
+    firstName: profile['urn:oid:2.5.4.42'], // 'Bob'
+    lastName: profile['urn:oid:2.5.4.4'], // 'Ross'
     groups: [],
+    affiliations: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.1'], // ['member', 'employee']
     isAdmin: false,
   };
 
