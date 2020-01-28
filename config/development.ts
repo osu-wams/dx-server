@@ -2,6 +2,9 @@ export default {
   env: 'development',
   logLevel: 'silly',
   appVersion: 'development-123',
+  dxApi: {
+    baseUrl: 'https://data-stage.dx.oregonstate.edu',
+  },
   osuApi: {
     baseUrl: 'https://oregonstateuniversity-dev.apigee.net/v1',
   },

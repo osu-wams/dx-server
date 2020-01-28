@@ -71,9 +71,11 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
       let audiences = [];
       let pages = [];
       let affiliation = [];
+      let locations = [];
       if (d.field_audience !== undefined) audiences = d.field_audience.map((a) => a.name);
       if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name);
       if (d.field_affiliation !== undefined) affiliation = d.field_affiliation.map((a) => a.name);
+      if (d.field_locations !== undefined) locations = d.field_locations.map((a) => a.name);
       return {
         id: d.id,
         type: d.drupal_internal__name,
@@ -82,6 +84,7 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
         body: d.field_announcement_body,
         bg_image: imageUrl(d),
         affiliation,
+        locations,
         audiences,
         pages,
         action: itemAction(d),
@@ -101,6 +104,7 @@ const mappedResources = (items: any[]): IResourceResult[] => {
     link: d.field_service_url?.uri,
     iconName: d.field_icon_name,
     affiliation: d.field_affiliation.map((a) => a.name),
+    locations: d.field_locations.map((a) => a.name),
     audiences: d.field_audience.map((a) => a.name),
     categories: d.field_service_category.map((c) => c.name),
     synonyms: d.field_service_synonyms,
@@ -148,14 +152,15 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
         retrieveData('node/announcement', {
           fields: {
             'node--announcement':
-              'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages',
+              'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations',
             'taxonomy_term--audience': 'name',
             'taxonomy_term--pages': 'name',
+            'taxonomy_term--locations': 'name',
             'media--image': 'name,field_media_image',
             'file--file': 'filename,filemime,uri',
           },
           include:
-            'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages',
+            'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages,field_locations',
           filter: {
             status: 1,
           },
@@ -178,12 +183,13 @@ export const getResources = async (): Promise<IResourceResult[]> => {
         retrieveData('node/services', {
           fields: {
             'node--services':
-              'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url',
+              'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations',
             'taxonomy_term--categories': 'name',
             'taxonomy_term--audience': 'name',
             'taxonomy_term--affiliation': 'name',
+            'taxonomy_term--locations': 'name',
           },
-          include: 'field_affiliation,field_audience,field_service_category',
+          include: 'field_affiliation,field_audience,field_service_category,field_locations',
           sort: 'title',
           filter: {
             status: 1,
@@ -210,13 +216,14 @@ export const getCuratedResources = async (
           fields: {
             'entity_subqueue--services': 'items,drupal_internal__name',
             'node--services':
-              'id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url',
+              'id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations',
             'taxonomy_term--categories': 'name',
             'taxonomy_term--audience': 'name',
             'taxonomy_term--affiliation': 'name',
+            'taxonomy_term--locations': 'name',
           },
           include:
-            'items,items.field_affiliation,items.field_audience,items.field_service_category',
+            'items,items.field_affiliation,items.field_audience,items.field_service_category,items.field_locations',
         }),
       mockedCuratedResources(category),
     );

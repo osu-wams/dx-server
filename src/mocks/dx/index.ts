@@ -1,5 +1,8 @@
 import mockedAlerts from './alerts.data.json';
 import mockedAnnouncements from './announcements.data.json';
+import mockedAnnouncementsExpected from './announcements.data.expected';
+import mockedAnnouncementsFinancesExpected from './announcements-finances.data.expected';
+import mockedAnnouncementsAcademicsExpected from './announcements-academics.data.expected';
 import mockedCategories from './categories.data.json';
 import mockedCategoriesExpected from './categories.data.expected';
 import mockedCuratedResourcesFeatured from './resources-featured.data.json';
@@ -33,6 +36,9 @@ const mockedCuratedResources = (category: string) => {
 export {
   mockedAlerts,
   mockedAnnouncements,
+  mockedAnnouncementsExpected,
+  mockedAnnouncementsAcademicsExpected,
+  mockedAnnouncementsFinancesExpected,
   mockedCategories,
   mockedCategoriesExpected,
   mockedCuratedResources,

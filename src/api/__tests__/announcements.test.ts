@@ -3,12 +3,11 @@ import nock from 'nock';
 import { BASE_URL } from '../modules/dx';
 import app from '../../index';
 import {
-  mockAnnouncementsData,
-  mockAnnouncementResult,
-  mockAnnouncementResultWithoutRelatedData,
-  mockAcademicAnnouncementResult,
-  mockFinancialAnnouncementResult
-} from '../__mocks__/announcements.data';
+  mockedAnnouncements,
+  mockedAnnouncementsExpected,
+  mockedAnnouncementsFinancesExpected,
+  mockedAnnouncementsAcademicsExpected,
+} from '../../mocks/dx';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
 
@@ -22,18 +21,13 @@ describe('/api/announcements', () => {
     nock(BASE_URL)
       .get('/jsonapi/node/announcement')
       .query(true)
-      .reply(200, { data: mockAnnouncementsData });
-    await request.get('/api/announcements').expect(200, mockAnnouncementResult);
+      .reply(200, { data: mockedAnnouncements });
+    await request.get('/api/announcements').expect(200, mockedAnnouncementsExpected);
   });
   it('returns cached announcements', async () => {
-    mockCachedData.mockReturnValue(JSON.stringify(mockAnnouncementsData));
+    mockCachedData.mockReturnValue(JSON.stringify(mockedAnnouncements));
     cache.getAsync = getAsync;
-    await request.get('/api/announcements').expect(200, mockAnnouncementResult);
-  });
-  it('does not have included image, action, or audience data', async () => {
-    mockCachedData.mockReturnValue(JSON.stringify([mockAnnouncementsData[0]]));
-    cache.getAsync = getAsync;
-    await request.get('/api/announcements').expect(200, mockAnnouncementResultWithoutRelatedData);
+    await request.get('/api/announcements').expect(200, mockedAnnouncementsExpected);
   });
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
@@ -50,9 +44,11 @@ describe('/api/announcements', () => {
 
 describe('/api/announcements/academics', () => {
   it('returns announcements', async () => {
-    mockCachedData.mockReturnValue(JSON.stringify(mockAnnouncementsData));
+    mockCachedData.mockReturnValue(JSON.stringify(mockedAnnouncements));
     cache.getAsync = getAsync;
-    await request.get('/api/announcements/academics').expect(200, mockAcademicAnnouncementResult);
+    await request
+      .get('/api/announcements/academics')
+      .expect(200, mockedAnnouncementsAcademicsExpected);
   });
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
@@ -69,13 +65,15 @@ describe('/api/announcements/academics', () => {
 
 describe('/api/announcements/finances', () => {
   it('returns announcements', async () => {
-    mockCachedData.mockReturnValue(JSON.stringify(mockAnnouncementsData));
+    mockCachedData.mockReturnValue(JSON.stringify(mockedAnnouncements));
     cache.getAsync = getAsync;
     nock(BASE_URL)
       .get('/jsonapi/node/announcement')
       .query(true)
-      .reply(200, mockAnnouncementsData);
-    await request.get('/api/announcements/finances').expect(200, mockFinancialAnnouncementResult);
+      .reply(200, mockedAnnouncements);
+    await request
+      .get('/api/announcements/finances')
+      .expect(200, mockedAnnouncementsFinancesExpected);
   });
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
