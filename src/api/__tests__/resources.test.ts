@@ -21,6 +21,30 @@ beforeAll(async () => {
 });
 
 describe('/resources', () => {
+  it('returns associated data without null values', async () => {
+    // JSON.parse/stringify to enforce a deep copied array as to not mutate the original!
+    const resources = JSON.parse(JSON.stringify(mockedResources)).slice(0, 1);
+    resources[0].field_locations = resources[0].field_locations.slice(0, 1);
+    resources[0].field_locations[0].name = null;
+    resources[0].field_audience[0].name = null;
+    const url = '/api/resources';
+    mockCachedData.mockReturnValue(JSON.stringify(resources));
+    cache.getAsync = getAsync;
+    await request.get(url).expect(200, [
+      {
+        id: '4c78c92a-baca-480d-97e7-384bb76e3b48',
+        title: 'Academic Advising',
+        link: 'https://catalog.oregonstate.edu/advising/',
+        iconName: 'fal.comments-alt',
+        affiliation: [],
+        locations: [],
+        audiences: ['Ecampus'],
+        categories: [],
+        synonyms: [],
+      },
+    ]);
+  });
+
   it('should contain an icon when one exists', async () => {
     const url = '/api/resources';
     mockCachedData.mockReturnValue(JSON.stringify(mockedResources));
