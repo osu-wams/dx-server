@@ -54,6 +54,47 @@
             "name": "Financial"
           }
         ],
+        "field_locations": [
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-1",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+              }
+            },
+            "name": "Bend"
+          },
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-2",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+              }
+            },
+            "name": "Corvallis"
+          },
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-3",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+              }
+            },
+            "name": "Ecampus"
+          }
+        ],
         "title": "W-2 Wage and Tax Statement",
         "field_icon_name": "fal.file-invoice-dollar",
         "field_service_synonyms": [],
@@ -118,6 +159,47 @@
             "name": "Financial"
           }
         ],
+        "field_locations": [
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-1",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+              }
+            },
+            "name": "Bend"
+          },
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-2",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+              }
+            },
+            "name": "Corvallis"
+          },
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-3",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+              }
+            },
+            "name": "Ecampus"
+          }
+        ],
         "title": "Direct Deposit",
         "field_icon_name": "fal.money-check-alt",
         "field_service_synonyms": ["bank", "bill", "pay"],
@@ -155,6 +237,47 @@
         ],
         "field_audience": [],
         "field_service_category": [],
+        "field_locations": [
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-1",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+              }
+            },
+            "name": "Bend"
+          },
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-2",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+              }
+            },
+            "name": "Corvallis"
+          },
+          {
+            "type": "taxonomy_term--locations",
+            "id": "location-3",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+              }
+            },
+            "name": "Ecampus"
+          }
+        ],
         "title": "Retirement Plans & Tax-Deferred Investments",
         "field_icon_name": "fal.file-medical",
         "field_service_synonyms": [],

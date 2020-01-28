@@ -63,6 +63,47 @@
         "name": "Finances"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "SNAP for OSU Students",
     "field_announcement_action": {
       "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Fbeav.es%2FSNAP&token=N1dOAVMk%2B5bq7mRPjK3wNU3g7zZLzG7DskwS4u5uySs%3D",
@@ -157,6 +198,34 @@
         "name": "Dashboard"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Amazon on campus",
     "field_announcement_action": null,
     "field_announcement_body": "Come pick up your Amazon packages at the Memorial Union! Beginning fall term, we will have a set of Amazon lockers for use at your convenience."
@@ -202,6 +271,21 @@
         "name": "Dashboard"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
     "title": "Emergency Contact Info",
     "field_announcement_action": {
       "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Foregonstate.edu%2Falerts%2Fosu-alert-portal&token=QE9LytTaaBHkw66ZLRk0zu6zVTapVNkvpO85gm3wHv8%3D",
@@ -238,6 +322,47 @@
           }
         },
         "name": "Dashboard"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Get it, Beavs.",
@@ -322,6 +447,21 @@
         "name": "Dashboard"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
     "title": "Wellness Nook Opens",
     "field_announcement_action": {
       "uri": "https://wellnessnook.oregonstate.edu",
@@ -397,6 +537,21 @@
         "name": "Dashboard"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
     "title": "Coffee naps. Say what?!",
     "field_announcement_action": {
       "uri": "https://www.sciencedirect.com/science/article/pii/S1388245703002554",
@@ -430,6 +585,47 @@
           }
         },
         "name": "Dashboard"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Need support? ",
@@ -504,6 +700,47 @@
         "name": "Academics"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Hey Beavs, want to improve your finals grades? ",
     "field_announcement_action": {
       "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Fsuccess.oregonstate.edu%2Fstudent-strategists&token=uQI4YJ29P1S1nVxcIPkJFC0rYawV89Wm3rf%2FheLbHa4%3D",
@@ -525,6 +762,47 @@
     },
     "field_audience": [],
     "field_pages": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Fellow OSU faculty member makes 16,000-year-old discovery",
     "field_announcement_action": {
       "uri": "https://www.kezi.com/content/news/OSU-professor-makes-16000-year-old-discovery-in-Western-Idaho-563102261.html",
@@ -558,6 +836,47 @@
           }
         },
         "name": "Finances"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "FAFSA reminder",
@@ -633,6 +952,47 @@
           }
         },
         "name": "Dashboard"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Duo for Students",

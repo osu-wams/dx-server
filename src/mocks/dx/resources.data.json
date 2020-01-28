@@ -40,6 +40,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Academic Advising",
     "field_icon_name": "fal.comments-alt",
     "field_service_synonyms": [],
@@ -75,6 +103,47 @@
           }
         },
         "name": "Academic"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Academic Calendar",
@@ -127,6 +196,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Academic Regulations",
     "field_icon_name": "fal.gavel",
     "field_service_synonyms": [],
@@ -164,6 +261,47 @@
         "name": "Academic"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Academic Standing",
     "field_icon_name": "fal.medal",
     "field_service_synonyms": ["honor"],
@@ -199,6 +337,47 @@
           }
         },
         "name": "Academic"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Academic Success Center",
@@ -265,6 +444,21 @@
         "name": "Academic"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
     "title": "Academics for Student Athletes",
     "field_icon_name": "fal.running",
     "field_service_synonyms": [],
@@ -302,6 +496,47 @@
         "name": "Financial"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Account Summary by Term",
     "field_icon_name": "fal.align-justify",
     "field_service_synonyms": [],
@@ -325,6 +560,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Add / Drop Classes",
     "field_icon_name": "fal.chalkboard-teacher",
     "field_service_synonyms": ["courses"],
@@ -375,6 +651,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Admission",
     "field_icon_name": "fal.backpack",
     "field_service_synonyms": [],
@@ -398,6 +702,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Advance Standing Report-Official Transfer Credit",
     "field_icon_name": "fal.exchange-alt",
     "field_service_synonyms": [],
@@ -433,6 +778,47 @@
           }
         },
         "name": "Financial"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Advance Tuition Deposit",
@@ -512,6 +898,34 @@
         "name": "Wellness"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Adventure Leadership Institute",
     "field_icon_name": "fal.hiking",
     "field_service_synonyms": [],
@@ -549,6 +963,47 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Airport Transportation (INTO OSU)",
     "field_icon_name": "fal.plane",
     "field_service_synonyms": ["fly", "travel"],
@@ -600,6 +1055,21 @@
         "name": "Getting Involved"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      }
+    ],
     "title": "ASCC-Student Government",
     "field_icon_name": "fal.gavel",
     "field_service_synonyms": ["bend"],
@@ -646,6 +1116,47 @@
         "name": "Getting Involved"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Athletic Events",
     "field_icon_name": "fal.basketball-hoop",
     "field_service_synonyms": ["sports", "football", "basketball", "baseball"],
@@ -677,6 +1188,47 @@
           }
         },
         "name": "Financial"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Award Payment Schedule",
@@ -729,6 +1281,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Baccalaureate Core Courses",
     "field_icon_name": "fal.chalkboard",
     "field_service_synonyms": [],
@@ -766,6 +1346,21 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      }
+    ],
     "title": "Bend Information",
     "field_icon_name": "fal.mountain",
     "field_service_synonyms": ["visit"],
@@ -814,6 +1409,47 @@
           }
         },
         "name": "Technology"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Box",
@@ -866,6 +1502,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Campus Tours",
     "field_icon_name": "fal.binoculars",
     "field_service_synonyms": ["visit", "corvallis"],
@@ -903,6 +1567,47 @@
         "name": "Featured"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Canvas",
     "field_icon_name": "osu.logo-canvas",
     "field_service_synonyms": ["lms", "homework", "assignments", "learn", "learn@oregonstate"],
@@ -938,6 +1643,47 @@
           }
         },
         "name": "Featured"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Canvas / Learn@OregonState Student Guide",
@@ -991,6 +1737,21 @@
         "name": "Financial"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
     "title": "Card Cash / Orange Rewards",
     "field_icon_name": "fal.credit-card",
     "field_service_synonyms": ["dining", "food"],
@@ -1010,6 +1771,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Career Planning & Guidance",
     "field_icon_name": "fal.briefcase",
     "field_service_synonyms": [],
@@ -1041,6 +1843,47 @@
           }
         },
         "name": "Financial"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Cashier's Office",
@@ -1093,6 +1936,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Center for Teaching and Learning",
     "field_icon_name": "fal.chalkboard-teacher",
     "field_service_synonyms": [],
@@ -1112,6 +1983,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Change General Access Pin (GAP)",
     "field_icon_name": "fal.user-edit",
     "field_service_synonyms": [],
@@ -1149,6 +2061,47 @@
         "name": "Academic"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Change of Grading Basis",
     "field_icon_name": "fal.clipboard-list-check",
     "field_service_synonyms": [],
@@ -1172,6 +2125,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Change Security Question",
     "field_icon_name": "fal.user-edit",
     "field_service_synonyms": [],
@@ -1207,6 +2201,47 @@
           }
         },
         "name": "Academic"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
       }
     ],
     "title": "Changes to Registration",
@@ -1246,6 +2281,47 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Changing Degree/Major in Graduate School",
     "field_icon_name": "fal.sync",
     "field_service_synonyms": [],
@@ -1269,6 +2345,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Check your Eligibility for an Emergency Loan",
     "field_icon_name": "fal.comments-dollar",
     "field_service_synonyms": [],
@@ -1292,6 +2409,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Check Your Registration Status",
     "field_icon_name": "fal.backpack",
     "field_service_synonyms": ["my"],
@@ -1329,6 +2487,21 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
     "title": "Childcare & Family Resources",
     "field_icon_name": "fal.child",
     "field_service_synonyms": ["daycare"],
@@ -1380,6 +2553,21 @@
         "name": "Getting Involved"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
     "title": "Civic Engagement Opportunities",
     "field_icon_name": "fal.leaf-heart",
     "field_service_synonyms": ["recycle", "sustainable", "leadership"],
@@ -1417,6 +2605,21 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      }
+    ],
     "title": "COCC Blackboard",
     "field_icon_name": "fal.chalkboard-teacher",
     "field_service_synonyms": [],
@@ -1450,6 +2653,21 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      }
+    ],
     "title": "COCC Login",
     "field_icon_name": "fal.sign-in",
     "field_service_synonyms": ["bend", "cascades"],
@@ -1500,6 +2718,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Commencement",
     "field_icon_name": "fal.user-graduate",
     "field_service_synonyms": ["graduation"],
@@ -1523,6 +2769,47 @@
     "field_affiliation": [],
     "field_audience": [],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Complete a FERPA Release",
     "field_icon_name": "fal.file-signature",
     "field_service_synonyms": [],
@@ -1560,6 +2847,47 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-1",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Conditional Admission Program (CAP)",
     "field_icon_name": "fal.language",
     "field_service_synonyms": [],
@@ -1623,6 +2951,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Corvallis Commencement Attendance Confirmation for Undergraduates",
     "field_icon_name": "fal.user-graduate",
     "field_service_synonyms": ["graduation"],
@@ -1700,6 +3056,34 @@
         "name": "Wellness"
       }
     ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Counseling Services",
     "field_icon_name": "fal.hand-heart",
     "field_service_synonyms": ["caps", "psychological", "mental", "health", "wellness"],
@@ -1750,6 +3134,34 @@
       }
     ],
     "field_service_category": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-2",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "location-3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
     "title": "Resource Without a Link",
     "field_icon_name": "fal.list-alt",
     "field_service_synonyms": [],
