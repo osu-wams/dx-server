@@ -67,6 +67,10 @@ jobs:
           # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3
           aws s3 cp ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }}
           aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }}
+          aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }}
+          STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }} --query 'Stacks[].StackStatus') --output text
+          POST_DATA="{\"text\": \"CloudFormation Stack Updated:\nStack: ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }}\nStatus: $STACK_STATUS\"}"
+          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WAMS_CICD_HOOK_URL }}
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
