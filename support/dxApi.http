@@ -1,4 +1,5 @@
-@baseUrl = https://data.dx.oregonstate.edu
+// @baseUrl = https://data.dx.oregonstate.edu
+@baseUrl = https://data-stage.dx.oregonstate.edu
 
 # @name getAlerts
 GET {{baseUrl}}/jsonapi/node/alerts HTTP/1.1
@@ -10,12 +11,13 @@ GET {{baseUrl}}/jsonapi/node/alerts HTTP/1.1
 
 # @name getAnnouncements
 GET {{baseUrl}}/jsonapi/node/announcement HTTP/1.1
-  ?fields[node--announcement]=id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages
+  ?fields[node--announcement]=id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations
   &fields[taxonomy_term--pages]=name
   &fields[taxonomy_term--audience]=name
+  &fields[taxonomy_term--locations]=name
   &fields[media--image]=name,field_media_image
   &fields[file--file]=filename,filemime,uri
-  &include=field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages
+  &include=field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages,field_locations
   &filter[status]=1
   &page[limit]=10
 
@@ -35,11 +37,12 @@ GET {{baseUrl}}/jsonapi/taxonomy_term/categories HTTP/1.1
 # @name getCuratedResourcesFeatured
 GET {{baseUrl}}/jsonapi/entity_subqueue/featured HTTP/1.1
   ?fields[entity_subqueue--services]=items,drupal_internal__name
-  &fields[node--services]=id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url
+  &fields[node--services]=id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations
   &fields[taxonomy_term--categories]=name
   &fields[taxonomy_term--audience]=name
   &fields[taxonomy_term--affiliation]=name
-  &include=items,items.field_affiliation,items.field_audience,items.field_service_category
+  &fields[taxonomy_term--locations]=name
+  &include=items,items.field_affiliation,items.field_audience,items.field_service_category,items.field_locations
 
 ###
 
@@ -69,11 +72,12 @@ GET {{baseUrl}}/jsonapi/node/release_notes HTTP/1.1
 
 # @name getResources
 GET {{baseUrl}}/jsonapi/node/services HTTP/1.1
-  ?fields[node--services]=id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url
+  ?fields[node--services]=id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations
   &fields[taxonomy_term--categories]=name
   &fields[taxonomy_term--audience]=name
   &fields[taxonomy_term--affiliation]=name
-  &include=field_affiliation,field_audience,field_service_category
+  &fields[taxonomy_term--locations]=name
+  &include=field_affiliation,field_audience,field_service_category,field_locations
   &sort=title
   &filter[status]=1
 
