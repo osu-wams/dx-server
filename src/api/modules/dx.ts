@@ -72,10 +72,13 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
       let pages = [];
       let affiliation = [];
       let locations = [];
-      if (d.field_audience !== undefined) audiences = d.field_audience.map((a) => a.name);
-      if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name);
-      if (d.field_affiliation !== undefined) affiliation = d.field_affiliation.map((a) => a.name);
-      if (d.field_locations !== undefined) locations = d.field_locations.map((a) => a.name);
+      if (d.field_audience !== undefined)
+        audiences = d.field_audience.map((a) => a.name).filter(Boolean);
+      if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name).filter(Boolean);
+      if (d.field_affiliation !== undefined)
+        affiliation = d.field_affiliation.map((a) => a.name).filter(Boolean);
+      if (d.field_locations !== undefined)
+        locations = d.field_locations.map((a) => a.name).filter(Boolean);
       return {
         id: d.id,
         type: d.drupal_internal__name,
@@ -103,10 +106,10 @@ const mappedResources = (items: any[]): IResourceResult[] => {
     title: d.title,
     link: d.field_service_url?.uri,
     iconName: d.field_icon_name,
-    affiliation: d.field_affiliation.map((a) => a.name),
-    locations: d.field_locations.map((a) => a.name),
-    audiences: d.field_audience.map((a) => a.name),
-    categories: d.field_service_category.map((c) => c.name),
+    affiliation: d.field_affiliation.map((a) => a.name).filter(Boolean),
+    locations: d.field_locations.map((a) => a.name).filter(Boolean),
+    audiences: d.field_audience.map((a) => a.name).filter(Boolean),
+    categories: d.field_service_category.map((c) => c.name).filter(Boolean),
     synonyms: d.field_service_synonyms,
   }));
 };
