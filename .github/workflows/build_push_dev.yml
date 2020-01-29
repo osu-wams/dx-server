@@ -66,6 +66,11 @@ jobs:
           aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }} - | jq -r --arg ECR_IMAGE "$ecr_image" 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE} else . end)' > ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }}
           # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3
           aws s3 cp ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }}
+          STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
+          if [ "$STACK_STATUS" == "UPDATE_IN_PROGRESS" ]; then
+            aws cloudformation cancel-update-stack --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }}
+            aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }}
+          fi
           aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }}
           aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }}
           STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
