@@ -66,7 +66,6 @@ jobs:
           aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }} - | jq -r --arg ECR_IMAGE "$ecr_image" 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE} else . end)' > ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }}
           # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3
           aws s3 cp ${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_DEV_PARAMETERS_FILE }}
-          #check to see if stack is currently being updated
           STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
           if [ "$STACK_STATUS" == "UPDATE_IN_PROGRESS" ]; then
             aws cloudformation cancel-update-stack --stack-name ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }}
