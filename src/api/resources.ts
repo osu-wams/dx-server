@@ -8,29 +8,6 @@ import logger from '../logger';
 
 const router = Router();
 
-export interface IResourceResult {
-  id: string;
-  type: string;
-  title: string;
-  iconName?: string;
-  link: string;
-  affiliation: string[];
-  audiences: string[];
-  categories: string[];
-  synonyms: string[];
-}
-
-export interface IEntityQueueResourceResult {
-  entityQueueTitle: string;
-  items: IResourceResult[];
-}
-
-export interface ICategory {
-  id: string;
-  name: string;
-  icon: string;
-}
-
 router.get('/', async (req: Request, res: Response) => {
   try {
     const data = await asyncTimedFunction(getResources, `getResources`, [req.query]);

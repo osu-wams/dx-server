@@ -1,5 +1,6 @@
 import Kitsu from 'kitsu/node';
 import config from 'config';
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import {
   mockedAnnouncements,
   mockedAlerts,
@@ -12,7 +13,6 @@ import {
 } from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
-import { IResourceResult, ICategory, IEntityQueueResourceResult } from '../resources'; // eslint-disable-line no-unused-vars
 import { IReleaseNotes } from '../releaseNotes'; // eslint-disable-line no-unused-vars
 import { IPageContent } from '../pageContent'; // eslint-disable-line no-unused-vars
 import cache, { setCache } from './cache';
@@ -27,13 +27,6 @@ const api = new Kitsu({
   camelCaseTypes: false,
   resourceCase: 'none',
 });
-
-export interface Alert {
-  title: string;
-  date: Date;
-  content: string;
-  type: string;
-}
 
 /**
  * Inspect related field_announcement_image to return the url otherwise undefined
@@ -99,7 +92,7 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
  * Return an array of data reshaped to an array of the resource results
  * @param items a list of items to reshape as resource results
  */
-const mappedResources = (items: any[]): IResourceResult[] => {
+const mappedResources = (items: any[]): Types.Resource[] => {
   return items.map((d) => ({
     id: d.id,
     type: d.drupal_internal__name,
@@ -179,7 +172,7 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
 /**
  * Get all resources with all associated categories, audiences, synonyms and media for display.
  */
-export const getResources = async (): Promise<IResourceResult[]> => {
+export const getResources = async (): Promise<Types.Resource[]> => {
   try {
     const data = await fetchData(
       () =>
@@ -209,9 +202,7 @@ export const getResources = async (): Promise<IResourceResult[]> => {
 /**
  * Get all resources for a specific category with all associated categories, audiences, synonyms and media for display.
  */
-export const getCuratedResources = async (
-  category: string,
-): Promise<IEntityQueueResourceResult> => {
+export const getCuratedResources = async (category: string): Promise<Types.ResourceEntityQueue> => {
   try {
     const data = await fetchData(
       () =>
@@ -255,7 +246,7 @@ export const getCuratedResources = async (
 /**
  * Get all categories from DX API.
  */
-export const getCategories = async (): Promise<ICategory[]> => {
+export const getCategories = async (): Promise<Types.Category[]> => {
   try {
     const data = await fetchData(
       () =>
@@ -392,7 +383,7 @@ export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
  * ! next 30sec interval to get the benefit of some caching but also filtering on the backend
  * @returns Alert[] - An array of alerts from the API
  */
-export const getDxAlerts = async (): Promise<Alert[]> => {
+export const getDxAlerts = async (): Promise<Types.Alert[]> => {
   // TODO: Round the time up to the next 30 sec interval
   try {
     const data = await fetchData(
