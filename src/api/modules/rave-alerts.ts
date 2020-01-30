@@ -1,6 +1,6 @@
 import Parser from 'rss-parser';
 import config from 'config';
-import { Alert } from './dx'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import cache from './cache';
 import { fetchData } from '../util';
 import { mockedRaveAlerts } from '../../mocks/rave';
@@ -12,7 +12,7 @@ const CACHE_SEC = parseInt(config.get('raveApi.cacheEndpointSec'), 10);
  * Gets active alerts from RAVE.
  * @returns {Promise<Object[]>}
  */
-export const getAlerts = async (): Promise<Alert[]> => {
+export const getAlerts = async (): Promise<Types.Alert[]> => {
   try {
     // Rave alerts come as an RSS feed, always containing a single item.
     const xml = await fetchData(
@@ -24,7 +24,7 @@ export const getAlerts = async (): Promise<Alert[]> => {
       mockedRaveAlerts,
     );
     const { items } = await parser.parseString(xml);
-    const alert: Alert = {
+    const alert: Types.Alert = {
       title: items[0].title,
       content: items[0].content,
       date: items[0].date,
