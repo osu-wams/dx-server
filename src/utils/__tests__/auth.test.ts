@@ -1,5 +1,6 @@
+import { Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import { GROUPS } from '../../api/models/user';
-import parseSamlResult from '../auth';
+import parseSamlResult, { setLoginSession } from '../auth';
 
 const mockedDone = jest.fn();
 const mockSaml = {
@@ -25,6 +26,15 @@ const mockUser = {
   osuId: 123456789,
   primaryAffiliation: 'employee',
 };
+const mockedSession = jest.fn();
+const mockedQuery = jest.fn();
+
+const mockRequest = (): Request => {
+  const res: any = {};
+  res.session = mockedSession();
+  res.query = mockedQuery();
+  return res;
+};
 
 describe('parseSamlResult', () => {
   it('parses the Saml result', async () => {
@@ -48,5 +58,31 @@ describe('parseSamlResult', () => {
       isAdmin: false,
       groups: ['masquerade'],
     });
+  });
+});
+
+describe('setLoginSession', () => {
+  beforeEach(() => {
+    mockedSession.mockReturnValue({});
+    mockedQuery.mockReturnValue({});
+  });
+  it('returns a url', () => {
+    mockedQuery.mockReturnValue({ returnTo: '/bob-ross' });
+    setLoginSession(mockRequest(), {} as Response, () => {});
+    expect(mockedSession()).toStrictEqual({ returnUrl: '/bob-ross' });
+  });
+  it('returns a valid return uri', () => {
+    mockedQuery.mockReturnValue({ redirectUri: 'osu-dx://test' });
+    setLoginSession(mockRequest(), {} as Response, () => {});
+    expect(mockedSession()).toStrictEqual({ mobileAuth: true, returnUrl: 'osu-dx://test' });
+  });
+  it('returns the default for invalid redirect uris', () => {
+    mockedQuery.mockReturnValue({ redirectUri: 'http://badbad.bad' });
+    setLoginSession(mockRequest(), {} as Response, () => {});
+    expect(mockedSession()).toStrictEqual({ returnUrl: '/' });
+  });
+  it('returns the default when no query params are passed ', () => {
+    setLoginSession(mockRequest(), {} as Response, () => {});
+    expect(mockedSession()).toStrictEqual({ returnUrl: '/' });
   });
 });

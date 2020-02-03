@@ -1,7 +1,13 @@
+import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import config from 'config';
 import { GROUPS } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import logger from '../logger';
 
 const ENV: string = config.get('env');
+const appRegex = RegExp(/^https?:\/\/[\w*.]?my\.oregonstate\.edu\/*/);
+
+export const isMobileRedirect = (uri: string): boolean => uri?.startsWith('osu-dx://');
+export const isAppUrl = (url: string = ''): boolean => appRegex.test(url) || url?.startsWith('/');
 
 const parseSamlResult = (profile: any, done: any) => {
   const user = {
@@ -32,6 +38,25 @@ const parseSamlResult = (profile: any, done: any) => {
     }
   }
   return done(null, user);
+};
+
+export const setLoginSession = (req: Request, res: Response, next: NextFunction) => {
+  const { returnTo, redirectUri } = req.query;
+
+  let url = '/';
+  if (isAppUrl(returnTo)) url = returnTo;
+  if (isMobileRedirect(redirectUri)) {
+    url = redirectUri;
+    req.session.mobileAuth = true;
+  }
+  logger().debug(
+    `handleReturnRequest with query:${JSON.stringify(
+      req.query,
+    )}, setting session return url:${url}`,
+  );
+  req.session.returnUrl = url;
+
+  return next();
 };
 
 export default parseSamlResult;

@@ -8,11 +8,11 @@ import redis from 'connect-redis';
 import config from 'config';
 import { isNullOrUndefined } from 'util';
 import Auth from './auth';
+import { setLoginSession } from './utils/auth';
 import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
-import handleReturnRequest from './utils/routing';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 
 const appVersion = config.get('appVersion') as string;
@@ -81,7 +81,9 @@ passport.use(Auth.localStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
-app.get('/login', handleReturnRequest, Auth.login);
+// TODO: app.use(jwtLogger) the jwt user?
+
+app.get('/login', setLoginSession, Auth.login);
 app.get('/logout', Auth.logout);
 
 // Health Check (path configured in cloudformation template)
@@ -94,6 +96,10 @@ app.get('/healthcheck', (req, res) => {
 });
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
+  // TODO: Issue JWT with iat if request was from mobile, check session? Auto redirect to returnUrl if from mobile.
+  if (req.session.mobileAuth) {
+    logger().debug('issue a jwt of the user found/created');
+  }
   const { user, isNew } = await findOrUpsertUser(req.user);
   if (isNew && user.isStudent()) {
     res.redirect('/canvas/login');

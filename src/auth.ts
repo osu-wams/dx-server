@@ -197,6 +197,7 @@ Auth.logout = (req: Request, res: Response) => {
 };
 
 Auth.ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+  // TODO: Check if request is a JWT from mobile, set session to the user presented in the JWT
   if (req.isAuthenticated()) {
     return next();
   }
@@ -205,6 +206,7 @@ Auth.ensureAuthenticated = (req: Request, res: Response, next: NextFunction) => 
 };
 
 Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
+  // TODO: Check if request is a JWT from mobile, set session to the user presented in the JWT
   if (req.isAuthenticated() && req.user.isAdmin) {
     return next();
   }
