@@ -27,6 +27,11 @@ describe('Routing helper', () => {
       handleReturnRequest(mockRequest(), {} as Response, () => {});
       expect(mockedSession()).toStrictEqual({ returnUrl: 'osu-dx://test' });
     });
+    it('returns a valid return expo uri', () => {
+      mockedQuery.mockReturnValue({ redirectUri: 'exp://test' });
+      handleReturnRequest(mockRequest(), {} as Response, () => {});
+      expect(mockedSession()).toStrictEqual({ returnUrl: 'exp://test' });
+    });
     it('returns the default for invalid redirect uris', () => {
       mockedQuery.mockReturnValue({ redirectUri: 'http://badbad.bad' });
       handleReturnRequest(mockRequest(), {} as Response, () => {});

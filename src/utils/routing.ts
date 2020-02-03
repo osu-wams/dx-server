@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from 'express'; // eslint-disable-lin
 import logger from '../logger';
 
 const appRegex = RegExp(/^https?:\/\/[\w*.]?my\.oregonstate\.edu\/*/);
-export const isMobileRedirect = (uri: string): boolean => uri?.startsWith('osu-dx://');
+export const isMobileRedirect = (uri: string): boolean =>
+  uri?.startsWith('osu-dx://') || uri?.startsWith('exp://');
 export const isAppUrl = (url: string = ''): boolean => appRegex.test(url) || url?.startsWith('/');
 
 export const handleReturnRequest = (req: Request, res: Response, next: NextFunction) => {
