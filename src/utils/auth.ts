@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import jwt from 'jsonwebtoken';
 import config from 'config';
-import { GROUPS } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import User, { GROUPS } from '../api/models/user'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 
 const ENV: string = config.get('env');
@@ -57,6 +58,24 @@ export const setLoginSession = (req: Request, res: Response, next: NextFunction)
   req.session.returnUrl = url;
 
   return next();
+};
+
+export const issueJWT = (user: User): string => {
+  const { email, osuId, isAdmin, isCanvasOptIn } = user;
+  return jwt.sign(
+    {
+      email,
+      osuId,
+      isAdmin,
+      isCanvasOptIn,
+    },
+    'dx',
+  );
+};
+
+export const jwtLogger = (req: Request, res: Response, next: NextFunction) => {
+  logger().debug(`logged: ${req.query}, headers:${req.headers}`);
+  next();
 };
 
 export default parseSamlResult;

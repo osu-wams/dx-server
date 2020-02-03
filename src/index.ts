@@ -8,7 +8,7 @@ import redis from 'connect-redis';
 import config from 'config';
 import { isNullOrUndefined } from 'util';
 import Auth from './auth';
-import { setLoginSession } from './utils/auth';
+import { setLoginSession, issueJWT, jwtLogger } from './utils/auth';
 import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
@@ -81,8 +81,7 @@ passport.use(Auth.localStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
-// TODO: app.use(jwtLogger) the jwt user?
-
+app.use(jwtLogger);
 app.get('/login', setLoginSession, Auth.login);
 app.get('/logout', Auth.logout);
 
@@ -96,12 +95,12 @@ app.get('/healthcheck', (req, res) => {
 });
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
+  const { user, isNew } = await findOrUpsertUser(req.user);
   // TODO: Issue JWT with iat if request was from mobile, check session? Auto redirect to returnUrl if from mobile.
   if (req.session.mobileAuth) {
-    logger().debug('issue a jwt of the user found/created');
-  }
-  const { user, isNew } = await findOrUpsertUser(req.user);
-  if (isNew && user.isStudent()) {
+    logger().debug(`/login/saml issuing jwt for ${user.email}`);
+    res.redirect(`${req.session.returnUrl}:token=${issueJWT(user)}`);
+  } else if (isNew && user.isStudent()) {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
     if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
