@@ -54,7 +54,7 @@ jobs:
           git_sha=$(git rev-parse --short ${{ github.sha }})
           app_version=$(expr ${build_date}-${git_sha})
           expr ${app_version} > app_version
-          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version} --build-arg NODE_ENV=production
+          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version} --build-arg NODE_ENV=production --build-arg GITHUB_NPM_TOKEN=${{ secrets.GITHUB_NPM_TOKEN }}
           docker tag dx:${app_version} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:production-${app_version}
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:production-${app_version}
         env:
