@@ -1,6 +1,7 @@
-FROM node:10.15.0-alpine
+FROM node:10-alpine
 
-RUN apk add yarn
+# RUN apk add --no-cache yarn
+RUN npm install -g yarn@1.21.1 --force
 
 ENV appDir /var/www/app/current
 
@@ -15,6 +16,7 @@ ENV GITHUB_NPM_TOKEN=$GITHUB_NPM_TOKEN
 # Add our package.json and install *before* adding our application files
 ADD ./package.json ./
 ADD ./yarn.lock ./
+ADD ./.npmrc ./
 RUN yarn install
 RUN yarn global add nodemon ts-node typescript pm2
 RUN pm2 install typescript
