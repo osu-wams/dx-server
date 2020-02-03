@@ -11,7 +11,6 @@ import MockStrategy from './utils/mock-strategy';
 import User, { GROUPS } from './api/models/user'; // eslint-disable-line no-unused-vars
 import { refreshOAuthToken } from './api/modules/canvas';
 import logger from './logger';
-import { returnUrl } from './utils/routing';
 import parseSamlResult from './utils/auth';
 
 interface Auth {
@@ -158,8 +157,6 @@ Auth.deserializeUser = (user, done) => {
 };
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
-  if (req.query?.returnTo) req.session.returnUrl = req.query.returnTo;
-
   return passport.authenticate(['local', 'saml'], (err, user) => {
     logger().debug(`User authenticated: ${user.osuId}`);
     if (err) {
@@ -173,9 +170,8 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
       if (innerErr) {
         return next(innerErr);
       }
-      const returnTo = returnUrl(req);
-      logger().debug(`Auth.login redirecting to: ${returnTo}`);
-      res.redirect(returnTo);
+      logger().debug(`Auth.login redirecting to: ${req.session.returnUrl}`);
+      res.redirect(req.session.returnUrl);
     });
   })(req, res, next);
 };

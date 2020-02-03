@@ -1,25 +1,40 @@
-import { returnUrl } from '../routing';
+import { Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import handleReturnRequest from '../routing';
 
-const mockRequest = {
-  session: {},
-  query: {}
+const mockedSession = jest.fn();
+const mockedQuery = jest.fn();
+
+const mockRequest = (): Request => {
+  const res: any = {};
+  res.session = mockedSession();
+  res.query = mockedQuery();
+  return res;
 };
+
 describe('Routing helper', () => {
-  describe('returnUrl', () => {
+  describe('handleReturnRequest', () => {
     beforeEach(() => {
-      mockRequest.session = {};
-      mockRequest.query = {};
+      mockedSession.mockReturnValue({});
+      mockedQuery.mockReturnValue({});
     });
-    it('returns a url from the session', () => {
-      mockRequest.session = { returnUrl: 'bob-ross' };
-      expect(returnUrl(mockRequest)).toBe('bob-ross');
+    it('returns a url', () => {
+      mockedQuery.mockReturnValue({ returnTo: '/bob-ross' });
+      handleReturnRequest(mockRequest(), {} as Response, () => {});
+      expect(mockedSession()).toStrictEqual({ returnUrl: '/bob-ross' });
     });
-    it('returns a url from the query string', () => {
-      mockRequest.query = { returnTo: 'rick-ross' };
-      expect(returnUrl(mockRequest)).toBe('rick-ross');
+    it('returns a valid return uri', () => {
+      mockedQuery.mockReturnValue({ redirectUri: 'osu-dx://test' });
+      handleReturnRequest(mockRequest(), {} as Response, () => {});
+      expect(mockedSession()).toStrictEqual({ returnUrl: 'osu-dx://test' });
     });
-    it('returns the root url', () => {
-      expect(returnUrl(mockRequest)).toBe('/');
+    it('returns the default for invalid redirect uris', () => {
+      mockedQuery.mockReturnValue({ redirectUri: 'http://badbad.bad' });
+      handleReturnRequest(mockRequest(), {} as Response, () => {});
+      expect(mockedSession()).toStrictEqual({ returnUrl: '/' });
+    });
+    it('returns the default when no query params are passed ', () => {
+      handleReturnRequest(mockRequest(), {} as Response, () => {});
+      expect(mockedSession()).toStrictEqual({ returnUrl: '/' });
     });
   });
 });
