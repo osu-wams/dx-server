@@ -8,6 +8,10 @@ ENV appDir /var/www/app/current
 RUN mkdir -p /var/www/app/current
 WORKDIR ${appDir}
 
+# Github NPM Registry Access
+ARG GITHUB_NPM_TOKEN
+ENV GITHUB_NPM_TOKEN=$GITHUB_NPM_TOKEN
+
 # Add our package.json and install *before* adding our application files
 ADD ./package.json ./
 ADD ./yarn.lock ./
