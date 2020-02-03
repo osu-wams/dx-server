@@ -20,6 +20,12 @@ _`local.ts` contains overrides for environment variables that contain authentica
 
     $ cp docker-compose.override.example.yml docker-compose.override.yml
 
+### Set a Github Npm Registry token
+
+[Create a personal access token](https://help.github.com/en/github/managing-packages-with-github-packages/configuring-npm-for-use-with-github-packages#authenticating-with-a-personal-access-token) the set an environment variable `GITHUB_NPM_TOKEN` to enable access and installing the `@osu-wams/*` package dependencies. Typically you would set the environment variable in a `~/.bashrc` or `~/.zshrc` (or similar configuration).
+
+    $ export GITHUB_NPM_TOKEN=xxxxxxxxxxxxxx
+
 ### Install the node modules
 
     $ yarn
