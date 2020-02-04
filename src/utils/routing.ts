@@ -1,16 +1,25 @@
+import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 
-export const returnUrl = (req: any) => {
-  if (req.session.returnUrl) {
-    logger().debug(`Found session returnUrl:${req.session.returnUrl}`);
-    return req.session.returnUrl;
-  }
-  if (req.query!.returnTo!) {
-    logger().debug(`Set session returnUrl:${req.query.returnTo}`);
-    req.session.returnUrl = req.query.returnTo;
-    return req.session.returnUrl;
-  }
-  return '/';
+const appRegex = RegExp(/^https?:\/\/[\w*.]?my\.oregonstate\.edu\/*/);
+export const isMobileRedirect = (uri: string): boolean =>
+  uri?.startsWith('osu-dx://') || uri?.startsWith('exp://');
+export const isAppUrl = (url: string = ''): boolean => appRegex.test(url) || url?.startsWith('/');
+
+export const handleReturnRequest = (req: Request, res: Response, next: NextFunction) => {
+  const { returnTo, redirectUri } = req.query;
+
+  let url = '/';
+  if (isAppUrl(returnTo)) url = returnTo;
+  if (isMobileRedirect(redirectUri)) url = redirectUri;
+  logger().debug(
+    `handleReturnRequest with query:${JSON.stringify(
+      req.query,
+    )}, setting session return url:${url}`,
+  );
+  req.session.returnUrl = url;
+
+  return next();
 };
 
-export default returnUrl;
+export default handleReturnRequest;

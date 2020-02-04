@@ -12,7 +12,7 @@ import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
-import { returnUrl } from './utils/routing';
+import handleReturnRequest from './utils/routing';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
 
 const appVersion = config.get('appVersion') as string;
@@ -81,7 +81,7 @@ passport.use(Auth.localStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
-app.get('/login', Auth.login);
+app.get('/login', handleReturnRequest, Auth.login);
 app.get('/logout', Auth.logout);
 
 // Health Check (path configured in cloudformation template)
@@ -106,9 +106,8 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
       res.redirect('/canvas/refresh');
     });
   } else {
-    const returnTo = returnUrl(req);
-    logger().debug(`/login/saml redirecting to: ${returnTo}`);
-    res.redirect(returnTo);
+    logger().debug(`/login/saml redirecting to: ${req.session.returnUrl}`);
+    res.redirect(req.session.returnUrl);
   }
 });
 
@@ -124,13 +123,12 @@ app.get(
     if (req.query.error) {
       await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
       req.user.isCanvasOptIn = false;
-      const returnTo = returnUrl(req);
-      logger().debug(`/canvas/auth error in OAuth redirecting to: ${returnTo}`);
+      logger().debug(`/canvas/auth error in OAuth redirecting to: ${req.session.returnUrl}`);
       req.session.save((err) => {
         if (err) {
           logger().error(`/canvas/auth error session failed: ${err.message}`);
         }
-        res.redirect(returnTo);
+        res.redirect(req.session.returnUrl);
       });
     } else {
       next();
@@ -145,13 +143,12 @@ app.get(
     req.user.canvasOauthExpire = user.canvasOauthExpire;
     req.user.isCanvasOptIn = user.isCanvasOptIn;
     req.user.refreshToken = user.refreshToken;
-    const returnTo = returnUrl(req);
-    logger().debug(`/canvas/auth redirecting to: ${returnTo}`);
+    logger().debug(`/canvas/auth redirecting to: ${req.session.returnUrl}`);
     req.session.save((err) => {
       if (err) {
         logger().error(`/canvas/auth session failed: ${err.message}`);
       }
-      res.redirect(returnTo);
+      res.redirect(req.session.returnUrl);
     });
   },
 );
@@ -161,13 +158,12 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
   req.user.canvasOauthExpire = user.canvasOauthExpire;
   req.user.isCanvasOptIn = user.isCanvasOptIn;
   req.user.refreshToken = user.refreshToken;
-  const returnTo = returnUrl(req);
-  logger().debug(`/canvas/refresh redirecting to: ${returnTo}`);
+  logger().debug(`/canvas/refresh redirecting to: ${req.session.returnUrl}`);
   req.session.save((err) => {
     if (err) {
       logger().error(`/canvas/refresh session failed: ${err.message}`);
     }
-    res.redirect(returnTo);
+    res.redirect(req.session.returnUrl);
   });
 });
 
