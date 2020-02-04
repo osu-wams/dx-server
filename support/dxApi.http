@@ -11,13 +11,14 @@ GET {{baseUrl}}/jsonapi/node/alerts HTTP/1.1
 
 # @name getAnnouncements
 GET {{baseUrl}}/jsonapi/node/announcement HTTP/1.1
-  ?fields[node--announcement]=id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations
+  ?fields[node--announcement]=id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations,field_affiliation
   &fields[taxonomy_term--pages]=name
   &fields[taxonomy_term--audience]=name
+  &fields[taxonomy_term--affiliation]=name
   &fields[taxonomy_term--locations]=name
   &fields[media--image]=name,field_media_image
   &fields[file--file]=filename,filemime,uri
-  &include=field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages,field_locations
+  &include=field_announcement_image,field_announcement_image.field_media_image,field_affiliation,field_audience,field_pages,field_locations
   &filter[status]=1
   &page[limit]=10
 
