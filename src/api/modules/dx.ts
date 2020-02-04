@@ -148,15 +148,16 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
         retrieveData('node/announcement', {
           fields: {
             'node--announcement':
-              'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations',
+              'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations,field_affiliation',
             'taxonomy_term--audience': 'name',
+            'taxonomy_term--affiliation': 'name',
             'taxonomy_term--pages': 'name',
             'taxonomy_term--locations': 'name',
             'media--image': 'name,field_media_image',
             'file--file': 'filename,filemime,uri',
           },
           include:
-            'field_announcement_image,field_announcement_image.field_media_image,field_audience,field_pages,field_locations',
+            'field_announcement_image,field_announcement_image.field_media_image,field_affiliation,field_audience,field_pages,field_locations',
           filter: {
             status: 1,
           },

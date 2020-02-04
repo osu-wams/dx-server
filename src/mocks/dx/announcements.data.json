@@ -104,6 +104,21 @@
         "name": "Ecampus"
       }
     ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "title": "SNAP for OSU Students",
     "field_announcement_action": {
       "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Fbeav.es%2FSNAP&token=N1dOAVMk%2B5bq7mRPjK3wNU3g7zZLzG7DskwS4u5uySs%3D",
@@ -226,6 +241,34 @@
         "name": "Ecampus"
       }
     ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "title": "Amazon on campus",
     "field_announcement_action": null,
     "field_announcement_body": "Come pick up your Amazon packages at the Memorial Union! Beginning fall term, we will have a set of Amazon lockers for use at your convenience."
@@ -284,6 +327,34 @@
           }
         },
         "name": "Corvallis"
+      }
+    ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
       }
     ],
     "title": "Emergency Contact Info",
@@ -363,6 +434,34 @@
           }
         },
         "name": "Ecampus"
+      }
+    ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
       }
     ],
     "title": "Get it, Beavs.",
@@ -462,6 +561,21 @@
         "name": "Corvallis"
       }
     ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "title": "Wellness Nook Opens",
     "field_announcement_action": {
       "uri": "https://wellnessnook.oregonstate.edu",
@@ -552,6 +666,21 @@
         "name": "Corvallis"
       }
     ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "title": "Coffee naps. Say what?!",
     "field_announcement_action": {
       "uri": "https://www.sciencedirect.com/science/article/pii/S1388245703002554",
@@ -626,6 +755,34 @@
           }
         },
         "name": "Ecampus"
+      }
+    ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
       }
     ],
     "title": "Need support? ",
@@ -741,6 +898,21 @@
         "name": "Ecampus"
       }
     ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "title": "Hey Beavs, want to improve your finals grades? ",
     "field_announcement_action": {
       "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Fsuccess.oregonstate.edu%2Fstudent-strategists&token=uQI4YJ29P1S1nVxcIPkJFC0rYawV89Wm3rf%2FheLbHa4%3D",
@@ -801,6 +973,34 @@
           }
         },
         "name": "Ecampus"
+      }
+    ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
       }
     ],
     "title": "Fellow OSU faculty member makes 16,000-year-old discovery",
@@ -877,6 +1077,21 @@
           }
         },
         "name": "Ecampus"
+      }
+    ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
       }
     ],
     "title": "FAFSA reminder",
@@ -993,6 +1208,21 @@
           }
         },
         "name": "Ecampus"
+      }
+    ],
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
       }
     ],
     "title": "Duo for Students",

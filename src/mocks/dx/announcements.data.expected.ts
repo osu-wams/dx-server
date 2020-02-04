@@ -5,7 +5,7 @@ export default [
     body:
       '   Supplemental Nutrition Assistance Program (SNAP) can help eligible students afford up to $194 in groceries each month. Find out if you are eligible and where to sign up. ',
     bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/HSRC_Basket.jpg',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Finances'],
@@ -22,7 +22,7 @@ export default [
       'Come pick up your Amazon packages at the Memorial Union! Beginning fall term, we will have a set of Amazon lockers for use at your convenience.',
     bg_image:
       'https://data.dx.oregonstate.edu/sites/default/files/2019-08/amzn_lockers_hero_1200x1200._SX970._CB475759028_.jpg',
-    affiliation: [],
+    affiliation: ['Employee', 'Student'],
     locations: ['Corvallis', 'Ecampus'],
     audiences: ['Corvallis', 'Ecampus'],
     pages: ['Dashboard'],
@@ -32,7 +32,7 @@ export default [
     title: 'Emergency Contact Info',
     body:
       '   The OSU Alert portal allows you to provide OSU with your current contact information. This information will only be used to notify you in the event of an emergency. ',
-    affiliation: [],
+    affiliation: ['Employee', 'Student'],
     locations: ['Corvallis'],
     audiences: ['Corvallis'],
     pages: ['Dashboard'],
@@ -46,7 +46,7 @@ export default [
     id: '2fc825b4-1860-459b-834f-2faacb39fdb7',
     title: 'Get it, Beavs.',
     body: 'The storm said stop. We heard go.   — Beaver Nation ',
-    affiliation: [],
+    affiliation: ['Employee', 'Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Dashboard'],
@@ -57,7 +57,7 @@ export default [
     body:
       '   Check out the new Wellness Nook — a welcoming and comfortable place to learn, ask questions and connect to resources for your well-being — located in the Memorial Union. ',
     bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/WellnessNook.jpg',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Corvallis'],
     audiences: ['Corvallis'],
     pages: ['Dashboard'],
@@ -68,7 +68,7 @@ export default [
     title: 'Coffee naps. Say what?!',
     body:
       'It may sound counterintuitive, but researchers in the UK and Japan have figured out that a quick coffee break followed by a 20 minute nap can give you that much needed mental boost better than just coffee or a nap can. ',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Corvallis'],
     audiences: ['Corvallis', 'Graduate Student', 'International Student'],
     pages: ['Dashboard'],
@@ -82,7 +82,7 @@ export default [
     title: 'Need support? ',
     body:
       '   If you are struggling, consider spending time and talking about your feelings with family and friends; taking breaks from social media and the news; and staying active and healthy. ',
-    affiliation: [],
+    affiliation: ['Employee', 'Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Dashboard'],
@@ -98,7 +98,7 @@ export default [
     body:
       'Swing by the Academic Success Center and meet with a strategist. Chat about your current test prep and find new ways to get ready for exams. You’ve got a few weeks left. What are you waiting for?! ',
     bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/plus-grid.jpg',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Academics'],
@@ -113,7 +113,7 @@ export default [
     title: 'Fellow OSU faculty member makes 16,000-year-old discovery',
     body:
       'An OSU professor who directed an archaeological excavation in Idaho discovered 16,000-year-old bones and artifacts.',
-    affiliation: [],
+    affiliation: ['Employee', 'Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: [],
@@ -128,7 +128,7 @@ export default [
     title: 'FAFSA reminder',
     body:
       'The priority deadline (Feb. 28) for submitting your FAFSA is fast approaching. Not sure how to even begin? Come visit us at OSU Financial Aid. ',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Finances'],
@@ -141,7 +141,7 @@ export default [
     id: 'bc0c685f-885f-4853-9282-bc932eeb12e1',
     title: 'Duo for Students',
     body: 'Start protecting yourself online today.',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: ['Bend', 'Corvallis', 'Ecampus'],
     pages: ['Dashboard'],
