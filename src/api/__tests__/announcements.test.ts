@@ -29,7 +29,7 @@ describe('/api/announcements', () => {
         body:
           '   Supplemental Nutrition Assistance Program (SNAP) can help eligible students afford up to $194 in groceries each month. Find out if you are eligible and where to sign up. ',
         bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/HSRC_Basket.jpg',
-        affiliation: [],
+        affiliation: ['Student'],
         locations: [],
         audiences: [],
         pages: [],
