@@ -7,7 +7,8 @@ import logger from '../logger';
 const ENV: string = config.get('env');
 const appRegex = RegExp(/^https?:\/\/[\w*.]?my\.oregonstate\.edu\/*/);
 
-export const isMobileRedirect = (uri: string): boolean => uri?.startsWith('osu-dx://');
+export const isMobileRedirect = (uri: string): boolean =>
+  uri?.startsWith('osu-dx://') || uri?.startsWith('exp://');
 export const isAppUrl = (url: string = ''): boolean => appRegex.test(url) || url?.startsWith('/');
 
 const parseSamlResult = (profile: any, done: any) => {
