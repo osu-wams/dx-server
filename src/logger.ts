@@ -66,7 +66,11 @@ class Logger {
    * @param {Request} req The current HTTP request with a session
    */
   setSessionLogger = (req: Request) => {
-    this.sessionLogger = this.parentLogger.child({ sessionID: req.session?.id });
+    this.sessionLogger = this.parentLogger.child({
+      sessionID: req.session?.id,
+      jwtAuth: req.session?.jwtAuth,
+      email: req.user?.email,
+    });
   };
 }
 

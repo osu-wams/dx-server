@@ -5,22 +5,15 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
-import config from 'config';
 import { isNullOrUndefined } from 'util';
+import { APP_VERSION, ENV, REDIS_HOST, REDIS_PORT, SESSION_SECRET, USE_MOCKS } from './constants';
 import Auth from './auth';
-import { setLoginSession, issueJWT, jwtLogger } from './utils/auth';
+import { redirectReturnUrl, setSessionReturnUrl, setJWTSessionUser } from './utils/routing';
 import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
-
-const appVersion = config.get('appVersion') as string;
-const env = config.get('env') as string;
-const sessionSecret = config.get('sessionSecret') as string;
-const redisHost = config.get('redis.host') as string;
-const redisPort = parseInt(config.get('redis.port') as string, 10);
-export const useMocks = parseInt(config.get('useMocks'), 10);
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
@@ -49,7 +42,7 @@ const sessionOptions: SessionOptions = {
   name: 'dx',
   // NOTE: Session secret should be set via environment variable
   //       during deploy. Do not use the default value in production.
-  secret: sessionSecret,
+  secret: SESSION_SECRET,
   saveUninitialized: false,
   resave: false,
   rolling: true,
@@ -59,17 +52,22 @@ const sessionOptions: SessionOptions = {
   },
 };
 
-console.log(`Server started with ENV=${env}, VERSION=${appVersion}`);
+console.log(`Server started with ENV=${ENV}, VERSION=${APP_VERSION}`);
 
-if (['production', 'stage', 'development', 'localhost'].includes(env)) {
+if (['production', 'stage', 'development', 'localhost'].includes(ENV)) {
   sessionOptions.store = new RedisStore({
-    host: redisHost,
-    port: redisPort,
+    host: REDIS_HOST,
+    port: REDIS_PORT,
     logErrors: true,
   });
 }
 
 app.use(session(sessionOptions));
+
+// Set JWT Session User prior to sessionLogger to add default logging
+app.use(setJWTSessionUser);
+app.use(setSessionReturnUrl);
+
 app.use(sessionLogger);
 
 // Configure Passport
@@ -78,29 +76,25 @@ app.use(passport.session());
 passport.use(Auth.passportStrategy);
 passport.use(Auth.oAuth2Strategy);
 passport.use(Auth.localStrategy);
+passport.use(Auth.jwtStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
-app.use(jwtLogger);
-app.get('/login', setLoginSession, Auth.login);
+app.get('/login', Auth.login);
 app.get('/logout', Auth.logout);
 
 // Health Check (path configured in cloudformation template)
 app.get('/healthcheck', (req, res) => {
   logger().debug('Health Check Request');
   res.send({
-    version: appVersion,
-    useMocks,
+    version: APP_VERSION,
+    useMocks: USE_MOCKS,
   });
 });
 
 app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
   const { user, isNew } = await findOrUpsertUser(req.user);
-  // TODO: Issue JWT with iat if request was from mobile, check session? Auto redirect to returnUrl if from mobile.
-  if (req.session.mobileAuth) {
-    logger().debug(`/login/saml issuing jwt for ${user.email}`);
-    res.redirect(`${req.session.returnUrl}:token=${issueJWT(user)}`);
-  } else if (isNew && user.isStudent()) {
+  if (isNew && user.isStudent()) {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
     if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
@@ -112,7 +106,7 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
     });
   } else {
     logger().debug(`/login/saml redirecting to: ${req.session.returnUrl}`);
-    res.redirect(req.session.returnUrl);
+    redirectReturnUrl(req, res, user);
   }
 });
 
@@ -133,7 +127,7 @@ app.get(
         if (err) {
           logger().error(`/canvas/auth error session failed: ${err.message}`);
         }
-        res.redirect(req.session.returnUrl);
+        redirectReturnUrl(req, res, req.user);
       });
     } else {
       next();
@@ -153,7 +147,7 @@ app.get(
       if (err) {
         logger().error(`/canvas/auth session failed: ${err.message}`);
       }
-      res.redirect(req.session.returnUrl);
+      redirectReturnUrl(req, res, req.user);
     });
   },
 );
@@ -168,7 +162,7 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
     if (err) {
       logger().error(`/canvas/refresh session failed: ${err.message}`);
     }
-    res.redirect(req.session.returnUrl);
+    redirectReturnUrl(req, res, req.user);
   });
 });
 

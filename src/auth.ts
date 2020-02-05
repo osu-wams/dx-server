@@ -4,19 +4,39 @@ import passport from 'passport';
 import { Strategy as SamlStrategy } from 'passport-saml';
 import { Strategy as OAuthStrategy } from 'passport-oauth2';
 import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt'; // eslint-disable-line no-unused-vars
 import DevStrategy from 'passport-dev';
-import config from 'config';
 import { isNullOrUndefined } from 'util';
 import MockStrategy from './utils/mock-strategy';
 import User, { GROUPS } from './api/models/user'; // eslint-disable-line no-unused-vars
 import { refreshOAuthToken } from './api/modules/canvas';
 import logger from './logger';
-import parseSamlResult from './utils/auth';
+import parseSamlResult, { decrypt } from './utils/auth';
+import {
+  API_KEYS,
+  CANVAS_OAUTH_BASE_URL,
+  CANVAS_OAUTH_TOKEN_URL,
+  CANVAS_OAUTH_AUTH_URL,
+  CANVAS_OAUTH_ID,
+  CANVAS_OAUTH_SECRET,
+  CANVAS_OAUTH_CALLBACK_URL,
+  CANVAS_OAUTH_SCOPE,
+  ENCRYPTION_KEY,
+  ENV,
+  JWT_KEY,
+  SAML_CALLBACK_URL,
+  SAML_CERT,
+  SAML_LOGOUT,
+  SAML_LOGOUT_CALLBACK_URL,
+  SAML_PVK,
+  SAML_URL,
+} from './constants';
 
 interface Auth {
   passportStrategy?: any;
   oAuth2Strategy?: any;
   localStrategy?: any;
+  jwtStrategy?: any;
   serializeUser?(user: any, done: any): void;
   deserializeUser?(user: any, done: any): void;
   login?(req: Request, res: Response, next: NextFunction): void;
@@ -26,18 +46,6 @@ interface Auth {
   hasCanvasRefreshToken?(req: Request, res: Response, next: NextFunction): void;
 }
 
-interface ApiKey {
-  key: string;
-  isAdmin: boolean;
-}
-
-const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
-const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
-const CANVAS_OAUTH_AUTH_URL: string = config.get('canvasOauth.authUrl');
-const CANVAS_OAUTH_ID: string = config.get('canvasOauth.id');
-const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
-const CANVAS_OAUTH_CALLBACK_URL: string = config.get('canvasOauth.callbackUrl');
-const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 const canvasOAuthConfig = () => {
   const c = {
     authorizationURL: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_AUTH_URL}`,
@@ -55,21 +63,6 @@ const canvasOAuthConfig = () => {
 
 const Auth: Auth = {};
 
-const ENV: string = config.get('env');
-const SAML_CERT: string = config.get('saml.cert');
-const SAML_CALLBACK_URL: string = config.get('saml.callbackUrl');
-const SAML_LOGOUT_CALLBACK_URL: string = config.get('saml.logoutCallbackUrl');
-let SAML_PVK: string = config.get('saml.pvk');
-// Need to replace the newlines pulled from environment variable with actual
-// newlines, otherwise passport-saml breaks.
-SAML_PVK = SAML_PVK.replace(/\\n/g, '\n');
-
-// OSU SSO url (saml)
-const samlUrl = 'https://login.oregonstate.edu/idp/profile/';
-const samlLogout = `${samlUrl}Logout`;
-
-const apiKeys: ApiKey[] = JSON.parse(config.get('apiKeys'));
-
 switch (ENV) {
   case 'development':
   case 'stage':
@@ -80,13 +73,13 @@ switch (ENV) {
         disableRequestedAuthnContext: true,
         identifierFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
         callbackUrl: SAML_CALLBACK_URL,
-        logoutUrl: samlLogout,
+        logoutUrl: SAML_LOGOUT,
         logoutCallbackUrl: SAML_LOGOUT_CALLBACK_URL,
-        entryPoint: `${samlUrl}SAML2/Redirect/SSO`,
+        entryPoint: `${SAML_URL}SAML2/Redirect/SSO`,
         issuer: 'https://my.oregonstate.edu',
         cert: SAML_CERT,
-        privateCert: SAML_PVK,
-        decryptionPvk: SAML_PVK,
+        privateCert: SAML_PVK.replace(/\\n/g, '\n'),
+        decryptionPvk: SAML_PVK.replace(/\\n/g, '\n'),
         signatureAlgorithm: 'sha256',
       },
       parseSamlResult,
@@ -111,6 +104,19 @@ switch (ENV) {
     break;
 }
 
+Auth.jwtStrategy = new JwtStrategy(
+  {
+    secretOrKey: JWT_KEY,
+    jwtFromRequest: (req) => {
+      const decrypted = decrypt(req.headers.authorization, ENCRYPTION_KEY, JWT_KEY);
+      return decrypted;
+    },
+  },
+  (user: any, done: VerifiedCallback) => {
+    return done(null, user);
+  },
+);
+
 Auth.oAuth2Strategy = new OAuthStrategy(canvasOAuthConfig(), (params: any, done) => {
   const user = {
     userId: params.user.id,
@@ -128,7 +134,7 @@ Auth.localStrategy = new LocalStrategy(
   async (osuId, key, done) => {
     // verify the username is a valid user, and the password is the API key
     logger().debug(`API key authentication attempted with osuId:${osuId} and key:${key}`);
-    const apiKey = apiKeys.filter((k) => k.key !== '').find((k) => k.key === key);
+    const apiKey = API_KEYS.filter((k) => k.key !== '').find((k) => k.key === key);
     if (apiKey) {
       logger().debug(`API key found: ${apiKey}`);
       const user = await User.find(parseInt(osuId, 10));

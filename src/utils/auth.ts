@@ -1,15 +1,9 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import config from 'config';
+import { ENV } from '../constants';
 import User, { GROUPS } from '../api/models/user'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
-
-const ENV: string = config.get('env');
-const appRegex = RegExp(/^https?:\/\/[\w*.]?my\.oregonstate\.edu\/*/);
-
-export const isMobileRedirect = (uri: string): boolean =>
-  uri?.startsWith('osu-dx://') || uri?.startsWith('exp://');
-export const isAppUrl = (url: string = ''): boolean => appRegex.test(url) || url?.startsWith('/');
 
 const parseSamlResult = (profile: any, done: any) => {
   const user = {
@@ -42,41 +36,75 @@ const parseSamlResult = (profile: any, done: any) => {
   return done(null, user);
 };
 
-export const setLoginSession = (req: Request, res: Response, next: NextFunction) => {
-  const { returnTo, redirectUri } = req.query;
-
-  let url = '/';
-  if (isAppUrl(returnTo)) url = returnTo;
-  if (isMobileRedirect(redirectUri)) {
-    url = redirectUri;
-    req.session.mobileAuth = true;
+/**
+ * Simple method using nodes crypto to encrypt a string of text to hex (url safe)
+ * @param text the text to encrypt
+ * @param key the key used for encrypting text
+ * @param iv the initialization vector encrypting this text
+ */
+export const encrypt = (text: string, key: string, iv: string): string | null => {
+  try {
+    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv.padEnd(16, '*'));
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return encrypted;
+  } catch (err) {
+    logger().error(`utils/Auth#encrypt failed to encrypt provided string: ${err}`);
+    return null;
   }
-  logger().debug(
-    `handleReturnRequest with query:${JSON.stringify(
-      req.query,
-    )}, setting session return url:${url}`,
-  );
-  req.session.returnUrl = url;
-
-  return next();
 };
 
-export const issueJWT = (user: User): string => {
-  const { email, osuId, isAdmin, isCanvasOptIn } = user;
-  return jwt.sign(
-    {
-      email,
-      osuId,
-      isAdmin,
-      isCanvasOptIn,
-    },
-    'dx',
-  );
+/**
+ * Simple method using nodes crypto to decrypt a string of hex text
+ * @param encrypted the text to decrypt
+ * @param key the key used for decrypting text
+ * @param iv the initialization vector used for decrypting this text
+ */
+export const decrypt = (encrypted: string, key: string, iv: string): string | null => {
+  try {
+    const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv.padEnd(16, '*'));
+    return decipher.update(encrypted, 'hex', 'utf8');
+  } catch (err) {
+    logger().warn(
+      `utils/Auth#decrypt failed to decrypt provided string, this would typically be unexpected and indicates an encryption key or IV has changed or that the string is malformed or tampered with. Error: ${err}`,
+    );
+    return null;
+  }
 };
 
-export const jwtLogger = (req: Request, res: Response, next: NextFunction) => {
-  logger().debug(`logged: ${req.query}, headers:${req.headers}`);
-  next();
+/**
+ * Verify the token has not been tampered with, return the User stored in the token or null if there was an error.
+ * @param token the jwt to verify
+ * @param jwtKey the key to used when signing the jwt
+ */
+export const userFromJWT = (token: string, jwtKey: string): User | null => {
+  try {
+    const user = jwt.verify(token, jwtKey);
+    return user as User;
+  } catch (err) {
+    logger().error(
+      `utils/Auth#userFromJWT failed to verify the provided token, this is a serious problem that indicates the signing key (JWT_KEY) has been changed and this token is still being used, or that the token was malformed or tampered with. At any rate, this problem needs attention. Error: ${err}`,
+    );
+    return null;
+  }
+};
+
+/**
+ * Issue a new JWT of the user or null if there was an error.
+ * @param user the user to create a jwt of
+ * @param encryptionKey the key for encrypting the jwt
+ * @param jwtKey the key for signing the jwt
+ */
+export const issueJWT = (user: User, encryptionKey: string, jwtKey: string): string => {
+  try {
+    const signed = jwt.sign(user, jwtKey);
+    return encrypt(signed, encryptionKey, jwtKey);
+  } catch (err) {
+    logger().error(
+      `utils/Auth#issueJWT failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err}`,
+    );
+    return null;
+  }
 };
 
 export default parseSamlResult;

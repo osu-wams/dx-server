@@ -1,6 +1,6 @@
 import request from 'request-promise';
 import config from 'config';
-import { useMocks } from '../index';
+import { USE_MOCKS } from '../constants';
 import { asyncTimedFunction } from '../tracer';
 
 const CLIENT_ID: string = config.get('osuApi.clientId');
@@ -34,7 +34,7 @@ export const getToken = async (): Promise<string> => {
  * @param mockData the mocked data to return when using mocks
  */
 export const fetchData = async (fn: Function, mockData?: any) => {
-  if (useMocks && mockData !== undefined) {
+  if (USE_MOCKS && mockData !== undefined) {
     return mockData;
   }
   return fn();
