@@ -1,6 +1,8 @@
 export default {
   env: 'test',
   sessionSecret: 'bobross',
+  encryptionKey: 'letspaintahappytreerighthere',
+  jwtKey: 'thisthingneedstobeatleast16characters',
   apiKeys: '[{"key":"blah","isAdmin":false}]',
   appVersion: 'test-123',
   canvasOauth: {
