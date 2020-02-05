@@ -12,7 +12,7 @@ export const isAppUrl = (url: string = ''): boolean =>
 export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunction) => {
   const { returnTo, redirectUri } = req.query;
 
-  let url = '/';
+  let url = req.session.returnUrl || '/';
   if (isAppUrl(returnTo)) url = returnTo;
   if (isMobileRedirect(redirectUri)) {
     url = redirectUri;
