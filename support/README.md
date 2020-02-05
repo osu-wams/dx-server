@@ -1,3 +1,9 @@
+# Inspect a JWT
+
+A utility was created to inspect, for troubleshooting purposes, an existing JWT token to inspect the encoded data.
+
+    $ yarn ts-node support/jwt.ts <encrypted JWT token>
+
 # Server Load and Scenario Testing
 
 An [Artillery](http://artillery.io) configuration is included to perform tests on logging in and performing various scenarios against the server API endpoints. Before executing the scenarios, Artillery must be installed as a global node module.
