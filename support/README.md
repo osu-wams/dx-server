@@ -2,7 +2,35 @@
 
 A utility was created to inspect, for troubleshooting purposes, an existing JWT token to inspect the encoded data.
 
-    $ yarn ts-node support/jwt.ts <encrypted JWT token>
+```bash
+$ yarn ts-node support/jwt.ts <encrypted JWT token>
+
+
+USAGE:
+yarn ts-node support/jwt.ts <encrypted jwt token>
+
+
+--Decrypted JWT--
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvc3VJZCI6MTExMTExMTExLCJlbWFpbCI6Im5vcmVwbHlAb3JlZ29uc3RhdGUuZWR1IiwicHJpbWFyeUFmZmlsaWF0aW9uIjoiZW1wbG95ZWUiLCJpYXQiOjE1MTYyMzkwMjJ9.jD_tmbgHJqX9wQobjjE4zzMLxwLmYSV1We6IQ1rWe3c
+
+
+--User from JWT--
+{ osuId: 111111111,
+  email: 'noreply@oregonstate.edu',
+  primaryAffiliation: 'employee',
+  nameID: 'some-id-here',
+  nameIDFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
+  firstName: 'Bob',
+  lastName: 'Ross',
+  groups: [ 'admin', 'masquerade' ],
+  affiliations: [ 'employee', 'member' ],
+  isAdmin: true,
+  refreshToken: 'refresh-token-here',
+  canvasOauthToken: 'oauth-token-here',
+  canvasOauthExpire: 1580942924,
+  isCanvasOptIn: true,
+  iat: 1580939324 }
+```
 
 # Server Load and Scenario Testing
 
