@@ -6,7 +6,7 @@ interface ApiKey {
 }
 
 const API_KEYS: ApiKey[] = JSON.parse(config.get('apiKeys'));
-const APP_URL_REGEX = RegExp(/^https?:\/\/[\w*.]?my\.oregonstate\.edu\/*/);
+const APP_URL_REGEX = RegExp(/^https?:\/\/(\w*.)?my\.oregonstate\.edu\/.*/);
 const APP_VERSION: string = config.get('appVersion');
 const CANVAS_OAUTH_AUTH_URL: string = config.get('canvasOauth.authUrl');
 const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
