@@ -5,7 +5,7 @@ export default [
     body:
       '   Supplemental Nutrition Assistance Program (SNAP) can help eligible students afford up to $194 in groceries each month. Find out if you are eligible and where to sign up. ',
     bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/HSRC_Basket.jpg',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Finances'],
@@ -20,7 +20,7 @@ export default [
     title: 'Fellow OSU faculty member makes 16,000-year-old discovery',
     body:
       'An OSU professor who directed an archaeological excavation in Idaho discovered 16,000-year-old bones and artifacts.',
-    affiliation: [],
+    affiliation: ['Employee', 'Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: [],
@@ -35,7 +35,7 @@ export default [
     title: 'FAFSA reminder',
     body:
       'The priority deadline (Feb. 28) for submitting your FAFSA is fast approaching. Not sure how to even begin? Come visit us at OSU Financial Aid. ',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Finances'],

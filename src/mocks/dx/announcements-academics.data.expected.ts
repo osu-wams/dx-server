@@ -5,7 +5,7 @@ export default [
     body:
       'Swing by the Academic Success Center and meet with a strategist. Chat about your current test prep and find new ways to get ready for exams. You’ve got a few weeks left. What are you waiting for?! ',
     bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/plus-grid.jpg',
-    affiliation: [],
+    affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: ['Academics'],
@@ -20,7 +20,7 @@ export default [
     title: 'Fellow OSU faculty member makes 16,000-year-old discovery',
     body:
       'An OSU professor who directed an archaeological excavation in Idaho discovered 16,000-year-old bones and artifacts.',
-    affiliation: [],
+    affiliation: ['Employee', 'Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: [],

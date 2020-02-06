@@ -80,7 +80,7 @@ passport.use(Auth.jwtStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
-app.get('/login', Auth.login);
+app.get('/login', handleReturnRequest, Auth.login);
 app.get('/logout', Auth.logout);
 
 // Health Check (path configured in cloudformation template)
