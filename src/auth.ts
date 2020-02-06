@@ -8,7 +8,7 @@ import { Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt'; // esl
 import DevStrategy from 'passport-dev';
 import { isNullOrUndefined } from 'util';
 import MockStrategy from './utils/mock-strategy';
-import User, { GROUPS } from './api/models/user'; // eslint-disable-line no-unused-vars
+import User from './api/models/user'; // eslint-disable-line no-unused-vars
 import { refreshOAuthToken } from './api/modules/canvas';
 import logger from './logger';
 import parseSamlResult, { decrypt } from './utils/auth';
@@ -23,6 +23,7 @@ import {
   CANVAS_OAUTH_SCOPE,
   ENCRYPTION_KEY,
   ENV,
+  GROUPS,
   JWT_KEY,
   SAML_CALLBACK_URL,
   SAML_CERT,

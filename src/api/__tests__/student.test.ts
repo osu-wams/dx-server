@@ -15,7 +15,7 @@ import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
 import { DYNAMODB_ENDPOINT } from '../../db/index';
-import { GROUPS } from '../models/user';
+import { GROUPS } from '../../constants';
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),

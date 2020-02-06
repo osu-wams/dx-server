@@ -17,6 +17,10 @@ const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
 const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
 const ENCRYPTION_KEY: string = config.get('encryptionKey');
 const ENV: string = config.get('env');
+const GROUPS = {
+  admin: 'urn:mace:oregonstate.edu:entitlement:dx:dx-admin',
+  masquerade: 'urn:mace:oregonstate.edu:entitlement:dx:dx-masquerade',
+};
 const JWT_KEY: string = config.get('jwtKey');
 const REDIS_HOST: string = config.get('redis.host');
 const REDIS_PORT: number = parseInt(config.get('redis.port'), 10);
@@ -42,6 +46,7 @@ export {
   CANVAS_OAUTH_TOKEN_URL,
   ENCRYPTION_KEY,
   ENV,
+  GROUPS,
   JWT_KEY,
   REDIS_HOST,
   REDIS_PORT,

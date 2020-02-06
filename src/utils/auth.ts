@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { ENV } from '../constants';
-import User, { GROUPS } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import { ENV, GROUPS } from '../constants';
+import User from '../api/models/user'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 
 const parseSamlResult = (profile: any, done: any) => {

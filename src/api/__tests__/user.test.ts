@@ -3,7 +3,8 @@ import nock from 'nock';
 import config from 'config';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import app from '../../index';
-import { UserSettings, GROUPS } from '../models/user'; // eslint-disable-line no-unused-vars
+import { UserSettings } from '../models/user'; // eslint-disable-line no-unused-vars
+import { GROUPS } from '../../constants'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import * as dynamoDb from '../../db';
 
