@@ -3,6 +3,9 @@ import redis from 'redis';
 import config from 'config';
 import logger from '../../logger';
 
+const DEFAULT_DB: number = 1;
+export const AUTH_DB: number = 2;
+
 export interface SetCacheOptions {
   mode: string;
   duration: number;
@@ -12,10 +15,23 @@ export interface SetCacheOptions {
 const opts = {
   host: config.get('redis.host'),
   port: config.get('redis.port'),
-  db: 1
+  db: DEFAULT_DB,
 } as redis.ClientOpts;
 
 const client = redis.createClient(opts);
+
+/**
+ * ! Manual Promise rather than Bluebird or utils.promisify, both failed to do the right thing with
+ * ! typescript..sadly. Old school Promise comes through as the winner.
+ */
+export const selectDbAsync = async (db: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    client.select(db, (err) => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
+};
 
 /**
  * ! Manual Promise rather than Bluebird or utils.promisify, both failed to do the right thing with
@@ -52,19 +68,27 @@ export const getAsync = async (key: string): Promise<string> => {
 export const setAsync = async (
   key: string,
   data: string,
-  options: SetCacheOptions
+  options?: SetCacheOptions,
 ): Promise<boolean> => {
   return new Promise((resolve, reject) => {
-    client.set(key, data, options.mode, options.duration, options.flag, (err, reply) => {
-      if (err) reject(err);
-      resolve(reply === 'OK');
-    });
+    if (options) {
+      client.set(key, data, options.mode, options.duration, options.flag, (err, reply) => {
+        if (err) reject(err);
+        resolve(reply === 'OK');
+      });
+    } else {
+      client.set(key, data, (err, reply) => {
+        if (err) reject(err);
+        resolve(reply === 'OK');
+      });
+    }
   });
 };
 
-client.on('error', err => logger().error(`cache: redisClient.on('error'): ${err}`));
+client.on('error', (err) => logger().error(`cache: redisClient.on('error'): ${err}`));
 
-export const getCache = async (key: string): Promise<string | null> => {
+export const getCache = async (key: string, db: number = DEFAULT_DB): Promise<string | null> => {
+  if (db !== DEFAULT_DB) await selectDbAsync(db);
   const reply = await getAsync(key);
   if (!reply) logger().debug(`getCache(${key}) failed to find data.`);
   return reply;
@@ -73,8 +97,10 @@ export const getCache = async (key: string): Promise<string | null> => {
 export const setCache = async (
   key: string,
   data: string,
-  options: SetCacheOptions
+  options?: SetCacheOptions,
+  db?: number,
 ): Promise<boolean> => {
+  if (db !== undefined && db !== DEFAULT_DB) await selectDbAsync(db);
   const reply = await setAsync(key, data, options);
   if (!reply) logger().debug(`setCache(${key}, ${data}) failed to set cache.`);
   return reply;
@@ -96,7 +122,7 @@ export const get = async (
   url: string,
   requestOptions: request.RequestPromiseOptions,
   performCache?: boolean,
-  cacheOptions?: CacheOptions
+  cacheOptions?: CacheOptions,
 ) => {
   const willCache = performCache || false;
   const { key, ttlSeconds } = cacheOptions || { key: url, ttlSeconds: 60 };
@@ -122,9 +148,17 @@ export const get = async (
 /**
  * Flushes the cache database
  */
-export const flushDb = async (): Promise<boolean> => {
+export const flushDb = async (db: number = DEFAULT_DB): Promise<boolean> => {
+  if (db !== DEFAULT_DB) await selectDbAsync(db);
   const reply = await flushDbAsync();
   return reply.toLowerCase() === 'ok';
 };
 
-export default { get, flushDb, getAsync, setAsync, flushDbAsync };
+export default {
+  get,
+  flushDb,
+  getAsync,
+  setAsync,
+  flushDbAsync,
+  selectDbAsync,
+};
