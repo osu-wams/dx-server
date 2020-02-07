@@ -13,6 +13,8 @@ import { ENCRYPTION_KEY, JWT_KEY } from '../../constants'; // eslint-disable-lin
 const mockedSession = jest.fn();
 const mockedQuery = jest.fn();
 const mockedRedirect = jest.fn();
+const mockedStatus = jest.fn();
+const mockedSend = jest.fn();
 const mockedHeaders = jest.fn();
 const mockedUser = jest.fn();
 
@@ -28,10 +30,22 @@ const mockRequest = (): Request => {
 const mockResponse = (): Response => {
   const res: any = {};
   res.redirect = mockedRedirect;
+  res.status = mockedStatus;
+  res.send = mockedSend;
   return res;
 };
 
 const mockNext: NextFunction = jest.fn();
+
+const mockedSetAsync = jest.fn();
+const mockedGetCache = jest.fn();
+
+jest.mock('../../api/modules/cache.ts', () => ({
+  ...jest.requireActual('../../api/modules/cache.ts'),
+  setAsync: () => mockedSetAsync(),
+  selectDbAsync: () => jest.fn(),
+  getCache: () => mockedGetCache(),
+}));
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -91,41 +105,46 @@ describe('isAppUrl', () => {
 });
 
 describe('redirectReturnUrl', () => {
+  beforeEach(async () => {
+    mockedSetAsync.mockReturnValue(true);
+  });
   it('includes a jwt token in the redirect', async () => {
     mockedSession.mockReturnValue({ returnUrl: 'exp://blah', mobileLogin: true });
-    redirectReturnUrl(mockRequest(), mockResponse(), mockUser);
-    const token = issueJWT(mockUser, ENCRYPTION_KEY, JWT_KEY);
-    expect(mockedRedirect).toBeCalledWith(`exp://blah?token=${token}`);
+    await redirectReturnUrl(mockRequest(), mockResponse(), mockUser);
+    expect(mockedRedirect.mock.calls[0][0].match(/exp:\/\/blah\?token=.*/g)).toBeTruthy();
   });
   it('redirects', async () => {
     mockedSession.mockReturnValue({ returnUrl: '/blah' });
-    redirectReturnUrl(mockRequest(), mockResponse(), mockUser);
+    await redirectReturnUrl(mockRequest(), mockResponse(), mockUser);
     expect(mockedRedirect).toBeCalledWith('/blah');
   });
 });
 
 describe('setJWTSessionUser', () => {
+  beforeEach(async () => {
+    mockedSetAsync.mockReturnValue(true);
+    const token = await issueJWT(mockUser, ENCRYPTION_KEY, JWT_KEY);
+    mockedHeaders.mockReturnValue({ authorization: token });
+  });
+
   it('calls next when a token is not provided', async () => {
     mockedHeaders.mockReturnValue({ authorization: undefined });
-    setJWTSessionUser(mockRequest(), mockResponse(), mockNext);
+    await setJWTSessionUser(mockRequest(), mockResponse(), mockNext);
     expect(mockedSession().jwtAuth).toBe(undefined);
     expect(mockNext).toBeCalled();
   });
   it('calls next when a token is provided but a user has been set previously', async () => {
-    const token = issueJWT(mockUser, ENCRYPTION_KEY, JWT_KEY);
     mockedUser.mockReturnValue(mockUser);
     mockedSession.mockReturnValue({});
-    mockedHeaders.mockReturnValue({ authorization: token });
-    setJWTSessionUser(mockRequest(), mockResponse(), mockNext);
+    await setJWTSessionUser(mockRequest(), mockResponse(), mockNext);
     expect(mockedSession().jwtAuth).toBe(undefined);
     expect(mockNext).toBeCalled();
   });
   it('sets jwt auth and user based on the jwt token', async () => {
-    const token = issueJWT(mockUser, ENCRYPTION_KEY, JWT_KEY);
     mockedUser.mockReturnValue(undefined);
     mockedSession.mockReturnValue({});
-    mockedHeaders.mockReturnValue({ authorization: token });
-    setJWTSessionUser(mockRequest(), mockResponse(), mockNext);
+    mockedGetCache.mockReturnValue(true);
+    await setJWTSessionUser(mockRequest(), mockResponse(), mockNext);
     expect(mockedSession().jwtAuth).toBe(true);
     expect(mockNext).toBeCalled();
   });

@@ -46,16 +46,16 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
  * @param res the Express Response
  * @param next the Express middleware next function
  */
-export const setJWTSessionUser = (req: Request, res: Response, next: NextFunction) => {
+export const setJWTSessionUser = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
   if (authorization && !req.user) {
     const jwt = decrypt(authorization, ENCRYPTION_KEY, JWT_KEY);
-    const user = userFromJWT(jwt, JWT_KEY);
+    const user = await userFromJWT(jwt, JWT_KEY);
     if (user) {
       req.session.jwtAuth = true;
       req.user = user;
     } else {
-      return res.status(500).send({ error: 'Invalid token, unable identify user.' });
+      return res.status(500).send({ error: 'Invalid token, unable to identify user.' });
     }
   }
   return next();
@@ -67,9 +67,10 @@ export const setJWTSessionUser = (req: Request, res: Response, next: NextFunctio
  * @param res the Express Response
  * @param user the User data
  */
-export const redirectReturnUrl = (req: Request, res: Response, user: User) => {
+export const redirectReturnUrl = async (req: Request, res: Response, user: User) => {
   if (req.session.mobileLogin) {
-    res.redirect(`${req.session.returnUrl}?token=${issueJWT(user, ENCRYPTION_KEY, JWT_KEY)}`);
+    const token = await issueJWT(user, ENCRYPTION_KEY, JWT_KEY);
+    res.redirect(`${req.session.returnUrl}?token=${token}`);
   } else {
     res.redirect(req.session.returnUrl);
   }
