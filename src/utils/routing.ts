@@ -35,6 +35,7 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
       )}, setting session return url:${url}`,
     );
   }
+  
   req.session.returnUrl = url;
 
   return next();
