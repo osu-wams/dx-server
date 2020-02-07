@@ -26,6 +26,15 @@ const mockUser = {
   osuId: 123456789,
   primaryAffiliation: 'employee',
 };
+const mockedSetAsync = jest.fn();
+const mockedGetCache = jest.fn();
+
+jest.mock('../../api/modules/cache.ts', () => ({
+  ...jest.requireActual('../../api/modules/cache.ts'),
+  setAsync: () => mockedSetAsync(),
+  selectDbAsync: () => jest.fn(),
+  getCache: () => mockedGetCache(),
+}));
 
 describe('parseSamlResult', () => {
   it('parses the Saml result', async () => {
@@ -72,15 +81,20 @@ describe('decrypt', () => {
 });
 
 describe('issueJWT', () => {
-  let jwt;
   beforeEach(() => {
-    jwt = issueJWT(mockUser as User, ENCRYPTION_KEY, JWT_KEY);
+    mockedSetAsync.mockReturnValue(true);
   });
   it('creates an encrypted JWT', async () => {
+    const jwt = await issueJWT(mockUser as User, ENCRYPTION_KEY, JWT_KEY);
     expect(jwt).not.toBe(null);
   });
   it('fails to decrypt the text with a bad key', async () => {
-    jwt = issueJWT(mockUser as User, undefined, JWT_KEY);
+    const jwt = await issueJWT(mockUser as User, undefined, undefined);
+    expect(jwt).toBe(null);
+  });
+  it('fails to cache the text', async () => {
+    mockedSetAsync.mockReturnValue(false);
+    const jwt = await issueJWT(mockUser as User, ENCRYPTION_KEY, JWT_KEY);
     expect(jwt).toBe(null);
   });
 });
@@ -88,15 +102,23 @@ describe('issueJWT', () => {
 describe('userFromJWT', () => {
   let jwt;
   let encrypted;
-  beforeEach(() => {
-    encrypted = issueJWT(mockUser as User, ENCRYPTION_KEY, JWT_KEY);
+  beforeEach(async () => {
+    mockedSetAsync.mockReturnValue(true);
+    mockedGetCache.mockReturnValue(true);
+    encrypted = await issueJWT(mockUser as User, ENCRYPTION_KEY, JWT_KEY);
     jwt = decrypt(encrypted, ENCRYPTION_KEY, JWT_KEY);
   });
   it('gets the user from the JWT', async () => {
-    expect(userFromJWT(jwt, JWT_KEY)).toMatchObject(mockUser);
+    const user = await userFromJWT(jwt, JWT_KEY);
+    expect(user).toMatchObject(mockUser);
   });
   it('fails to get the user with a bad key', async () => {
     jwt = decrypt(encrypted, undefined, JWT_KEY);
-    expect(userFromJWT(jwt, undefined)).toBe(null);
+    expect(await userFromJWT(jwt, undefined)).toBe(null);
+  });
+  it('fails to find an expected jwt from cache', async () => {
+    mockedGetCache.mockReturnValue(false);
+    jwt = decrypt(encrypted, ENCRYPTION_KEY, JWT_KEY);
+    expect(await userFromJWT(jwt, JWT_KEY)).toBe(null);
   });
 });

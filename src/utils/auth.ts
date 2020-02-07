@@ -1,9 +1,15 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import { getCache, AUTH_DB, setAsync, selectDbAsync } from '../api/modules/cache';
 import { ENV, GROUPS } from '../constants';
 import User from '../api/models/user'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
+
+interface Jwt {
+  user: User;
+  iat: number;
+}
 
 const parseSamlResult = (profile: any, done: any) => {
   const user = {
@@ -35,6 +41,10 @@ const parseSamlResult = (profile: any, done: any) => {
   }
   return done(null, user);
 };
+
+const cacheKey = (user: User, iat: number) => `${iat.toString()}-${user.email}`;
+
+export const verifiedJwt = (token: string, jwtKey: string): Jwt => jwt.verify(token, jwtKey) as Jwt;
 
 /**
  * Simple method using nodes crypto to encrypt a string of text to hex (url safe)
@@ -77,10 +87,14 @@ export const decrypt = (encrypted: string, key: string, iv: string): string | nu
  * @param token the jwt to verify
  * @param jwtKey the key to used when signing the jwt
  */
-export const userFromJWT = (token: string, jwtKey: string): User | null => {
+export const userFromJWT = async (token: string, jwtKey: string): Promise<User | null> => {
   try {
-    const user = jwt.verify(token, jwtKey);
-    return user as User;
+    const verified = verifiedJwt(token, jwtKey);
+    const validated = await getCache(cacheKey(verified.user, verified.iat), AUTH_DB);
+    if (validated) {
+      return verified.user;
+    }
+    return null;
   } catch (err) {
     logger().error(
       `utils/Auth#userFromJWT failed to verify the provided token, this is a serious problem that indicates the signing key (JWT_KEY) has been changed and this token is still being used, or that the token was malformed or tampered with. At any rate, this problem needs attention. Error: ${err}`,
@@ -95,13 +109,23 @@ export const userFromJWT = (token: string, jwtKey: string): User | null => {
  * @param encryptionKey the key for encrypting the jwt
  * @param jwtKey the key for signing the jwt
  */
-export const issueJWT = (user: User, encryptionKey: string, jwtKey: string): string => {
+export const issueJWT = async (
+  user: User,
+  encryptionKey: string,
+  jwtKey: string,
+): Promise<string | null> => {
   try {
-    const signed = jwt.sign(user, jwtKey);
-    return encrypt(signed, encryptionKey, jwtKey);
+    const iat = Date.now();
+    const signed = jwt.sign({ user, iat }, jwtKey);
+    await selectDbAsync(AUTH_DB);
+    const didCache = await setAsync(cacheKey(user, iat), iat.toString());
+    if (didCache) {
+      return encrypt(signed, encryptionKey, jwtKey);
+    }
+    return null;
   } catch (err) {
     logger().error(
-      `utils/Auth#issueJWT failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err}`,
+      `utils/Auth#issueJWT failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err.stack}`,
     );
     return null;
   }
