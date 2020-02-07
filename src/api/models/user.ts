@@ -43,7 +43,7 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   email: { S: string };
   primaryAffiliation: { S: string };
   affiliations: { SS: string[] };
-  groups: { SS: string[] };
+  groups?: { SS: string[] };
   phone?: { S: string };
   canvasRefreshToken?: { S: string };
   canvasOptIn?: { BOOL: boolean };
@@ -406,7 +406,6 @@ class User {
       email: { S: props.email },
       primaryAffiliation: { S: props.primaryAffiliation },
       affiliations: { SS: props.affiliations },
-      groups: { SS: props.groups },
     };
     if (props.isCanvasOptIn === undefined) {
       Item.canvasOptIn = { BOOL: false };
@@ -431,6 +430,7 @@ class User {
     if (props.primaryAffiliationOverride) {
       Item.primaryAffiliationOverride = { S: props.primaryAffiliationOverride };
     }
+    if (props.groups.length > 0) Item.groups = { SS: props.groups };
     return Item;
   };
 }
