@@ -169,7 +169,6 @@ describe('User model', () => {
       expect(item.email.S).toBe(samlUser.email);
       expect(item.primaryAffiliation.S).toBe(samlUser.primaryAffiliation);
       expect(item.affiliations.SS).toBe(samlUser.affiliations);
-      expect(item.groups.SS).toBe(samlUser.groups);
     });
     it('builds an item with a phone', () => {
       const item = User.asDynamoDbItem(user);
@@ -189,6 +188,11 @@ describe('User model', () => {
       user.isCanvasOptIn = undefined;
       const item = User.asDynamoDbItem(user);
       expect(item.canvasOptIn.BOOL).toBeFalsy();
+    });
+    it('builds an item with groups', () => {
+      user.groups = ['admin', 'masquerade'];
+      const item = User.asDynamoDbItem(user);
+      expect(item.groups.SS).toStrictEqual(['admin', 'masquerade']);
     });
   });
 
