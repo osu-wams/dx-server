@@ -253,11 +253,12 @@ export const getCategories = async (): Promise<Types.Category[]> => {
       () =>
         retrieveData('taxonomy_term/categories', {
           fields: {
-            'taxonomy_term--categories': 'id,name,field_taxonomy_icon',
+            'taxonomy_term--categories': 'id,name,field_taxonomy_icon,field_taxonomy_affiliation',
+            'taxonomy_term--affiliation': 'name',
             'media--image': 'name,field_media_image',
             'file--file': 'filename,filemime,uri',
           },
-          include: 'field_taxonomy_icon.field_media_image',
+          include: 'field_taxonomy_icon.field_media_image,field_taxonomy_affiliation',
           sort: 'weight',
           filter: {
             status: 1,
@@ -274,6 +275,7 @@ export const getCategories = async (): Promise<Types.Category[]> => {
     };
 
     return data.map((d) => ({
+      affiliation: d.field_taxonomy_affiliation.map((a) => a.name),
       id: d.id,
       name: d.name,
       icon: categoryIconUrl(d),

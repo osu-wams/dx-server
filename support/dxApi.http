@@ -26,10 +26,11 @@ GET {{baseUrl}}/jsonapi/node/announcement HTTP/1.1
 
 # @name getCategories
 GET {{baseUrl}}/jsonapi/taxonomy_term/categories HTTP/1.1
-  ?fields[taxonomy_term--categories]=id,name,field_taxonomy_icon
+  ?fields[taxonomy_term--categories]=id,name,field_taxonomy_icon,field_taxonomy_affiliation
+  &fields[taxonomy_term--affiliation]=name
   &fields[media--image]=name,field_media_image
   &fields[file--file]=filename,filemime,uri
-  &include=field_taxonomy_icon.field_media_image
+  &include=field_taxonomy_icon.field_media_image,field_taxonomy_affiliation
   &sort=weight
   &filter[status]=1
 
