@@ -10,6 +10,34 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
       }
     },
+    "field_taxonomy_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "field_taxonomy_icon": {
       "type": "media--image",
       "id": "b23d828b-6e45-45a2-96a7-148757b4c88f",
@@ -55,6 +83,21 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/2cd0a3c4-a7f1-4080-bf2e-e458559de2a3"
       }
     },
+    "field_taxonomy_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "field_taxonomy_icon": {
       "type": "media--image",
       "id": "ba784330-0f3d-4043-b211-b30e62f53ccd",
@@ -100,6 +143,34 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
       }
     },
+    "field_taxonomy_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "field_taxonomy_icon": {
       "type": "media--image",
       "id": "72587d42-8cf0-44b2-98cc-1c3f0b007f6e",
@@ -145,6 +216,21 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/382db473-acfc-40b0-80cc-6c2db55d18ea"
       }
     },
+    "field_taxonomy_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "field_taxonomy_icon": {
       "type": "media--image",
       "id": "b6f1775a-c5ba-4205-bab5-a90f7b7c4e59",
@@ -190,6 +276,34 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/cf44f3d0-6c17-490b-b3e3-753b5dd9ae6f"
       }
     },
+    "field_taxonomy_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "field_taxonomy_icon": {
       "type": "media--image",
       "id": "88c9fead-f113-481a-87ab-b273ec4c1012",
@@ -235,6 +349,34 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/22db6473-91d6-422f-ab7b-cc9d7a9f0865"
       }
     },
+    "field_taxonomy_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "field_taxonomy_icon": {
       "type": "media--image",
       "id": "93dcc832-ea01-4c06-a0ac-d02cef59ceaa",
@@ -280,6 +422,34 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/231ea7e3-cda2-462d-97d4-9e5a5c23e015"
       }
     },
+    "field_taxonomy_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
     "field_taxonomy_icon": {
       "type": "media--image",
       "id": "ee7df84f-85b4-4f9a-8385-a7f3cd2d8009",
