@@ -109,7 +109,7 @@ Auth.jwtStrategy = new JwtStrategy(
   {
     secretOrKey: JWT_KEY,
     jwtFromRequest: (req) => {
-      const decrypted = decrypt(req.headers.authorization, ENCRYPTION_KEY, JWT_KEY);
+      const decrypted = decrypt(req.headers.authorization, ENCRYPTION_KEY);
       return decrypted;
     },
   },

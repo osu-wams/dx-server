@@ -35,7 +35,7 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
       )}, setting session return url:${url}`,
     );
   }
-  
+
   req.session.returnUrl = url;
 
   return next();
@@ -50,7 +50,7 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
 export const setJWTSessionUser = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
   if (authorization && !req.user) {
-    const jwt = decrypt(authorization, ENCRYPTION_KEY, JWT_KEY);
+    const jwt = decrypt(authorization, ENCRYPTION_KEY);
     const user = await userFromJWT(jwt, JWT_KEY);
     if (user) {
       req.session.jwtAuth = true;
@@ -69,6 +69,7 @@ export const setJWTSessionUser = async (req: Request, res: Response, next: NextF
  * @param user the User data
  */
 export const redirectReturnUrl = async (req: Request, res: Response, user: User) => {
+  logger().debug(`redirectReturnUrl mobileLogin: ${req.session.mobileLogin}, redirect`);
   if (req.session.mobileLogin) {
     const token = await issueJWT(user, ENCRYPTION_KEY, JWT_KEY);
     res.redirect(`${req.session.returnUrl}?token=${token}`);

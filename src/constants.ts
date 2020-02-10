@@ -21,6 +21,7 @@ const GROUPS = {
   admin: 'urn:mace:oregonstate.edu:entitlement:dx:dx-admin',
   masquerade: 'urn:mace:oregonstate.edu:entitlement:dx:dx-masquerade',
 };
+const IV_LENGTH: number = 16;
 const JWT_KEY: string = config.get('jwtKey');
 const REDIS_HOST: string = config.get('redis.host');
 const REDIS_PORT: number = parseInt(config.get('redis.port'), 10);
@@ -47,6 +48,7 @@ export {
   ENCRYPTION_KEY,
   ENV,
   GROUPS,
+  IV_LENGTH,
   JWT_KEY,
   REDIS_HOST,
   REDIS_PORT,

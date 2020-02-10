@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'; // eslint-disable-lin
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { getCache, AUTH_DB, setAsync, selectDbAsync } from '../api/modules/cache';
-import { ENV, GROUPS } from '../constants';
+import { ENV, GROUPS, IV_LENGTH } from '../constants';
 import User from '../api/models/user'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 
@@ -47,17 +47,17 @@ const cacheKey = (user: User, iat: number) => `${iat.toString()}-${user.email}`;
 export const verifiedJwt = (token: string, jwtKey: string): Jwt => jwt.verify(token, jwtKey) as Jwt;
 
 /**
- * Simple method using nodes crypto to encrypt a string of text to hex (url safe)
+ * Simple method using nodes crypto to encrypt a string of text
  * @param text the text to encrypt
  * @param key the key used for encrypting text
- * @param iv the initialization vector encrypting this text
  */
-export const encrypt = (text: string, key: string, iv: string): string | null => {
+export const encrypt = (text: string, key: string): string | null => {
   try {
-    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv.padEnd(16, '*'));
-    let encrypted = cipher.update(text, 'utf8', 'hex');
-    encrypted += cipher.final('hex');
-    return encrypted;
+    const iv = crypto.randomBytes(IV_LENGTH / 2).toString('hex');
+    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    return `${iv}:${encrypted}`;
   } catch (err) {
     logger().error(`utils/Auth#encrypt failed to encrypt provided string: ${err}`);
     return null;
@@ -65,15 +65,15 @@ export const encrypt = (text: string, key: string, iv: string): string | null =>
 };
 
 /**
- * Simple method using nodes crypto to decrypt a string of hex text
+ * Simple method using nodes crypto to decrypt a string of text
  * @param encrypted the text to decrypt
  * @param key the key used for decrypting text
- * @param iv the initialization vector used for decrypting this text
  */
-export const decrypt = (encrypted: string, key: string, iv: string): string | null => {
+export const decrypt = (encrypted: string, key: string): string | null => {
   try {
-    const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv.padEnd(16, '*'));
-    return decipher.update(encrypted, 'hex', 'utf8');
+    const [iv, data] = encrypted.split(':');
+    const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
+    return decipher.update(data, 'base64', 'utf8');
   } catch (err) {
     logger().warn(
       `utils/Auth#decrypt failed to decrypt provided string, this would typically be unexpected and indicates an encryption key or IV has changed or that the string is malformed or tampered with. Error: ${err}`,
@@ -118,9 +118,10 @@ export const issueJWT = async (
     const iat = Date.now();
     const signed = jwt.sign({ user, iat }, jwtKey);
     await selectDbAsync(AUTH_DB);
+    // ! Track more data in the cache, issueAt, lastUsed, etc?
     const didCache = await setAsync(cacheKey(user, iat), iat.toString());
     if (didCache) {
-      return encrypt(signed, encryptionKey, jwtKey);
+      return encrypt(signed, encryptionKey);
     }
     return null;
   } catch (err) {

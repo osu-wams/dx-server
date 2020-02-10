@@ -63,20 +63,20 @@ describe('parseSamlResult', () => {
 
 describe('encrypt', () => {
   it('encrypts the text', async () => {
-    expect(encrypt('test', ENCRYPTION_KEY, JWT_KEY)).not.toEqual('test');
+    expect(encrypt('test', ENCRYPTION_KEY)).not.toEqual('test');
   });
   it('fails to encrypt the text with a bad key', async () => {
-    expect(encrypt('test', undefined, JWT_KEY)).toBe(null);
+    expect(encrypt('test', undefined)).toBe(null);
   });
 });
 
 describe('decrypt', () => {
   it('decrypts the text', async () => {
-    const encrypted = encrypt('test', ENCRYPTION_KEY, JWT_KEY);
-    expect(decrypt(encrypted, ENCRYPTION_KEY, JWT_KEY)).toEqual('test');
+    const encrypted = encrypt('test', ENCRYPTION_KEY);
+    expect(decrypt(encrypted, ENCRYPTION_KEY)).toEqual('test');
   });
   it('fails to decrypt the text with a bad key', async () => {
-    expect(decrypt('test', undefined, JWT_KEY)).toBe(null);
+    expect(decrypt('test', undefined)).toBe(null);
   });
 });
 
@@ -106,19 +106,19 @@ describe('userFromJWT', () => {
     mockedSetAsync.mockReturnValue(true);
     mockedGetCache.mockReturnValue(true);
     encrypted = await issueJWT(mockUser as User, ENCRYPTION_KEY, JWT_KEY);
-    jwt = decrypt(encrypted, ENCRYPTION_KEY, JWT_KEY);
+    jwt = decrypt(encrypted, ENCRYPTION_KEY);
   });
   it('gets the user from the JWT', async () => {
     const user = await userFromJWT(jwt, JWT_KEY);
     expect(user).toMatchObject(mockUser);
   });
   it('fails to get the user with a bad key', async () => {
-    jwt = decrypt(encrypted, undefined, JWT_KEY);
+    jwt = decrypt(encrypted, undefined);
     expect(await userFromJWT(jwt, undefined)).toBe(null);
   });
   it('fails to find an expected jwt from cache', async () => {
     mockedGetCache.mockReturnValue(false);
-    jwt = decrypt(encrypted, ENCRYPTION_KEY, JWT_KEY);
+    jwt = decrypt(encrypted, ENCRYPTION_KEY);
     expect(await userFromJWT(jwt, JWT_KEY)).toBe(null);
   });
 });
