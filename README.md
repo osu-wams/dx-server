@@ -52,6 +52,10 @@ To run with SAML authentication, in a separate terminal window run:
 
 # Admin Functions
 
+## [Inspect a JWT token](support/README.md)
+
+## Authenticate on the CLI
+
 Key based authentication exists to facilitate automation and to enable administrative
 tooling for performing functions that aren't otherwise exposed through the front-end. An
 approach to performing these functions is to use `curl` to login and call subsequent actions.

@@ -1,7 +1,15 @@
-import config from 'config';
-import { GROUPS } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
+import { getCache, AUTH_DB, setAsync, selectDbAsync } from '../api/modules/cache';
+import { ENV, GROUPS, IV_LENGTH } from '../constants';
+import User from '../api/models/user'; // eslint-disable-line no-unused-vars
+import logger from '../logger';
 
-const ENV: string = config.get('env');
+interface Jwt {
+  user: User;
+  iat: number;
+}
 
 const parseSamlResult = (profile: any, done: any) => {
   const user = {
@@ -32,6 +40,96 @@ const parseSamlResult = (profile: any, done: any) => {
     }
   }
   return done(null, user);
+};
+
+const cacheKey = (user: User, iat: number) => `${iat.toString()}-${user.email}`;
+
+export const verifiedJwt = (token: string, jwtKey: string): Jwt => jwt.verify(token, jwtKey) as Jwt;
+
+/**
+ * Simple method using nodes crypto to encrypt a string of text
+ * @param text the text to encrypt
+ * @param key the key used for encrypting text
+ */
+export const encrypt = (text: string, key: string): string | null => {
+  try {
+    const iv = crypto.randomBytes(IV_LENGTH / 2).toString('hex');
+    const cipher = crypto.createCipheriv('aes-256-gcm', key, iv);
+    let encrypted = cipher.update(text, 'utf8', 'base64');
+    encrypted += cipher.final('base64');
+    return `${iv}:${encrypted}`;
+  } catch (err) {
+    logger().error(`utils/Auth#encrypt failed to encrypt provided string: ${err}`);
+    return null;
+  }
+};
+
+/**
+ * Simple method using nodes crypto to decrypt a string of text
+ * @param encrypted the text to decrypt
+ * @param key the key used for decrypting text
+ */
+export const decrypt = (encrypted: string, key: string): string | null => {
+  try {
+    const [iv, data] = encrypted.split(':');
+    const decipher = crypto.createDecipheriv('aes-256-gcm', key, iv);
+    return decipher.update(data, 'base64', 'utf8');
+  } catch (err) {
+    logger().warn(
+      `utils/Auth#decrypt failed to decrypt provided string, this would typically be unexpected and indicates an encryption key or IV has changed or that the string is malformed or tampered with. Error: ${err}`,
+    );
+    return null;
+  }
+};
+
+/**
+ * Verify the token has not been tampered with, return the User stored in the token or null if there was an error.
+ * @param token the jwt to verify
+ * @param jwtKey the key to used when signing the jwt
+ */
+export const userFromJWT = async (token: string, jwtKey: string): Promise<User | null> => {
+  try {
+    const verified = verifiedJwt(token, jwtKey);
+    const validated = await getCache(cacheKey(verified.user, verified.iat), AUTH_DB);
+    if (validated) {
+      return verified.user;
+    }
+    return null;
+  } catch (err) {
+    logger().error(
+      `utils/Auth#userFromJWT failed to verify the provided token, this is a serious problem that indicates the signing key (JWT_KEY) has been changed and this token is still being used, or that the token was malformed or tampered with. At any rate, this problem needs attention. Error: ${err}`,
+    );
+    return null;
+  }
+};
+
+/**
+ * Issue a new JWT of the user or null if there was an error.
+ * @param user the user to create a jwt of
+ * @param encryptionKey the key for encrypting the jwt
+ * @param jwtKey the key for signing the jwt
+ */
+export const issueJWT = async (
+  user: User,
+  encryptionKey: string,
+  jwtKey: string,
+): Promise<string | null> => {
+  try {
+    const iat = Date.now();
+    const signed = jwt.sign({ user, iat }, jwtKey);
+    await selectDbAsync(AUTH_DB);
+    // ! Track more data in the cache, issueAt, lastUsed, etc?
+    const didCache = await setAsync(cacheKey(user, iat), iat.toString());
+    if (didCache) {
+      return encrypt(signed, encryptionKey);
+    }
+    return null;
+  } catch (err) {
+    logger().error(
+      `utils/Auth#issueJWT failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err.stack}`,
+    );
+    return null;
+  }
 };
 
 export default parseSamlResult;

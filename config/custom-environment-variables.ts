@@ -7,6 +7,8 @@ export default {
    */
   appVersion: 'APP_VERSION',
   sessionSecret: 'SESSION_SECRET',
+  jwtKey: 'JWT_KEY',
+  encryptionKey: 'ENCRYPTION_KEY',
   osuApi: {
     clientId: 'OSU_API_CLIENT_ID',
     clientSecret: 'OSU_API_CLIENT_SECRET',

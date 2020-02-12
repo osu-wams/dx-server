@@ -6,11 +6,6 @@ import { scan, updateItem, getItem, putItem } from '../../db';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 
-export const GROUPS = {
-  admin: 'urn:mace:oregonstate.edu:entitlement:dx:dx-admin',
-  masquerade: 'urn:mace:oregonstate.edu:entitlement:dx:dx-masquerade',
-};
-
 export interface AudienceOverride {
   campusCode?: string;
   firstYear?: boolean;

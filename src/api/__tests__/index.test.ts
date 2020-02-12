@@ -1,6 +1,7 @@
 import supertest from 'supertest';
-import app, { useMocks } from '../../index';
+import app from '../../index';
 import User from '../models/user';
+import { USE_MOCKS } from '../../constants';
 import { mockUser } from '../models/__mocks__/user';
 
 const mockRequestOAuthToken = jest.fn();
@@ -23,7 +24,7 @@ describe('/healthcheck', () => {
   it('returns success', async () => {
     await request.get('/healthcheck').expect(200, {
       version: 'test-123',
-      useMocks,
+      useMocks: USE_MOCKS,
     });
   });
 });
