@@ -1,6 +1,6 @@
-import { addDays, format } from 'date-fns';
-export const formatted = (date) => format(date, "yyyy-MM-dd'T'HH:MM:SS");
-export const startDate = (): Date => new Date();
+import { addDays } from 'date-fns';
+
+export const startDate = () => new Date();
 
 export default {
   events: [
@@ -50,8 +50,8 @@ export default {
               id: 31839819109196,
               ranking: 0,
               event_id: 31839819074947,
-              start: formatted(startDate()),
-              end: formatted(startDate()),
+              start: startDate().toJSON(),
+              end: startDate().toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -145,8 +145,8 @@ export default {
               id: 31902001667478,
               ranking: 0,
               event_id: 31902001649423,
-              start: formatted(addDays(startDate(), 2)),
-              end: formatted(addDays(startDate(), 2)),
+              start: addDays(startDate(), 2).toJSON(),
+              end: addDays(startDate(), 2).toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -226,8 +226,8 @@ export default {
               id: 31965230137778,
               ranking: 0,
               event_id: 31965230133015,
-              start: formatted(addDays(startDate(), 3)),
-              end: formatted(addDays(startDate(), 3)),
+              start: addDays(startDate(), 3).toJSON(),
+              end: addDays(startDate(), 3).toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -342,8 +342,8 @@ export default {
               id: 32122778290228,
               ranking: 0,
               event_id: 32122778287035,
-              start: formatted(addDays(startDate(), 4)),
-              end: formatted(addDays(startDate(), 4)),
+              start: addDays(startDate(), 4).toJSON(),
+              end: addDays(startDate(), 4).toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -442,8 +442,8 @@ export default {
               id: 31709247104655,
               ranking: 0,
               event_id: 30637707684794,
-              start: formatted(addDays(startDate(), 5)),
-              end: formatted(addDays(startDate(), 5)),
+              start: addDays(startDate(), 5).toJSON(),
+              end: addDays(startDate(), 5).toJSON(),
               all_day: false,
               num_attending: 0,
             },

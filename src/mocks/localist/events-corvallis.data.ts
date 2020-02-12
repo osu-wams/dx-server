@@ -1,5 +1,7 @@
 import { addDays } from 'date-fns';
 
+export const startDate = () => new Date();
+
 export default {
   events: [
     {
@@ -48,8 +50,8 @@ export default {
               id: 31676298672392,
               ranking: 0,
               event_id: 31676298658227,
-              start: new Date().toJSON(),
-              end: new Date().toJSON(),
+              start: startDate().toJSON(),
+              end: startDate().toJSON(),
               all_day: false,
               num_attending: 1,
             },
@@ -145,8 +147,8 @@ export default {
               id: 31326530964751,
               ranking: 0,
               event_id: 31326530952972,
-              start: addDays(new Date(), 2).toJSON(),
-              end: addDays(new Date(), 2).toJSON(),
+              start: addDays(startDate(), 2).toJSON(),
+              end: addDays(startDate(), 2).toJSON(),
               all_day: false,
               num_attending: 0,
             },
@@ -262,8 +264,8 @@ export default {
               id: 31902001674884,
               ranking: 0,
               event_id: 31902001649423,
-              start: addDays(new Date(), 3).toJSON(),
-              end: addDays(new Date(), 3).toJSON(),
+              start: addDays(startDate(), 3).toJSON(),
+              end: addDays(startDate(), 3).toJSON(),
               all_day: false,
               num_attending: 0,
             },
