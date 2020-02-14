@@ -88,7 +88,7 @@ export const setAsync = async (
 client.on('error', (err) => logger().error(`cache: redisClient.on('error'): ${err}`));
 
 export const getCache = async (key: string, db: number = DEFAULT_DB): Promise<string | null> => {
-  if (db !== DEFAULT_DB) await selectDbAsync(db);
+  await selectDbAsync(db);
   const reply = await getAsync(key);
   if (!reply) logger().debug(`getCache(${key}) failed to find data.`);
   return reply;
@@ -100,7 +100,7 @@ export const setCache = async (
   options?: SetCacheOptions,
   db?: number,
 ): Promise<boolean> => {
-  if (db !== undefined && db !== DEFAULT_DB) await selectDbAsync(db);
+  await selectDbAsync(db || DEFAULT_DB);
   const reply = await setAsync(key, data, options);
   if (!reply) logger().debug(`setCache(${key}, ${data}) failed to set cache.`);
   return reply;
@@ -149,7 +149,7 @@ export const get = async (
  * Flushes the cache database
  */
 export const flushDb = async (db: number = DEFAULT_DB): Promise<boolean> => {
-  if (db !== DEFAULT_DB) await selectDbAsync(db);
+  await selectDbAsync(db);
   const reply = await flushDbAsync();
   return reply.toLowerCase() === 'ok';
 };
