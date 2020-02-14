@@ -16,7 +16,7 @@ config:
     stage:
       target: https://stage.my.oregonstate.edu
     production:
-      target: https://prod.my.oregonstate.edu
+      target: https://my.oregonstate.edu
       phases:
         - duration: 300
           arrivalRate: 5
