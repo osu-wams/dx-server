@@ -13,6 +13,7 @@ export default {
    */
   apiKeys: '',
   dxApi: {
+    longCacheEndpointSec: '604800',
     cacheEndpointSec: '86400',
     baseUrl: 'https://data.dx.oregonstate.edu',
   },

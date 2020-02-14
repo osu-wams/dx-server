@@ -20,6 +20,7 @@ import { fetchData } from '../util';
 
 export const BASE_URL: string = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
+export const LONG_CACHE_SEC = parseInt(config.get('dxApi.longCacheEndpointSec'), 10);
 
 const api = new Kitsu({
   baseURL: `${BASE_URL}/jsonapi`,
@@ -113,7 +114,7 @@ const mappedResources = (items: any[]): Types.Resource[] => {
  * data for this query.
  * @param url the API endpoint to query
  */
-const retrieveData = async (url: string, kitsuOpts: any): Promise<any[]> => {
+const retrieveData = async (url: string, kitsuOpts: any, cacheSec?: number): Promise<any[]> => {
   const cacheKey = `${url}:${JSON.stringify(kitsuOpts)}`;
   const cachedData = await cache.getAsync(cacheKey);
   if (cachedData !== null) return JSON.parse(cachedData);
@@ -134,7 +135,11 @@ const retrieveData = async (url: string, kitsuOpts: any): Promise<any[]> => {
   }
   // flatten all fetchedItems arrays into a single array, cache the json and return the data
   const data = fetchedItems.reduce((p, c) => p.concat(c));
-  await setCache(cacheKey, JSON.stringify(data), { mode: 'EX', duration: CACHE_SEC, flag: 'NX' });
+  await setCache(cacheKey, JSON.stringify(data), {
+    mode: 'EX',
+    duration: cacheSec || CACHE_SEC,
+    flag: 'NX',
+  });
   return data;
 };
 
@@ -175,23 +180,23 @@ export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
  */
 export const getResources = async (): Promise<Types.Resource[]> => {
   try {
+    const opts = {
+      fields: {
+        'node--services':
+          'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations',
+        'taxonomy_term--categories': 'name',
+        'taxonomy_term--audience': 'name',
+        'taxonomy_term--affiliation': 'name',
+        'taxonomy_term--locations': 'name',
+      },
+      include: 'field_affiliation,field_audience,field_service_category,field_locations',
+      sort: 'title',
+      filter: {
+        status: 1,
+      },
+    };
     const data = await fetchData(
-      () =>
-        retrieveData('node/services', {
-          fields: {
-            'node--services':
-              'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations',
-            'taxonomy_term--categories': 'name',
-            'taxonomy_term--audience': 'name',
-            'taxonomy_term--affiliation': 'name',
-            'taxonomy_term--locations': 'name',
-          },
-          include: 'field_affiliation,field_audience,field_service_category,field_locations',
-          sort: 'title',
-          filter: {
-            status: 1,
-          },
-        }),
+      () => retrieveData('node/services', opts, LONG_CACHE_SEC),
       mockedResources,
     );
     return mappedResources(data);
