@@ -1,6 +1,7 @@
 config:
+  target: http://local.my.oregonstate.edu:4000
   phases:
-    - duration: 30
+    - duration: 10
       arrivalRate: 1
       rampTo: 2
       name: Ramp up the load slowly
@@ -28,10 +29,12 @@ scenarios:
     flow:
       - get:
           url: '/login?osuId={{ osuId }}&key={{ key }}'
+          followRedirect: false
       - post:
           url: /api/masquerade
           json:
             masqueradeId: '{{ id }}'
+            masqueradeReason: Performed by DX load testing automation
       - get:
           url: /api/alerts
       - get:
@@ -39,7 +42,7 @@ scenarios:
       - get:
           url: /api/info-buttons
       - get:
-          url: /api/healthcheck
+          url: /healthcheck
       - get:
           url: /api/user
       - get:
@@ -60,10 +63,12 @@ scenarios:
     flow:
       - get:
           url: '/login?osuId={{ osuId }}&key={{ key }}'
+          followRedirect: false
       - post:
           url: /api/masquerade
           json:
             masqueradeId: '{{ id }}'
+            masqueradeReason: Performed by DX load testing automation
       - get:
           url: /api/alerts
       - get:
@@ -71,7 +76,7 @@ scenarios:
       - get:
           url: /api/info-buttons
       - get:
-          url: /api/healthcheck
+          url: /healthcheck
       - get:
           url: /api/user
       - get:
@@ -98,10 +103,12 @@ scenarios:
     flow:
       - get:
           url: '/login?osuId={{ osuId }}&key={{ key }}'
+          followRedirect: false
       - post:
           url: /api/masquerade
           json:
             masqueradeId: '{{ id }}'
+            masqueradeReason: Performed by DX load testing automation
       - get:
           url: /api/alerts
       - get:
@@ -109,7 +116,7 @@ scenarios:
       - get:
           url: /api/info-buttons
       - get:
-          url: /api/healthcheck
+          url: /healthcheck
       - get:
           url: /api/user
       - get:
@@ -120,10 +127,12 @@ scenarios:
     flow:
       - get:
           url: '/login?osuId={{ osuId }}&key={{ key }}'
+          followRedirect: false
       - post:
           url: /api/masquerade
           json:
             masqueradeId: '{{ id }}'
+            masqueradeReason: Performed by DX load testing automation
       - get:
           url: /api/alerts
       - get:
@@ -131,7 +140,7 @@ scenarios:
       - get:
           url: /api/info-buttons
       - get:
-          url: /api/healthcheck
+          url: /healthcheck
       - get:
           url: /api/user
       - get:
@@ -142,10 +151,12 @@ scenarios:
     flow:
       - get:
           url: '/login?osuId={{ osuId }}&key={{ key }}'
+          followRedirect: false
       - post:
           url: /api/masquerade
           json:
             masqueradeId: '{{ id }}'
+            masqueradeReason: Performed by DX load testing automation
       - get:
           url: /api/alerts
       - get:
@@ -153,7 +164,7 @@ scenarios:
       - get:
           url: /api/info-buttons
       - get:
-          url: /api/healthcheck
+          url: /healthcheck
       - get:
           url: /api/user
       - get:
