@@ -98,12 +98,7 @@ app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
     res.redirect('/canvas/login');
   } else if (user.isCanvasOptIn) {
     if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
-    req.session.save((err) => {
-      if (err) {
-        logger().error(`/login/saml session failed: ${err.message}`);
-      }
-      res.redirect('/canvas/refresh');
-    });
+    res.redirect('/canvas/refresh');
   } else {
     logger().debug(`/login/saml redirecting to: ${req.session.returnUrl}`);
     redirectReturnUrl(req, res, user);
@@ -123,12 +118,7 @@ app.get(
       await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
       req.user.isCanvasOptIn = false;
       logger().debug(`/canvas/auth error in OAuth redirecting to: ${req.session.returnUrl}`);
-      req.session.save((err) => {
-        if (err) {
-          logger().error(`/canvas/auth error session failed: ${err.message}`);
-        }
-        redirectReturnUrl(req, res, req.user);
-      });
+      redirectReturnUrl(req, res, req.user);
     } else {
       next();
     }
@@ -143,12 +133,7 @@ app.get(
     req.user.isCanvasOptIn = user.isCanvasOptIn;
     req.user.refreshToken = user.refreshToken;
     logger().debug(`/canvas/auth redirecting to: ${req.session.returnUrl}`);
-    req.session.save((err) => {
-      if (err) {
-        logger().error(`/canvas/auth session failed: ${err.message}`);
-      }
-      redirectReturnUrl(req, res, req.user);
-    });
+    redirectReturnUrl(req, res, req.user);
   },
 );
 app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
@@ -158,12 +143,7 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
   req.user.isCanvasOptIn = user.isCanvasOptIn;
   req.user.refreshToken = user.refreshToken;
   logger().debug(`/canvas/refresh redirecting to: ${req.session.returnUrl}`);
-  req.session.save((err) => {
-    if (err) {
-      logger().error(`/canvas/refresh session failed: ${err.message}`);
-    }
-    redirectReturnUrl(req, res, req.user);
-  });
+  redirectReturnUrl(req, res, req.user);
 });
 
 app.use('/api', ApiRouter);
