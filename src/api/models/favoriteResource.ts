@@ -95,16 +95,16 @@ class FavoriteResource {
       );
       return results.Items?.map((i) => new FavoriteResource({ dynamoDbFavoriteResource: i }));
     } catch (err) {
-      logger().error(`FavoriteResource.find(${osuId}) failed:`, err);
+      logger().error(`FavoriteResource.findAll(${osuId}) failed:`, err);
       throw err;
     }
   };
 
   /**
-   * Translate the User properties into the properly shaped data as an Item for
+   * Translate the FavoriteResource properties into the properly shaped data as an Item for
    * Dynamodb.
-   * @param props - the user properties to translate to a dynamodb user item
-   * @returns DynamoDbUserItem - the Item for use in Dynamodb
+   * @param props - the properties to translate to a dynamodb item
+   * @returns DynamoDbFavoriteResourceItem - the Item for use in Dynamodb
    */
   static asDynamoDbItem = (props: FavoriteResource): DynamoDBFavoriteResourceItem => {
     const { osuId, resourceId, created, active, order } = props;
