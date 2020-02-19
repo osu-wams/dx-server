@@ -18,6 +18,15 @@ import * as dynamoDb from '../../db';
 jest.mock('../../db');
 const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
 
+const mockedSetCache = jest.fn();
+const mockedGetCache = jest.fn();
+jest.mock('../modules/cache.ts', () => ({
+  ...jest.requireActual('../modules/cache.ts'),
+  setCache: () => mockedSetCache(),
+  selectDbAsync: () => jest.fn(),
+  getCache: () => mockedGetCache(),
+}));
+
 let request: supertest.SuperTest<supertest.Test>;
 
 beforeAll(async () => {
@@ -130,36 +139,44 @@ describe('/resources', () => {
     });
   });
 
+  const created = new Date().toISOString();
+  const favoriteResourceItem = {
+    osuId: { N: '111111111' },
+    active: { BOOL: true },
+    order: { N: '1' },
+    created: { S: created },
+    resourceId: { S: 'asdf' },
+  };
+  const favoriteResource = {
+    active: true,
+    order: 1,
+    created,
+    osuId: 111111111,
+    resourceId: 'asdf',
+  };
+
   describe('get: /resources/favorites', () => {
     beforeEach(async () => {
       // Authenticate before each request
       await request.get('/login');
     });
 
-    it('should return an array of favorite resources', async () => {
-      const created = new Date().toISOString();
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should return an array of favorite resources from dynamodb', async () => {
+      mockedGetCache.mockReturnValue(null);
       mockDynamoDb.scan.mockImplementationOnce(() =>
-        Promise.resolve({
-          Items: [
-            {
-              osuId: { N: '111111111' },
-              active: { BOOL: true },
-              order: { N: '1' },
-              created: { S: created },
-              resourceId: { S: 'asdf' },
-            },
-          ],
-        }),
+        Promise.resolve({ Items: [favoriteResourceItem] }),
       );
-      await request.get('/api/resources/favorites').expect(200, [
-        {
-          active: true,
-          order: 1,
-          created,
-          osuId: 111111111,
-          resourceId: 'asdf',
-        },
-      ]);
+      await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
+    });
+
+    it('should return an array of favorite resources from cache', async () => {
+      mockedGetCache.mockReturnValue(JSON.stringify([favoriteResource]));
+      await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
+      expect(mockDynamoDb.scan).not.toBeCalled();
     });
 
     it('should return a 500 if an error occurs', async () => {
@@ -178,17 +195,12 @@ describe('/resources', () => {
     });
 
     it('should save a favorite resource', async () => {
-      const created = new Date().toISOString();
+      mockedSetCache.mockReturnValue(true);
+      mockDynamoDb.scan.mockImplementationOnce(() =>
+        Promise.resolve({ Items: [favoriteResourceItem] }),
+      );
       mockDynamoDb.putItem.mockImplementationOnce(() =>
-        Promise.resolve({
-          Item: {
-            osuId: { N: '111111111' },
-            active: { BOOL: true },
-            order: { N: '1' },
-            created: { S: created },
-            resourceId: { S: 'asdf' },
-          },
-        }),
+        Promise.resolve({ Item: favoriteResourceItem }),
       );
       const response = await request
         .post('/api/resources/favorites')

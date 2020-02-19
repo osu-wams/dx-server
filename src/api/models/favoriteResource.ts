@@ -2,8 +2,10 @@ import config from 'config';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
 import { putItem, scan } from '../../db';
+import { getCache, setCache } from '../modules/cache';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
+const cacheKey = (osuId: number) => `favorites:${osuId}`;
 
 interface FavoriteResourceParams {
   favoriteResource?: FavoriteResource;
@@ -71,6 +73,8 @@ class FavoriteResource {
 
       const result = await asyncTimedFunction(putItem, 'FavoriteResource:putItem', [params]);
       logger().silly('FavoriteResource.upsert succeeded:', result);
+      const all = await FavoriteResource.findAll(props.osuId, false);
+      await setCache(cacheKey(props.osuId), JSON.stringify(all));
       return props;
     } catch (err) {
       logger().error(`FavoriteResource.upsert failed:`, props, err);
@@ -78,8 +82,17 @@ class FavoriteResource {
     }
   };
 
-  static findAll = async (osuId: number): Promise<FavoriteResource[] | null> => {
+  static findAll = async (
+    osuId: number,
+    checkCache: boolean = true,
+  ): Promise<FavoriteResource[] | null> => {
     try {
+      if (checkCache) {
+        // get from cache, if it exists return otherwise query dynamo
+        const cached = await getCache(cacheKey(osuId));
+        if (cached) return JSON.parse(cached);
+      }
+
       const params: AWS.DynamoDB.ScanInput = {
         TableName: FavoriteResource.TABLE_NAME,
         FilterExpression: 'osuId = :value',

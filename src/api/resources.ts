@@ -50,7 +50,7 @@ router.get('/favorites', async (req: Request, res: Response) => {
       req.user.groups.includes('masquerade') && req.user.masqueradeId
         ? req.user.masqueradeId
         : req.user.osuId;
-    const data = await FavoriteResource.findAll(osuId);
+    const data = await FavoriteResource.findAll(osuId, true);
     res.send(data);
   } catch (err) {
     logger().error(`api/resources/favorites failed:`, err);
