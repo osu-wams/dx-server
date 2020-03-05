@@ -80,7 +80,7 @@ jobs:
           STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_PRODUCTION_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
           COMMIT_LINK=https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA
           COMMIT_MESSAGE=$(git log --format=%B -n 1 $GITHUB_SHA | cat -)
-          POST_DATA="{\"username\": \"GitHub\", \"text\": \"CloudFormation Stack Updated:\nStack: ${{ secrets.CLOUDFORMATION_DEV_STACKNAME }}\nStatus: $STACK_STATUS\nMessage: $COMMIT_MESSAGE\n$COMMIT_LINK\"}"
+          POST_DATA="{\"username\": \"GitHub\", \"text\": \"CloudFormation Stack Updated:\nStack: ${{ secrets.CLOUDFORMATION_PRODUCTION_STACKNAME }}\nStatus: $STACK_STATUS\nMessage: $COMMIT_MESSAGE\n$COMMIT_LINK\"}"
           curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WAMS_CICD_HOOK_URL }}
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
