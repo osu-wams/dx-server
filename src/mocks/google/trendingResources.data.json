@@ -1,0 +1,31 @@
+{
+  "data": {
+    "id": "https://www.googleapis.com/analytics/v3/data/ga?ids=ga:123456789&dimensions=ga:eventAction,ga:eventLabel&metrics=ga:totalEvents,ga:uniqueEvents&filters=ga:eventCategory%3D%3DTrending-Resource&start-date=yesterday&end-date=today",
+    "query": {
+      "start-date": "yesterday",
+      "end-date": "today",
+      "ids": "ga:123456789",
+      "dimensions": "ga:eventAction,ga:eventLabel",
+      "metrics": ["ga:totalEvents", "ga:uniqueEvents"],
+      "filters": "ga:eventCategory==Trending-Resource",
+      "start-index": 1,
+      "max-results": 1000
+    },
+    "itemsPerPage": 1000,
+    "totalResults": 5,
+    "profileInfo": {
+      "profileId": "123456789",
+      "accountId": "123456789",
+      "webPropertyId": "UA-123456789-13",
+      "internalWebPropertyId": "123456789",
+      "profileName": "All Web Site Data",
+      "tableId": "ga:123456789"
+    },
+    "rows": [
+      ["03794c38-D4cb-422f-96e4-6fce8bf4850b", "Student || Corvallis || MyDegrees", "1", "1"],
+      ["9d615d11-Bc00-4f03-A90c-502103928d30", "Employee || Corvallis || Statement", "3", "1"]
+    ]
+  },
+  "status": 200,
+  "statusText": "OK"
+}

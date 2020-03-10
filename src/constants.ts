@@ -15,8 +15,12 @@ const CANVAS_OAUTH_ID: string = config.get('canvasOauth.id');
 const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
 const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
+const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
 const ENCRYPTION_KEY: string = config.get('encryptionKey');
 const ENV: string = config.get('env');
+const GOOGLE_ANALYTICS_VIEW_ID: string = config.get('google.analyticsViewId');
+const GOOGLE_SERVICE_ACCOUNT_EMAIL: string = config.get('google.serviceAccountEmail');
+const GOOGLE_PRIVATE_KEY: string = config.get('google.privateKey');
 const GROUPS = {
   admin: 'urn:mace:oregonstate.edu:entitlement:dx:dx-admin',
   masquerade: 'urn:mace:oregonstate.edu:entitlement:dx:dx-masquerade',
@@ -45,8 +49,12 @@ export {
   CANVAS_OAUTH_SCOPE,
   CANVAS_OAUTH_SECRET,
   CANVAS_OAUTH_TOKEN_URL,
+  DYNAMODB_TABLE_PREFIX,
   ENCRYPTION_KEY,
   ENV,
+  GOOGLE_ANALYTICS_VIEW_ID,
+  GOOGLE_PRIVATE_KEY,
+  GOOGLE_SERVICE_ACCOUNT_EMAIL,
   GROUPS,
   IV_LENGTH,
   JWT_KEY,

@@ -9,6 +9,11 @@ export default {
   sessionSecret: 'SESSION_SECRET',
   jwtKey: 'JWT_KEY',
   encryptionKey: 'ENCRYPTION_KEY',
+  google: {
+    analyticsViewId: 'GOOGLE_ANALYTICS_VIEW_ID',
+    privateKey: 'GOOGLE_PRIVATE_KEY',
+    serviceAccountEmail: 'GOOGLE_SERVICE_ACCOUNT_EMAIL',
+  },
   osuApi: {
     clientId: 'OSU_API_CLIENT_ID',
     clientSecret: 'OSU_API_CLIENT_SECRET',
