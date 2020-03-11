@@ -1,7 +1,7 @@
 import { DYNAMODB_TABLE_PREFIX } from '../../constants';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
-import { scan, query, updateItem, getItem, putItem } from '../../db';
+import { query, putItem } from '../../db';
 
 export interface DynamoDBTrendingResourceItem extends AWS.DynamoDB.PutItemInputAttributeMap {
   date: { S: string };
@@ -78,7 +78,7 @@ class TrendingResource {
     // ! DynamoDb only supports 'ALL_OLD' or 'NONE' for return values from the
     // ! putItem call, which means the only way to get values from ddb would be to
     // ! getItem with the key after having put the item successfully. The DX use
-    // ! doesn't really seem like it needs to fetch the user after having created it
+    // ! doesn't really seem like it needs to fetch the record after having created it
     // ! the first time.
     try {
       const params: AWS.DynamoDB.PutItemInput = {
@@ -92,6 +92,31 @@ class TrendingResource {
       return TrendingResource.find(props.resourceId, props.date);
     } catch (err) {
       logger().error(`FavoriteResource.upsert failed:`, props, err);
+      throw err;
+    }
+  };
+
+  static findAll = async (date: string): Promise<TrendingResource[] | null> => {
+    try {
+      const params: AWS.DynamoDB.QueryInput = {
+        TableName: TrendingResource.TABLE_NAME,
+        KeyConditionExpression: '#dateAttribute = :dateStart',
+        ExpressionAttributeNames: {
+          '#dateAttribute': 'date',
+        },
+        ExpressionAttributeValues: {
+          ':dateStart': { S: `${date}` },
+        },
+        Select: 'ALL_ATTRIBUTES',
+      };
+      const results: AWS.DynamoDB.QueryOutput = await asyncTimedFunction(
+        query,
+        'TrendingResource:query',
+        [params],
+      );
+      return results.Items.map((i) => new TrendingResource({ dynamoDbTrendingResource: i }));
+    } catch (err) {
+      logger().error(`TrendingResource.findAll(${date}) failed:`, err);
       throw err;
     }
   };
