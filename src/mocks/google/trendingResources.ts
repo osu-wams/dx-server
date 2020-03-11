@@ -1,3 +1,4 @@
-import * as data from './trendingResources.data.json';
+import * as trendingResourcesResponse from './trendingResources.data.json';
+const mockedTrendingResources: string[][] = trendingResourcesResponse.data['rows'];
 
-export default data;
+export { trendingResourcesResponse, mockedTrendingResources };

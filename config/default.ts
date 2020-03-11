@@ -12,6 +12,9 @@ export default {
    ** eg. '[{"key":"somekey", "isAdmin": true}]'
    */
   apiKeys: '',
+  google: {
+    cacheEndpointSec: '604800',
+  },
   dxApi: {
     longCacheEndpointSec: '604800',
     cacheEndpointSec: '86400',

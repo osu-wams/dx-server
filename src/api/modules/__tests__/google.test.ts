@@ -1,21 +1,16 @@
 import nock from 'nock';
-import { getTrendingResources } from '../google';
-import trendingResourcesResponse from '../../../mocks/google/trendingResources';
-import TrendingResource from '../../models/trendingResource';
+import { getTrendingResources, mappedTrendingResources } from '../google';
+import {
+  trendingResourcesResponse,
+  mockedTrendingResources,
+} from '../../../mocks/google/trendingResources';
 
-const rows: string[][] = trendingResourcesResponse.data['rows'] as string[][]; // eslint-disable-line dot-notation
-const objects = rows.map(
-  (r) =>
-    new TrendingResource({
-      trendingResource: {
-        resourceId: r[0],
-        concatenatedTitle: r[1],
-        totalEvents: r[2],
-        uniqueEvents: r[3],
-        date: new Date().toISOString().slice(0, 10),
-      },
-    }),
-);
+const mockedGetCache = jest.fn();
+jest.mock('../cache', () => ({
+  ...jest.requireActual('../cache'),
+  getCache: () => mockedGetCache(),
+  setCache: jest.fn(),
+}));
 
 describe('Google api module', () => {
   beforeEach(() => {
@@ -24,6 +19,7 @@ describe('Google api module', () => {
       .persist()
       .post('/oauth2/v4/token')
       .reply(200, {});
+    mockedGetCache.mockReturnValue(null);
   });
   it('fetches trending resources', async () => {
     nock('https://www.googleapis.com')
@@ -31,7 +27,20 @@ describe('Google api module', () => {
       .query(true)
       .reply(200, trendingResourcesResponse.data);
     const result = await getTrendingResources(new Date());
-    expect(result).toMatchObject(objects);
+    expect(result).toMatchObject(
+      mappedTrendingResources(mockedTrendingResources, new Date().toISOString().slice(0, 10)),
+    );
+  });
+  it('fetches trending resources from cache', async () => {
+    mockedGetCache.mockReturnValue(JSON.stringify(mockedTrendingResources));
+    nock('https://www.googleapis.com')
+      .get('/analytics/v3/data/ga')
+      .query(true)
+      .replyWithError('boom');
+    const result = await getTrendingResources(new Date());
+    expect(result).toMatchObject(
+      mappedTrendingResources(mockedTrendingResources, new Date().toISOString().slice(0, 10)),
+    );
   });
   it('returns an empty array when there are no trending resources to return', async () => {
     const emptyRows = {

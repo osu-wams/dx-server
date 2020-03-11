@@ -19,6 +19,7 @@ const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
 const ENCRYPTION_KEY: string = config.get('encryptionKey');
 const ENV: string = config.get('env');
 const GOOGLE_ANALYTICS_VIEW_ID: string = config.get('google.analyticsViewId');
+const GOOGLE_CACHE_SEC: number = parseInt(config.get('google.cacheEndpointSec'), 10);
 const GOOGLE_SERVICE_ACCOUNT_EMAIL: string = config.get('google.serviceAccountEmail');
 const GOOGLE_PRIVATE_KEY: string = config.get('google.privateKey');
 const GROUPS = {
@@ -53,6 +54,7 @@ export {
   ENCRYPTION_KEY,
   ENV,
   GOOGLE_ANALYTICS_VIEW_ID,
+  GOOGLE_CACHE_SEC,
   GOOGLE_PRIVATE_KEY,
   GOOGLE_SERVICE_ACCOUNT_EMAIL,
   GROUPS,
