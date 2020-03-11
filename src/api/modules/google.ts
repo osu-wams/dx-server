@@ -26,15 +26,18 @@ export const getJWT = async (): Promise<JWT> =>
   );
 
 /* eslint-disable camelcase */
-export const getGaData = async (jwt: JWT, start: string, end: string): Promise<string[][]> =>
-  asyncTimedFunction(
+export const getGaData = async (jwt: JWT, start: Date): Promise<string[][]> => {
+  const end = new Date();
+  end.setDate(start.getDate() - 1);
+
+  return asyncTimedFunction(
     async () => {
       try {
         const response = await google.analytics('v3').data.ga.get({
           auth: jwt,
           ids: `ga:${GOOGLE_ANALYTICS_VIEW_ID}`,
-          'start-date': start,
-          'end-date': end,
+          'start-date': start.toISOString().slice(0, 10),
+          'end-date': end.toISOString().slice(0, 10),
           metrics: 'ga:totalEvents,ga:uniqueEvents',
           dimensions: 'ga:eventAction,ga:eventLabel',
           filters: 'ga:eventCategory==Trending-Resource',
@@ -48,13 +51,22 @@ export const getGaData = async (jwt: JWT, start: string, end: string): Promise<s
     'GoogleAPI:getGaData',
     [],
   );
+};
 /* eslint-enable camelcase */
 
-export const getTrendingResources = async (
-  start: string = 'yesterday',
-  end: string = 'today',
-): Promise<TrendingResource[]> => {
+export const getTrendingResources = async (start: Date): Promise<TrendingResource[]> => {
   const jwt = await getJWT();
-  const rows = await getGaData(jwt, start, end);
-  return rows?.map((r: string[]) => new TrendingResource(r[0], r[1], r[2], r[3]));
+  const rows = await getGaData(jwt, start);
+  return rows?.map(
+    (r: string[]) =>
+      new TrendingResource({
+        trendingResource: {
+          resourceId: r[0],
+          concatenatedTitle: r[1],
+          totalEvents: r[2],
+          uniqueEvents: r[3],
+          date: start.toISOString().slice(0, 10),
+        },
+      }),
+  );
 };

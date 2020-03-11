@@ -7,12 +7,16 @@ AWS.config.update({
   region: config.get('aws.region'),
   dynamodb: {
     endpoint: DYNAMODB_ENDPOINT,
-    apiVersion: config.get('aws.dynamodb.apiVersion')
-  }
+    apiVersion: config.get('aws.dynamodb.apiVersion'),
+  },
 });
 
 const dynamoDb = new AWS.DynamoDB();
 export default dynamoDb;
+
+export const query = async (params: AWS.DynamoDB.QueryInput) => {
+  return dynamoDb.query(params).promise();
+};
 
 export const scan = async (params: AWS.DynamoDB.ScanInput) => {
   return dynamoDb.scan(params).promise();
