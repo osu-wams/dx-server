@@ -6,7 +6,7 @@ import { getResources, getCuratedResources, getCategories } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';
 import logger from '../logger';
 import { getTrendingResources } from './modules/google';
-import getDaysInDuration from '../utils/resources';
+import { getDaysInDuration, computeTrendingResources } from '../utils/resources';
 import TrendingResource from './models/trendingResource'; // eslint-disable-line no-unused-vars
 
 const router = Router();
@@ -57,13 +57,10 @@ router.get('/trending/:duration/:affiliation', async (req: Request, res: Respons
     const affiliation = req.params.affiliation.toLowerCase();
     const data = [];
     for (let index = 0; index < days.length; index += 1) {
-      const resource = await getTrendingResources(days[index][0], days[index][1]); // eslint-disable-line no-await-in-loop
-      data.push(resource);
+      const resources = await getTrendingResources(days[index][0], days[index][1]); // eslint-disable-line no-await-in-loop
+      data.push(...resources);
     }
-    const filtered = data.map((a) =>
-      a.filter((tr: TrendingResource) => tr.affiliation?.toLowerCase() === affiliation),
-    );
-    res.send(filtered);
+    res.send(computeTrendingResources(data, affiliation, new Date().toISOString().slice(0, 10)));
   } catch (err) {
     logger().error(
       `api/resources/trending/${req.params.duration}/${req.params.affiliation} failed:`,
