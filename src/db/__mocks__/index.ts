@@ -1,4 +1,14 @@
 /* eslint-disable no-unused-vars */
+export const mockQueryReturn = jest.fn();
+
+export const query = jest.fn((params: AWS.DynamoDB.QueryInput) => {
+  return new Promise((resolve, reject) => {
+    process.nextTick(() => {
+      if (mockQueryReturn) resolve(mockQueryReturn());
+      else reject(new Error('happy little accident'));
+    });
+  });
+});
 
 const mockScanReturn = {
   ScannedCount: 1,

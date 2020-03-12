@@ -44,11 +44,11 @@ class TrendingResource {
   constructor(p: TrendingResourceParams) {
     if (p.trendingResource) {
       const { date, resourceId, concatenatedTitle, totalEvents, uniqueEvents } = p.trendingResource;
-      this.resourceId = resourceId.trim();
+      this.resourceId = resourceId?.trim() ?? '<missing data>';
       const [affiliation, campus, title] = concatenatedTitle.split(' || ');
-      this.affiliation = affiliation.trim();
-      this.campus = campus.trim();
-      this.title = title.trim();
+      this.affiliation = affiliation?.trim() ?? '<missing data>';
+      this.campus = campus?.trim() ?? '<missing data>';
+      this.title = title?.trim() ?? '<missing data>';
       this.totalEvents = parseInt(totalEvents, 10);
       this.uniqueEvents = parseInt(uniqueEvents, 10);
       this.date = date;
