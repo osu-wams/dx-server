@@ -5,6 +5,11 @@ export default {
   jwtKey: 'this16characters',
   apiKeys: '[{"key":"blah","isAdmin":false}]',
   appVersion: 'test-123',
+  google: {
+    analyticsViewId: '22202',
+    privateKey: 'nah',
+    serviceAccountEmail: 'bobross',
+  },
   canvasOauth: {
     id: '8675309',
     secret: 'jenny',
