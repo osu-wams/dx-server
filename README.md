@@ -34,11 +34,12 @@ _`local.ts` contains overrides for environment variables that contain authentica
 
     $ docker-compose up
 
-### Create the Users table in DynamoDb
+### Create the tables in DynamoDb
 
 _This step is only required the first time you start development and/or if you wipe the docker volumes for this project._
 
     $ yarn exec ts-node src/db/scripts/create_users_table.ts
+    $ yarn exec ts-node src/db/scripts/create_favorite_resources_table.ts
 
 ### Run the server for local development
 
