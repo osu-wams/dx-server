@@ -13,6 +13,19 @@ import app from '../../index';
 import { BASE_URL } from '../modules/dx';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
+import * as dynamoDb from '../../db';
+
+jest.mock('../../db');
+const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
+
+const mockedSetCache = jest.fn();
+const mockedGetCache = jest.fn();
+jest.mock('../modules/cache.ts', () => ({
+  ...jest.requireActual('../modules/cache.ts'),
+  setCache: () => mockedSetCache(),
+  selectDbAsync: () => jest.fn(),
+  getCache: () => mockedGetCache(),
+}));
 
 let request: supertest.SuperTest<supertest.Test>;
 
@@ -123,6 +136,100 @@ describe('/resources', () => {
         .reply(500);
 
       await request.get('/api/resources/category/featured').expect(500);
+    });
+  });
+
+  const created = new Date().toISOString();
+  const favoriteResourceItem = {
+    osuId: { N: '111111111' },
+    active: { BOOL: true },
+    order: { N: '1' },
+    created: { S: created },
+    resourceId: { S: 'asdf' },
+  };
+  const favoriteResource = {
+    active: true,
+    order: 1,
+    created,
+    osuId: 111111111,
+    resourceId: 'asdf',
+  };
+
+  describe('get: /resources/favorites', () => {
+    beforeEach(async () => {
+      // Authenticate before each request
+      await request.get('/login');
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should return an array of favorite resources from dynamodb', async () => {
+      mockedGetCache.mockReturnValue(null);
+      mockDynamoDb.scan.mockImplementationOnce(() =>
+        Promise.resolve({ Items: [favoriteResourceItem] }),
+      );
+      await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
+    });
+
+    it('should return an array of favorite resources from cache', async () => {
+      mockedGetCache.mockReturnValue(JSON.stringify([favoriteResource]));
+      await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
+      expect(mockDynamoDb.scan).not.toBeCalled();
+    });
+
+    it('should return a 500 if an error occurs', async () => {
+      mockDynamoDb.scan.mockImplementationOnce(() =>
+        Promise.reject(new Error('happy little accident')),
+      );
+
+      await request.get('/api/resources/favorites').expect(500, { message: {} });
+    });
+  });
+
+  describe('post: /resources/favorites', () => {
+    beforeEach(async () => {
+      // Authenticate before each request
+      await request.get('/login');
+    });
+
+    it('should save a favorite resource', async () => {
+      mockedSetCache.mockReturnValue(true);
+      mockDynamoDb.scan.mockImplementationOnce(() =>
+        Promise.resolve({ Items: [favoriteResourceItem] }),
+      );
+      mockDynamoDb.putItem.mockImplementationOnce(() =>
+        Promise.resolve({ Item: favoriteResourceItem }),
+      );
+      const response = await request
+        .post('/api/resources/favorites')
+        .send({
+          active: true,
+          order: 1,
+          resourceId: 'asdf',
+        })
+        .expect(200);
+      expect(response.body.active).toBe(true);
+      expect(response.body.order).toBe(1);
+      expect(response.body.osuId).toBe(111111111);
+      expect(response.body.resourceId).toBe('asdf');
+      expect(response.body.created).not.toBeNull();
+    });
+
+    it('should return a 500 if an error occurs', async () => {
+      mockDynamoDb.putItem.mockImplementationOnce(() =>
+        Promise.reject(new Error('happy little accident')),
+      );
+
+      await request
+        .post('/api/resources/favorites')
+        .send({
+          active: true,
+          order: 1,
+          resourceId: 'asdf',
+        })
+        .expect(500, { message: {} });
     });
   });
 });
