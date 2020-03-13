@@ -11,6 +11,19 @@ export const getDaysInDuration = (duration: string): [number, Date][] => {
   });
 };
 
+const groupSum = (r: TrendingResource[], dateKey: string) =>
+  r.reduce((p: { [index: string]: TrendingResource }, c) => {
+    /* eslint-disable no-param-reassign */
+    if (!p[c.resourceId]) {
+      p[c.resourceId] = c;
+      p[c.resourceId].date = dateKey;
+      return p;
+    }
+    p[c.resourceId].totalEvents += c.totalEvents;
+    p[c.resourceId].uniqueEvents += c.uniqueEvents;
+    /* eslint-enable no-param-reassign */
+    return p;
+  }, Object.create(null));
 /**
  * Get a list of the most often clicked resources.
  * Filter, sum event counts, and return a sorted array of trending resources in descending order
@@ -21,22 +34,21 @@ export const getDaysInDuration = (duration: string): [number, Date][] => {
  */
 export const computeTrendingResources = (
   resources: TrendingResource[],
-  affiliation: string,
   dateKey: string,
+  affiliation?: string,
 ): TrendingResource[] => {
-  const summed: { [index: string]: TrendingResource } = resources
-    .filter((tr: TrendingResource) => tr.affiliation?.toLowerCase() === affiliation)
-    .reduce((p: { [index: string]: TrendingResource }, c) => {
-      /* eslint-disable no-param-reassign */
-      p[c.resourceId] = p[c.resourceId] || c;
-      p[c.resourceId].totalEvents += c.totalEvents;
-      p[c.resourceId].uniqueEvents += c.uniqueEvents;
-      p[c.resourceId].date = dateKey;
-      /* eslint-enable no-param-reassign */
-      return p;
-    }, Object.create(null));
-  return Object.keys(summed)
-    .sort((a, b) => summed[a].uniqueEvents - summed[b].uniqueEvents)
+  let groups: { [index: string]: TrendingResource };
+  if (affiliation) {
+    groups = groupSum(
+      resources.filter((tr: TrendingResource) => tr.affiliation?.toLowerCase() === affiliation),
+      dateKey,
+    );
+  } else {
+    groups = groupSum(resources, dateKey);
+  }
+
+  return Object.keys(groups)
+    .sort((a, b) => groups[a].uniqueEvents - groups[b].uniqueEvents)
     .reverse()
-    .map((key) => summed[key]);
+    .map((key) => groups[key]);
 };

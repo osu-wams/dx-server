@@ -51,23 +51,32 @@ router.get('/categories', async (_req: Request, res: Response) => {
  * :duration format {#daysAgo} : 4daysAgo
  * :affiliation : 'employee' or 'student'
  */
-router.get('/trending/:duration/:affiliation', async (req: Request, res: Response) => {
-  try {
-    const days = getDaysInDuration(req.params.duration);
-    const affiliation = req.params.affiliation.toLowerCase();
-    const data = [];
-    for (let index = 0; index < days.length; index += 1) {
-      const resources = await getTrendingResources(days[index][0], days[index][1]); // eslint-disable-line no-await-in-loop
-      data.push(...resources);
+router.get(
+  ['/trending/:period/:affiliation', '/trending/:period'],
+  async (req: Request, res: Response) => {
+    try {
+      const days = getDaysInDuration(req.params.period);
+      const affiliation = req.params.affiliation?.toLowerCase();
+      const data = [];
+      for (let index = 0; index < days.length; index += 1) {
+        const resources = await getTrendingResources(days[index][0], days[index][1]); // eslint-disable-line no-await-in-loop
+        data.push(...resources);
+      }
+      res.send(
+        computeTrendingResources(
+          data,
+          new Date().toISOString().slice(0, 10),
+          affiliation,
+        ).map((t) => ({ ...t, period: req.params.period })),
+      );
+    } catch (err) {
+      logger().error(
+        `api/resources/trending/${req.params.duration}/${req.params.affiliation} failed:`,
+        err,
+      );
+      res.status(500).send({ message: err });
     }
-    res.send(computeTrendingResources(data, affiliation, new Date().toISOString().slice(0, 10)));
-  } catch (err) {
-    logger().error(
-      `api/resources/trending/${req.params.duration}/${req.params.affiliation} failed:`,
-      err,
-    );
-    res.status(500).send({ message: err });
-  }
-});
+  },
+);
 
 export default router;

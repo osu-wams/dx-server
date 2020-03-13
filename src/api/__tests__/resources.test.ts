@@ -9,12 +9,24 @@ import {
   mockedCategories,
   mockedCategoriesExpected,
 } from '../../mocks/dx';
+import { fromApi } from '../../mocks/google/trendingResources';
 import app from '../../index';
 import { BASE_URL } from '../modules/dx';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
 
 let request: supertest.SuperTest<supertest.Test>;
+
+const mockedGetTrendingResources = jest.fn();
+const mockedDaysInDuration = jest.fn();
+jest.mock('../modules/google', () => ({
+  ...jest.requireActual('../modules/google'),
+  getTrendingResources: () => mockedGetTrendingResources(),
+}));
+jest.mock('../../utils/resources', () => ({
+  ...jest.requireActual('../../utils/resources'),
+  getDaysInDuration: () => mockedDaysInDuration(),
+}));
 
 beforeAll(async () => {
   request = supertest.agent(app);
@@ -123,6 +135,53 @@ describe('/resources', () => {
         .reply(500);
 
       await request.get('/api/resources/category/featured').expect(500);
+    });
+  });
+
+  describe('TrendingResources /resources/trending/:period/:affiliation', () => {
+    const dateKey = new Date().toISOString().slice(0, 10);
+    const period = '1daysAgo';
+    const resourcesFromGoogleModule = fromApi(dateKey, period).map(
+      ({ resourceId, date, affiliation, campus, title, totalEvents, uniqueEvents }) => ({
+        resourceId,
+        date,
+        affiliation,
+        campus,
+        title,
+        totalEvents,
+        uniqueEvents,
+      }),
+    );
+
+    beforeEach(() => {
+      mockedDaysInDuration.mockReturnValue([[1, new Date()]]);
+      mockedGetTrendingResources.mockReturnValue(resourcesFromGoogleModule);
+    });
+
+    describe('without an affiliation specified', () => {
+      it('returns all trending resources', async () => {
+        await request
+          .get(`/api/resources/trending/${period}`)
+          .expect(200, fromApi(dateKey, period));
+      });
+      it('should return a 500 something fails', async () => {
+        mockedDaysInDuration.mockReturnValue(null);
+        await request.get(`/api/resources/trending/${period}`).expect(500);
+      });
+    });
+    describe('employee affiliation', () => {
+      it('returns all employee trending resources', async () => {
+        await request
+          .get(`/api/resources/trending/${period}/employee`)
+          .expect(200, [fromApi(dateKey, period)[0]]);
+      });
+    });
+    describe('student affiliation', () => {
+      it('returns all student trending resources', async () => {
+        await request
+          .get(`/api/resources/trending/${period}/student`)
+          .expect(200, [fromApi(dateKey, period)[1]]);
+      });
     });
   });
 });

@@ -14,6 +14,9 @@ export default {
   apiKeys: '',
   google: {
     cacheEndpointSec: '604800',
+    analyticsViewId: '',
+    privateKey: '',
+    serviceAccountEmail: '',
   },
   dxApi: {
     longCacheEndpointSec: '604800',

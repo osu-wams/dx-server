@@ -39,6 +39,8 @@ class TrendingResource {
 
   uniqueEvents: number;
 
+  period?: string;
+
   static TABLE_NAME: string = `${DYNAMODB_TABLE_PREFIX}-TrendingResources`;
 
   constructor(p: TrendingResourceParams) {
