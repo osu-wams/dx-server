@@ -13,14 +13,15 @@ export const getDaysInDuration = (duration: string): [number, Date][] => {
 
 const groupSum = (r: TrendingResource[], dateKey: string) =>
   r.reduce((p: { [index: string]: TrendingResource }, c) => {
+    const key = `${c.resourceId}-${c.affiliation}-${c.campus}`;
     /* eslint-disable no-param-reassign */
-    if (!p[c.resourceId]) {
-      p[c.resourceId] = c;
-      p[c.resourceId].date = dateKey;
+    if (!p[key]) {
+      p[key] = c;
+      p[key].date = dateKey;
       return p;
     }
-    p[c.resourceId].totalEvents += c.totalEvents;
-    p[c.resourceId].uniqueEvents += c.uniqueEvents;
+    p[key].totalEvents += c.totalEvents;
+    p[key].uniqueEvents += c.uniqueEvents;
     /* eslint-enable no-param-reassign */
     return p;
   }, Object.create(null));
