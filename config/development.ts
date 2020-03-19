@@ -1,5 +1,4 @@
 export default {
-  useMocks: '1',
   env: 'development',
   logLevel: 'silly',
   appVersion: 'development-123',
