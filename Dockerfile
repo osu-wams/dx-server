@@ -1,7 +1,7 @@
-FROM node:10-alpine
+FROM node:13-alpine
 
 # RUN apk add --no-cache yarn
-RUN npm install -g yarn@1.21.1 --force
+RUN npm install -g yarn@1.22.4 --force
 
 ENV appDir /var/www/app/current
 
