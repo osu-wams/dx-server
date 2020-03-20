@@ -50,8 +50,12 @@ export default {
               id: 31676298672392,
               ranking: 0,
               event_id: 31676298658227,
-              start: startDate().toJSON(),
-              end: startDate().toJSON(),
+              start: startDate()
+                .toISOString()
+                .slice(0, 10),
+              end: startDate()
+                .toISOString()
+                .slice(0, 10),
               all_day: false,
               num_attending: 1,
             },
@@ -147,8 +151,12 @@ export default {
               id: 31326530964751,
               ranking: 0,
               event_id: 31326530952972,
-              start: addDays(startDate(), 2).toJSON(),
-              end: addDays(startDate(), 2).toJSON(),
+              start: addDays(startDate(), 2)
+                .toISOString()
+                .slice(0, 10),
+              end: addDays(startDate(), 2)
+                .toISOString()
+                .slice(0, 10),
               all_day: false,
               num_attending: 0,
             },
@@ -264,8 +272,12 @@ export default {
               id: 31902001674884,
               ranking: 0,
               event_id: 31902001649423,
-              start: addDays(startDate(), 3).toJSON(),
-              end: addDays(startDate(), 3).toJSON(),
+              start: addDays(startDate(), 3)
+                .toISOString()
+                .slice(0, 10),
+              end: addDays(startDate(), 3)
+                .toISOString()
+                .slice(0, 10),
               all_day: false,
               num_attending: 0,
             },
