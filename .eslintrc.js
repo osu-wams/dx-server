@@ -17,6 +17,7 @@ module.exports = {
     },
   },
   rules: {
+    'import/extensions': 0,
     '@typescript-eslint/restrict-plus-operands': 'error',
   },
   overrides: [
