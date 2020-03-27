@@ -82,14 +82,23 @@ router.get(
 
 router.get('/favorites', async (req: Request, res: Response) => {
   try {
-    const osuId =
-      req.user.groups.includes('masquerade') && req.user.masqueradeId
-        ? req.user.masqueradeId
-        : req.user.osuId;
-    const data = await FavoriteResource.findAll(osuId, true);
-    res.send(data);
+    // A race condition happens during the authentication cycle in that
+    // the API call can be made prior to a user session being established,
+    // the best approach for now is to return an empty array because the
+    // API call will be made again in the future with a valid user session.
+    // api/user/classification has the same concern.
+    if (!req.user) {
+      res.send([]);
+    } else {
+      const osuId =
+        req.user.groups.includes('masquerade') && req.user.masqueradeId
+          ? req.user.masqueradeId
+          : req.user.osuId;
+      const data = await FavoriteResource.findAll(osuId, true);
+      res.send(data);
+    }
   } catch (err) {
-    logger().error(`api/resources/favorites failed:`, err);
+    logger().error(`api/resources/favorites failed: ${err.message}, trace: ${err.stack}`);
     res.status(500).send({ message: err });
   }
 });

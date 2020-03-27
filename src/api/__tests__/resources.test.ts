@@ -216,35 +216,41 @@ describe('/resources', () => {
     };
 
     describe('get: /resources/favorites', () => {
-      beforeEach(async () => {
-        // Authenticate before each request
-        await request.get('/login');
+      it('should return an empty array when a user session does not exist', async () => {
+        await request.get('/api/resources/favorites').expect(200, []);
       });
 
-      afterEach(() => {
-        jest.resetAllMocks();
-      });
+      describe('with a logged in user', () => {
+        beforeEach(async () => {
+          // Authenticate before each request
+          await request.get('/login');
+        });
 
-      it('should return an array of favorite resources from dynamodb', async () => {
-        mockedGetCache.mockReturnValue(null);
-        mockDynamoDb.scan.mockImplementationOnce(() =>
-          Promise.resolve({ Items: [favoriteResourceItem] }),
-        );
-        await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
-      });
+        afterEach(() => {
+          jest.resetAllMocks();
+        });
 
-      it('should return an array of favorite resources from cache', async () => {
-        mockedGetCache.mockReturnValue(JSON.stringify([favoriteResource]));
-        await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
-        expect(mockDynamoDb.scan).not.toBeCalled();
-      });
+        it('should return an array of favorite resources from dynamodb', async () => {
+          mockedGetCache.mockReturnValue(null);
+          mockDynamoDb.scan.mockImplementationOnce(() =>
+            Promise.resolve({ Items: [favoriteResourceItem] }),
+          );
+          await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
+        });
 
-      it('should return a 500 if an error occurs', async () => {
-        mockDynamoDb.scan.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident')),
-        );
+        it('should return an array of favorite resources from cache', async () => {
+          mockedGetCache.mockReturnValue(JSON.stringify([favoriteResource]));
+          await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
+          expect(mockDynamoDb.scan).not.toBeCalled();
+        });
 
-        await request.get('/api/resources/favorites').expect(500, { message: {} });
+        it('should return a 500 if an error occurs', async () => {
+          mockDynamoDb.scan.mockImplementationOnce(() =>
+            Promise.reject(new Error('happy little accident')),
+          );
+
+          await request.get('/api/resources/favorites').expect(500, { message: {} });
+        });
       });
     });
 
