@@ -59,6 +59,10 @@ scenarios:
           url: /api/announcements
       - get:
           url: /api/events?type=115613&days=30
+      - get:
+          url: /api/resources/trending/7daysAgo
+      - get:
+          url: /api/resources/favorites
   - name: As a student, visit the Academics Dashboard page
     flow:
       - get:
