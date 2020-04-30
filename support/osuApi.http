@@ -90,3 +90,10 @@ Authorization: Bearer {{token}}
 # @name getAccountBalance
 GET {{baseUrl}}/v1/students/{{osuId}}/account-balance HTTP/1.1
 Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getDegrees
+GET {{baseUrl}}/v1/students/{{osuId}}/degrees HTTP/1.1
+Authorization: Bearer {{token}}
