@@ -5,6 +5,9 @@ export default {
   dxApi: {
     baseUrl: 'https://data-stage.dx.oregonstate.edu',
   },
+  dxMcmApi: {
+    baseUrl: 'https://dev.mcm.oregonstate.edu',
+  },
   osuApi: {
     baseUrl: 'https://oregonstateuniversity-dev.apigee.net/v1',
   },

@@ -18,6 +18,9 @@ export default {
     clientId: 'OSU_API_CLIENT_ID',
     clientSecret: 'OSU_API_CLIENT_SECRET',
   },
+  dxMcmApi: {
+    token: 'DX_MCM_API_TOKEN',
+  },
   canvasApi: {
     token: 'CANVAS_API_TOKEN',
   },

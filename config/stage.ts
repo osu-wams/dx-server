@@ -3,6 +3,9 @@ export default {
   osuApi: {
     baseUrl: 'https://api.oregonstate.edu/v1',
   },
+  dxMcmApi: {
+    baseUrl: 'https://stage.mcm.oregonstate.edu',
+  },
   canvasApi: {
     baseUrl: 'https://oregonstate.instructure.com/api/v1',
   },
