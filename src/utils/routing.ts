@@ -5,12 +5,11 @@ import { decrypt, userFromJWT, issueJWT } from './auth';
 import User from '../api/models/user'; // eslint-disable-line no-unused-vars
 
 // Detect if the uri is using a dx-mobile redirect scheme
-export const isMobileRedirect = (uri: string): boolean =>
+export const isMobileRedirect = (uri: any): boolean =>
   uri?.startsWith('osu-dx://') || uri?.startsWith('exp://');
 
 // Detect if the url is relative or looks like a dx web url
-export const isAppUrl = (url: string = ''): boolean =>
-  APP_URL_REGEX.test(url) || url?.startsWith('/');
+export const isAppUrl = (url: any = ''): boolean => APP_URL_REGEX.test(url) || url?.startsWith('/');
 
 /**
  * Express middleware to set the session returnUrl provided either by the web application (returnTo) or
