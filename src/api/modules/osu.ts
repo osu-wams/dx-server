@@ -13,6 +13,7 @@ import {
   mockedHolds,
   mockedAccountTransactions,
   mockedAccountBalance,
+  mockedDegrees,
 } from '../../mocks/osu';
 
 const STUDENT_BASE_URL = `${config.get('osuApi.baseUrl')}/students`;
@@ -183,8 +184,9 @@ export const getAcademicStatus = async (
     const response: AcademicStatusResponse = await fetchData(
       () =>
         getJson(
-          `${STUDENT_BASE_URL}/${user.masqueradeId ||
-            user.osuId}/academic-status${termQueryString}`,
+          `${STUDENT_BASE_URL}/${
+            user.masqueradeId || user.osuId
+          }/academic-status${termQueryString}`,
         ),
       mockedAcademicStatus,
     );
@@ -226,8 +228,9 @@ export const getAccountTransactions = async (user: any) => {
     return await fetchData(
       () =>
         getJson(
-          `${STUDENT_BASE_URL}/${user.masqueradeId ||
-            user.osuId}/account-transactions?term=current`,
+          `${STUDENT_BASE_URL}/${
+            user.masqueradeId || user.osuId
+          }/account-transactions?term=current`,
         ),
       mockedAccountTransactions,
     );
@@ -458,6 +461,26 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
       return currentHolds.map((h) => ({ description: h.description })) as [{ description: string }];
     }
     return [];
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
+ * Get the Degrees a user is on track on the given term
+ * @param user
+ * @param term
+ */
+export const getDegrees = async (user: any, term = 'current') => {
+  try {
+    let termParam = '';
+    if (term) {
+      termParam = `?term=${term}`;
+    }
+    return await fetchData(
+      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/degrees${termParam}`),
+      mockedDegrees,
+    );
   } catch (err) {
     throw err;
   }

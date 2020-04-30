@@ -9,6 +9,7 @@ import mockedGrades from '../../mocks/osu/grades.data.json';
 import mockedHolds from '../../mocks/osu/holds.data.json';
 import mockedMealPlans from '../../mocks/osu/meal-plans.data.json';
 import mockedPersons from '../../mocks/osu/persons.data.json';
+import mockedDegrees from '../../mocks/osu/persons.data.json';
 
 export {
   mockedAcademicStatus,
@@ -22,4 +23,5 @@ export {
   mockedHolds,
   mockedMealPlans,
   mockedPersons,
+  mockedDegrees,
 };

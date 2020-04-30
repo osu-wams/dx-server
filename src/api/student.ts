@@ -14,6 +14,7 @@ import {
   getGpa,
   getGrades,
   getHolds,
+  getDegrees,
 } from './modules/osu';
 import { asyncTimedFunction } from '../tracer';
 
@@ -166,6 +167,18 @@ router.get('/holds', async (req: Request, res: Response) => {
   } catch (err) {
     logger().error('api/student/holds failed:', err);
     res.status(500).send({ message: 'Unable to retrieve account holds.' });
+  }
+});
+
+router.get('/degrees', async (req: Request, res: Response) => {
+  try {
+    const response = (await asyncTimedFunction(getDegrees, 'getDegrees', [req.user])) as {
+      data: any;
+    };
+    res.send(response.data);
+  } catch (err) {
+    logger().error('api/student/degrees failed:', err);
+    res.status(500).send({ message: 'Unable to retrieve degree information.' });
   }
 });
 
