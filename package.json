@@ -58,7 +58,7 @@
     "typescript": "3.7"
   },
   "dependencies": {
-    "@osu-wams/lib": "^0.1.3",
+    "@osu-wams/lib": "file:../dx-monorepo/packages/lib",
     "aws-sdk": "^2.510.0",
     "body-parser": "^1.19.0",
     "config": "^3.2.2",
