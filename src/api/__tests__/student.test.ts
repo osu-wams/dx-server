@@ -46,10 +46,7 @@ let request: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   request = supertest.agent(app);
   mockedUser.mockReturnValue(user);
-  nock(DYNAMODB_ENDPOINT)
-    .post(/.*/)
-    .reply(200, {})
-    .persist();
+  nock(DYNAMODB_ENDPOINT).post(/.*/).reply(200, {}).persist();
 });
 
 describe('/api/student', () => {
@@ -436,6 +433,40 @@ describe('/api/student', () => {
     });
   });
 
+  describe('/degrees', () => {
+    it('should return degree information for current user', async () => {
+      const data = 'degrees';
+      mockedGetResponse.mockReturnValue({ data });
+      cache.get = mockedGet;
+
+      // Mock response from Apigee
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/degrees/)
+        .reply(200, { data });
+
+      await request.get('/api/student/degrees').expect(200, data);
+    });
+
+    it('should return "Unable to retrieve degrees." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/degrees/)
+        .reply(500);
+
+      await request
+        .get('/api/student/degrees')
+        .expect(500, { message: 'Unable to retrieve degree information.' });
+    });
+
+    it('should return an error if the user is not logged in', async () => {
+      // Clear session data - we don't want to be logged in
+      request = supertest.agent(app);
+
+      await request.get('/api/student/degrees').expect(401, { message: 'Unauthorized' });
+    });
+  });
+
   describe('/planner-items', () => {
     beforeEach(() => {
       nock(CANVAS_BASE_URL)
@@ -452,10 +483,7 @@ describe('/api/student', () => {
       await request.get('/api/student/planner-items').expect(200, plannerItemsData);
     });
     it('should return an error', async () => {
-      nock(CANVAS_BASE_URL)
-        .get('/api/v1/planner/items')
-        .query(true)
-        .reply(500);
+      nock(CANVAS_BASE_URL).get('/api/v1/planner/items').query(true).reply(500);
       await request
         .get('/api/student/planner-items')
         .expect(500, { message: 'Unable to retrieve planner items.' });
@@ -500,10 +528,7 @@ describe('/api/student', () => {
         mockedUser.mockReturnValue({ ...user, canvasOauthExpire: 0 });
       });
       it('should return an error', async () => {
-        nock(CANVAS_BASE_URL)
-          .get('/api/v1/planner/items')
-          .query(true)
-          .reply(401);
+        nock(CANVAS_BASE_URL).get('/api/v1/planner/items').query(true).reply(401);
         await request
           .get('/api/student/planner-items')
           .expect(403, { message: 'User must opt-in to Canvas login' });
