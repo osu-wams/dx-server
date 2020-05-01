@@ -40,6 +40,7 @@ _This step is only required the first time you start development and/or if you w
 
     $ yarn exec ts-node src/db/scripts/create_users_table.ts
     $ yarn exec ts-node src/db/scripts/create_favorite_resources_table.ts
+    $ yarn exec ts-node src/db/scripts/create_trending_resources_table.ts
 
 ### Run the server for local development
 
