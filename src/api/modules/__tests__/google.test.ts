@@ -23,16 +23,14 @@ const dateKey = new Date().toISOString().slice(0, 10);
 const date = new Date();
 
 describe('Google api module', () => {
+  afterEach(() => nock.cleanAll());
   beforeEach(() => {
-    nock('https://www.googleapis.com').removeAllListeners();
-    nock('https://www.googleapis.com')
-      .persist()
-      .post('/oauth2/v4/token')
-      .reply(200, {});
+    nock('https://www.googleapis.com').persist().post('/oauth2/v4/token').reply(200, {});
     mockedGetCache.mockReturnValue(null);
     mockQueryReturn.mockResolvedValue({ Items: [] });
   });
   it('fetches trending resources from Google', async () => {
+    mockQueryReturn.mockResolvedValue({ Items: fromDynamoDb(dateKey) });
     nock('https://www.googleapis.com')
       .get('/analytics/v3/data/ga')
       .query(true)
@@ -61,6 +59,7 @@ describe('Google api module', () => {
     expect(result).toMatchObject(mappedTrendingResources(mockedTrendingResources, dateKey));
   });
   it('returns an empty array when there are no trending resources to return', async () => {
+    mockQueryReturn.mockResolvedValue({ Items: [] });
     const emptyRows = {
       ...trendingResourcesResponse.data,
       rows: [],
@@ -69,7 +68,8 @@ describe('Google api module', () => {
       .get('/analytics/v3/data/ga')
       .query(true)
       .reply(200, emptyRows);
-    expect(await getTrendingResources(1, date)).toMatchObject([]);
+    const result = await getTrendingResources(1, date);
+    expect(result).toMatchObject([]);
   });
   it('handles an error response from google', async () => {
     nock('https://www.googleapis.com')
