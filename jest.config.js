@@ -4,6 +4,7 @@ module.exports = {
   testPathIgnorePatterns: ['/node_modules/', '/config/', '/src/types/', '/src/mocks', '/dist/'],
   modulePathIgnorePatterns: ['/dist/'],
   globalSetup: '<rootDir>/src/utils/jestSetup.ts',
+  clearMocks: true,
   coverageDirectory: './coverage/',
   collectCoverage: true,
   collectCoverageFrom: [
