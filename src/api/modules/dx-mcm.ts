@@ -10,27 +10,48 @@ import {
 import { mockedUserMessages } from '../../mocks/dx-mcm';
 
 const BASE_URL = `${DX_MCM_BASE_URL}/api/v1`;
+
+interface UserMessageApiResponse {
+  action: string;
+  object: {
+    userMessageResults: {
+      items: Types.UserMessage[];
+      count: number;
+      lastKey?: string;
+    };
+  };
+}
+interface UserMessageResponse {
+  items: Types.UserMessage[];
+  lastKey?: string;
+}
+
 const authHeader = () => {
   return { 'x-api-key': DX_MCM_TOKEN };
 };
 
 /**
  * Get the users messages
- * @returns {Promise<UserMessage[]>}
+ * @returns {Promise<UserMessageResponse>}
  */
-export const getUserMessages = async (osuId: string): Promise<Types.UserMessage[]> => {
+export const getUserMessages = async (osuId: string): Promise<UserMessageResponse> => {
   try {
-    const url = `${BASE_URL}/userMessages/${DX_MCM_DASHBOARD_CHANNEL}/${osuId}`;
+    const url = `${BASE_URL}/userMessages/channel/${DX_MCM_DASHBOARD_CHANNEL}/${osuId}`;
 
-    const userMessages = await fetchData(
+    const {
+      object: {
+        userMessageResults: { items, lastKey },
+      },
+    }: UserMessageApiResponse = await fetchData(
       () =>
         cache.get(url, { json: true, headers: authHeader() }, true, {
-          key: BASE_URL,
+          key: url,
           ttlSeconds: DX_MCM_CACHE_SEC,
         }),
       mockedUserMessages,
     );
-    return userMessages;
+    // TODO: if userMessage.lastKey exists, fetch more messages by appending it to the url?
+    return { items, lastKey };
   } catch (err) {
     throw err;
   }
