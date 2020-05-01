@@ -1,0 +1,9 @@
+@baseUrl = https://dev.mcm.oregonstate.edu/api/v1
+@dxMcmApiToken = {{$processEnv DX_MCM_API_TOKEN}}
+@userId = 111111111
+
+# @name getUserMessages
+GET {{baseUrl}}/userMessages/channel/dashboard/{{userId}} HTTP/2
+Content-Type: application/json
+x-api-key: {{dxMcmApiToken}}
+###
