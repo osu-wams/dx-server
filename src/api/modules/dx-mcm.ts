@@ -9,8 +9,6 @@ import {
 } from '../../constants';
 import { mockedUserMessages } from '../../mocks/dx-mcm';
 
-const BASE_URL = `${DX_MCM_BASE_URL}/api/v1`;
-
 interface UserMessageApiResponse {
   action: string;
   object: {
@@ -30,13 +28,16 @@ const authHeader = () => {
   return { 'x-api-key': DX_MCM_TOKEN };
 };
 
+export const channelMessagesUrl = (osuId: string) =>
+  `/api/v1/userMessages/channel/${DX_MCM_DASHBOARD_CHANNEL}/${osuId}`;
+
 /**
  * Get the users messages
  * @returns {Promise<UserMessageResponse>}
  */
 export const getUserMessages = async (osuId: string): Promise<UserMessageResponse> => {
   try {
-    const url = `${BASE_URL}/userMessages/channel/${DX_MCM_DASHBOARD_CHANNEL}/${osuId}`;
+    const url = `${DX_MCM_BASE_URL}${channelMessagesUrl(osuId)}`;
 
     const {
       object: {
