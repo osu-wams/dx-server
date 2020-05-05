@@ -2,10 +2,12 @@
  * /api/user
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
 import { getClassification, Classification } from './modules/osu'; // eslint-disable-line no-unused-vars
 import User from './models/user'; // eslint-disable-line no-unused-vars
+import getUserMessages from './modules/dx-mcm';
 
 const router: Router = Router();
 
@@ -67,6 +69,24 @@ router.post('/settings', async (req: Request, res: Response) => {
     logger().error('api/user/settings failed:', err);
     res.status(500).send({ message: 'Failed to update users settings.' });
   }
+});
+
+router.get('/messages', async (req: Request, res: Response) => {
+  let userMessages: Types.UserMessage[] = [];
+  try {
+    const osuId =
+      req.user.groups.includes('masquerade') && req.user.masqueradeId
+        ? req.user.masqueradedId
+        : req.user.osuId;
+    userMessages = await asyncTimedFunction<Types.UserMessage[]>(
+      getUserMessages,
+      'getUserMessages',
+      [osuId],
+    );
+  } catch (err) {
+    logger().error(`api/user/messages failed: ${err.message}, trace: ${err.stack}`);
+  }
+  res.json(userMessages);
 });
 
 export default router;

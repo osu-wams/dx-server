@@ -16,6 +16,10 @@ const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
 const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
 const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
+const DX_MCM_BASE_URL: string = config.get('dxMcmApi.baseUrl');
+const DX_MCM_CACHE_SEC = parseInt(config.get('dxMcmApi.cacheEndpointSec'), 10);
+const DX_MCM_DASHBOARD_CHANNEL = 'dashboard';
+const DX_MCM_TOKEN: string = config.get('dxMcmApi.token');
 const ENCRYPTION_KEY: string = config.get('encryptionKey');
 const ENV: string = config.get('env');
 const GOOGLE_ANALYTICS_VIEW_ID: string = config.get('google.analyticsViewId');
@@ -51,6 +55,10 @@ export {
   CANVAS_OAUTH_SECRET,
   CANVAS_OAUTH_TOKEN_URL,
   DYNAMODB_TABLE_PREFIX,
+  DX_MCM_BASE_URL,
+  DX_MCM_CACHE_SEC,
+  DX_MCM_DASHBOARD_CHANNEL,
+  DX_MCM_TOKEN,
   ENCRYPTION_KEY,
   ENV,
   GOOGLE_ANALYTICS_VIEW_ID,

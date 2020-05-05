@@ -23,6 +23,11 @@ export default {
     cacheEndpointSec: '86400',
     baseUrl: 'https://data.dx.oregonstate.edu',
   },
+  dxMcmApi: {
+    cacheEndpointSec: '60',
+    baseUrl: 'https://dev.mcm.oregonstate.edu',
+    token: '',
+  },
   osuApi: {
     cacheEndpointSec: '3600',
     // Overridden by process.env.OSU_API_CLIENT_ID
