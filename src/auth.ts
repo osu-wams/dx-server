@@ -185,19 +185,13 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
 
 Auth.logout = (req: Request, res: Response) => {
   try {
-    if (!req.user) res.redirect('/');
-    if (ENV === 'production') {
-      const strategy: SamlStrategy = Auth.passportStrategy;
-      strategy.logout(req, (err, uri) => {
-        req.session.destroy((error) => logger().error(error));
-        req.logout();
-        res.redirect(uri);
-      });
-    } else {
-      req.session.destroy((error) => logger().error(error));
+    if (!req.user) return res.redirect('/');
+    Auth.passportStrategy.logout(req, (err, uri) => {
+      if (err) logger().error(err);
+      logger().info(uri);
       req.logout();
-      res.redirect('/');
-    }
+      res.redirect(uri);
+    });
   } catch (err) {
     logger().error(`Auth.logout error: ${err}`);
   }
