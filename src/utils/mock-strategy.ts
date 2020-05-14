@@ -16,6 +16,6 @@ export default class MockStrategy extends Strategy {
 
   // eslint-disable-next-line class-methods-use-this, no-unused-vars
   public logout(req: Request, cb: any) {
-    logger().debug('logout mock called');
+    logger().debug('mockStrategy logout');
   }
 }
