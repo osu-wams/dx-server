@@ -48,6 +48,7 @@
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-plugin-import": "^2.17.2",
     "eslint-utils": "^1.4.1",
+    "husky": "^4.2.5",
     "jest": "^26.0.1",
     "nock": "^10.0.6",
     "nodemon": "^1.19.1",
@@ -85,5 +86,10 @@
     "request-promise": "^4.2.4",
     "rss-parser": "^3.7.2",
     "winston": "^3.2.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn lint && yarn test"
+    }
   }
 }

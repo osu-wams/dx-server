@@ -22,10 +22,23 @@ beforeAll(async () => {
 
 describe('/healthcheck', () => {
   it('returns success', async () => {
-    await request.get('/healthcheck').expect(200, {
+    const response = await request.get('/healthcheck');
+
+    /**
+     * Tests run in test or development locally usually but in test mode in CI
+     * We check for both so we don't have to change environments in local dev
+     */
+    const testResponse = {
       version: 'test-123',
       useMocks: USE_MOCKS,
-    });
+    };
+    const devResponse = {
+      version: 'development-123',
+      useMocks: USE_MOCKS,
+    };
+
+    const resArray = [testResponse, devResponse];
+    expect(resArray).toEqual(expect.arrayContaining([response.body]));
   });
 });
 
