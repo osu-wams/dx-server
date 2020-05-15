@@ -1,4 +1,5 @@
 import config from 'config';
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import { getToken, fetchData } from '../util';
 import cache from './cache';
 import {
@@ -41,39 +42,9 @@ const getJson = async (url: string) => {
   return response;
 };
 
-export interface Address {
-  id: string;
-  type: string;
-  attributes: {
-    id: string;
-    addressType: string;
-    addressTypeDescription: string;
-    addressLine1: string;
-    addressLine2: string | null;
-    addressLine3: string | null;
-    addressLine4: string | null;
-    houseNumber: string | null;
-    city: string;
-    stateCode: string;
-    state: string;
-    postalCode: string;
-    countyCode: string;
-    county: string;
-    nationCode: string | null;
-    nation: string | null;
-    lastModified: string;
-  };
-  links: { self: string };
-}
-
-interface AddressesResponse {
-  links: { self: string };
-  data: Address[];
-}
-
-export const getAddresses = async (user: any): Promise<Address[]> => {
+export const getAddresses = async (user: any): Promise<Types.Address[]> => {
   try {
-    const response: AddressesResponse = await fetchData(
+    const response: Types.AddressesResponse = await fetchData(
       () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`),
       mockedAddresses,
     );
@@ -83,26 +54,9 @@ export const getAddresses = async (user: any): Promise<Address[]> => {
   }
 };
 
-export interface MealPlan {
-  id: string;
-  type: string;
-  attributes: {
-    mealPlans: string;
-    balance: number;
-    lastUsedDate: string;
-    lastUsedPlace: string;
-  };
-  links: { self: string };
-}
-
-interface MealPlansResponse {
-  links: { self: string };
-  data: MealPlan[];
-}
-
-export const getMealPlan = async (user: any): Promise<MealPlan[]> => {
+export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
   try {
-    const response: MealPlansResponse = await fetchData(
+    const response: Types.MealPlansResponse = await fetchData(
       () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`),
       mockedMealPlans,
     );
@@ -112,48 +66,9 @@ export const getMealPlan = async (user: any): Promise<MealPlan[]> => {
   }
 };
 
-export interface Profile {
-  id: string;
-  type: string;
-  attributes: {
-    birthDate: string;
-    firstName: string | null;
-    middleName: string | null;
-    lastName: string | null;
-    displayFirstName: string | null;
-    displayMiddleName: string | null;
-    displayLastName: string | null;
-    previousRecords: {
-      osuID: string;
-      firstName: string;
-      middleName: string | null;
-      lastName: string;
-      preferredName: string | null;
-    }[];
-    citizen: string;
-    sex: string;
-    homePhone: string | null;
-    alternatePhone: string | null;
-    osuUID: string;
-    primaryPhone: string | null;
-    mobilePhone: string | null;
-    employeeStatus: string;
-    email: string;
-    username: string;
-    confidential: boolean;
-    ssnStatus: string;
-  };
-  links: { self: string };
-}
-
-interface ProfileResponse {
-  links: { self: string };
-  data: Profile;
-}
-
-export const getProfile = async (user: any): Promise<Profile> => {
+export const getProfile = async (user: any): Promise<Types.Profile> => {
   try {
-    const response: ProfileResponse = await fetchData(
+    const response: Types.ProfileResponse = await fetchData(
       () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`),
       mockedPersons,
     );
@@ -239,62 +154,12 @@ export const getAccountTransactions = async (user: any) => {
   }
 };
 
-interface Faculty {
-  email: string;
-  name: string;
-  primary: boolean;
-}
-
-interface MeetingTime {
-  beginDate: string;
-  beginTime: string;
-  building: string;
-  buildingDescription: string;
-  campus: string;
-  creditHourSession: number;
-  endDate: string;
-  endTime: string;
-  hoursPerWeek: number;
-  room: string;
-  scheduleType: string;
-  scheduleDescription: string;
-  weeklySchedule: string[];
-}
-interface ClassSchedule {
-  type: string;
-  id: string;
-  attributes: {
-    academicYear: string;
-    academicYearDescription: string;
-    continuingEducation: boolean;
-    courseNumber: string;
-    courseReferenceNumber: string;
-    courseSubject: string;
-    courseSubjectDescription: string;
-    courseTitle: string;
-    creditHours: number;
-    faculty: Faculty[];
-    gradingMode: string;
-    meetingTimes: MeetingTime[];
-    registrationStatus: string;
-    scheduleDescription: string;
-    scheduleType: string;
-    sectionNumber: string;
-    term: string;
-    termDescription: string;
-  };
-}
-interface ClassScheduleResponse {
-  links: { self: string };
-  data: ClassSchedule[];
-}
-
 export const getClassSchedule = async (
   user: any,
   term: any,
-): Promise<{ data: ClassSchedule[] }> => {
+): Promise<{ data: Types.CourseSchedule[] }> => {
   try {
-    const response: ClassScheduleResponse = await fetchData(
+    const response: Types.CourseScheduleResponse = await fetchData(
       () =>
         getJson(
           `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
@@ -302,7 +167,7 @@ export const getClassSchedule = async (
       mockedClassSchedule,
     );
     return {
-      data: response.data.map((d: ClassSchedule) => ({
+      data: response.data.map((d: Types.CourseSchedule) => ({
         attributes: {
           ...d.attributes,
           faculty: d.attributes.faculty.map((f) => ({
@@ -313,6 +178,7 @@ export const getClassSchedule = async (
         },
         type: d.type,
         id: d.id,
+        links: d.links,
       })),
     };
   } catch (err) {
@@ -320,26 +186,9 @@ export const getClassSchedule = async (
   }
 };
 
-export interface Classification {
-  id: string;
-  attributes: {
-    level: string;
-    classification: string;
-    campus: string;
-    campusCode: string;
-    status: string;
-    isInternational: boolean;
-  };
-}
-
-interface ClassificationResponse {
-  links: { self: string };
-  data: Classification;
-}
-
-export const getClassification = async (user: any): Promise<Classification> => {
+export const getClassification = async (user: any): Promise<Types.Classification> => {
   try {
-    const response: ClassificationResponse = await fetchData(
+    const response: Types.ClassificationResponse = await fetchData(
       () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`),
       mockedClassification,
     );
@@ -471,7 +320,7 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
  * @param user
  * @param term
  */
-export const getDegrees = async (user: any, term = 'current') => {
+export const getDegrees = async (user: any, term = 'current'): Promise<Types.Degree[]> => {
   try {
     let termParam = '';
     if (term) {

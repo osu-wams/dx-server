@@ -5,7 +5,7 @@ import { Router, Request, Response } from 'express'; // eslint-disable-line no-u
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
-import { getClassification, Classification } from './modules/osu'; // eslint-disable-line no-unused-vars
+import { getClassification } from './modules/osu'; // eslint-disable-line no-unused-vars
 import User from './models/user'; // eslint-disable-line no-unused-vars
 import getUserMessages from './modules/dx-mcm';
 
@@ -32,11 +32,9 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/classification', async (req: Request, res: Response) => {
   let classification = {};
   try {
-    const classificationPromise: Promise<Classification> = asyncTimedFunction<Classification>(
-      getClassification,
-      'getClassification',
-      [req.user],
-    );
+    const classificationPromise: Promise<Types.Classification> = asyncTimedFunction<
+      Types.Classification
+    >(getClassification, 'getClassification', [req.user]);
     const { id, attributes } = await classificationPromise;
     classification = { id, attributes };
     req.user.classification = classification;
