@@ -157,9 +157,9 @@ export const getAccountTransactions = async (user: any) => {
 export const getClassSchedule = async (
   user: any,
   term: any,
-): Promise<{ data: Types.ClassSchedule[] }> => {
+): Promise<{ data: Types.CourseSchedule[] }> => {
   try {
-    const response: Types.ClassScheduleResponse = await fetchData(
+    const response: Types.CourseScheduleResponse = await fetchData(
       () =>
         getJson(
           `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
@@ -167,7 +167,7 @@ export const getClassSchedule = async (
       mockedClassSchedule,
     );
     return {
-      data: response.data.map((d: Types.ClassSchedule) => ({
+      data: response.data.map((d: Types.CourseSchedule) => ({
         attributes: {
           ...d.attributes,
           faculty: d.attributes.faculty.map((f) => ({
@@ -178,6 +178,7 @@ export const getClassSchedule = async (
         },
         type: d.type,
         id: d.id,
+        links: d.links,
       })),
     };
   } catch (err) {

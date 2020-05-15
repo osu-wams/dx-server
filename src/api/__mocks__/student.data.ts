@@ -38,9 +38,6 @@ export const classScheduleDataResponse = {
     {
       type: 'class-schedule',
       id: '999999999-202001-14683',
-      links: {
-        self: null,
-      },
       attributes: {
         academicYear: '1920',
         academicYearDescription: 'Academic Year 2019-20',
