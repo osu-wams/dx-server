@@ -96,6 +96,7 @@
         ],
         "title": "Pay My Bill",
         "field_icon_name": "fal.money-check-edit-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["payment"],
         "field_service_url": { "uri": "http://mybill.oregonstate.edu", "title": "", "options": [] }
       },
@@ -170,6 +171,7 @@
         ],
         "title": "Financial Aid",
         "field_icon_name": "fal.envelope-open-dollar",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://financialaid.oregonstate.edu/financial-aid",
@@ -248,6 +250,7 @@
         ],
         "title": "ScholarDollars",
         "field_icon_name": "fal.hand-holding-usd",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["money", "aid"],
         "field_service_url": {
           "uri": "https://oregonstate.academicworks.com/",
@@ -339,6 +342,7 @@
         ],
         "title": "Human Services Resource Center",
         "field_icon_name": "fal.apple-crate",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["hsrc", "help", "Food Assistance", "Textbook Assistance"],
         "field_service_url": {
           "uri": "https://studentlife.oregonstate.edu/hsrc",
@@ -417,6 +421,7 @@
         ],
         "title": "Student Jobs",
         "field_icon_name": "fal.briefcase",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["employment"],
         "field_service_url": {
           "uri": "https://jobs.oregonstate.edu/postings/search?utf8=&query=&query_v0_posted_at_date=&query_position_type_id=5&query_organizational_tier_3_id=any&1970=&1971=&225=&commit=Search",
@@ -481,6 +486,7 @@
         ],
         "title": "Career Planning & Guidance",
         "field_icon_name": "fal.briefcase",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://career.oregonstate.edu/",
@@ -559,6 +565,7 @@
         ],
         "title": "Cashier's Office ",
         "field_icon_name": "fal.money-check-edit-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["payroll", "payment"],
         "field_service_url": {
           "uri": "https://fa.oregonstate.edu/business-affairs/studentbilling",

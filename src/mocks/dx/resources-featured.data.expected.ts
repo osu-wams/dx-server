@@ -11,6 +11,7 @@ export default {
       audiences: [],
       categories: ['Featured', 'Technology'],
       synonyms: ['email', 'mail'],
+      excludeTrending: true,
     },
     {
       id: '198917a4-47ad-4d45-9074-3a76dc495de1',
@@ -22,6 +23,7 @@ export default {
       audiences: [],
       categories: ['Featured'],
       synonyms: ['lms', 'homework', 'assignments', 'learn', 'learn@oregonstate'],
+      excludeTrending: false,
     },
     {
       id: '8feb6e93-3376-4190-a981-ec9dc1bd6b67',
@@ -33,6 +35,7 @@ export default {
       audiences: [],
       categories: ['Featured', 'Technology'],
       synonyms: ['file storage'],
+      excludeTrending: true,
     },
     {
       id: '62c491e3-4c41-4335-bdff-9b083d6d3acf',
@@ -44,6 +47,7 @@ export default {
       audiences: [],
       categories: ['Featured', 'Financial'],
       synonyms: ['payment'],
+      excludeTrending: false,
     },
     {
       id: '47b94e3c-c09f-48e0-b152-c5cf81d22f97',
@@ -55,6 +59,7 @@ export default {
       audiences: ['Corvallis'],
       categories: ['Featured'],
       synonyms: [],
+      excludeTrending: false,
     },
     {
       id: '76ba8547-d77c-4bb9-a8af-5023ab99dae5',
@@ -66,6 +71,7 @@ export default {
       audiences: ['Corvallis'],
       categories: ['Featured'],
       synonyms: ['dining', 'uhds', 'murfs'],
+      excludeTrending: false,
     },
     {
       id: '330717f3-0ac4-4e4e-97c2-a4d6360e6f66',
@@ -77,6 +83,7 @@ export default {
       audiences: [],
       categories: ['Featured'],
       synonyms: ['people', 'directory'],
+      excludeTrending: false,
     },
     {
       id: '06607162-c5b6-4ca4-a8af-2cb2e4939fd6',
@@ -88,6 +95,7 @@ export default {
       audiences: ['Corvallis', 'Ecampus'],
       categories: ['Featured', 'Wellness'],
       synonyms: ['caps', 'psychological', 'mental', 'health', 'wellness'],
+      excludeTrending: false,
     },
     {
       id: '78ad948c-2aef-4fcc-bfc6-e3a98096ce86',
@@ -99,6 +107,7 @@ export default {
       audiences: [],
       categories: ['Featured', 'Financial'],
       synonyms: ['hsrc', 'help', 'Food Assistance', 'Textbook Assistance'],
+      excludeTrending: false,
     },
     {
       id: '03794c38-d4cb-422f-96e4-6fce8bf4850b',
@@ -110,6 +119,7 @@ export default {
       audiences: [],
       categories: ['Featured', 'Academic'],
       synonyms: [],
+      excludeTrending: false,
     },
     {
       id: '673c287a-6388-49bc-83e5-e87eba52983a',
@@ -121,6 +131,7 @@ export default {
       audiences: ['Corvallis', 'Ecampus'],
       categories: ['Featured', 'Getting Involved'],
       synonyms: ['corvallis'],
+      excludeTrending: false,
     },
   ],
 };

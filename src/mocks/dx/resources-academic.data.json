@@ -83,6 +83,7 @@
         ],
         "title": "Canvas",
         "field_icon_name": "osu.logo-canvas",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["lms", "homework", "assignments", "learn", "learn@oregonstate"],
         "field_service_url": {
           "uri": "https://oregonstate.instructure.com/",
@@ -174,6 +175,7 @@
         ],
         "title": "MyDegrees",
         "field_icon_name": "fal.file-certificate",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://mydegrees.oregonstate.edu/DashboardServlet",
@@ -238,6 +240,7 @@
         ],
         "title": "My Student Records",
         "field_icon_name": "fal.folders",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://xe.ucsadm.oregonstate.edu:9990/ssomanager/c/SSB?pkg=twbkwbis.P_GenMenu?name=bmenu.P_AdminMnu",
@@ -316,6 +319,7 @@
         ],
         "title": "Course Catalog",
         "field_icon_name": "fal.list-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://catalog.oregonstate.edu/",
@@ -394,6 +398,7 @@
         ],
         "title": "Academic Advising",
         "field_icon_name": "fal.comments-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://catalog.oregonstate.edu/advising/",
@@ -472,6 +477,7 @@
         ],
         "title": "OSU Libraries",
         "field_icon_name": "fal.book-reader",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["library"],
         "field_service_url": {
           "uri": "https://library.oregonstate.edu/",
@@ -550,6 +556,7 @@
         ],
         "title": "My Textbooks",
         "field_icon_name": "fal.books",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["store"],
         "field_service_url": {
           "uri": "https://xe.ucsadm.oregonstate.edu:9990/ssomanager/c/SSB?pkg=OSU_STUWEB.P_OSUBOOKS",
@@ -614,6 +621,7 @@
         ],
         "title": "My Transcripts",
         "field_icon_name": "fal.file-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://xe.ucsadm.oregonstate.edu:9990/ssomanager/c/SSB?pkg=bwskotrn.P_ViewTermTran",
@@ -692,6 +700,7 @@
         ],
         "title": "Academic Success Center",
         "field_icon_name": "fal.badge-check",
+        "field_exclude_trending": false,
         "field_service_synonyms": [
           "help",
           "tutoring",

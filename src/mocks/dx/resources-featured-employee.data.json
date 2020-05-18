@@ -97,6 +97,7 @@
         ],
         "title": "W-2 Wage and Tax Statement",
         "field_icon_name": "fal.file-invoice-dollar",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://xe-duo.ucsadm.oregonstate.edu:9990/ords/prod/bwpkxtxs.P_ChooseW2Key",
@@ -202,6 +203,7 @@
         ],
         "title": "Direct Deposit",
         "field_icon_name": "fal.money-check-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["bank", "bill", "pay"],
         "field_service_url": {
           "uri": "https://xe-duo.ucsadm.oregonstate.edu:9990/ords/prod/bwykdird.P_DirectDeposit",
@@ -280,6 +282,7 @@
         ],
         "title": "Retirement Plans & Tax-Deferred Investments",
         "field_icon_name": "fal.file-medical",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/bwpkdcmn.P_DispDednCurRet",

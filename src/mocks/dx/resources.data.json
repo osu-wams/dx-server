@@ -70,6 +70,7 @@
     ],
     "title": "Academic Advising",
     "field_icon_name": "fal.comments-alt",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://catalog.oregonstate.edu/advising/",
@@ -148,6 +149,7 @@
     ],
     "title": "Academic Calendar",
     "field_icon_name": "fal.calendar-alt",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://registrar.oregonstate.edu/osu-academic-calendar",
@@ -226,6 +228,7 @@
     ],
     "title": "Academic Regulations",
     "field_icon_name": "fal.gavel",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://catalog.oregonstate.edu/regulations/",
@@ -304,6 +307,7 @@
     ],
     "title": "Academic Standing",
     "field_icon_name": "fal.medal",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["honor"],
     "field_service_url": {
       "uri": "https://registrar.oregonstate.edu/grades-honor-roll-academic-standing",
@@ -382,6 +386,7 @@
     ],
     "title": "Academic Success Center",
     "field_icon_name": "fal.badge-check",
+    "field_exclude_trending": false,
     "field_service_synonyms": [
       "help",
       "tutoring",
@@ -461,6 +466,7 @@
     ],
     "title": "Academics for Student Athletes",
     "field_icon_name": "fal.running",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://studentathlete.oregonstate.edu/",
@@ -539,6 +545,7 @@
     ],
     "title": "Account Summary by Term",
     "field_icon_name": "fal.align-justify",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/bwskoacc.P_ViewAcct",
@@ -603,6 +610,7 @@
     ],
     "title": "Add / Drop Classes",
     "field_icon_name": "fal.chalkboard-teacher",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["courses"],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ssomanager/c/SSB?pkg=bwskfreg.P_AltPin",
@@ -681,6 +689,7 @@
     ],
     "title": "Admission",
     "field_icon_name": "fal.backpack",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://admissions.oregonstate.edu/",
@@ -745,6 +754,7 @@
     ],
     "title": "Advance Standing Report-Official Transfer Credit",
     "field_icon_name": "fal.exchange-alt",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://admissions.oregonstate.edu/advanced-standing-report",
@@ -823,6 +833,7 @@
     ],
     "title": "Advance Tuition Deposit",
     "field_icon_name": "fal.money-check-alt",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/BWYKS_ATD.P_ViewATDForm",
@@ -928,6 +939,7 @@
     ],
     "title": "Adventure Leadership Institute",
     "field_icon_name": "fal.hiking",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://recsports.oregonstate.edu/ali",
@@ -1006,6 +1018,7 @@
     ],
     "title": "Airport Transportation (INTO OSU)",
     "field_icon_name": "fal.plane",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["fly", "travel"],
     "field_service_url": {
       "uri": "https://www.intostudy.com/en-gb/study-abroad/country-guides/us/travel",
@@ -1072,6 +1085,7 @@
     ],
     "title": "ASCC-Student Government",
     "field_icon_name": "fal.gavel",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["bend"],
     "field_service_url": { "uri": "https://osucascades.edu/ASCC", "title": "", "options": [] }
   },
@@ -1159,6 +1173,7 @@
     ],
     "title": "Athletic Events",
     "field_icon_name": "fal.basketball-hoop",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["sports", "football", "basketball", "baseball"],
     "field_service_url": { "uri": "https://osubeavers.com/", "title": "", "options": [] }
   },
@@ -1233,6 +1248,7 @@
     ],
     "title": "Award Payment Schedule",
     "field_icon_name": "fal.calendar-check",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/bwrkpays.P_DispPaySched",
@@ -1311,6 +1327,7 @@
     ],
     "title": "Baccalaureate Core Courses",
     "field_icon_name": "fal.chalkboard",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://catalog.oregonstate.edu/earning-degrees/bcc/",
@@ -1363,6 +1380,7 @@
     ],
     "title": "Bend Information",
     "field_icon_name": "fal.mountain",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["visit"],
     "field_service_url": {
       "uri": "https://osucascades.edu/admissions/about-bend",
@@ -1454,6 +1472,7 @@
     ],
     "title": "Box",
     "field_icon_name": "osu.logo-box-sync",
+    "field_exclude_trending": true,
     "field_service_synonyms": ["file storage"],
     "field_service_url": {
       "uri": "https://oregonstate.account.box.com/login",
@@ -1532,6 +1551,7 @@
     ],
     "title": "Campus Tours",
     "field_icon_name": "fal.binoculars",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["visit", "corvallis"],
     "field_service_url": {
       "uri": "https://visitosu.oregonstate.edu/visit-campus",
@@ -1610,6 +1630,7 @@
     ],
     "title": "Canvas",
     "field_icon_name": "osu.logo-canvas",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["lms", "homework", "assignments", "learn", "learn@oregonstate"],
     "field_service_url": {
       "uri": "https://oregonstate.instructure.com/",
@@ -1688,6 +1709,7 @@
     ],
     "title": "Canvas / Learn@OregonState Student Guide",
     "field_icon_name": "fal.book",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://guides.instructure.com/m/4212",
@@ -1754,6 +1776,7 @@
     ],
     "title": "Card Cash / Orange Rewards",
     "field_icon_name": "fal.credit-card",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["dining", "food"],
     "field_service_url": { "uri": "http://mycard.oregonstate.edu/", "title": "", "options": [] }
   },
@@ -1814,6 +1837,7 @@
     ],
     "title": "Career Planning & Guidance",
     "field_icon_name": "fal.briefcase",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": { "uri": "https://career.oregonstate.edu/", "title": null, "options": [] }
   },
@@ -1888,6 +1912,7 @@
     ],
     "title": "Cashier's Office",
     "field_icon_name": "fal.money-check-edit-alt",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["payroll", "payment"],
     "field_service_url": {
       "uri": "https://fa.oregonstate.edu/business-affairs/studentbilling",
@@ -1966,6 +1991,7 @@
     ],
     "title": "Center for Teaching and Learning",
     "field_icon_name": "fal.chalkboard-teacher",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": { "uri": "https://ctl.oregonstate.edu/", "title": "", "options": [] }
   },
@@ -2026,6 +2052,7 @@
     ],
     "title": "Change General Access Pin (GAP)",
     "field_icon_name": "fal.user-edit",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/twbkwbis.P_ChangePin",
@@ -2104,6 +2131,7 @@
     ],
     "title": "Change of Grading Basis",
     "field_icon_name": "fal.clipboard-list-check",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://registrar.oregonstate.edu/change-grading-basis",
@@ -2168,6 +2196,7 @@
     ],
     "title": "Change Security Question",
     "field_icon_name": "fal.user-edit",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/twbkwbis.P_SecurityQuestion",
@@ -2246,6 +2275,7 @@
     ],
     "title": "Changes to Registration",
     "field_icon_name": "fal.file-edit",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://registrar.oregonstate.edu/after-registration",
@@ -2324,6 +2354,7 @@
     ],
     "title": "Changing Degree/Major in Graduate School",
     "field_icon_name": "fal.sync",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://gradschool.oregonstate.edu/forms#changemajor",
@@ -2388,6 +2419,7 @@
     ],
     "title": "Check your Eligibility for an Emergency Loan",
     "field_icon_name": "fal.comments-dollar",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/bwykelon.P_EmergencyLoan",
@@ -2452,6 +2484,7 @@
     ],
     "title": "Check Your Registration Status",
     "field_icon_name": "fal.backpack",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["my"],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/bwskrsta.P_RegsStatusDisp",
@@ -2504,6 +2537,7 @@
     ],
     "title": "Childcare & Family Resources",
     "field_icon_name": "fal.child",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["daycare"],
     "field_service_url": {
       "uri": "https://familyresources.oregonstate.edu/",
@@ -2570,6 +2604,7 @@
     ],
     "title": "Civic Engagement Opportunities",
     "field_icon_name": "fal.leaf-heart",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["recycle", "sustainable", "leadership"],
     "field_service_url": {
       "uri": "https://sli.oregonstate.edu/cce/service",
@@ -2622,6 +2657,7 @@
     ],
     "title": "COCC Blackboard",
     "field_icon_name": "fal.chalkboard-teacher",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": { "uri": "https://bb.cocc.edu/", "title": "", "options": [] }
   },
@@ -2670,6 +2706,7 @@
     ],
     "title": "COCC Login",
     "field_icon_name": "fal.sign-in",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["bend", "cascades"],
     "field_service_url": {
       "uri": "https://www.cocc.edu/home/student-login.aspx",
@@ -2748,6 +2785,7 @@
     ],
     "title": "Commencement",
     "field_icon_name": "fal.user-graduate",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["graduation"],
     "field_service_url": {
       "uri": "https://commencement.oregonstate.edu/",
@@ -2812,6 +2850,7 @@
     ],
     "title": "Complete a FERPA Release",
     "field_icon_name": "fal.file-signature",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/osu_luminis_links.P_FerpaRelease",
@@ -2890,6 +2929,7 @@
     ],
     "title": "Conditional Admission Program (CAP)",
     "field_icon_name": "fal.language",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": {
       "uri": "https://gradschool.oregonstate.edu/admissions/international#english-language",
@@ -2981,6 +3021,7 @@
     ],
     "title": "Corvallis Commencement Attendance Confirmation for Undergraduates",
     "field_icon_name": "fal.user-graduate",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["graduation"],
     "field_service_url": {
       "uri": "https://xe.ucsadm.oregonstate.edu:9990/ords/prod/BWYKS_UNDERGRAD_ONLY.P_ApplyCommencement",
@@ -3086,6 +3127,7 @@
     ],
     "title": "Counseling Services",
     "field_icon_name": "fal.hand-heart",
+    "field_exclude_trending": false,
     "field_service_synonyms": ["caps", "psychological", "mental", "health", "wellness"],
     "field_service_url": {
       "uri": "https://counseling.oregonstate.edu/",
@@ -3164,6 +3206,7 @@
     ],
     "title": "Resource Without a Link",
     "field_icon_name": "fal.list-alt",
+    "field_exclude_trending": false,
     "field_service_synonyms": [],
     "field_service_url": { "uri": "", "title": "", "options": [] }
   }

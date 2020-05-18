@@ -96,6 +96,7 @@
         ],
         "title": "Gmail",
         "field_icon_name": "osu.logo-gmail",
+        "field_exclude_trending": true,
         "field_service_synonyms": ["email", "mail"],
         "field_service_url": {
           "uri": "https://mail.google.com/a/oregonstate.edu",
@@ -174,6 +175,7 @@
         ],
         "title": "Canvas",
         "field_icon_name": "osu.logo-canvas",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["lms", "homework", "assignments", "learn", "learn@oregonstate"],
         "field_service_url": {
           "uri": "https://oregonstate.instructure.com/",
@@ -265,6 +267,7 @@
         ],
         "title": "Box",
         "field_icon_name": "osu.logo-box-sync",
+        "field_exclude_trending": true,
         "field_service_synonyms": ["file storage"],
         "field_service_url": {
           "uri": "https://oregonstate.account.box.com/login",
@@ -356,6 +359,7 @@
         ],
         "title": "Pay My Bill",
         "field_icon_name": "fal.money-check-edit-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["payment"],
         "field_service_url": { "uri": "http://mybill.oregonstate.edu", "title": "", "options": [] }
       },
@@ -418,6 +422,7 @@
         ],
         "title": "OSU Campus Map",
         "field_icon_name": "fal.map-marked-alt",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": { "uri": "https://map.oregonstate.edu/", "title": "", "options": [] }
       },
@@ -480,6 +485,7 @@
         ],
         "title": "Food@OSU",
         "field_icon_name": "fal.cheeseburger",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["dining", "uhds", "murfs"],
         "field_service_url": { "uri": "https://food.oregonstate.edu/", "title": "", "options": [] }
       },
@@ -554,6 +560,7 @@
         ],
         "title": "Search OSU",
         "field_icon_name": "fal.search",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["people", "directory"],
         "field_service_url": {
           "uri": "https://search.oregonstate.edu/",
@@ -659,6 +666,7 @@
         ],
         "title": "Counseling Services",
         "field_icon_name": "fal.hand-heart",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["caps", "psychological", "mental", "health", "wellness"],
         "field_service_url": {
           "uri": "https://counseling.oregonstate.edu/",
@@ -750,6 +758,7 @@
         ],
         "title": "Human Services Resource Center",
         "field_icon_name": "fal.apple-crate",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["hsrc", "help", "Food Assistance", "Textbook Assistance"],
         "field_service_url": {
           "uri": "https://studentlife.oregonstate.edu/hsrc",
@@ -841,6 +850,7 @@
         ],
         "title": "MyDegrees",
         "field_icon_name": "fal.file-certificate",
+        "field_exclude_trending": false,
         "field_service_synonyms": [],
         "field_service_url": {
           "uri": "https://mydegrees.oregonstate.edu/DashboardServlet",
@@ -946,6 +956,7 @@
         ],
         "title": "OSU Events Calendar",
         "field_icon_name": "fal.calendar-star",
+        "field_exclude_trending": false,
         "field_service_synonyms": ["corvallis"],
         "field_service_url": {
           "uri": "https://events.oregonstate.edu/",
