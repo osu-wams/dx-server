@@ -218,6 +218,7 @@ export default [
     audiences: ['Corvallis', 'Ecampus'],
     categories: [],
     synonyms: [],
+    excludeTrending: false,
   },
   {
     id: '3f6906f8-effb-4c8a-935a-db15a1e82503',
