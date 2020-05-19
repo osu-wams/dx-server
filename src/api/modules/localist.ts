@@ -1,4 +1,5 @@
 import Parser from 'rss-parser';
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import config from 'config';
 import cache from './cache';
 import { fetchData } from '../util';
@@ -20,21 +21,34 @@ const EVENT_DAYS_AGO = parseInt(config.get('localist.eventDaysAgo'), 10);
 const EVENT_DX_QUERY: string = config.get('localist.eventDxQuery');
 
 /* eslint-disable camelcase */
-export interface IEvent {
-  action: {
-    link: string;
-    title?: string;
+interface ILocalistEvent {
+  event: {
+    id: number;
+    title: string;
+    localist_url: string;
+    photo_url: string;
+    campus_id?: number;
+    geo: {
+      city?: string;
+      state?: string;
+      country?: string;
+      zip?: string;
+    };
+    event_instances: {
+      event_instance: {
+        start: string;
+        id: number;
+      };
+    }[];
   };
-  bg_image: string;
-  body?: string;
-  date: string;
-  id: string;
-  title: string;
-  type: string;
 }
 
-const mappedEvents = (events): IEvent[] => {
-  return events.map((e) => ({
+interface ILocalistEvents {
+  events: ILocalistEvent[];
+}
+
+const mappedEvents = (events: ILocalistEvent[]): Types.LocalistEvent[] => {
+  return events.map((e: ILocalistEvent) => ({
     action: {
       link: e.event.localist_url,
     },
@@ -43,6 +57,8 @@ const mappedEvents = (events): IEvent[] => {
     id: e.event.event_instances[0].event_instance.id,
     title: e.event.title,
     type: 'localist',
+    campus_id: e.event.campus_id,
+    city: e.event.geo.city,
   }));
 };
 /* eslint-enable camelcase */
@@ -50,12 +66,12 @@ const mappedEvents = (events): IEvent[] => {
 /**
  * Gets events from Localist.
  * @param {Object} query - An object containing key/value pairs to be used as query parameters.
- * @returns {Promise<Object[]>}
+ * @returns {Promise<LocalistEvent[]>}
  */
-export const getEvents = async (): Promise<object[]> => {
+export const getEvents = async (): Promise<Types.LocalistEvent[]> => {
   try {
     const url = `${LOCALIST_BASE_URL}/events/search?search=${EVENT_DX_QUERY}&days=${EVENT_DAYS_AGO}`;
-    const data = await fetchData(
+    const data: ILocalistEvents = await fetchData(
       () => cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC }),
       mockedEventsDx,
     );
@@ -65,10 +81,15 @@ export const getEvents = async (): Promise<object[]> => {
   }
 };
 
-export const getCampusEvents = async (campus: string): Promise<object[]> => {
+/**
+ * Gets events from Localist.
+ * @param {Object} campus - The campus name (ie. Corvallis, Bend)
+ * @returns {Promise<LocalistEvent[]>}
+ */
+export const getCampusEvents = async (campus: string): Promise<Types.LocalistEvent[]> => {
   try {
     const url = `${LOCALIST_BASE_URL}/events?campus_id=${CAMPUS_IDS[campus]}&days=${EVENT_DAYS_AGO}`;
-    const data = await fetchData(
+    const data: ILocalistEvents = await fetchData(
       () => cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC }),
       mockedCampusEvents[campus],
     );
@@ -80,9 +101,9 @@ export const getCampusEvents = async (campus: string): Promise<object[]> => {
 
 /**
  * Gets academic calendar events from Localist.
- * @returns {Promise<Object[]>}
+ * @returns {Promise<AcademicEvent[]>}
  */
-export const getAcademicCalendarEvents = async (): Promise<object[]> => {
+export const getAcademicCalendarEvents = async (): Promise<Types.AcademicEvent[]> => {
   try {
     // Note: Getting academic calendar items via RSS as a workaround due to
     //       unlisted/restricted events not being visible via API.
@@ -96,7 +117,7 @@ export const getAcademicCalendarEvents = async (): Promise<object[]> => {
     );
     const { items } = await parser.parseString(xml);
 
-    return items;
+    return items as Types.AcademicEvent[];
   } catch (err) {
     throw err;
   }
@@ -104,12 +125,12 @@ export const getAcademicCalendarEvents = async (): Promise<object[]> => {
 
 /**
  * Gets employee events from Localist.
- * @returns {Promise<Object[]>}
+ * @returns {Promise<LocalistEvent[]>}
  */
-export const getEmployeeEvents = async (): Promise<object[]> => {
+export const getEmployeeEvents = async (): Promise<Types.LocalistEvent[]> => {
   try {
-    const url = `${LOCALIST_BASE_URL}/events?event_type=${EVENT_TYPES.employee}&days=${EVENT_DAYS_AGO}`;
-    const data = await fetchData(
+    const url = `${LOCALIST_BASE_URL}/events?type[]=${EVENT_TYPES.employee}&days=${EVENT_DAYS_AGO}`;
+    const data: ILocalistEvents = await fetchData(
       () => cache.get(url, { json: true }, true, { key: url, ttlSeconds: CACHE_SEC }),
       mockedEventsEmployee,
     );
