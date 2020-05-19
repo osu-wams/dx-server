@@ -22,6 +22,14 @@ Accept: */*
 
 ###
 
+# @name getEmployeeEvents
+GET /api/2/events?type[]=115615&days=30 HTTP/2
+Host: events.oregonstate.edu
+User-Agent: curl/7.66.0
+Accept: */*
+
+###
+
 # @name getAcademicCalendarEvents
 GET /widget/view?schools=oregonstate&days=365&num=10&tags=academic+calendar&format=rss HTTP/2
 Host: events.oregonstate.edu
