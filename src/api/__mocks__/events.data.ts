@@ -63,6 +63,12 @@ export const eventsData: any = [
           },
         },
       ],
+      geo: {
+        city: 'Corvallis',
+        state: 'Oregon',
+        country: null,
+        zip: null,
+      },
     },
   },
   {
@@ -126,6 +132,12 @@ export const eventsData: any = [
           },
         },
       ],
+      geo: {
+        city: 'Corvallis',
+        state: 'Oregon',
+        country: null,
+        zip: null,
+      },
     },
   },
   {
@@ -189,6 +201,12 @@ export const eventsData: any = [
           },
         },
       ],
+      geo: {
+        city: 'Corvallis',
+        state: 'Oregon',
+        country: null,
+        zip: null,
+      },
     },
   },
 ];
@@ -205,6 +223,8 @@ export const eventsResult = [
     id: 31069217151072,
     title: 'Sea-inspired paintings on exhibit',
     type: 'localist',
+    campus_id: 123,
+    city: 'Corvallis',
   },
   {
     action: { link: 'https://events.oregonstate.edu/event/pathogetesto' },
@@ -213,6 +233,8 @@ export const eventsResult = [
     id: 31069217151072,
     title: 'Pathogen Environmental Monitoring Workshop for Pacific Northwest Food Ind',
     type: 'localist',
+    campus_id: 123,
+    city: 'Corvallis',
   },
   {
     action: { link: 'https://events.oregonstate.edu/testo' },
@@ -221,5 +243,7 @@ export const eventsResult = [
     id: 31069217151072,
     title: 'Katherine Dziedzic - Integrative Biology PhD Defense Seminar',
     type: 'localist',
+    campus_id: 123,
+    city: 'Corvallis',
   },
 ];
