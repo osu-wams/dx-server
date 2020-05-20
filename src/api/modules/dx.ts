@@ -105,6 +105,7 @@ const mappedResources = (items: any[]): Types.Resource[] => {
     audiences: d.field_audience.map((a) => a.name).filter(Boolean),
     categories: d.field_service_category.map((c) => c.name).filter(Boolean),
     synonyms: d.field_service_synonyms,
+    excludeTrending: d.field_exclude_trending,
   }));
 };
 
@@ -183,7 +184,7 @@ export const getResources = async (): Promise<Types.Resource[]> => {
     const opts = {
       fields: {
         'node--services':
-          'id,title,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations',
+          'id,title,field_exclude_trending,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations',
         'taxonomy_term--categories': 'name',
         'taxonomy_term--audience': 'name',
         'taxonomy_term--affiliation': 'name',
@@ -216,7 +217,7 @@ export const getCuratedResources = async (category: string): Promise<Types.Resou
           fields: {
             'entity_subqueue--services': 'items,drupal_internal__name',
             'node--services':
-              'id,title,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations',
+              'id,title,field_exclude_trending,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations',
             'taxonomy_term--categories': 'name',
             'taxonomy_term--audience': 'name',
             'taxonomy_term--affiliation': 'name',

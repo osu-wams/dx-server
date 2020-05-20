@@ -11,6 +11,7 @@ export default {
       audiences: [],
       categories: ['Featured'],
       synonyms: ['lms', 'homework', 'assignments', 'learn', 'learn@oregonstate'],
+      excludeTrending: false,
     },
     {
       id: '03794c38-d4cb-422f-96e4-6fce8bf4850b',
@@ -22,6 +23,7 @@ export default {
       audiences: [],
       categories: ['Featured', 'Academic'],
       synonyms: [],
+      excludeTrending: false,
     },
     {
       id: '217a3a6e-022f-4df3-af7c-ea83dd78a6f5',
@@ -34,6 +36,7 @@ export default {
       audiences: [],
       categories: [],
       synonyms: [],
+      excludeTrending: false,
     },
     {
       id: 'd6cfd606-df0f-441b-afe5-659b8463d4eb',
@@ -45,6 +48,7 @@ export default {
       audiences: ['Corvallis', 'Ecampus'],
       categories: [],
       synonyms: [],
+      excludeTrending: false,
     },
     {
       id: '4c78c92a-baca-480d-97e7-384bb76e3b48',
@@ -56,6 +60,7 @@ export default {
       audiences: ['Corvallis', 'Ecampus'],
       categories: [],
       synonyms: [],
+      excludeTrending: false,
     },
     {
       id: 'cff7960a-75e1-4dcb-b33f-a4b698d888c1',
@@ -67,6 +72,7 @@ export default {
       audiences: ['Corvallis', 'Ecampus'],
       categories: [],
       synonyms: ['library'],
+      excludeTrending: false,
     },
     {
       id: '99716ff5-1830-4088-8490-7a34ab57edf3',
@@ -78,6 +84,7 @@ export default {
       audiences: [],
       categories: ['Academic'],
       synonyms: ['store'],
+      excludeTrending: false,
     },
     {
       id: '9eade9cb-907f-4920-8d80-454a642d9e23',
@@ -89,6 +96,7 @@ export default {
       audiences: [],
       categories: [],
       synonyms: [],
+      excludeTrending: false,
     },
     {
       id: '0086200b-542b-4e70-b740-4e0de295a882',
@@ -117,6 +125,7 @@ export default {
         'study tables',
         'workshops',
       ],
+      excludeTrending: false,
     },
   ],
 };

@@ -66,6 +66,7 @@ describe('/resources', () => {
         audiences: ['Ecampus'],
         categories: [],
         synonyms: [],
+        excludeTrending: false,
       },
     ]);
   });
@@ -87,9 +88,7 @@ describe('/resources', () => {
   it('should return a 500 if the site is down', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
-    nock(BASE_URL)
-      .get(/.*/)
-      .reply(500);
+    nock(BASE_URL).get(/.*/).reply(500);
 
     await request.get('/api/resources').expect(500);
   });
@@ -104,9 +103,7 @@ describe('/resources', () => {
     it('should return a 500 if the site is down', async () => {
       mockCachedData.mockReturnValue(null);
       cache.getAsync = getAsync;
-      nock(BASE_URL)
-        .get(/.*/)
-        .reply(500);
+      nock(BASE_URL).get(/.*/).reply(500);
 
       await request.get('/api/resources/categories').expect(500);
     });
@@ -143,9 +140,7 @@ describe('/resources', () => {
     it('should return a 500 if the site is down', async () => {
       mockCachedData.mockReturnValue(null);
       cache.getAsync = getAsync;
-      nock(BASE_URL)
-        .get(/.*/)
-        .reply(500);
+      nock(BASE_URL).get(/.*/).reply(500);
 
       await request.get('/api/resources/category/featured').expect(500);
     });
