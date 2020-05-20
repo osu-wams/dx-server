@@ -50,12 +50,8 @@ export default {
               id: 31839819109196,
               ranking: 0,
               event_id: 31839819074947,
-              start: startDate()
-                .toISOString()
-                .slice(0, 10),
-              end: startDate()
-                .toISOString()
-                .slice(0, 10),
+              start: startDate().toISOString().slice(0, 10),
+              end: startDate().toISOString().slice(0, 10),
               all_day: false,
               num_attending: 0,
             },
@@ -149,12 +145,8 @@ export default {
               id: 31902001667478,
               ranking: 0,
               event_id: 31902001649423,
-              start: addDays(startDate(), 2)
-                .toISOString()
-                .slice(0, 10),
-              end: addDays(startDate(), 2)
-                .toISOString()
-                .slice(0, 10),
+              start: addDays(startDate(), 2).toISOString().slice(0, 10),
+              end: addDays(startDate(), 2).toISOString().slice(0, 10),
               all_day: false,
               num_attending: 0,
             },
@@ -168,7 +160,7 @@ export default {
           latitude: '44.559161',
           longitude: '-123.27852',
           street: null,
-          city: null,
+          city: 'Corvallis',
           state: null,
           country: null,
           zip: null,
@@ -234,12 +226,8 @@ export default {
               id: 31965230137778,
               ranking: 0,
               event_id: 31965230133015,
-              start: addDays(startDate(), 3)
-                .toISOString()
-                .slice(0, 10),
-              end: addDays(startDate(), 3)
-                .toISOString()
-                .slice(0, 10),
+              start: addDays(startDate(), 3).toISOString().slice(0, 10),
+              end: addDays(startDate(), 3).toISOString().slice(0, 10),
               all_day: false,
               num_attending: 0,
             },
@@ -253,7 +241,7 @@ export default {
           latitude: '44.55742',
           longitude: '-123.285611',
           street: null,
-          city: null,
+          city: 'Corvallis',
           state: null,
           country: null,
           zip: null,
@@ -354,12 +342,8 @@ export default {
               id: 32122778290228,
               ranking: 0,
               event_id: 32122778287035,
-              start: addDays(startDate(), 4)
-                .toISOString()
-                .slice(0, 10),
-              end: addDays(startDate(), 4)
-                .toISOString()
-                .slice(0, 10),
+              start: addDays(startDate(), 4).toISOString().slice(0, 10),
+              end: addDays(startDate(), 4).toISOString().slice(0, 10),
               all_day: false,
               num_attending: 0,
             },
@@ -373,7 +357,7 @@ export default {
           latitude: '44.567164',
           longitude: '-123.278692',
           street: null,
-          city: null,
+          city: 'Corvallis',
           state: null,
           country: null,
           zip: null,
@@ -458,12 +442,8 @@ export default {
               id: 31709247104655,
               ranking: 0,
               event_id: 30637707684794,
-              start: addDays(startDate(), 5)
-                .toISOString()
-                .slice(0, 10),
-              end: addDays(startDate(), 5)
-                .toISOString()
-                .slice(0, 10),
+              start: addDays(startDate(), 5).toISOString().slice(0, 10),
+              end: addDays(startDate(), 5).toISOString().slice(0, 10),
               all_day: false,
               num_attending: 0,
             },
