@@ -1,5 +1,5 @@
 import Parser from 'rss-parser';
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Types, User } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import config from 'config';
 import cache from './cache';
 import { fetchData } from '../util';
@@ -47,6 +47,15 @@ interface ILocalistEvents {
   events: ILocalistEvent[];
 }
 
+const getCampusCode = (campus_id?: number): string | undefined => {
+  if (campus_id === undefined) return undefined;
+  // get the key name matching by provided campus_id, then get the campus code value for that key.
+  // CAMPUS_IDS from configuration (ie. { corvallis: 1234, bend: 4321 })
+  // CAMPUS_CODES from @osu-wams/lib (ie. { corvallis: 'C', bend: 'B', ecampus: 'DSC' })
+  const campus_name = Object.keys(CAMPUS_IDS).find((k) => CAMPUS_IDS[k] === campus_id);
+  return User.CAMPUS_CODES[campus_name];
+};
+
 const mappedEvents = (events: ILocalistEvent[]): Types.LocalistEvent[] => {
   return events.map((e: ILocalistEvent) => ({
     action: {
@@ -58,6 +67,7 @@ const mappedEvents = (events: ILocalistEvent[]): Types.LocalistEvent[] => {
     title: e.event.title,
     type: 'localist',
     campus_id: e.event.campus_id,
+    campus_code: getCampusCode(e.event.campus_id),
     city: e.event.geo.city,
   }));
 };
