@@ -27,6 +27,7 @@ export const expectedEmployeeEvents = [
     title: 'The Road Less Traveled - Willamette Valley PhotoArts Guild Exhibit',
     type: 'localist',
     campus_id: 272,
+    campus_code: 'C',
     city: 'Corvallis',
   },
   {
@@ -41,6 +42,7 @@ export const expectedEmployeeEvents = [
     title: 'Bloodborne Pathogen Training for Non-Lab Workers',
     type: 'localist',
     campus_id: 272,
+    campus_code: 'C',
     city: 'Corvallis',
   },
   {
@@ -54,6 +56,7 @@ export const expectedEmployeeEvents = [
     title: 'PhD Preliminary Oral Exam',
     type: 'localist',
     campus_id: 272,
+    campus_code: 'C',
     city: 'Corvallis',
   },
   {
@@ -67,6 +70,7 @@ export const expectedEmployeeEvents = [
     title: 'Transfer Tuesdays at COCC',
     type: 'localist',
     campus_id: 273,
+    campus_code: 'B',
     city: 'Bend',
   },
 ];
