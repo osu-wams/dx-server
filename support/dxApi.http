@@ -67,7 +67,6 @@ GET {{baseUrl}}/jsonapi/node/dashboard_content HTTP/1.1
 GET {{baseUrl}}/jsonapi/node/release_notes HTTP/1.1
   ?fields[node--release_notes]=title,body,field_release_notes_date
   &filter[status]=1
-  &page[limit]=1
   &sort=-created
 
 ###
