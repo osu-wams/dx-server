@@ -369,17 +369,16 @@ export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
             status: 1,
           },
           sort: '-created',
-          page: {
-            limit: 1,
-          },
         }),
       mockedReleaseNotes,
     );
-    return data.map((d) => ({
-      title: d.title,
-      content: d.body.processed,
-      date: d.field_release_notes_date,
-    }));
+    return data
+      .map((d) => ({
+        title: d.title,
+        content: d.body.processed,
+        date: d.field_release_notes_date,
+      }))
+      .slice(0, 6);
   } catch (err) {
     throw err;
   }
