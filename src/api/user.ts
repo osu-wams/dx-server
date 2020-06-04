@@ -7,7 +7,7 @@ import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
 import { getClassification } from './modules/osu'; // eslint-disable-line no-unused-vars
 import User from './models/user'; // eslint-disable-line no-unused-vars
-import getUserMessages from './modules/dx-mcm';
+import { getUserMessages, updateUserMessage, UserMessageResponse } from './modules/dx-mcm'; // eslint-disable-line no-unused-vars
 
 const router: Router = Router();
 
@@ -70,21 +70,40 @@ router.post('/settings', async (req: Request, res: Response) => {
 });
 
 router.get('/messages', async (req: Request, res: Response) => {
-  let userMessages: Types.UserMessage[] = [];
   try {
     const osuId =
       req.user.groups.includes('masquerade') && req.user.masqueradeId
         ? req.user.masqueradedId
         : req.user.osuId;
-    userMessages = await asyncTimedFunction<Types.UserMessage[]>(
+    const response = await asyncTimedFunction<UserMessageResponse>(
       getUserMessages,
       'getUserMessages',
       [osuId],
     );
+    res.json(response);
   } catch (err) {
-    logger().error(`api/user/messages failed: ${err.message}, trace: ${err.stack}`);
+    logger().error(`GET api/user/messages failed: ${err.message}, trace: ${err.stack}`);
+    res.status(500).send({ message: 'Failed to fetch user messages.' });
   }
-  res.json(userMessages);
+});
+
+router.post('/messages', async (req: Request, res: Response) => {
+  try {
+    const { status, messageId }: { status: string; messageId: string } = req.body;
+    if (status.toLowerCase() !== 'read') {
+      throw new Error(`User message status ${status} update unsupported.`);
+    }
+    const user: User = req.user; // eslint-disable-line prefer-destructuring
+    const result = await asyncTimedFunction<any>(updateUserMessage, 'updateUserMessage', [
+      status,
+      messageId,
+      user.osuId,
+    ]);
+    res.json(result);
+  } catch (err) {
+    logger().error('POST api/user/messages failed:', err);
+    res.status(500).send({ message: 'Failed to update user message.' });
+  }
 });
 
 export default router;

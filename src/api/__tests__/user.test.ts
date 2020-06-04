@@ -1,6 +1,7 @@
 import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
+import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import app from '../../index';
 import { UserSettings } from '../models/user'; // eslint-disable-line no-unused-vars
@@ -14,6 +15,14 @@ const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unu
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
   getToken: () => Promise.resolve('bearer token'),
+}));
+
+const mockedGetUserMessages = jest.fn();
+const mockedUpdateUserMessage = jest.fn();
+jest.mock('../modules/dx-mcm.ts', () => ({
+  ...jest.requireActual('../modules/dx-mcm.ts'),
+  getUserMessages: async () => mockedGetUserMessages(),
+  updateUserMessage: async () => mockedUpdateUserMessage(),
 }));
 
 const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
@@ -93,6 +102,52 @@ describe('/api/user', () => {
         .post('/api/user/settings')
         .send(settings)
         .expect(500, { message: 'Failed to update users settings.' });
+    });
+  });
+
+  describe('get /messages', () => {
+    it('fetches user messages', async () => {
+      mockedGetUserMessages.mockReturnValue({ items: mockedUserMessages });
+      await request.get('/api/user/messages').expect(200, { items: mockedUserMessages });
+    });
+
+    it('returns an error for failed fetching messages', async () => {
+      mockedGetUserMessages.mockImplementation(async () => {
+        throw new Error('boom');
+      });
+      await request
+        .get('/api/user/messages')
+        .expect(500, { message: 'Failed to fetch user messages.' });
+    });
+  });
+
+  describe('post /messages', () => {
+    it('updates user message', async () => {
+      const updatedUserMessage = { ...mockedUserMessages[0], status: 'READ' };
+      mockedUpdateUserMessage.mockReturnValue({
+        userMessage: updatedUserMessage,
+      });
+      await request
+        .post('/api/user/messages')
+        .send({ status: 'READ', messageId: mockedUserMessages[0].messageId })
+        .expect(200, { userMessage: updatedUserMessage });
+    });
+
+    it('will not update a user message with an invalid status', async () => {
+      await request
+        .post('/api/user/messages')
+        .send({ status: 'invalid-status', messageId: mockedUserMessages[0].messageId })
+        .expect(500, { message: 'Failed to update user message.' });
+    });
+
+    it('returns an error for failed updating a message', async () => {
+      mockedUpdateUserMessage.mockImplementation(async () => {
+        throw new Error('boom');
+      });
+      await request
+        .post('/api/user/messages')
+        .send({ status: 'READ', messageId: mockedUserMessages[0].messageId })
+        .expect(500, { message: 'Failed to update user message.' });
     });
   });
 });

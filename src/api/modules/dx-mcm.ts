@@ -12,14 +12,15 @@ import { mockedUserMessages } from '../../mocks/dx-mcm';
 interface UserMessageApiResponse {
   action: string;
   object: {
-    userMessageResults: {
+    userMessageResults?: {
       items: Types.UserMessage[];
       count: number;
       lastKey?: string;
     };
+    userMessage?: Types.UserMessage;
   };
 }
-interface UserMessageResponse {
+export interface UserMessageResponse {
   items: Types.UserMessage[];
   lastKey?: string;
 }
@@ -30,6 +31,9 @@ const authHeader = () => {
 
 export const channelMessagesUrl = (osuId: string) =>
   `/api/v1/userMessages/channel/${DX_MCM_DASHBOARD_CHANNEL}/${osuId}`;
+
+export const userMessageStatusUrl = (status: string, messageId: string, osuId: string) =>
+  `/api/v1/userMessages/${status}/${DX_MCM_DASHBOARD_CHANNEL}/${messageId}/${osuId}`;
 
 /**
  * Get the users messages
@@ -58,4 +62,30 @@ export const getUserMessages = async (osuId: string): Promise<UserMessageRespons
   }
 };
 
-export default getUserMessages;
+/**
+ * Update the UserMessage status
+ * @returns {Promise<UserMessage>}
+ */
+export const updateUserMessage = async (
+  status: string,
+  messageId: string,
+  osuId: string,
+): Promise<Types.UserMessage> => {
+  try {
+    const url = `${DX_MCM_BASE_URL}${userMessageStatusUrl(status, messageId, osuId)}`;
+
+    const {
+      object: { userMessage },
+    }: UserMessageApiResponse = await fetchData(
+      () =>
+        cache.get(url, { json: true, headers: authHeader() }, true, {
+          key: url,
+          ttlSeconds: DX_MCM_CACHE_SEC,
+        }),
+      mockedUserMessages[0],
+    );
+    return userMessage;
+  } catch (err) {
+    throw err;
+  }
+};

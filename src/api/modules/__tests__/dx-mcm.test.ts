@@ -1,14 +1,27 @@
 import nock from 'nock';
 import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import { DX_MCM_BASE_URL } from '../../../constants';
-import getUserMessages, { channelMessagesUrl } from '../dx-mcm';
+import {
+  getUserMessages,
+  channelMessagesUrl,
+  userMessageStatusUrl,
+  updateUserMessage,
+} from '../dx-mcm';
 import cache from '../cache'; // eslint-disable-line no-unused-vars
 
+const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
+jest.mock('../cache.ts', () => ({
+  ...jest.requireActual('../cache.ts'),
+  setCache: () => mockedSetCache(),
+  selectDbAsync: () => jest.fn(),
+  getCache: () => mockedGetCache(),
+}));
 
 describe('DX Multi-Channel Message Module', () => {
-  const osuId = '111111111';
-  const apiResponse = {
+  const { osuId, messageId } = mockedUserMessages[0];
+  const status = 'read';
+  const getApiResponse = {
     action: 'userMessage-list',
     object: {
       userMessageResults: {
@@ -17,12 +30,17 @@ describe('DX Multi-Channel Message Module', () => {
       },
     },
   };
+  const updateApiResponse = {
+    action: 'userMessage-read',
+    object: {
+      userMessage: mockedUserMessages[0],
+    },
+  };
 
   describe('getUserMessages', () => {
     it('fetches a users current messages', async () => {
-      nock(DX_MCM_BASE_URL).get(channelMessagesUrl(osuId)).reply(200, apiResponse);
-      mockedGetCache.mockResolvedValue(apiResponse);
-      cache.get = mockedGetCache;
+      nock(DX_MCM_BASE_URL).get(channelMessagesUrl(osuId)).reply(200, getApiResponse);
+      mockedGetCache.mockResolvedValue(getApiResponse);
       const result = await getUserMessages(osuId);
       expect(result).toMatchObject({ items: mockedUserMessages, lastKey: undefined });
     });
@@ -32,7 +50,34 @@ describe('DX Multi-Channel Message Module', () => {
       try {
         await getUserMessages(osuId);
       } catch (error) {
-        expect(error).toEqual('boom');
+        expect(error.message).toMatch('500 - "boom"');
+      }
+    });
+  });
+
+  describe('updateUserMessage', () => {
+    it('updates a user messages', async () => {
+      const updatedUserMessage = { ...updateApiResponse.object.userMessage, status: 'READ' };
+      nock(DX_MCM_BASE_URL)
+        .get(userMessageStatusUrl(status, messageId, osuId))
+        .reply(200, {
+          action: updateApiResponse.action,
+          object: {
+            userMessage: updatedUserMessage,
+          },
+        });
+      mockedGetCache.mockResolvedValue(undefined);
+      const result = await updateUserMessage(status, messageId, osuId);
+      expect(result).toMatchObject({ ...mockedUserMessages[0], status: 'READ' });
+      expect(result).not.toMatchObject(mockedUserMessages[0]);
+    });
+
+    it('catches an error response', async () => {
+      nock(DX_MCM_BASE_URL).get(userMessageStatusUrl(status, messageId, osuId)).reply(500, 'boom');
+      try {
+        await updateUserMessage(status, messageId, osuId);
+      } catch (error) {
+        expect(error.message).toMatch('500 - "boom"');
       }
     });
   });
