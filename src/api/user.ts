@@ -7,7 +7,7 @@ import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
 import { getClassification } from './modules/osu'; // eslint-disable-line no-unused-vars
 import User from './models/user'; // eslint-disable-line no-unused-vars
-import { getUserMessages, updateUserMessage, UserMessageResponse } from './modules/dx-mcm'; // eslint-disable-line no-unused-vars
+import { getUserMessages, updateUserMessage } from './modules/dx-mcm';
 
 const router: Router = Router();
 
@@ -75,7 +75,7 @@ router.get('/messages', async (req: Request, res: Response) => {
       req.user.groups.includes('masquerade') && req.user.masqueradeId
         ? req.user.masqueradedId
         : req.user.osuId;
-    const response = await asyncTimedFunction<UserMessageResponse>(
+    const response = await asyncTimedFunction<Types.UserMessageItems>(
       getUserMessages,
       'getUserMessages',
       [osuId],
@@ -94,11 +94,11 @@ router.post('/messages', async (req: Request, res: Response) => {
       throw new Error(`User message status ${status} update unsupported.`);
     }
     const user: User = req.user; // eslint-disable-line prefer-destructuring
-    const result = await asyncTimedFunction<any>(updateUserMessage, 'updateUserMessage', [
-      status,
-      messageId,
-      user.osuId,
-    ]);
+    const result = await asyncTimedFunction<Types.UserMessage>(
+      updateUserMessage,
+      'updateUserMessage',
+      [status, messageId, user.osuId],
+    );
     res.json(result);
   } catch (err) {
     logger().error('POST api/user/messages failed:', err);
