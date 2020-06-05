@@ -20,10 +20,6 @@ interface UserMessageApiResponse {
     userMessage?: Types.UserMessage;
   };
 }
-export interface UserMessageResponse {
-  items: Types.UserMessage[];
-  lastKey?: string;
-}
 
 const authHeader = () => {
   return { 'x-api-key': DX_MCM_TOKEN };
@@ -37,9 +33,9 @@ export const userMessageStatusUrl = (status: string, messageId: string, osuId: s
 
 /**
  * Get the users messages
- * @returns {Promise<UserMessageResponse>}
+ * @returns {Promise<UserMessageItems>}
  */
-export const getUserMessages = async (osuId: string): Promise<UserMessageResponse> => {
+export const getUserMessages = async (osuId: string): Promise<Types.UserMessageItems> => {
   try {
     const url = `${DX_MCM_BASE_URL}${channelMessagesUrl(osuId)}`;
 
