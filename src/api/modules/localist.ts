@@ -53,6 +53,8 @@ const getCampusCode = (campus_id?: number): string | undefined => {
   // CAMPUS_IDS from configuration (ie. { corvallis: 1234, bend: 4321 })
   // CAMPUS_CODES from @osu-wams/lib (ie. { corvallis: ['C', 'J'], bend: ['B'], ecampus: ['DSC'] })
   const campus_name = Object.keys(CAMPUS_IDS).find((k) => CAMPUS_IDS[k] === campus_id);
+  // If there is no matching campus ID configuration, revert to it being applied to all (undefined)
+  if (!campus_name) return undefined;
   // Safe to use the first value of the campus codes for this campus name because filtering methods
   // take into account all codes when checking for association.
   return User.CAMPUS_CODES[campus_name][0];

@@ -65,6 +65,23 @@ describe('/events/employee', () => {
     await request.get('/api/events/employee').expect(200, expectedEmployeeEvents);
   });
 
+  it('should return events event when there is no matching campus id configuration matching', async () => {
+    const event = employeeEventsData.events[0];
+    event.event.campus_id = 9999;
+
+    mockedGetResponse.mockReturnValue({ ...employeeEventsData, events: [event] });
+    cache.get = mockedGet;
+    // Mock response from Localist
+    nock(LOCALIST_BASE_URL)
+      .get('')
+      .query(true)
+      .reply(200, { ...employeeEventsData, events: [event] });
+
+    const result = await request.get('/api/events/employee');
+    expect(result.body).toStrictEqual([{ ...expectedEmployeeEvents[0], campus_id: 9999 }]);
+    expect(result.body[0].campus_code).toBeUndefined();
+  });
+
   it('should return "Unable to retrieve employee events." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = mockedGet;
