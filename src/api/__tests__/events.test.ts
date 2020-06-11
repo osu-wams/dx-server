@@ -26,9 +26,7 @@ describe('/events', () => {
   it('should return "Unable to retrieve events." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = jest.fn().mockRejectedValue(new Error('boom'));
-    nock(LOCALIST_BASE_URL)
-      .get(/.*/)
-      .reply(500);
+    nock(LOCALIST_BASE_URL).get(/.*/).reply(500);
 
     await request.get('/api/events').expect(500, { message: 'Unable to retrieve events.' });
   });
@@ -39,12 +37,9 @@ describe('/events/academic-calendar', () => {
     mockedGetResponse.mockReturnValue(academicCalendarData.xml);
     cache.get = mockedGet;
     // Mock response from Localist
-    nock(ACADEMIC_CALENDAR_URL)
-      .get('')
-      .query(true)
-      .reply(200, academicCalendarData.xml, {
-        'Content-Type': 'application/xml',
-      });
+    nock(ACADEMIC_CALENDAR_URL).get('').query(true).reply(200, academicCalendarData.xml, {
+      'Content-Type': 'application/xml',
+    });
 
     await request.get('/api/events/academic-calendar').expect(200, academicCalendarData.response);
   });
@@ -52,9 +47,7 @@ describe('/events/academic-calendar', () => {
   it('should return "Unable to retrieve academic calendar events." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = mockedGet;
-    nock(ACADEMIC_CALENDAR_URL)
-      .get('')
-      .reply(500);
+    nock(ACADEMIC_CALENDAR_URL).get('').reply(500);
 
     await request
       .get('/api/events/academic-calendar')
@@ -67,10 +60,7 @@ describe('/events/employee', () => {
     mockedGetResponse.mockReturnValue(employeeEventsData);
     cache.get = mockedGet;
     // Mock response from Localist
-    nock(LOCALIST_BASE_URL)
-      .get('')
-      .query(true)
-      .reply(200, employeeEventsData);
+    nock(LOCALIST_BASE_URL).get('').query(true).reply(200, employeeEventsData);
 
     await request.get('/api/events/employee').expect(200, expectedEmployeeEvents);
   });
@@ -78,9 +68,7 @@ describe('/events/employee', () => {
   it('should return "Unable to retrieve employee events." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = mockedGet;
-    nock(LOCALIST_BASE_URL)
-      .get('')
-      .reply(500);
+    nock(LOCALIST_BASE_URL).get('').reply(500);
 
     await request
       .get('/api/events/employee')

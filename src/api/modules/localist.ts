@@ -48,12 +48,14 @@ interface ILocalistEvents {
 }
 
 const getCampusCode = (campus_id?: number): string | undefined => {
-  if (campus_id === undefined) return undefined;
+  if (!campus_id) return undefined;
   // get the key name matching by provided campus_id, then get the campus code value for that key.
   // CAMPUS_IDS from configuration (ie. { corvallis: 1234, bend: 4321 })
-  // CAMPUS_CODES from @osu-wams/lib (ie. { corvallis: 'C', bend: 'B', ecampus: 'DSC' })
+  // CAMPUS_CODES from @osu-wams/lib (ie. { corvallis: ['C', 'J'], bend: ['B'], ecampus: ['DSC'] })
   const campus_name = Object.keys(CAMPUS_IDS).find((k) => CAMPUS_IDS[k] === campus_id);
-  return User.CAMPUS_CODES[campus_name];
+  // Safe to use the first value of the campus codes for this campus name because filtering methods
+  // take into account all codes when checking for association.
+  return User.CAMPUS_CODES[campus_name][0];
 };
 
 const mappedEvents = (events: ILocalistEvent[]): Types.LocalistEvent[] => {
