@@ -3,13 +3,13 @@ import logger from './logger';
 export const asyncTimedFunction = async <T>(
   fn: Function,
   metricName: string,
-  args: Array<any>
+  args: Array<any>,
 ): Promise<T> => {
   const promised = (): Promise<T> =>
     new Promise((resolve, reject) => {
       fn(...args)
         .then((data: T) => resolve(data))
-        .catch(err => reject(err));
+        .catch((err) => reject(err));
     });
   try {
     const started = process.hrtime();
@@ -20,10 +20,11 @@ export const asyncTimedFunction = async <T>(
     logger().debug(`${metricName} took ${elapsedMs}ms`, {
       elapsedMs,
       metricName,
-      metricType: 'timed-function'
+      metricType: 'timed-function',
     });
     return result;
   } catch (err) {
+    logger().error(`${metricName} failed:`, err);
     throw err;
   }
 };
