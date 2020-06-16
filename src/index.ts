@@ -107,17 +107,18 @@ app.post(
     try {
       logger().debug('/login/saml after authenticate, detecting user');
       const { user, isNew } = await findOrUpsertUser(req.user);
-      if (isNew && user && user.isStudent()) {
+      if (isNew && user?.isStudent()) {
         res.redirect('/canvas/login');
-      } else if (user && user.isCanvasOptIn) {
+      } else if (user?.isCanvasOptIn) {
         if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
         res.redirect('/canvas/refresh');
       } else {
         logger().debug(`/login/saml redirecting to: ${req.session.returnUrl}`);
         redirectReturnUrl(req, res, user);
       }
-    } catch (err) {
-      logger().error('/login/saml error:', err);
+    } catch (error) {
+      logger().error('App Error', { error: '/login/saml failed', stack: error });
+      res.redirect('/error.html');
     }
   },
 );
