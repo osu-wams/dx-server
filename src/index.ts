@@ -92,18 +92,35 @@ app.get('/healthcheck', (req, res) => {
   });
 });
 
-app.post('/login/saml', passport.authenticate('saml'), async (req, res) => {
-  const { user, isNew } = await findOrUpsertUser(req.user);
-  if (isNew && user.isStudent()) {
-    res.redirect('/canvas/login');
-  } else if (user.isCanvasOptIn) {
-    if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
-    res.redirect('/canvas/refresh');
-  } else {
-    logger().debug(`/login/saml redirecting to: ${req.session.returnUrl}`);
-    redirectReturnUrl(req, res, user);
-  }
-});
+app.post(
+  '/login/saml',
+  async (req, res, next) => {
+    logger().debug(
+      `/login/saml before authenticate full request body and session`,
+      req.body,
+      req.session,
+    );
+    next();
+  },
+  passport.authenticate('saml'),
+  async (req, res) => {
+    try {
+      logger().debug('/login/saml after authenticate, detecting user');
+      const { user, isNew } = await findOrUpsertUser(req.user);
+      if (isNew && user && user.isStudent()) {
+        res.redirect('/canvas/login');
+      } else if (user && user.isCanvasOptIn) {
+        if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
+        res.redirect('/canvas/refresh');
+      } else {
+        logger().debug(`/login/saml redirecting to: ${req.session.returnUrl}`);
+        redirectReturnUrl(req, res, user);
+      }
+    } catch (err) {
+      logger().error('/login/saml error:', err);
+    }
+  },
+);
 
 app.get('/logout/saml', (req, res) => {
   req.logout();
