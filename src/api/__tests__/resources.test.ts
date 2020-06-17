@@ -250,47 +250,68 @@ describe('/resources', () => {
     });
 
     describe('post: /resources/favorites', () => {
-      beforeEach(async () => {
-        // Authenticate before each request
-        await request.get('/login');
+      describe('without a user session', () => {
+        beforeEach(async () => {
+          jest.resetAllMocks();
+          // hackish way to kill the temporary test session
+          await request.get('/logout/saml');
+        });
+
+        it('should return an empty resource', async () => {
+          await request
+            .post('/api/resources/favorites')
+            .send({
+              active: true,
+              order: 1,
+              resourceId: 'asdf',
+            })
+            .expect(400);
+        });
       });
 
-      it('should save a favorite resource', async () => {
-        mockedSetCache.mockReturnValue(true);
-        mockDynamoDb.scan.mockImplementationOnce(() =>
-          Promise.resolve({ Items: [favoriteResourceItem] }),
-        );
-        mockDynamoDb.putItem.mockImplementationOnce(() =>
-          Promise.resolve({ Item: favoriteResourceItem }),
-        );
-        const response = await request
-          .post('/api/resources/favorites')
-          .send({
-            active: true,
-            order: 1,
-            resourceId: 'asdf',
-          })
-          .expect(200);
-        expect(response.body.active).toBe(true);
-        expect(response.body.order).toBe(1);
-        expect(response.body.osuId).toBe(111111111);
-        expect(response.body.resourceId).toBe('asdf');
-        expect(response.body.created).not.toBeNull();
-      });
+      describe('as a logged in user', () => {
+        beforeEach(async () => {
+          // Authenticate before each request
+          await request.get('/login');
+        });
 
-      it('should return a 500 if an error occurs', async () => {
-        mockDynamoDb.putItem.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident')),
-        );
+        it('should save a favorite resource', async () => {
+          mockedSetCache.mockReturnValue(true);
+          mockDynamoDb.scan.mockImplementationOnce(() =>
+            Promise.resolve({ Items: [favoriteResourceItem] }),
+          );
+          mockDynamoDb.putItem.mockImplementationOnce(() =>
+            Promise.resolve({ Item: favoriteResourceItem }),
+          );
+          const response = await request
+            .post('/api/resources/favorites')
+            .send({
+              active: true,
+              order: 1,
+              resourceId: 'asdf',
+            })
+            .expect(200);
+          expect(response.body.active).toBe(true);
+          expect(response.body.order).toBe(1);
+          expect(response.body.osuId).toBe(111111111);
+          expect(response.body.resourceId).toBe('asdf');
+          expect(response.body.created).not.toBeNull();
+        });
 
-        await request
-          .post('/api/resources/favorites')
-          .send({
-            active: true,
-            order: 1,
-            resourceId: 'asdf',
-          })
-          .expect(500, { message: {} });
+        it('should return a 500 if an error occurs', async () => {
+          mockDynamoDb.putItem.mockImplementationOnce(() =>
+            Promise.reject(new Error('happy little accident')),
+          );
+
+          await request
+            .post('/api/resources/favorites')
+            .send({
+              active: true,
+              order: 1,
+              resourceId: 'asdf',
+            })
+            .expect(500, { message: {} });
+        });
       });
     });
   });

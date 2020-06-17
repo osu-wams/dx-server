@@ -105,20 +105,25 @@ router.get('/favorites', async (req: Request, res: Response) => {
 
 router.post('/favorites', async (req: Request, res: Response) => {
   try {
-    const { resourceId, active, order } = req.body;
-    const osuId =
-      req.user.groups.includes('masquerade') && req.user.masqueradeId
-        ? req.user.masqueradeId
-        : req.user.osuId;
+    if (!req.user) {
+      logger().debug('api/resources/favorites post had no user session, returning empty response');
+      res.status(400).send({});
+    } else {
+      const { resourceId, active, order } = req.body;
+      const osuId =
+        req.user.groups.includes('masquerade') && req.user.masqueradeId
+          ? req.user.masqueradeId
+          : req.user.osuId;
 
-    const data = await FavoriteResource.upsert({
-      active,
-      created: new Date().toISOString(),
-      order,
-      osuId,
-      resourceId,
-    });
-    res.send(data);
+      const data = await FavoriteResource.upsert({
+        active,
+        created: new Date().toISOString(),
+        order,
+        osuId,
+        resourceId,
+      });
+      res.send(data);
+    }
   } catch (err) {
     logger().error(`api/resources/favorites failed:`, err);
     res.status(500).send({ message: err });
