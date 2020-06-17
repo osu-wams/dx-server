@@ -6,7 +6,15 @@ import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
 import { isNullOrUndefined } from 'util';
-import { APP_VERSION, ENV, REDIS_HOST, REDIS_PORT, SESSION_SECRET, USE_MOCKS } from './constants';
+import {
+  APP_VERSION,
+  COOKIE_NAME,
+  ENV,
+  REDIS_HOST,
+  REDIS_PORT,
+  SESSION_SECRET,
+  USE_MOCKS,
+} from './constants';
 import Auth from './auth';
 import { redirectReturnUrl, setSessionReturnUrl, setJWTSessionUser } from './utils/routing';
 import logger, { expressLogger, sessionLogger } from './logger';
@@ -39,9 +47,7 @@ interface SessionOptions {
 }
 // Configure Sessions
 const sessionOptions: SessionOptions = {
-  name: 'dx',
-  // NOTE: Session secret should be set via environment variable
-  //       during deploy. Do not use the default value in production.
+  name: COOKIE_NAME,
   secret: SESSION_SECRET,
   saveUninitialized: false,
   resave: false,
@@ -125,7 +131,10 @@ app.post(
 
 app.get('/logout/saml', (req, res) => {
   req.session.destroy((err) => {
-    logger().error('/logout/saml session destroy failed.', err);
+    if (err) {
+      logger().error('/logout/saml session destroy failed.', err);
+    }
+    res.clearCookie(COOKIE_NAME);
     res.redirect('/');
   });
 });

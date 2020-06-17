@@ -31,6 +31,7 @@ import {
   SAML_LOGOUT_CALLBACK_URL,
   SAML_PVK,
   SAML_URL,
+  COOKIE_NAME,
 } from './constants';
 
 interface Auth {
@@ -193,6 +194,7 @@ Auth.logout = (req: Request, res: Response) => {
         if (sessionError) {
           logger().error('Auth.passportStrategy.logout session destroy failed.', sessionError);
         }
+        res.clearCookie(COOKIE_NAME);
         res.redirect(uri);
       });
     });

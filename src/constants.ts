@@ -15,6 +15,7 @@ const CANVAS_OAUTH_ID: string = config.get('canvasOauth.id');
 const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
 const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
+const COOKIE_NAME: string = 'dx';
 const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
 const DX_MCM_BASE_URL: string = config.get('dxMcmApi.baseUrl');
 const DX_MCM_CACHE_SEC = parseInt(config.get('dxMcmApi.cacheEndpointSec'), 10);
@@ -54,6 +55,7 @@ export {
   CANVAS_OAUTH_SCOPE,
   CANVAS_OAUTH_SECRET,
   CANVAS_OAUTH_TOKEN_URL,
+  COOKIE_NAME,
   DYNAMODB_TABLE_PREFIX,
   DX_MCM_BASE_URL,
   DX_MCM_CACHE_SEC,
