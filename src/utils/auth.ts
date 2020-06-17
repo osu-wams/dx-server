@@ -18,8 +18,8 @@ const parseSamlResult = (profile: any, done: any) => {
     primaryAffiliation: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.5'], // 'employee'
     nameID: profile.nameID,
     nameIDFormat: profile.nameIDFormat,
-    firstName: profile['urn:oid:2.5.4.42'], // 'Bob'
-    lastName: profile['urn:oid:2.5.4.4'], // 'Ross'
+    firstName: profile['urn:oid:2.5.4.42'] || 'Not Provided', // 'Bob'
+    lastName: profile['urn:oid:2.5.4.4'] || 'Not Provided', // 'Ross'
     groups: [],
     affiliations: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.1'], // ['member', 'employee']
     isAdmin: false,
