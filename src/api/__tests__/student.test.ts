@@ -57,6 +57,19 @@ describe('/api/student', () => {
   });
 
   describe('/academic-status', () => {
+    it('should return empty status data when the current academic standing is null', async () => {
+      mockedGetResponse.mockReturnValue({
+        links: { self: 'bogus' },
+        data: [{ ...academicStatusData.data[1], academicStanding: null }],
+      });
+      cache.get = mockedGet;
+      // Mock response from Apigee
+      nock(APIGEE_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/academic-status/)
+        .query(true)
+        .reply(200, academicStatusData);
+      await request.get('/api/student/academic-status').expect(200, {});
+    });
     it('should return academic status data for the current user', async () => {
       mockedGetResponse.mockReturnValue(academicStatusData);
       cache.get = mockedGet;
