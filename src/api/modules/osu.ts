@@ -114,12 +114,15 @@ export const getAcademicStatus = async (
         return 0;
       });
       const latestTerm = sorted[0];
-      // Get the most recent term which has a valid academicStanding (at times the upcoming term will not include this)
+      // Get the most recent term which has a valid academicStanding (at times the upcoming term will not include this,
+      // in which case the academic standing isn't returned and falls through to the empty object return)
       const latestTermWithStanding = sorted.find((a) => a.attributes.academicStanding !== null);
-      return {
-        academicStanding: latestTermWithStanding.attributes.academicStanding,
-        term: latestTerm.attributes.term,
-      };
+      if (latestTermWithStanding) {
+        return {
+          academicStanding: latestTermWithStanding.attributes.academicStanding,
+          term: latestTerm.attributes.term,
+        };
+      }
     }
     return {};
   } catch (err) {
