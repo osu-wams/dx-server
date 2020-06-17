@@ -189,9 +189,13 @@ class User {
         ReturnValues: 'NONE',
       };
 
-      const result = await asyncTimedFunction(putItem, 'User:putItem', [params]);
-      logger().silly('User.upsert succeeded:', result);
-      return props;
+      await asyncTimedFunction(putItem, 'User:putItem', [params]);
+      const user = await User.find(props.osuId);
+      if (!user) {
+        throw new Error(`putItem followed by find failed for user: ${props.osuId}`);
+      }
+      logger().debug('User.upsert succeeded:', user);
+      return user;
     } catch (err) {
       logger().error(`User.upsert failed:`, props, err);
       throw err;
