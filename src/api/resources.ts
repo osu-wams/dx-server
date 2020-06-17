@@ -105,7 +105,6 @@ router.get('/favorites', async (req: Request, res: Response) => {
 
 router.post('/favorites', async (req: Request, res: Response) => {
   try {
-    logger().debug('hereherhehreklajdlfkjaldskfj', req.user);
     if (!req.user) {
       logger().debug('api/resources/favorites post had no user session, returning empty response');
       res.status(400).send({});
