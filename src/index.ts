@@ -124,8 +124,10 @@ app.post(
 );
 
 app.get('/logout/saml', (req, res) => {
-  req.logout();
-  res.redirect('/');
+  req.session.destroy((err) => {
+    logger().error('/logout/saml session destroy failed.', err);
+    res.redirect('/');
+  });
 });
 
 app.get('/canvas/login', passport.authorize('oauth2'));
