@@ -28,7 +28,7 @@ const loggerOptions: LoggerOptions = {
   level: LOG_LEVEL,
   levels: winstonConfig.npm.levels,
   format: combine(timestamp(), json()),
-  dynamicMeta: (req, res, err) => ({ sessionID: req.session.id }),
+  dynamicMeta: (req, res, err) => ({ sessionID: req.session?.id }),
 };
 /* eslint-enable no-unused-vars */
 
