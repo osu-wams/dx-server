@@ -235,7 +235,7 @@ export const getCuratedResources = async (category: string): Promise<Types.Resou
     if (entityQueueTitle?.indexOf(':') > -1) {
       // eslint-disable-next-line no-unused-vars
       const [affiliationToDiscard, queueTitle] = entityQueueTitle.split(':');
-      entityQueueTitle = queueTitle;
+      entityQueueTitle = queueTitle.trim();
     }
 
     // Clean up the results and include the entityque title

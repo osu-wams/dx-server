@@ -38,7 +38,7 @@ export const updateItem = jest.fn((params: AWS.DynamoDB.UpdateItemInput) => {
   });
 });
 
-const mockGetItemReturn = {
+export const mockGetItemReturn = jest.fn(() => ({
   Item: {
     osuId: { N: '8675309' },
     firstName: { S: 'Bob' },
@@ -50,25 +50,21 @@ const mockGetItemReturn = {
     canvasRefreshToken: { S: '' },
     canvasOptIn: { BOOL: false },
   },
-};
+}));
 
 export const getItem = jest.fn((params: AWS.DynamoDB.GetItemInput) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
-      if (mockGetItemReturn) resolve(mockGetItemReturn);
+      if (mockGetItemReturn) resolve(mockGetItemReturn());
       else reject(new Error('happy little accident'));
     });
   });
 });
 
-const mockPutItemReturn = {
-  thisIsnt: 'used, or necessary yet.',
-};
-
 export const putItem = jest.fn((params: AWS.DynamoDB.PutItemInput) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
-      if (mockPutItemReturn) resolve(mockPutItemReturn);
+      if (mockGetItemReturn) resolve(mockGetItemReturn());
       else reject(new Error('happy little accident'));
     });
   });
