@@ -110,6 +110,19 @@ describe('/resources', () => {
   });
 
   describe('Entityqueue /resources/category/:machineName', () => {
+    it('should fetch and filter the employee featured data', async () => {
+      mockCachedData.mockReturnValue(null);
+      cache.getAsync = getAsync;
+      cache.setAsync = setAsync;
+      nock(BASE_URL)
+        .get(/.*/)
+        .reply(200, {
+          data: [{ ...mockedCuratedResources('featured')[0], title: 'Employee : Featured' }],
+        });
+      await request
+        .get('/api/resources/category/featured')
+        .expect(200, mockedCuratedResourcesFeaturedExpected);
+    });
     it('should fetch and filter the data', async () => {
       mockCachedData.mockReturnValue(null);
       cache.getAsync = getAsync;
