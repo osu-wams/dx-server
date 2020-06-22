@@ -1,6 +1,12 @@
-import User from '../../api/models/user'; // eslint-disable-line no-unused-vars
-import parseSamlResult, { encrypt, decrypt, issueJWT, userFromJWT } from '../auth';
-import { ENCRYPTION_KEY, GROUPS, JWT_KEY } from '../../constants';
+import User from '@src/api/models/user'; // eslint-disable-line no-unused-vars
+import parseSamlResult, {
+  encrypt,
+  decrypt,
+  issueJWT,
+  userFromJWT,
+  lastLogin,
+} from '@src/utils/auth';
+import { ENCRYPTION_KEY, GROUPS, JWT_KEY } from '@src/constants';
 
 const mockedDone = jest.fn();
 const mockSaml = {
@@ -13,6 +19,7 @@ const mockSaml = {
   'urn:oid:2.5.4.4': 'Ross',
   'urn:oid:1.3.6.1.4.1.5923.1.1.1.7': [GROUPS.admin, GROUPS.masquerade],
   'urn:oid:1.3.6.1.4.1.5923.1.1.1.1': ['member', 'employee'],
+  'urn:oid:0.9.2342.19200300.100.1.1': 'rossb',
 };
 const mockUser = {
   affiliations: ['member', 'employee'],
@@ -25,6 +32,8 @@ const mockUser = {
   nameIDFormat: 'somelongnameidformat',
   osuId: 123456789,
   primaryAffiliation: 'employee',
+  onid: 'rossb',
+  lastLogin: lastLogin(),
 };
 const mockedSetAsync = jest.fn();
 const mockedGetCache = jest.fn();

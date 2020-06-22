@@ -1,5 +1,5 @@
-import User from '../models/user'; // eslint-disable-line no-unused-vars
-import logger from '../../logger';
+import User from '@src/api/models/user'; // eslint-disable-line no-unused-vars
+import logger from '@src/logger';
 
 export interface SamlUser {
   osu_id: string; // eslint-disable-line camelcase
@@ -10,6 +10,8 @@ export interface SamlUser {
   primaryAffiliation: string;
   affiliations: string[];
   groups: string[];
+  onid: string;
+  lastLogin: string;
 }
 
 interface FindOrUpsertUser {
@@ -48,6 +50,8 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
       user.firstName !== u.firstName ||
       user.lastName !== u.lastName ||
       user.primaryAffiliation !== u.primaryAffiliation ||
+      user.onid !== u.onid ||
+      user.lastLogin !== u.lastLogin ||
       !arraysMatch(user.groups, u.groups) ||
       !arraysMatch(user.affiliations, u.affiliations)
     ) {
@@ -57,6 +61,8 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
       user.primaryAffiliation = u.primaryAffiliation;
       user.affiliations = u.affiliations;
       user.groups = u.groups;
+      user.onid = u.onid;
+      user.lastLogin = u.lastLogin;
       user = await User.upsert(user);
     }
 

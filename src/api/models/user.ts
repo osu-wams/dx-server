@@ -1,8 +1,8 @@
 import config from 'config';
-import logger from '../../logger';
-import { asyncTimedFunction } from '../../tracer';
-import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
-import { scan, updateItem, getItem, putItem } from '../../db';
+import logger from '@src/logger';
+import { asyncTimedFunction } from '@src/tracer';
+import { SamlUser } from '@src/api/modules/user-account'; // eslint-disable-line no-unused-vars
+import { scan, updateItem, getItem, putItem } from '@src/db';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 
@@ -47,6 +47,8 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   audienceOverride?: { M: AudienceOverrideItem };
   primaryAffiliationOverride?: { S: string };
   theme?: { S: string };
+  onid?: { S: string };
+  lastLogin?: { S: string };
 }
 
 class User {
@@ -106,6 +108,12 @@ class User {
   /** User initiated setting to set the application theme, defaults to light theme */
   theme?: string = 'light';
 
+  /** Users ONID */
+  onid?: string = '';
+
+  /** Last datetime the user logged in */
+  lastLogin?: string = '';
+
   static TABLE_NAME: string = `${tablePrefix}-Users`;
 
   /**
@@ -124,6 +132,8 @@ class User {
       this.primaryAffiliation = params.primaryAffiliation;
       this.affiliations = params.affiliations;
       this.groups = params.groups;
+      this.onid = params.onid;
+      this.lastLogin = params.lastLogin;
     }
 
     if (p.dynamoDbUser) {
@@ -158,6 +168,8 @@ class User {
         this.primaryAffiliationOverride = params.Item.primaryAffiliationOverride.S;
       if (params.Item.affiliations) this.affiliations = params.Item.affiliations.SS;
       if (params.Item.groups) this.groups = params.Item.groups.SS;
+      if (params.Item.onid) this.onid = params.Item.onid.S;
+      if (params.Item.lastLogin) this.lastLogin = params.Item.lastLogin.S;
     }
   }
 
@@ -430,6 +442,8 @@ class User {
       Item.primaryAffiliationOverride = { S: props.primaryAffiliationOverride };
     }
     if (props.groups.length > 0) Item.groups = { SS: props.groups };
+    if (props.onid) Item.onid = { S: props.onid };
+    if (props.lastLogin) Item.lastLogin = { S: props.lastLogin };
     return Item;
   };
 }

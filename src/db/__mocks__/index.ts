@@ -1,3 +1,5 @@
+import { lastLogin } from '@src/utils/auth';
+
 /* eslint-disable no-unused-vars */
 export const mockQueryReturn = jest.fn();
 
@@ -49,6 +51,8 @@ export const mockGetItemReturn = jest.fn(() => ({
     affiliations: { SS: ['employee'] },
     canvasRefreshToken: { S: '' },
     canvasOptIn: { BOOL: false },
+    onid: { S: 'rossb' },
+    lastLogin: { S: lastLogin() },
   },
 }));
 

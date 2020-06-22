@@ -1,3 +1,5 @@
+import { lastLogin } from '@src/utils/auth';
+
 /* eslint-disable no-unused-vars */
 export const mockUser = {
   osuId: 123456,
@@ -10,6 +12,8 @@ export const mockUser = {
   groups: [],
   affiliations: ['employee'],
   isStudent: () => false,
+  onid: 'rossb',
+  lastLogin: lastLogin(),
 };
 
 export const mockInsertReturn = mockUser;
