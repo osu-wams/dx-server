@@ -1,12 +1,6 @@
-import User from '@src/api/models/user'; // eslint-disable-line no-unused-vars
-import parseSamlResult, {
-  encrypt,
-  decrypt,
-  issueJWT,
-  userFromJWT,
-  lastLogin,
-} from '@src/utils/auth';
-import { ENCRYPTION_KEY, GROUPS, JWT_KEY } from '@src/constants';
+import User from '../../api/models/user'; // eslint-disable-line no-unused-vars
+import parseSamlResult, { encrypt, decrypt, issueJWT, userFromJWT, lastLogin } from '../auth';
+import { ENCRYPTION_KEY, GROUPS, JWT_KEY } from '../../constants';
 
 const mockedDone = jest.fn();
 const mockSaml = {

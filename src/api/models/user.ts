@@ -1,8 +1,8 @@
 import config from 'config';
-import logger from '@src/logger';
-import { asyncTimedFunction } from '@src/tracer';
-import { SamlUser } from '@src/api/modules/user-account'; // eslint-disable-line no-unused-vars
-import { scan, updateItem, getItem, putItem } from '@src/db';
+import logger from '../../logger';
+import { asyncTimedFunction } from '../../tracer';
+import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
+import { scan, updateItem, getItem, putItem } from '../../db';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 

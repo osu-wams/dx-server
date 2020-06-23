@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { getCache, AUTH_DB, setAsync, selectDbAsync } from '@src/api/modules/cache';
-import { ENV, GROUPS, IV_LENGTH } from '@src/constants';
-import User from '@src/api/models/user'; // eslint-disable-line no-unused-vars
-import logger from '@src/logger';
+import { getCache, AUTH_DB, setAsync, selectDbAsync } from '../api/modules/cache';
+import { ENV, GROUPS, IV_LENGTH } from '../constants';
+import User from '../api/models/user'; // eslint-disable-line no-unused-vars
+import logger from '../logger';
 
 interface Jwt {
   user: User;
