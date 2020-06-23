@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk'; // eslint-disable-line no-unused-vars
-import { lastLogin } from '@src/utils/auth';
-import { SamlUser } from '@src/api/modules/user-account'; // eslint-disable-line no-unused-vars
-import User from '@src/api/models/user';
-import * as dynamoDb from '@src/db';
+import { lastLogin } from '../../../utils/auth';
+import { SamlUser } from '../../modules/user-account'; // eslint-disable-line no-unused-vars
+import User from '../user';
+import * as dynamoDb from '../../../db';
 
 jest.mock('../../../db');
 const mockDynamoDb = dynamoDb as jest.Mocked<any>;

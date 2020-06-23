@@ -1,5 +1,5 @@
-import User from '@src/api/models/user'; // eslint-disable-line no-unused-vars
-import logger from '@src/logger';
+import User from '../models/user'; // eslint-disable-line no-unused-vars
+import logger from '../../logger';
 
 export interface SamlUser {
   osu_id: string; // eslint-disable-line camelcase

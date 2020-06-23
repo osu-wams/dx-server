@@ -1,4 +1,4 @@
-import { lastLogin } from '@src/utils/auth';
+import { lastLogin } from '../../utils/auth';
 
 /* eslint-disable no-unused-vars */
 export const mockQueryReturn = jest.fn();
