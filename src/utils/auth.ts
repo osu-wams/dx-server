@@ -1,15 +1,17 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { getCache, AUTH_DB, setAsync, selectDbAsync } from '../api/modules/cache';
-import { ENV, GROUPS, IV_LENGTH } from '../constants';
-import User from '../api/models/user'; // eslint-disable-line no-unused-vars
-import logger from '../logger';
+import { getCache, AUTH_DB, setAsync, selectDbAsync } from '@src/api/modules/cache';
+import { ENV, GROUPS, IV_LENGTH } from '@src/constants';
+import User from '@src/api/models/user'; // eslint-disable-line no-unused-vars
+import logger from '@src/logger';
 
 interface Jwt {
   user: User;
   iat: number;
 }
+
+export const lastLogin = (): string => new Date().toISOString().slice(0, 10);
 
 const parseSamlResult = (profile: any, done: any) => {
   const user = {
@@ -23,6 +25,8 @@ const parseSamlResult = (profile: any, done: any) => {
     groups: [],
     affiliations: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.1'], // ['member', 'employee']
     isAdmin: false,
+    onid: profile['urn:oid:0.9.2342.19200300.100.1.1'], // 'rossb'
+    lastLogin: lastLogin(),
   };
 
   const permissions = profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.7'] || [];

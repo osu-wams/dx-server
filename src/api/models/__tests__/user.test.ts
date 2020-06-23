@@ -1,7 +1,8 @@
 import AWS from 'aws-sdk'; // eslint-disable-line no-unused-vars
-import { SamlUser } from '../../modules/user-account'; // eslint-disable-line no-unused-vars
-import User from '../user';
-import * as dynamoDb from '../../../db';
+import { lastLogin } from '@src/utils/auth';
+import { SamlUser } from '@src/api/modules/user-account'; // eslint-disable-line no-unused-vars
+import User from '@src/api/models/user';
+import * as dynamoDb from '@src/db';
 
 jest.mock('../../../db');
 const mockDynamoDb = dynamoDb as jest.Mocked<any>;
@@ -15,6 +16,8 @@ const samlUser: SamlUser = {
   primaryAffiliation: 'employee',
   affiliations: ['employee'],
   groups: [],
+  onid: 'rossb',
+  lastLogin: lastLogin(),
 };
 
 let dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
@@ -28,6 +31,8 @@ let dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
     affiliations: { SS: ['employee'] },
     canvasRefreshToken: { S: 'refresh-me' },
     canvasOptIn: { BOOL: true },
+    onid: { S: samlUser.onid },
+    lastLogin: { S: samlUser.lastLogin },
   },
 };
 
@@ -52,6 +57,8 @@ describe('User model', () => {
       expect(user.refreshToken).toEqual('');
       expect(user.primaryAffiliation).toEqual('employee');
       expect(user.affiliations).toEqual(['employee']);
+      expect(user.onid).toEqual(samlUser.onid);
+      expect(user.lastLogin).toEqual(samlUser.lastLogin);
       expect(user.isStudent()).toBeFalsy();
     });
 
@@ -90,6 +97,8 @@ describe('User model', () => {
         expect(user.primaryAffiliation).toEqual(dynamoDbUser.Item.primaryAffiliation.S);
         expect(user.affiliations).toEqual(dynamoDbUser.Item.affiliations.SS);
         expect(user.isStudent()).toBeFalsy();
+        expect(user.onid).toEqual(dynamoDbUser.Item.onid.S);
+        expect(user.lastLogin).toEqual(dynamoDbUser.Item.lastLogin.S);
       });
       it('builds a User missing some data', () => {
         dynamoDbUser = {
