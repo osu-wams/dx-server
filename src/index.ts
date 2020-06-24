@@ -111,15 +111,20 @@ app.post(
   passport.authenticate('saml'),
   async (req, res) => {
     try {
-      logger().debug('/login/saml after authenticate, detecting user');
-      const { user, isNew } = await findOrUpsertUser(req.user);
+      logger().debug('/login/saml authenticated user, fetching updated record and setting session');
+      const { user: foundUser, isNew } = await findOrUpsertUser(req.user);
+      req.session.passport.user = foundUser;
+      const {
+        passport: { user },
+        returnUrl,
+      } = req.session;
+
       if (isNew && user?.isStudent()) {
         res.redirect('/canvas/login');
       } else if (user?.isCanvasOptIn) {
-        if (!isNullOrUndefined(user.refreshToken)) req.user.refreshToken = user.refreshToken;
         res.redirect('/canvas/refresh');
       } else {
-        logger().debug(`/login/saml redirecting to: ${req.session.returnUrl}`);
+        logger().debug(`/login/saml redirecting to: ${returnUrl}`);
         redirectReturnUrl(req, res, user);
       }
     } catch (error) {
