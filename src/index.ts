@@ -5,7 +5,6 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
-import { isNullOrUndefined } from 'util';
 import {
   APP_VERSION,
   COOKIE_NAME,
