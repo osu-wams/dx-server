@@ -9,7 +9,7 @@ export default {
     baseUrl: 'https://dev.mcm.oregonstate.edu',
   },
   osuApi: {
-    baseUrl: 'https://oregonstateuniversity-dev.apigee.net/v1',
+    baseUrl: 'https://oregonstateuniversity-dev.apigee.net',
   },
   canvasApi: {
     baseUrl: 'https://oregonstate.beta.instructure.com/api/v1',

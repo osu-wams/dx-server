@@ -34,7 +34,7 @@ export default {
     clientId: '',
     // Overridden by process.env.OSU_API_CLIENT_SECRET
     clientSecret: '',
-    baseUrl: 'https://oregonstateuniversity-dev.apigee.net/v1',
+    baseUrl: 'https://oregonstateuniversity-dev.apigee.net',
   },
   canvasApi: {
     cacheEndpointSec: '3600',

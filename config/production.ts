@@ -1,7 +1,7 @@
 export default {
   env: 'production',
   osuApi: {
-    baseUrl: 'https://api.oregonstate.edu/v1',
+    baseUrl: 'https://api.oregonstate.edu',
   },
   dxMcmApi: {
     baseUrl: 'https://mcm.oregonstate.edu',
