@@ -1,4 +1,4 @@
-import request from 'request-promise';
+import request from 'node-fetch';
 import redis from 'redis';
 import config from 'config';
 import logger from '../../logger';
@@ -118,9 +118,10 @@ export interface CacheOptions {
  * @param performCache optionally perform a cache of the API data fetched
  * @param cacheOptions the cache options for a specific key and/or TTL for the data
  */
+/* eslint-disable consistent-return */
 export const get = async (
   url: string,
-  requestOptions: request.RequestPromiseOptions,
+  requestOptions: { json?: boolean; headers?: any },
   performCache?: boolean,
   cacheOptions?: CacheOptions,
 ) => {
@@ -132,18 +133,29 @@ export const get = async (
     if (cached) return Promise.resolve(cached);
   }
 
-  const response = await request.get(url, requestOptions);
+  try {
+    const response = await request(url, { method: 'GET', headers: { ...requestOptions.headers } });
+    if (response.ok) {
+      const responseText = await response.text();
+      if (willCache) {
+        await setCache(key, responseText, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
+      }
 
-  if (willCache) {
-    let cacheString = response;
-    if (requestOptions.json) {
-      cacheString = JSON.stringify(response);
+      if (requestOptions.json) return JSON.parse(responseText);
+      return responseText;
     }
-    await setCache(key, cacheString, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
+    throw Object({
+      response: {
+        status: response.status,
+        statusCode: response.status,
+        statusText: response.statusText,
+      },
+    });
+  } catch (err) {
+    throw err;
   }
-
-  return response;
 };
+/* eslint-enable consistent-return */
 
 /**
  * Flushes the cache database

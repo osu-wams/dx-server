@@ -1,4 +1,4 @@
-import request from 'request-promise';
+import request from 'node-fetch';
 import {
   USE_MOCKS,
   OSU_API_CLIENT_ID,
@@ -8,19 +8,15 @@ import {
 import { asyncTimedFunction } from '../tracer';
 
 export const getToken = async (): Promise<string> => {
+  const params = {
+    client_id: OSU_API_CLIENT_ID,
+    client_secret: OSU_API_CLIENT_SECRET,
+    grant_type: 'client_credentials',
+  };
   /* eslint-disable camelcase */
   const response = (await asyncTimedFunction(
     () =>
-      request({
-        method: 'post',
-        url: `${OSU_API_BASE_URL}/oauth2/token`,
-        json: true,
-        form: {
-          client_id: OSU_API_CLIENT_ID,
-          client_secret: OSU_API_CLIENT_SECRET,
-          grant_type: 'client_credentials',
-        },
-      }),
+      request(`${OSU_API_BASE_URL}/oauth2/token`, { method: 'POST', body: JSON.stringify(params) }),
     'getToken',
     [],
   )) as { access_token: string };

@@ -1,4 +1,4 @@
-import request from 'request-promise';
+import request from 'node-fetch';
 import config from 'config';
 import querystring from 'querystring';
 import { format } from 'date-fns';
@@ -48,14 +48,26 @@ const appendUserIdParam = (url: string, osuId: number) => {
   return `${url}&as_user_id=sis_user_id:${osuId}`;
 };
 
-const authHeader = (accessToken: string | undefined) => {
-  return { bearer: accessToken || CANVAS_TOKEN };
-};
-
-const getRequest = async <T>(url: string, token: string | undefined): Promise<T> => {
-  const auth = authHeader(token);
-  logger().debug(`Canvas API GET request url:${url}`);
-  return request.get(url, { auth }).promise();
+const getRequest = async (url: string, token: string | undefined): Promise<any> => {
+  try {
+    logger().debug(`Canvas API GET request url:${url}`);
+    const response = await request(url, {
+      headers: { Authorization: `Bearer ${token || CANVAS_TOKEN}` },
+    });
+    if (response.ok) {
+      return await response.text();
+    }
+    throw Object({
+      response: {
+        statusCode: response.status,
+        status: response.status,
+        statusText: response.statusText,
+      },
+    });
+  } catch (err) {
+    logger().debug(`Canvas API GET request url:${url} failed: ${err}`);
+    throw err;
+  }
 };
 
 /**
@@ -75,27 +87,37 @@ export const getPlannerItems = async (params: ICanvasAPIParams): Promise<Upcomin
 /**
  * Performs a oauth2 token fetch against canvas.
  */
+/* eslint-disable camelcase */
 export const postRequest = async (u: User, query: string): Promise<User> => {
   const user: User = u;
   try {
-    const body = await request({
+    const response = await request(`${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_TOKEN_URL}?${query}`, {
       method: 'POST',
-      uri: `${CANVAS_OAUTH_BASE_URL}${CANVAS_OAUTH_TOKEN_URL}?${query}`,
     });
-    const response = JSON.parse(body);
-    const expireTime = Math.floor(Date.now() / 1000) + parseInt(response.expires_in, 10);
-    if (response.refresh_token) user.refreshToken = response.refresh_token;
-    user.canvasOauthToken = response.access_token;
-    user.canvasOauthExpire = expireTime;
-    user.isCanvasOptIn = true;
-    await updateOAuthData(user, {
-      isCanvasOptIn: user.isCanvasOptIn,
-      account: { refreshToken: user.refreshToken },
+
+    if (response.ok) {
+      const { refresh_token, access_token, expires_in } = await response.json();
+      const expireTime = Math.floor(Date.now() / 1000) + parseInt(expires_in, 10);
+      if (refresh_token) user.refreshToken = refresh_token;
+      user.canvasOauthToken = access_token;
+      user.canvasOauthExpire = expireTime;
+      user.isCanvasOptIn = true;
+      await updateOAuthData(user, {
+        isCanvasOptIn: user.isCanvasOptIn,
+        account: { refreshToken: user.refreshToken },
+      });
+      logger().debug(`canvas.postRequest refreshed user (${user.osuId}) OAuth credentials.`);
+      return user;
+    }
+    throw Object({
+      response: {
+        statusCode: response.status,
+        status: response.status,
+        statusText: response.statusText,
+      },
     });
-    logger().debug(`canvas.postRequest refreshed user (${user.osuId}) OAuth credentials.`);
-    return user;
   } catch (err) {
-    logger().error(`canvas.postRequest token error: ${err.message}`);
+    logger().error(`canvas.postRequest token error: ${JSON.stringify(err)}`);
     // Refresh token is no longer valid and we must update the database
     await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: null } });
     user.canvasOauthToken = null;
@@ -105,6 +127,7 @@ export const postRequest = async (u: User, query: string): Promise<User> => {
     return user;
   }
 };
+/* eslint-enable camelcase */
 
 // If token is valid return token else refresh and return the updated token
 export const getOAuthToken = async (u: User, code: string): Promise<User> => {

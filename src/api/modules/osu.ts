@@ -29,7 +29,7 @@ const getJson = async (url: string) => {
   const response = await cache.get(
     url,
     {
-      auth: { bearer: bearerToken },
+      headers: { Authorization: `Bearer: ${bearerToken}` },
       json: true,
     },
     true,

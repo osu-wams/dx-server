@@ -114,7 +114,7 @@ const getComponents = async (): Promise<ICachetComponentResponse> => {
   const url = `${CACHET_BASE_URL}/components`;
   return fetchData(
     () =>
-      cache.get(url, { json: true }, true, {
+      cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
         key: url,
         ttlSeconds: CACHE_SEC,
       }),
@@ -126,7 +126,7 @@ const getIncidents = async (): Promise<ICachetIncidentResponse> => {
   const url = `${CACHET_BASE_URL}/incidents`;
   return fetchData(
     () =>
-      cache.get(url, { json: true }, true, {
+      cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
         key: url,
         ttlSeconds: CACHE_SEC,
       }),
