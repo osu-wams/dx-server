@@ -1,6 +1,5 @@
 import supertest from 'supertest';
 import nock from 'nock';
-import config from 'config';
 import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import app from '../../index';
