@@ -111,6 +111,31 @@ export interface CacheOptions {
   ttlSeconds: number;
 }
 
+const requestRetry = async (
+  url: string,
+  options: any,
+  conditions: { codes: number[]; times: number },
+) => {
+  try {
+    const response = await request(url, options);
+    if (response.ok) return response;
+    throw Object({
+      response: {
+        status: response.status,
+        statusCode: response.status,
+        statusText: response.statusText,
+      },
+    });
+  } catch (err) {
+    logger().debug(
+      `requestRetry retrying times:${conditions.times}, status:${err.response.status}, url:${url}, options:${options}`,
+    );
+    if (!conditions.codes.includes(err.response.status)) throw err;
+    if (conditions.times < 1) throw err;
+    return requestRetry(url, options, { codes: conditions.codes, times: conditions.times - 1 });
+  }
+};
+
 /**
  * Optionally perform caching of the API data, defaulting to no cache.
  * @param url the API url to fetch
@@ -124,6 +149,7 @@ export const get = async (
   requestOptions: { json?: boolean; headers?: any },
   performCache?: boolean,
   cacheOptions?: CacheOptions,
+  retryStatusCodes?: number[],
 ) => {
   const willCache = performCache || false;
   const { key, ttlSeconds } = cacheOptions || { key: url, ttlSeconds: 60 };
@@ -134,7 +160,14 @@ export const get = async (
   }
 
   try {
-    const response = await request(url, { method: 'GET', headers: { ...requestOptions.headers } });
+    const response = await requestRetry(
+      url,
+      {
+        method: 'GET',
+        headers: { ...requestOptions.headers },
+      },
+      { codes: retryStatusCodes ?? [], times: 1 },
+    );
     if (response.ok) {
       const responseText = await response.text();
       if (willCache) {
@@ -144,13 +177,6 @@ export const get = async (
       if (requestOptions.json) return JSON.parse(responseText);
       return responseText;
     }
-    throw Object({
-      response: {
-        status: response.status,
-        statusCode: response.status,
-        statusText: response.statusText,
-      },
-    });
   } catch (err) {
     throw err;
   }

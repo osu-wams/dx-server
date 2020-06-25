@@ -35,6 +35,7 @@ export const mockedGet = jest.fn().mockImplementation(
     requestOptions: { json?: boolean; headers?: any },
     performCache?: boolean,
     cacheOptions?: CacheOptions,
+    retryStatusCodes?: number[],
   ): Promise<any> => {
     const response = mockedGetResponse();
     if (response) {
