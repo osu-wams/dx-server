@@ -48,32 +48,51 @@ beforeAll(async () => {
   nock(DYNAMODB_ENDPOINT).post(/.*/).reply(200, {}).persist();
 });
 
+describe('handle upstream 502 traffic retry', () => {
+  beforeEach(async () => {
+    // Authenticate before each request
+    await request.get('/login');
+  });
+  it('should try fetching again after a 502 from OSU api', async () => {
+    nock(OSU_API_BASE_URL)
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(502, {
+        fault: {
+          faultstring: 'Unexpected EOF at target',
+          detail: { errorcode: 'messaging.adaptors.http.flow.UnexpectedEOFAtTarget' },
+        },
+      })
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(200, academicStatusData);
+    await request.get('/api/student/academic-status').expect(200, {
+      academicStanding: 'Good Standing',
+      term: '202001',
+    });
+  });
+  it('should not retry fetching again after a 5xx other than 502 from OSU api', async () => {
+    nock(OSU_API_BASE_URL)
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(500, {
+        fault: {
+          faultstring: 'testing fault string',
+          detail: { errorcode: 'just some error code' },
+        },
+      })
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(200, academicStatusData);
+    await request.get('/api/student/academic-status').expect(500);
+  });
+});
+
 describe('/api/student', () => {
   beforeEach(async () => {
     // Authenticate before each request
     await request.get('/login');
     cache.get = mockedGet;
-  });
-
-  describe('handle upstream 502 traffic retry', () => {
-    it('should try fetching again after a 502 from OSU api', async () => {
-      mockedGetResponse.mockReturnValue(undefined);
-      cache.get = mockedGet;
-      // Mock response from Apigee
-      nock(OSU_API_BASE_URL)
-        .get(/v1\/students\/[0-9]+\/academic-status/)
-        .query(true)
-        .reply(502, {
-          fault: {
-            faultstring: 'Unexpected EOF at target',
-            detail: { errorcode: 'messaging.adaptors.http.flow.UnexpectedEOFAtTarget' },
-          },
-        })
-        .get(/v1\/students\/[0-9]+\/academic-status/)
-        .query(true)
-        .reply(200, academicStatusData);
-      await request.get('/api/student/academic-status').expect(200, {});
-    });
   });
 
   describe('/academic-status', () => {
@@ -546,7 +565,6 @@ describe('/api/student', () => {
         mockedUser.mockReturnValue({ ...user, refreshToken: '', canvasOauthExpire: 0 });
       });
       it('should return an error', async () => {
-        console.log(CANVAS_BASE_URL);
         nock(CANVAS_BASE_URL)
           .get((uri) => uri.includes('items'))
           .query(true)
