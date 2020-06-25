@@ -5,7 +5,7 @@ import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import app from '../../index';
 import { UserSettings } from '../models/user'; // eslint-disable-line no-unused-vars
-import { GROUPS } from '../../constants'; // eslint-disable-line no-unused-vars
+import { GROUPS, OSU_API_BASE_URL } from '../../constants'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import * as dynamoDb from '../../db';
 
@@ -25,7 +25,7 @@ jest.mock('../modules/dx-mcm.ts', () => ({
   updateUserMessage: async () => mockedUpdateUserMessage(),
 }));
 
-const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
+const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v1`;
 let request: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   request = supertest.agent(app);

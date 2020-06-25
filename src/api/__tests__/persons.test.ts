@@ -1,6 +1,5 @@
 import supertest from 'supertest';
 import nock from 'nock';
-import config from 'config';
 import app from '../../index';
 import * as personsData from '../../mocks/osu/persons.data.json';
 import {
@@ -9,13 +8,14 @@ import {
 } from '../__mocks__/persons-addresses.data';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
+import { OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
   getToken: () => Promise.resolve('bearer token'),
 }));
 
-const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
+const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v1`;
 let request = supertest.agent(app);
 
 describe('/api/persons', () => {

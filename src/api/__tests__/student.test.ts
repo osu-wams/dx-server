@@ -15,7 +15,7 @@ import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
 import { DYNAMODB_ENDPOINT } from '../../db/index';
-import { GROUPS } from '../../constants';
+import { GROUPS, OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
@@ -39,7 +39,7 @@ const user = {
   canvasOauthToken: 'token',
 };
 
-const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
+const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v1`;
 const CANVAS_BASE_URL: string = config.get<string>('canvasApi.baseUrl').replace('/api/v1', '');
 let request: supertest.SuperTest<supertest.Test>;
 
