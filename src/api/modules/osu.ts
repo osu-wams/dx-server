@@ -37,6 +37,7 @@ const getJson = async (url: string) => {
       key: url,
       ttlSeconds: OSU_API_CACHE_SEC,
     },
+    [502],
   );
   return response;
 };
