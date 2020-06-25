@@ -16,10 +16,10 @@ import {
   mockedAccountBalance,
   mockedDegrees,
 } from '../../mocks/osu';
+import { OSU_API_BASE_URL, OSU_API_CACHE_SEC } from '../../constants';
 
-const STUDENT_BASE_URL = `${config.get('osuApi.baseUrl')}/students`;
-const PERSON_BASE_URL = `${config.get('osuApi.baseUrl')}/persons`;
-const CACHE_SEC = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
+const STUDENT_BASE_URL: string = `${OSU_API_BASE_URL}/v1/students`;
+const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v1/persons`;
 
 const getJson = async (url: string) => {
   // TODO: Can we cache this for a period of time and reuse the token reliably?
@@ -36,7 +36,7 @@ const getJson = async (url: string) => {
     true,
     {
       key: url,
-      ttlSeconds: CACHE_SEC,
+      ttlSeconds: OSU_API_CACHE_SEC,
     },
   );
   return response;
