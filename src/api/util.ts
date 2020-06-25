@@ -1,10 +1,11 @@
 import request from 'request-promise';
-import config from 'config';
-import { USE_MOCKS } from '../constants';
+import {
+  USE_MOCKS,
+  OSU_API_CLIENT_ID,
+  OSU_API_CLIENT_SECRET,
+  OSU_API_BASE_URL,
+} from '../constants';
 import { asyncTimedFunction } from '../tracer';
-
-const CLIENT_ID: string = config.get('osuApi.clientId');
-const CLIENT_SECRET: string = config.get('osuApi.clientSecret');
 
 export const getToken = async (): Promise<string> => {
   /* eslint-disable camelcase */
@@ -12,11 +13,11 @@ export const getToken = async (): Promise<string> => {
     () =>
       request({
         method: 'post',
-        url: 'https://api.oregonstate.edu/oauth2/token',
+        url: `${OSU_API_BASE_URL}/oauth2/token`,
         json: true,
         form: {
-          client_id: CLIENT_ID,
-          client_secret: CLIENT_SECRET,
+          client_id: OSU_API_CLIENT_ID,
+          client_secret: OSU_API_CLIENT_SECRET,
           grant_type: 'client_credentials',
         },
       }),
