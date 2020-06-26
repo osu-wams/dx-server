@@ -127,11 +127,11 @@ const requestRetry = async (
       },
     });
   } catch (err) {
-    logger().debug(
-      `requestRetry retrying times:${conditions.times}, status:${err.response.status}, url:${url}, options:${options}`,
-    );
     if (!conditions.codes.includes(err.response.status)) throw err;
     if (conditions.times < 1) throw err;
+    logger().debug(
+      `cache.requestRetry retrying times:${conditions.times}, status:${err.response.status}, url:${url}, options:${options}`,
+    );
     return requestRetry(url, options, { codes: conditions.codes, times: conditions.times - 1 });
   }
 };
@@ -160,6 +160,7 @@ export const get = async (
   }
 
   try {
+    logger().debug(`cache.get requesting url:${url}`);
     const response = await requestRetry(
       url,
       {
