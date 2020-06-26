@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 
-import { RequestPromiseOptions } from 'request-promise';
 import cache, { CacheOptions, SetCacheOptions } from '../cache';
 
 export const mockCacheUrl = 'http://key';
@@ -33,9 +32,10 @@ export const mockedGetResponse = jest.fn();
 export const mockedGet = jest.fn().mockImplementation(
   (
     url: string,
-    requestOptions: RequestPromiseOptions,
+    requestOptions: { json?: boolean; headers?: any },
     performCache?: boolean,
     cacheOptions?: CacheOptions,
+    retryStatusCodes?: number[],
   ): Promise<any> => {
     const response = mockedGetResponse();
     if (response) {

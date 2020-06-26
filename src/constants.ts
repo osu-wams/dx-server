@@ -33,6 +33,10 @@ const GROUPS = {
 };
 const IV_LENGTH: number = 16;
 const JWT_KEY: string = config.get('jwtKey');
+const OSU_API_BASE_URL: string = config.get('osuApi.baseUrl');
+const OSU_API_CACHE_SEC: number = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
+const OSU_API_CLIENT_ID: string = config.get('osuApi.clientId');
+const OSU_API_CLIENT_SECRET: string = config.get('osuApi.clientSecret');
 const REDIS_HOST: string = config.get('redis.host');
 const REDIS_PORT: number = parseInt(config.get('redis.port'), 10);
 const SAML_CALLBACK_URL: string = config.get('saml.callbackUrl');
@@ -70,6 +74,10 @@ export {
   GROUPS,
   IV_LENGTH,
   JWT_KEY,
+  OSU_API_BASE_URL,
+  OSU_API_CACHE_SEC,
+  OSU_API_CLIENT_ID,
+  OSU_API_CLIENT_SECRET,
   REDIS_HOST,
   REDIS_PORT,
   SAML_CALLBACK_URL,

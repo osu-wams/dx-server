@@ -50,7 +50,11 @@ describe('DX Multi-Channel Message Module', () => {
       try {
         await getUserMessages(osuId);
       } catch (error) {
-        expect(error.message).toMatch('500 - "boom"');
+        expect(error.response).toStrictEqual({
+          status: 500,
+          statusCode: 500,
+          statusText: 'Internal Server Error',
+        });
       }
     });
   });
@@ -77,7 +81,11 @@ describe('DX Multi-Channel Message Module', () => {
       try {
         await updateUserMessage(status, messageId, osuId);
       } catch (error) {
-        expect(error.message).toMatch('500 - "boom"');
+        expect(error.response).toStrictEqual({
+          status: 500,
+          statusCode: 500,
+          statusText: 'Internal Server Error',
+        });
       }
     });
   });

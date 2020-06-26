@@ -1,4 +1,4 @@
-import request from 'request-promise';
+import request from 'node-fetch';
 import redis from 'redis';
 import config from 'config';
 import logger from '../../logger';
@@ -111,6 +111,31 @@ export interface CacheOptions {
   ttlSeconds: number;
 }
 
+const requestRetry = async (
+  url: string,
+  options: any,
+  conditions: { codes: number[]; times: number },
+) => {
+  try {
+    const response = await request(url, options);
+    if (response.ok) return response;
+    throw Object({
+      response: {
+        status: response.status,
+        statusCode: response.status,
+        statusText: response.statusText,
+      },
+    });
+  } catch (err) {
+    if (!conditions.codes.includes(err.response.status)) throw err;
+    if (conditions.times < 1) throw err;
+    logger().debug(
+      `cache.requestRetry retrying times:${conditions.times}, status:${err.response.status}, url:${url}, options:${options}`,
+    );
+    return requestRetry(url, options, { codes: conditions.codes, times: conditions.times - 1 });
+  }
+};
+
 /**
  * Optionally perform caching of the API data, defaulting to no cache.
  * @param url the API url to fetch
@@ -118,11 +143,13 @@ export interface CacheOptions {
  * @param performCache optionally perform a cache of the API data fetched
  * @param cacheOptions the cache options for a specific key and/or TTL for the data
  */
+/* eslint-disable consistent-return */
 export const get = async (
   url: string,
-  requestOptions: request.RequestPromiseOptions,
+  requestOptions: { json?: boolean; headers?: any },
   performCache?: boolean,
   cacheOptions?: CacheOptions,
+  retryStatusCodes?: number[],
 ) => {
   const willCache = performCache || false;
   const { key, ttlSeconds } = cacheOptions || { key: url, ttlSeconds: 60 };
@@ -132,18 +159,30 @@ export const get = async (
     if (cached) return Promise.resolve(cached);
   }
 
-  const response = await request.get(url, requestOptions);
+  try {
+    logger().debug(`cache.get requesting url:${url}`);
+    const response = await requestRetry(
+      url,
+      {
+        method: 'GET',
+        headers: { ...requestOptions.headers },
+      },
+      { codes: retryStatusCodes ?? [], times: 1 },
+    );
+    if (response.ok) {
+      const responseText = await response.text();
+      if (willCache) {
+        await setCache(key, responseText, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
+      }
 
-  if (willCache) {
-    let cacheString = response;
-    if (requestOptions.json) {
-      cacheString = JSON.stringify(response);
+      if (requestOptions.json) return JSON.parse(responseText);
+      return responseText;
     }
-    await setCache(key, cacheString, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
+  } catch (err) {
+    throw err;
   }
-
-  return response;
 };
+/* eslint-enable consistent-return */
 
 /**
  * Flushes the cache database

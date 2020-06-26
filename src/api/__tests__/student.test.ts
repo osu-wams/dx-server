@@ -15,7 +15,7 @@ import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
 import { DYNAMODB_ENDPOINT } from '../../db/index';
-import { GROUPS } from '../../constants';
+import { GROUPS, OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
@@ -39,7 +39,6 @@ const user = {
   canvasOauthToken: 'token',
 };
 
-const APIGEE_BASE_URL: string = config.get('osuApi.baseUrl');
 const CANVAS_BASE_URL: string = config.get<string>('canvasApi.baseUrl').replace('/api/v1', '');
 let request: supertest.SuperTest<supertest.Test>;
 
@@ -47,6 +46,46 @@ beforeAll(async () => {
   request = supertest.agent(app);
   mockedUser.mockReturnValue(user);
   nock(DYNAMODB_ENDPOINT).post(/.*/).reply(200, {}).persist();
+});
+
+describe('handle upstream 502 traffic retry', () => {
+  beforeEach(async () => {
+    // Authenticate before each request
+    await request.get('/login');
+  });
+  it('should try fetching again after a 502 from OSU api', async () => {
+    nock(OSU_API_BASE_URL)
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(502, {
+        fault: {
+          faultstring: 'Unexpected EOF at target',
+          detail: { errorcode: 'messaging.adaptors.http.flow.UnexpectedEOFAtTarget' },
+        },
+      })
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(200, academicStatusData);
+    await request.get('/api/student/academic-status').expect(200, {
+      academicStanding: 'Good Standing',
+      term: '202001',
+    });
+  });
+  it('should not retry fetching again after a 5xx other than 502 from OSU api', async () => {
+    nock(OSU_API_BASE_URL)
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(500, {
+        fault: {
+          faultstring: 'testing fault string',
+          detail: { errorcode: 'just some error code' },
+        },
+      })
+      .get(/v1\/students\/[0-9]+\/academic-status/)
+      .query(true)
+      .reply(200, academicStatusData);
+    await request.get('/api/student/academic-status').expect(500);
+  });
 });
 
 describe('/api/student', () => {
@@ -64,7 +103,7 @@ describe('/api/student', () => {
       });
       cache.get = mockedGet;
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(true)
         .reply(200, academicStatusData);
@@ -74,7 +113,7 @@ describe('/api/student', () => {
       mockedGetResponse.mockReturnValue(academicStatusData);
       cache.get = mockedGet;
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(true)
         .reply(200, academicStatusData);
@@ -92,7 +131,7 @@ describe('/api/student', () => {
       });
       cache.get = mockedGet;
 
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(data[1])
         .reply(200, { links: { self: 'bogus' }, data: [academicStatusData.data[1]] });
@@ -109,7 +148,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock default (term=current) response
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .query(true)
         .reply(200, academicStatusData);
@@ -131,7 +170,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve academic status." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/academic-status/)
         .reply(500);
 
@@ -148,7 +187,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/account-balance/)
         .reply(200, { data });
 
@@ -165,7 +204,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve account balance." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/account-balance/)
         .reply(500);
 
@@ -182,7 +221,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/account-transactions/)
         .reply(200, { data });
 
@@ -201,7 +240,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve account transactions." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/account-transactions/)
         .reply(500);
 
@@ -227,7 +266,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/classification/)
         .reply(200, { data });
 
@@ -237,7 +276,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve classification." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/classification/)
         .reply(500);
 
@@ -259,7 +298,7 @@ describe('/api/student', () => {
       mockedGetResponse.mockReturnValue(classScheduleDataResponse);
       cache.get = mockedGet;
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/class-schedule/)
         .reply(200, classScheduleDataResponse);
 
@@ -269,7 +308,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve class schedule." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/class-schedule/)
         .reply(500);
 
@@ -291,7 +330,7 @@ describe('/api/student', () => {
       mockedGetResponse.mockReturnValue(gpaDataResponse);
       cache.get = mockedGet;
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
         .reply(200, gpaDataResponse);
 
@@ -303,7 +342,7 @@ describe('/api/student', () => {
       mockedGetResponse.mockReturnValue(gpaDataResponse);
       cache.get = mockedGet;
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
         .reply(200, gpaDataResponse);
 
@@ -320,7 +359,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve GPA data." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/gpa/)
         .reply(500);
 
@@ -337,7 +376,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/grades/)
         .query(true)
         .reply(200, { data });
@@ -358,7 +397,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock default (term=current) response
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/grades/)
         .query(data[0].attributes)
         .reply(200, { data: [data[0]] });
@@ -386,7 +425,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock default (term=current) response
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         // test sorted
         .get(/v1\/students\/[0-9]+\/grades/)
         .query(true)
@@ -405,7 +444,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve grades." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/grades/)
         .reply(500);
 
@@ -419,7 +458,7 @@ describe('/api/student', () => {
     it('should return account holds for the current user', async () => {
       mockedGetResponse.mockReturnValue(holdsData);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/holds/)
         .reply(200, holdsData);
 
@@ -436,7 +475,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve account holds." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/holds/)
         .reply(500);
 
@@ -453,7 +492,7 @@ describe('/api/student', () => {
       cache.get = mockedGet;
 
       // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/degrees/)
         .reply(200, { data });
 
@@ -463,7 +502,7 @@ describe('/api/student', () => {
     it('should return "Unable to retrieve degrees." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);
       cache.get = mockedGet;
-      nock(APIGEE_BASE_URL)
+      nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/degrees/)
         .reply(500);
 
@@ -529,7 +568,7 @@ describe('/api/student', () => {
         nock(CANVAS_BASE_URL)
           .get((uri) => uri.includes('items'))
           .query(true)
-          .reply(401);
+          .reply(401, { blah: 'blah' });
         await request
           .get('/api/student/planner-items')
           .expect(403, { message: 'Reset users canvas oauth.' });

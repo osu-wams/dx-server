@@ -1,7 +1,7 @@
 export default {
   env: 'stage',
   osuApi: {
-    baseUrl: 'https://api.oregonstate.edu/v1',
+    baseUrl: 'https://api.oregonstate.edu',
   },
   dxMcmApi: {
     baseUrl: 'https://stage.mcm.oregonstate.edu',
