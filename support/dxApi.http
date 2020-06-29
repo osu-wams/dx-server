@@ -95,4 +95,5 @@ GET {{baseUrl}}/jsonapi/node/trainings HTTP/1.1
   &fields[file--file]=filename,filemime,uri
   &include=field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_tags,field_training_types
   &filter[status]=1
+  &sort=field_training_featured
 
