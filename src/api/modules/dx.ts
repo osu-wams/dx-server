@@ -10,6 +10,7 @@ import {
   mockedResources,
   mockedPageContent,
   mockedReleaseNotes,
+  mockedTrainings,
 } from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
@@ -427,6 +428,65 @@ export const getDxAlerts = async (): Promise<Types.Alert[]> => {
       },
     ];
     /* eslint-enable camelcase */
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
+ * Get all trainings from DX API.
+ */
+export const getTrainings = async (): Promise<Types.Training[]> => {
+  try {
+    const data = await fetchData(
+      () =>
+        retrieveData('node/trainings', {
+          fields: {
+            'node--trainings':
+              'id,title,field_training_audience,field_training_contact,field_training_cost,body,field_training_department,field_training_duration,field_training_featured,field_training_frequency,field_training_prerequisites,field_training_course_design,field_training_image,field_training_tags,field_training_types,field_training_website',
+            'taxonomy_term--training_audience': 'name',
+            'taxonomy_term--training_course_design': 'name',
+            'taxonomy_term--training_tags': 'name',
+            'taxonomy_term--training_types': 'name',
+            'media--image': 'name,field_media_image',
+            'file--file': 'filename,filemime,uri',
+          },
+          include:
+            'field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_tags,field_training_types',
+          filter: {
+            status: 1,
+            sort: 'field_training_featured',
+          },
+        }),
+      mockedTrainings,
+    );
+
+    const trainingImageUrl = (item) => {
+      if (item.field_training_image?.field_media_image?.uri?.url) {
+        return `${BASE_URL}${item.field_training_image.field_media_image.uri.url}`;
+      }
+      return undefined;
+    };
+
+    return data.map((d) => ({
+      audiences: d.field_training_audience.map((a) => a.name),
+      id: d.id,
+      title: d.title,
+      image: trainingImageUrl(d),
+      contact: d.field_training_contact,
+      cost: d.field_training_cost,
+      body: d.body?.processed,
+      department: d.field_training_department,
+      duration: d.field_training_duration,
+      featured: d.field_training_featured,
+      frequency: d.field_training_frequency,
+      prerequisites: d.field_training_prerequisites,
+      courseDesign: d.field_training_course_design.name,
+      tags: d.field_training_tags.map((t) => t.name),
+      type: d.field_training_types.name,
+      websiteUri: d.field_training_website?.uri,
+      websiteTitle: d.field_training_website?.title,
+    }));
   } catch (err) {
     throw err;
   }

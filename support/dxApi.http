@@ -82,3 +82,18 @@ GET {{baseUrl}}/jsonapi/node/services HTTP/1.1
   &sort=title
   &filter[status]=1
 
+###
+
+# @name getTrainings
+GET {{baseUrl}}/jsonapi/node/trainings HTTP/1.1
+  ?fields[node--trainings]=id,title,field_training_audience,field_training_contact,field_training_cost,body,field_training_department,field_training_duration,field_training_featured,field_training_frequency,field_training_prerequisites,field_training_course_design,field_training_image,field_training_tags,field_training_types,field_training_website
+  &fields[taxonomy_term--training_audience]=name
+  &fields[taxonomy_term--training_course_design]=name
+  &fields[taxonomy_term--training_tags]=name
+  &fields[taxonomy_term--training_types]=name
+  &fields[media--image]=name,field_media_image
+  &fields[file--file]=filename,filemime,uri
+  &include=field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_tags,field_training_types
+  &filter[status]=1
+  &sort=field_training_featured
+

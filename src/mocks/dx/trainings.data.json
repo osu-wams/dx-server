@@ -1,0 +1,175 @@
+[
+  {
+    "type": "node--trainings",
+    "id": "71560c56-dabb-48e1-a663-64da7a7bb6e8",
+    "links": {
+      "describedby": {
+        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
+      },
+      "self": {
+        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8?resourceVersion=id%3A19211"
+      }
+    },
+    "attributes": {
+      "drupal_internal__nid": 3966,
+      "drupal_internal__vid": 19211,
+      "langcode": "en",
+      "revision_timestamp": "2020-06-24T16:09:41+00:00",
+      "revision_log": null,
+      "status": true,
+      "title": "Play nice with others",
+      "created": "2020-06-24T15:46:37+00:00",
+      "changed": "2020-06-24T16:09:41+00:00",
+      "promote": true,
+      "sticky": false,
+      "default_langcode": true,
+      "revision_translation_affected": true,
+      "moderation_state": null,
+      "path": {
+        "alias": null,
+        "pid": null,
+        "langcode": "en"
+      },
+      "publish_on": null,
+      "unpublish_on": null,
+      "publish_state": null,
+      "unpublish_state": null,
+      "body": {
+        "value": "\u003Cp\u003EIn this basic course, you\u0027ll learn how to play nice with others. Activities include sharing toys, using your words, and being patient.\u003C/p\u003E\r\n",
+        "format": "basic_html",
+        "processed": "\u003Cp\u003EIn this basic course, you\u0027ll learn how to play nice with others. Activities include sharing toys, using your words, and being patient.\u003C/p\u003E",
+        "summary": ""
+      },
+      "field_training_contact": "noreply@oregonstate.edu",
+      "field_training_cost": true,
+      "field_training_department": "Daycare",
+      "field_training_duration": "1hr",
+      "field_training_featured": true,
+      "field_training_frequency": "Daily",
+      "field_training_prerequisites": "None",
+      "field_training_website": {
+        "uri": "https://oregonstate.edu",
+        "title": "",
+        "options": []
+      }
+    },
+    "relationships": {
+      "node_type": {
+        "data": {
+          "type": "node_type--node_type",
+          "id": "8f5eaa3a-326c-4c0c-9417-6ba281a6085f"
+        },
+        "links": {
+          "related": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/node_type?resourceVersion=id%3A19211"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/node_type?resourceVersion=id%3A19211"
+          }
+        }
+      },
+      "revision_uid": {
+        "data": null,
+        "links": {
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/revision_uid?resourceVersion=id%3A19211"
+          }
+        }
+      },
+      "uid": {
+        "data": null,
+        "links": {
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/uid?resourceVersion=id%3A19211"
+          }
+        }
+      },
+      "field_training_audience": {
+        "data": [
+          {
+            "type": "taxonomy_term--training_audience",
+            "id": "16c59d92-00be-420b-9d9f-45046f8e127d"
+          },
+          {
+            "type": "taxonomy_term--training_audience",
+            "id": "8828a5c9-87ee-4504-b118-308982db382a"
+          },
+          {
+            "type": "taxonomy_term--training_audience",
+            "id": "ef7c3568-3887-47a1-a1f5-415629f18670"
+          },
+          {
+            "type": "taxonomy_term--training_audience",
+            "id": "5b7fa6bb-2dd3-4fcc-b32c-949ab7ee5316"
+          }
+        ],
+        "links": {
+          "related": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/field_training_audience?resourceVersion=id%3A19211"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/field_training_audience?resourceVersion=id%3A19211"
+          }
+        }
+      },
+      "field_training_course_design": {
+        "data": {
+          "type": "taxonomy_term--training_course_design",
+          "id": "70c33ba5-31b4-40ca-a272-fe4cceaea5c1"
+        },
+        "links": {
+          "related": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/field_training_course_design?resourceVersion=id%3A19211"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/field_training_course_design?resourceVersion=id%3A19211"
+          }
+        }
+      },
+      "field_training_image": {
+        "data": {
+          "type": "media--image",
+          "id": "880559bf-15d7-46f2-bdda-3f30e3fa0538"
+        },
+        "links": {
+          "related": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/field_training_image?resourceVersion=id%3A19211"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/field_training_image?resourceVersion=id%3A19211"
+          }
+        }
+      },
+      "field_training_tags": {
+        "data": [
+          {
+            "type": "taxonomy_term--training_tags",
+            "id": "0c7cb766-64e5-488b-af8a-e5626c150717"
+          }
+        ],
+        "links": {
+          "related": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/field_training_tags?resourceVersion=id%3A19211"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/field_training_tags?resourceVersion=id%3A19211"
+          }
+        }
+      },
+      "field_training_types": {
+        "data": {
+          "type": "taxonomy_term--training_types",
+          "id": "5716bce3-1c52-4901-95da-24d51dba3935"
+        },
+        "links": {
+          "related": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/field_training_types?resourceVersion=id%3A19211"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/71560c56-dabb-48e1-a663-64da7a7bb6e8/relationships/field_training_types?resourceVersion=id%3A19211"
+          }
+        }
+      }
+    }
+  }
+]
