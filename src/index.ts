@@ -53,7 +53,7 @@ const sessionOptions: SessionOptions = {
   rolling: true,
   cookie: {
     httpOnly: false,
-    maxAge: 1000 * 60 * 60,
+    maxAge: 1000 * 60 * 60 * 4,
   },
 };
 
