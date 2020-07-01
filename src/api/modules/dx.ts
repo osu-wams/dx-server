@@ -455,8 +455,8 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
             'field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_tags,field_training_types',
           filter: {
             status: 1,
-            sort: 'field_training_featured',
           },
+          sort: 'field_training_featured',
         }),
       mockedTrainings,
     );
