@@ -97,3 +97,9 @@ GET {{baseUrl}}/jsonapi/node/trainings HTTP/1.1
   &filter[status]=1
   &sort=field_training_featured
 
+###
+
+# @name getTrainingTypes
+GET {{baseUrl}}/jsonapi/taxonomy_term/training_types HTTP/1.1
+  ?fields[taxonomy_term--training_types]=id,name
+  &filter[status]=1
