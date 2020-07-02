@@ -1,5 +1,7 @@
-/* eslint-disable no-console, import/first */
-require('newrelic');
+/* eslint-disable no-console, import/first, global-require */
+if (process.env.NODE_ENV !== 'test') {
+  require('newrelic');
+}
 
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import bodyParser from 'body-parser';
