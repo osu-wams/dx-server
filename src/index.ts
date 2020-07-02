@@ -1,5 +1,5 @@
 /* eslint-disable no-console, import/first, global-require */
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== 'test' && process.env.NEW_RELIC_LICENSE_KEY) {
   require('newrelic');
 }
 
