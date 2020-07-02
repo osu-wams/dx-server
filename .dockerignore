@@ -3,3 +3,4 @@
 node_modules
 docker-compose*
 support/*.csv
+newrelic_agent.log

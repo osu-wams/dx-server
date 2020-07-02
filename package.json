@@ -75,6 +75,7 @@
     "jsonwebtoken": "^8.5.1",
     "kitsu": "^7.1.0",
     "logform": "^2.1.2",
+    "newrelic": "^6.10.0",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.0",
     "passport-dev": "^1.0.1",
