@@ -12,3 +12,4 @@ dist/
 .env
 docker-compose.override.yml
 *osuIds.csv
+newrelic_agent.log

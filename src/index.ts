@@ -1,4 +1,6 @@
-/* eslint-disable no-console */
+/* eslint-disable no-console, import/first */
+require('newrelic');
+
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
