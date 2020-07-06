@@ -11,6 +11,7 @@ import {
   mockedPageContent,
   mockedReleaseNotes,
   mockedTrainings,
+  mockedTrainingTypes,
 } from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
@@ -467,7 +468,6 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
       }
       return undefined;
     };
-
     return data.map((d) => ({
       audiences: d.field_training_audience.map((a) => a.name),
       id: d.id,
@@ -486,6 +486,33 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
       type: d.field_training_types.name,
       websiteUri: d.field_training_website?.uri,
       websiteTitle: d.field_training_website?.title,
+    }));
+  } catch (err) {
+    throw err;
+  }
+};
+
+/**
+ * Get all training types from DX API.
+ */
+export const getTrainingTypes = async (): Promise<Types.TrainingType[]> => {
+  try {
+    const data = await fetchData(
+      () =>
+        retrieveData('taxonomy_term/training_types', {
+          fields: {
+            'taxonomy_term--training_types': 'id,name',
+          },
+          filter: {
+            status: 1,
+          },
+        }),
+      mockedTrainingTypes,
+    );
+
+    return data.map((d) => ({
+      id: d.id,
+      name: d.name,
     }));
   } catch (err) {
     throw err;
