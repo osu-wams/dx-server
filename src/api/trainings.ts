@@ -3,7 +3,7 @@
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
-import { getTrainings, getTrainingTypes } from './modules/dx';
+import { getTrainings, getTrainingTags } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';
 
 const router = Router();
@@ -18,13 +18,13 @@ router.get('/', async (_req: Request, res: Response) => {
   }
 });
 
-router.get('/types', async (_req: Request, res: Response) => {
+router.get('/tags', async (_req: Request, res: Response) => {
   try {
-    const data = await asyncTimedFunction(getTrainingTypes, 'getTrainingTypes', []);
+    const data = await asyncTimedFunction(getTrainingTags, 'getTrainingTags', []);
     res.send(data);
   } catch (err) {
-    logger().error(`api/trainings/types failed:`, err);
-    res.status(500).send({ message: 'Training Types API queries failed.' });
+    logger().error(`api/trainings/tags failed:`, err);
+    res.status(500).send({ message: 'Training Tags API queries failed.' });
   }
 });
 

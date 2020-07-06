@@ -11,7 +11,7 @@ import {
   mockedPageContent,
   mockedReleaseNotes,
   mockedTrainings,
-  mockedTrainingTypes,
+  mockedTrainingTags,
 } from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
@@ -493,21 +493,21 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
 };
 
 /**
- * Get all training types from DX API.
+ * Get all training tags from DX API.
  */
-export const getTrainingTypes = async (): Promise<Types.TrainingType[]> => {
+export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
   try {
     const data = await fetchData(
       () =>
-        retrieveData('taxonomy_term/training_types', {
+        retrieveData('taxonomy_term/training_tags', {
           fields: {
-            'taxonomy_term--training_types': 'id,name',
+            'taxonomy_term--training_tags': 'id,name',
           },
           filter: {
             status: 1,
           },
         }),
-      mockedTrainingTypes,
+      mockedTrainingTags,
     );
 
     return data.map((d) => ({
