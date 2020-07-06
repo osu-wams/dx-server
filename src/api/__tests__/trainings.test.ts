@@ -4,8 +4,8 @@ import app from '../../index';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
 import {
-  mockedTrainingTypes,
-  mockedTrainingTypesExpected,
+  mockedTrainingTags,
+  mockedTrainingTagsExpected,
   mockedTrainings,
   mockedTrainingsExpected,
 } from '../../mocks/dx';
@@ -41,21 +41,21 @@ describe('/api/trainings', () => {
   });
 });
 
-describe('/api/trainings/types', () => {
-  it('returns the training types', async () => {
+describe('/api/trainings/tags', () => {
+  it('returns the training tags', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
     cache.setAsync = setAsync;
-    nock(BASE_URL).get(/.*/).reply(200, { data: mockedTrainingTypes });
-    const result = await request.get('/api/trainings/types');
+    nock(BASE_URL).get(/.*/).reply(200, { data: mockedTrainingTags });
+    const result = await request.get('/api/trainings/tags');
     expect(result.ok).toBeTruthy();
-    expect(result.body).toStrictEqual(mockedTrainingTypesExpected);
+    expect(result.body).toStrictEqual(mockedTrainingTagsExpected);
   });
 
   it('should return when there is a 500 error', async () => {
     nock(BASE_URL).get(/.*/).reply(500);
     await request
-      .get('/api/trainings/types')
-      .expect(500, { message: 'Training Types API queries failed.' });
+      .get('/api/trainings/tags')
+      .expect(500, { message: 'Training Tags API queries failed.' });
   });
 });

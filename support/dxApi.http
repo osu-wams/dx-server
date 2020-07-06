@@ -99,7 +99,7 @@ GET {{baseUrl}}/jsonapi/node/trainings HTTP/1.1
 
 ###
 
-# @name getTrainingTypes
-GET {{baseUrl}}/jsonapi/taxonomy_term/training_types HTTP/1.1
-  ?fields[taxonomy_term--training_types]=id,name
+# @name getTrainingTags
+GET {{baseUrl}}/jsonapi/taxonomy_term/training_tags HTTP/1.1
+  ?fields[taxonomy_term--training_tags]=id,name
   &filter[status]=1
