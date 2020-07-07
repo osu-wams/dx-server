@@ -457,7 +457,6 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
           filter: {
             status: 1,
           },
-          sort: 'field_training_featured',
         }),
       mockedTrainings,
     );
@@ -468,7 +467,7 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
       }
       return undefined;
     };
-    return data.map((d) => ({
+    const trainings = data.map((d) => ({
       audiences: d.field_training_audience.map((a) => a.name),
       id: d.id,
       title: d.title,
@@ -481,12 +480,13 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
       featured: d.field_training_featured,
       frequency: d.field_training_frequency,
       prerequisites: d.field_training_prerequisites,
-      courseDesign: d.field_training_course_design.name,
+      courseDesign: d.field_training_course_design?.name,
       tags: d.field_training_tags.map((t) => t.name),
-      type: d.field_training_types.name,
+      type: d.field_training_types?.name,
       websiteUri: d.field_training_website?.uri,
       websiteTitle: d.field_training_website?.title,
     }));
+    return trainings.sort((a, b) => b.featured - a.featured);
   } catch (err) {
     throw err;
   }
