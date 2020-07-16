@@ -216,18 +216,11 @@ export const getGrades = async (user: any, term: any) => {
   }
 };
 
-interface GpaLevel {
-  gpa: string;
-  gpaType: string;
-  level: string;
-  levelCode: string;
-}
-
 interface GpaResponse {
   links: { self: string };
   data: {
     attributes: {
-      gpaLevels: GpaLevel[];
+      gpaLevels: Types.GpaLevel[];
     };
   };
 }
@@ -254,7 +247,7 @@ const gpaLevelCodesByPriority = [
 // The order of each GpaLevel by type for display.
 const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
 
-export const getGpa = async (user: any): Promise<GpaLevel[]> => {
+export const getGpa = async (user: any): Promise<Types.GpaLevel[]> => {
   try {
     const response: GpaResponse = await fetchData(
       () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`),
