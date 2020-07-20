@@ -46,7 +46,7 @@ describe('/masquerade', () => {
     await request.get('/api/masquerade').expect(200, {
       masquerade: {
         lastName: 'Ross',
-        lastLogin: '2020-07-17',
+        lastLogin: new Date().toISOString().slice(0, 10),
         affiliations: ['employee'],
         primaryAffiliation: 'employee',
         onid: 'rossb',
