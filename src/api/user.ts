@@ -12,20 +12,33 @@ import { getUserMessages, updateUserMessage } from './modules/dx-mcm';
 const router: Router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
+  const {
+    osuId,
+    firstName,
+    lastName,
+    email,
+    primaryAffiliation,
+    affiliations,
+    isCanvasOptIn,
+    audienceOverride: userAudienceOverride,
+    classification: userClassification,
+    primaryAffiliationOverride,
+    theme,
+  } = req.user.masquerade || req.user;
   res.send({
-    osuId: req.user.osuId,
-    firstName: req.user.firstName,
-    lastName: req.user.lastName,
-    email: req.user.email,
-    primaryAffiliation: req.user.primaryAffiliation,
-    affiliations: req.user.affiliations,
+    osuId,
+    firstName,
+    lastName,
+    email,
+    primaryAffiliation,
+    affiliations,
     isAdmin: req.user.isAdmin,
     groups: req.user.groups,
-    isCanvasOptIn: req.user.isCanvasOptIn,
-    audienceOverride: req.user.audienceOverride || {},
-    classification: req.user.classification || {},
-    primaryAffiliationOverride: req.user.primaryAffiliationOverride,
-    theme: req.user.theme,
+    isCanvasOptIn,
+    audienceOverride: userAudienceOverride || {},
+    classification: userClassification || {},
+    primaryAffiliationOverride,
+    theme,
   });
 });
 
@@ -38,6 +51,7 @@ router.get('/classification', async (req: Request, res: Response) => {
     const { id, attributes } = await classificationPromise;
     classification = { id, attributes };
     req.user.classification = classification;
+    if (req.user.masquerade) req.user.masquerade.classification = classification;
   } catch (err) {
     logger().error(`api/user/classification failed: ${err.message}, trace: ${err.stack}`);
   }
@@ -47,17 +61,29 @@ router.get('/classification', async (req: Request, res: Response) => {
 router.post('/settings', async (req: Request, res: Response) => {
   try {
     const { audienceOverride, theme, primaryAffiliationOverride } = req.body;
-    const user: User = req.user; // eslint-disable-line prefer-destructuring
+    const user: User = req.user.masquerade || req.user; // eslint-disable-line prefer-destructuring
     const updatedUser: User = await User.updateSettings(user, {
       audienceOverride,
       primaryAffiliationOverride,
       theme,
     });
-    if (audienceOverride !== undefined)
-      req.session.passport.user.audienceOverride = updatedUser.audienceOverride;
-    if (primaryAffiliationOverride)
-      req.session.passport.user.primaryAffiliationOverride = updatedUser.primaryAffiliationOverride;
-    if (theme !== undefined) req.session.passport.user.theme = updatedUser.theme;
+
+    if (req.user.masquerade) {
+      if (audienceOverride !== undefined)
+        req.session.passport.user.masquerade.audienceOverride = updatedUser.audienceOverride;
+      if (primaryAffiliationOverride)
+        req.session.passport.user.masquerade.primaryAffiliationOverride =
+          updatedUser.primaryAffiliationOverride;
+      if (theme !== undefined) req.session.passport.user.masquerade.theme = updatedUser.theme;
+    } else {
+      if (audienceOverride !== undefined)
+        req.session.passport.user.audienceOverride = updatedUser.audienceOverride;
+      if (primaryAffiliationOverride)
+        req.session.passport.user.primaryAffiliationOverride =
+          updatedUser.primaryAffiliationOverride;
+      if (theme !== undefined) req.session.passport.user.theme = updatedUser.theme;
+    }
+
     res.json({
       audienceOverride: updatedUser.audienceOverride,
       theme: updatedUser.theme,
@@ -89,6 +115,9 @@ router.get('/messages', async (req: Request, res: Response) => {
 
 router.post('/messages', async (req: Request, res: Response) => {
   try {
+    if (req.user.masquerade) {
+      throw new Error('Cannot mark message as read when masquerading as a user.');
+    }
     const { status, messageId }: { status: string; messageId: string } = req.body;
     if (status.toLowerCase() !== 'read') {
       throw new Error(`User message status ${status} update unsupported.`);

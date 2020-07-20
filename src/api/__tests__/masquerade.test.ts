@@ -1,5 +1,10 @@
 import supertest from 'supertest';
 import app from '../../index';
+import User from '../models/user';
+import { mockUser } from '../models/__mocks__/user';
+
+jest.mock('../models/user');
+const mockUserModel = User as jest.Mocked<any>;
 
 let request: supertest.SuperTest<supertest.Test>;
 
@@ -31,13 +36,38 @@ describe('/masquerade', () => {
     await request.get('/api/masquerade').expect(200, { masqueradeId: '', masqueradeReason: '' });
   });
 
-  it('gets a current masquerade session', async () => {
+  it('gets a current masquerade session for a user from the database', async () => {
+    const mockedUser = { ...mockUser, osuId: 123123 };
+    mockUserModel.find.mockImplementationOnce(() => Promise.resolve(mockedUser));
     await request
       .post('/api/masquerade')
       .send({ masqueradeId: 123123, masqueradeReason: 'Because' })
       .expect(200, 'Masquerade session started.');
+    await request.get('/api/masquerade').expect(200, {
+      masquerade: {
+        lastName: 'Ross',
+        lastLogin: '2020-07-17',
+        affiliations: ['employee'],
+        primaryAffiliation: 'employee',
+        onid: 'rossb',
+        firstName: 'Bob',
+        osuId: 123123,
+        email: 'bob@bobross.com',
+      },
+      masqueradeId: 123123,
+      masqueradeReason: 'Because',
+    });
+  });
+
+  it('gets a current masquerade session for a user not found in the database', async () => {
+    mockUserModel.find.mockImplementationOnce(() => Promise.resolve(undefined));
     await request
-      .get('/api/masquerade')
-      .expect(200, { masqueradeId: 123123, masqueradeReason: 'Because' });
+      .post('/api/masquerade')
+      .send({ masqueradeId: 123123, masqueradeReason: 'Because' })
+      .expect(200, 'Masquerade session started.');
+    await request.get('/api/masquerade').expect(200, {
+      masqueradeId: 123123,
+      masqueradeReason: 'Because',
+    });
   });
 });
