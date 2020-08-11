@@ -1,7 +1,7 @@
 import config from 'config';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
-import { putItem, scan } from '../../db';
+import { putItem, query } from '../../db';
 import { getCache, setCache } from '../modules/cache';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
@@ -93,17 +93,17 @@ class FavoriteResource {
         if (cached) return JSON.parse(cached);
       }
 
-      const params: AWS.DynamoDB.ScanInput = {
+      const params: AWS.DynamoDB.QueryInput = {
         TableName: FavoriteResource.TABLE_NAME,
-        FilterExpression: 'osuId = :value',
+        KeyConditionExpression: 'osuId = :value',
         ExpressionAttributeValues: {
           ':value': { N: `${osuId}` },
         },
         Select: 'ALL_ATTRIBUTES',
       };
-      const results: AWS.DynamoDB.ScanOutput = await asyncTimedFunction(
-        scan,
-        'FavoriteResource:scan',
+      const results: AWS.DynamoDB.QueryOutput = await asyncTimedFunction(
+        query,
+        'FavoriteResource:query',
         [params],
       );
       return results.Items?.map((i) => new FavoriteResource({ dynamoDbFavoriteResource: i }));
