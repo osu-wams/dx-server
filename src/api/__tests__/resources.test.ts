@@ -240,7 +240,7 @@ describe('/resources', () => {
 
         it('should return an array of favorite resources from dynamodb', async () => {
           mockedGetCache.mockReturnValue(null);
-          mockDynamoDb.scan.mockImplementationOnce(() =>
+          mockDynamoDb.query.mockImplementationOnce(() =>
             Promise.resolve({ Items: [favoriteResourceItem] }),
           );
           await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
@@ -249,11 +249,11 @@ describe('/resources', () => {
         it('should return an array of favorite resources from cache', async () => {
           mockedGetCache.mockReturnValue(JSON.stringify([favoriteResource]));
           await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
-          expect(mockDynamoDb.scan).not.toBeCalled();
+          expect(mockDynamoDb.query).not.toBeCalled();
         });
 
         it('should return a 500 if an error occurs', async () => {
-          mockDynamoDb.scan.mockImplementationOnce(() =>
+          mockDynamoDb.query.mockImplementationOnce(() =>
             Promise.reject(new Error('happy little accident')),
           );
 
@@ -290,7 +290,7 @@ describe('/resources', () => {
 
         it('should save a favorite resource', async () => {
           mockedSetCache.mockReturnValue(true);
-          mockDynamoDb.scan.mockImplementationOnce(() =>
+          mockDynamoDb.query.mockImplementationOnce(() =>
             Promise.resolve({ Items: [favoriteResourceItem] }),
           );
           mockDynamoDb.putItem.mockImplementationOnce(() =>
