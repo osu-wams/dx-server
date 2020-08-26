@@ -104,7 +104,7 @@ router.get('/messages', async (req: Request, res: Response) => {
       osuId = masqueradeId;
       onid = masquerade?.onid; // eslint-disable-line
     }
-    if (onid && onid !== '') {
+    if (onid) {
       const response = await asyncTimedFunction<Types.UserMessageItems>(
         getUserMessages,
         'getUserMessages',
