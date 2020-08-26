@@ -5,6 +5,7 @@
     "contentShort": "This is a mocked message for you to see.",
     "deliveredAt": "2020-04-20",
     "messageId": "message-b0b-r0ss-id",
+    "onid": "bobross",
     "osuId": "111111111",
     "sendAt": "2020-04-20",
     "status": "SENT"

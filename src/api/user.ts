@@ -97,16 +97,32 @@ router.post('/settings', async (req: Request, res: Response) => {
 
 router.get('/messages', async (req: Request, res: Response) => {
   try {
-    const osuId =
-      req.user.groups.includes('masquerade') && req.user.masqueradeId
-        ? req.user.masqueradedId
-        : req.user.osuId;
-    const response = await asyncTimedFunction<Types.UserMessageItems>(
-      getUserMessages,
-      'getUserMessages',
-      [osuId],
-    );
-    res.json(response);
+    const { groups, masqueradeId, masquerade } = req.user;
+    let { osuId, onid } = req.user;
+    const isMasquerading = groups.includes('masquerade') && masqueradeId;
+    if (isMasquerading) {
+      osuId = masqueradeId;
+      onid = masquerade?.onid; // eslint-disable-line
+    }
+    if (onid) {
+      const response = await asyncTimedFunction<Types.UserMessageItems>(
+        getUserMessages,
+        'getUserMessages',
+        [osuId, onid],
+      );
+      res.json(response);
+    } else {
+      if (isMasquerading) {
+        logger().warn(
+          `GET api/user/messages masqueraded as a user (${osuId}) who is not yet in the DX users table or the value is missing in the session, unable to fetch user multi-channel messages.`,
+        );
+      } else {
+        logger().error(
+          `GET api/user/messages unable to determine users onid, user (${osuId}) has a missing onid field in the users table. Unable to fetch user multi-channel messages. This error should be escalated to determine why there is no onid in the table or session for this user.`,
+        );
+      }
+      res.json({ items: [] });
+    }
   } catch (err) {
     logger().error(`GET api/user/messages failed: ${err.message}, trace: ${err.stack}`);
     res.status(500).send({ message: 'Failed to fetch user messages.' });
@@ -126,7 +142,7 @@ router.post('/messages', async (req: Request, res: Response) => {
     const result = await asyncTimedFunction<Types.UserMessage>(
       updateUserMessage,
       'updateUserMessage',
-      [status, messageId, user.osuId],
+      [status, messageId, user.osuId, user.onid],
     );
     res.json(result);
   } catch (err) {

@@ -25,19 +25,26 @@ const authHeader = () => {
   return { 'x-api-key': DX_MCM_TOKEN };
 };
 
-export const channelMessagesUrl = (osuId: string) =>
-  `/api/v1/userMessages/channel/${DX_MCM_DASHBOARD_CHANNEL}/${osuId}`;
+export const channelMessagesUrl = (osuId: string, onid: string) =>
+  `/api/v1/userMessages/channel/${DX_MCM_DASHBOARD_CHANNEL}/${onid}-${osuId}`;
 
-export const userMessageStatusUrl = (status: string, messageId: string, osuId: string) =>
-  `/api/v1/userMessages/${status}/${DX_MCM_DASHBOARD_CHANNEL}/${messageId}/${osuId}`;
+export const userMessageStatusUrl = (
+  status: string,
+  messageId: string,
+  osuId: string,
+  onid: string,
+) => `/api/v1/userMessages/${status}/${DX_MCM_DASHBOARD_CHANNEL}/${messageId}/${onid}-${osuId}`;
 
 /**
  * Get the users messages
  * @returns {Promise<UserMessageItems>}
  */
-export const getUserMessages = async (osuId: string): Promise<Types.UserMessageItems> => {
+export const getUserMessages = async (
+  osuId: string,
+  onid: string,
+): Promise<Types.UserMessageItems> => {
   try {
-    const url = `${DX_MCM_BASE_URL}${channelMessagesUrl(osuId)}`;
+    const url = `${DX_MCM_BASE_URL}${channelMessagesUrl(osuId, onid)}`;
 
     const {
       object: {
@@ -66,9 +73,10 @@ export const updateUserMessage = async (
   status: string,
   messageId: string,
   osuId: string,
+  onid: string,
 ): Promise<Types.UserMessage> => {
   try {
-    const url = `${DX_MCM_BASE_URL}${userMessageStatusUrl(status, messageId, osuId)}`;
+    const url = `${DX_MCM_BASE_URL}${userMessageStatusUrl(status, messageId, osuId, onid)}`;
 
     const {
       object: { userMessage },

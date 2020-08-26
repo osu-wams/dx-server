@@ -19,7 +19,7 @@ jest.mock('../cache.ts', () => ({
 }));
 
 describe('DX Multi-Channel Message Module', () => {
-  const { osuId, messageId } = mockedUserMessages[0];
+  const { osuId, messageId, onid } = mockedUserMessages[0];
   const status = 'read';
   const getApiResponse = {
     action: 'userMessage-list',
@@ -39,16 +39,16 @@ describe('DX Multi-Channel Message Module', () => {
 
   describe('getUserMessages', () => {
     it('fetches a users current messages', async () => {
-      nock(DX_MCM_BASE_URL).get(channelMessagesUrl(osuId)).reply(200, getApiResponse);
+      nock(DX_MCM_BASE_URL).get(channelMessagesUrl(osuId, onid)).reply(200, getApiResponse);
       mockedGetCache.mockResolvedValue(getApiResponse);
-      const result = await getUserMessages(osuId);
+      const result = await getUserMessages(osuId, onid);
       expect(result).toMatchObject({ items: mockedUserMessages, lastKey: undefined });
     });
 
     it('catches an error response', async () => {
-      nock(DX_MCM_BASE_URL).get(channelMessagesUrl(osuId)).reply(500, 'boom');
+      nock(DX_MCM_BASE_URL).get(channelMessagesUrl(osuId, onid)).reply(500, 'boom');
       try {
-        await getUserMessages(osuId);
+        await getUserMessages(osuId, onid);
       } catch (error) {
         expect(error.response).toStrictEqual({
           status: 500,
@@ -63,7 +63,7 @@ describe('DX Multi-Channel Message Module', () => {
     it('updates a user messages', async () => {
       const updatedUserMessage = { ...updateApiResponse.object.userMessage, status: 'READ' };
       nock(DX_MCM_BASE_URL)
-        .get(userMessageStatusUrl(status, messageId, osuId))
+        .get(userMessageStatusUrl(status, messageId, osuId, onid))
         .reply(200, {
           action: updateApiResponse.action,
           object: {
@@ -71,15 +71,17 @@ describe('DX Multi-Channel Message Module', () => {
           },
         });
       mockedGetCache.mockResolvedValue(undefined);
-      const result = await updateUserMessage(status, messageId, osuId);
+      const result = await updateUserMessage(status, messageId, osuId, onid);
       expect(result).toMatchObject({ ...mockedUserMessages[0], status: 'READ' });
       expect(result).not.toMatchObject(mockedUserMessages[0]);
     });
 
     it('catches an error response', async () => {
-      nock(DX_MCM_BASE_URL).get(userMessageStatusUrl(status, messageId, osuId)).reply(500, 'boom');
+      nock(DX_MCM_BASE_URL)
+        .get(userMessageStatusUrl(status, messageId, osuId, onid))
+        .reply(500, 'boom');
       try {
-        await updateUserMessage(status, messageId, osuId);
+        await updateUserMessage(status, messageId, osuId, onid);
       } catch (error) {
         expect(error.response).toStrictEqual({
           status: 500,

@@ -7,6 +7,7 @@ const mockUser = () => ({
     'urn:mace:oregonstate.edu:entitlement:dx:dx-masquerade',
   ],
   osuId: 111111111,
+  onid: 'bobross',
   isAdmin: true,
   groups: ['admin', 'masquerade'],
   isCanvasOptIn: true,
