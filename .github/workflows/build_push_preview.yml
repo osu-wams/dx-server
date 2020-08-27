@@ -1,4 +1,4 @@
-name: Build and Push Server Application to AWS PRODUCTION
+name: Build and Push Server Application to AWS PREVIEW
 on:
   push:
     branches:
