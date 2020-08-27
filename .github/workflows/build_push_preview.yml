@@ -1,0 +1,92 @@
+name: Build and Push Server Application to AWS PRODUCTION
+on:
+  push:
+    branches:
+      - preview
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [13.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: yarn install, lint, test
+        run: |
+          yarn install --frozen-lockfile
+          yarn run lint
+          yarn run test:coverage -w 1
+        env:
+          CI: true
+          NODE_ENV: test
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_NPM_TOKEN }}
+      - name: report code coverage
+        run: npx codecov@3
+        if: matrix.node-version == '13.x'
+        env:
+          CI: true
+          NODE_ENV: test
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+          GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_NPM_TOKEN }}
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Login to AWS
+        run: $(aws ecr get-login --region ${{ secrets.AWS_REGION }} --no-include-email)
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_NPM_TOKEN }}
+      - name: Build and push Docker Image
+        run: |
+          build_date=$(date +%Y%m%d%H%M%S)
+          git_sha=$(git rev-parse --short ${{ github.sha }})
+          app_version=$(expr ${build_date}-${git_sha})
+          expr ${app_version} > app_version
+          docker build . --file Dockerfile --tag dx:${app_version} --build-arg APP_VERSION=${app_version} --build-arg NODE_ENV=preview --build-arg GITHUB_NPM_TOKEN=${{ secrets.GITHUB_NPM_TOKEN }}
+          docker tag dx:${app_version} ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:preview-${app_version}
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:preview-${app_version}
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_NPM_TOKEN }}
+      - name: Update task definition to new server image on PREVIEW cluster
+        run: |
+          COMMIT_LINK=https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA
+          COMMIT_MESSAGE=$(git log --format=%B -n 1 $GITHUB_SHA | cat -)
+          POST_DATA="{\"username\": \"GitHub\", \"text\": \"Stack: ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}\nStatus: DEPLOYMENT_STARTED\nMessage: $COMMIT_MESSAGE\n$COMMIT_LINK\"}"
+          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WAMS_CICD_HOOK_URL }}
+          app_version=`cat app_version`
+          ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:preview-${app_version}"
+          # this next line grabs content of parameter file from s3 bucket the "s3 cp file - " acts like cat, jq updates the ServerImage
+          aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }} - | jq -r --arg ECR_IMAGE "$ecr_image" 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE} else . end)' > ${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }}
+          # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3
+          aws s3 cp ${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }}
+          STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
+          if [ "$STACK_STATUS" == "UPDATE_IN_PROGRESS" ]; then
+            aws cloudformation cancel-update-stack --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}
+            aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}
+          fi
+          aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }}
+          aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}
+          STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
+          POST_DATA="{\"username\": \"GitHub\", \"text\": \"CloudFormation Stack Updated:\nStack: ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}\nStatus: $STACK_STATUS\nMessage: $COMMIT_MESSAGE\n$COMMIT_LINK\"}"
+          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WAMS_CICD_HOOK_URL }}
+        env:
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+          GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_NPM_TOKEN }}
