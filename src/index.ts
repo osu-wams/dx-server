@@ -63,7 +63,7 @@ const sessionOptions: SessionOptions = {
 
 console.log(`Server started with ENV=${ENV}, VERSION=${APP_VERSION}`);
 
-if (['production', 'stage', 'development', 'localhost'].includes(ENV)) {
+if (['production', 'stage', 'development', 'preview', 'localhost'].includes(ENV)) {
   sessionOptions.store = new RedisStore({
     host: REDIS_HOST,
     port: REDIS_PORT,
