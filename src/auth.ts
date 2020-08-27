@@ -66,6 +66,7 @@ const canvasOAuthConfig = () => {
 const Auth: Auth = {};
 
 switch (ENV) {
+  case 'preview':
   case 'development':
   case 'stage':
   case 'production':

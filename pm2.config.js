@@ -6,6 +6,9 @@ module.exports = {
       env: {
         NODE_ENV: 'localhost',
       },
+      env_preview: {
+        NODE_ENV: 'preview',
+      },
       env_development: {
         NODE_ENV: 'development',
       },
