@@ -1,4 +1,23 @@
+// Sorted by featured then by title fields
 export default [
+  {
+    audiences: ['Managers & Supervisors'],
+    id: '123',
+    title: 'A',
+    contact: null,
+    cost: false,
+    body: '',
+    department: 'OID',
+    duration: '150 min',
+    featured: true,
+    frequency: 'Often',
+    prerequisites: '...',
+    courseDesign: 'Blended Delivery',
+    tags: ['Leadership'],
+    type: 'Workshop',
+    websiteUri: 'https://',
+    websiteTitle: null,
+  },
   {
     audiences: [
       'OSU Students',
@@ -23,6 +42,24 @@ export default [
     tags: ['Collaboration & Teams', 'Leadership', 'Inclusive Excellence & Diversity'],
     type: 'Workshop',
     websiteUri: 'https://diversity.oregonstate.edu/diversity-education',
+    websiteTitle: null,
+  },
+  {
+    audiences: ['Managers & Supervisors'],
+    id: '123',
+    title: 'Z : Last one.',
+    contact: null,
+    cost: false,
+    body: '',
+    department: 'OID',
+    duration: '150 min',
+    featured: false,
+    frequency: 'Often',
+    prerequisites: '...',
+    courseDesign: 'Blended Delivery',
+    tags: ['Leadership'],
+    type: 'Workshop',
+    websiteUri: 'https://',
     websiteTitle: null,
   },
 ];

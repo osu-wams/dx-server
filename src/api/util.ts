@@ -40,4 +40,47 @@ export const fetchData = async (fn: Function, mockData?: any) => {
   return fn();
 };
 
+/**
+ * Sort array of objects based on field names provided.
+ *
+ * Sort a list of objects by lastName and then firstName descending order:
+ * ```
+ *  [
+ *   { firstName: "Steve", lastName: "Ross" },
+ *   { firstName: "Bob", lastName: "Ross" },
+ *   { firstName: "Rick", lastName: "Ross" }
+ *  ].sort(sortBy(['lastName', '-firstName']));
+ * ```
+ *
+ * Returns;
+ * ```
+ *  [
+ *   { firstName: "Steve", lastName: "Ross" },
+ *   { firstName: "Rick", lastName: "Ross" },
+ *   { firstName: "Bob", lastName: "Ross" }
+ *  ]
+ * ```
+ * @param f array of field names to sort (preceding - sorts in reverse order)
+ */
+export const sortBy = (f: string[]) => {
+  const sortDirections = [];
+  const fields = f.map((field, i) => {
+    if (field[0] === '-') {
+      sortDirections[i] = -1;
+      return field.substring(1);
+    }
+    sortDirections[i] = 1;
+    return field;
+  });
+
+  return (a: string, b: string) => {
+    for (let i = 0; i < fields.length; i += 1) {
+      const field = fields[i];
+      if (a[field] > b[field]) return sortDirections[i];
+      if (a[field] < b[field]) return -sortDirections[i];
+    }
+    return 0;
+  };
+};
+
 export default getToken;

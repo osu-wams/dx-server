@@ -18,7 +18,7 @@ import { IInfoResult } from '../information'; // eslint-disable-line no-unused-v
 import { IReleaseNotes } from '../releaseNotes'; // eslint-disable-line no-unused-vars
 import { IPageContent } from '../pageContent'; // eslint-disable-line no-unused-vars
 import cache, { setCache } from './cache';
-import { fetchData } from '../util';
+import { fetchData, sortBy } from '../util';
 
 export const BASE_URL: string = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
@@ -486,7 +486,7 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
       websiteUri: d.field_training_website?.uri,
       websiteTitle: d.field_training_website?.title,
     }));
-    return trainings.sort((a, b) => b.featured - a.featured);
+    return trainings.sort(sortBy(['-featured', 'title']));
   } catch (err) {
     throw err;
   }
@@ -506,6 +506,7 @@ export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
           filter: {
             status: 1,
           },
+          sort: 'weight',
         }),
       mockedTrainingTags,
     );
