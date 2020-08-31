@@ -176,5 +176,179 @@
       "title": null,
       "options": []
     }
+  },
+  {
+    "type": "node--trainings",
+    "id": "123",
+    "links": {
+      "describedby": {
+        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
+      },
+      "self": {
+        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/ab1e27d3-b73c-4fe6-904b-0bbbce14107a?resourceVersion=id%3A19256"
+      }
+    },
+    "field_training_audience": [
+      {
+        "type": "taxonomy_term--training_audience",
+        "id": "fc2b23ae-59c1-4f64-8071-785d5f00f49b",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/fc2b23ae-59c1-4f64-8071-785d5f00f49b"
+          }
+        },
+        "name": "Managers & Supervisors"
+      }
+    ],
+    "field_training_course_design": {
+      "type": "taxonomy_term--training_course_design",
+      "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
+      "links": {
+        "describedby": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+        },
+        "self": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
+        }
+      },
+      "name": "Blended Delivery"
+    },
+    "field_training_tags": [
+      {
+        "type": "taxonomy_term--training_tags",
+        "id": "f914605b-cf8e-4b61-bdd3-e077362ffad9",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+          }
+        },
+        "name": "Leadership"
+      }
+    ],
+    "field_training_types": {
+      "type": "taxonomy_term--training_types",
+      "id": "9d553759-21b4-4ee5-aefc-4d14f77eff34",
+      "links": {
+        "describedby": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/resource/schema"
+        },
+        "self": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/9d553759-21b4-4ee5-aefc-4d14f77eff34"
+        }
+      },
+      "name": "Workshop"
+    },
+    "title": "A",
+    "body": {
+      "value": "",
+      "format": null,
+      "processed": "",
+      "summary": null
+    },
+    "field_training_contact": null,
+    "field_training_cost": false,
+    "field_training_department": "OID",
+    "field_training_duration": "150 min",
+    "field_training_featured": true,
+    "field_training_frequency": "Often",
+    "field_training_prerequisites": "...",
+    "field_training_website": {
+      "uri": "https://",
+      "title": null,
+      "options": []
+    }
+  },
+  {
+    "type": "node--trainings",
+    "id": "123",
+    "links": {
+      "describedby": {
+        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
+      },
+      "self": {
+        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/ab1e27d3-b73c-4fe6-904b-0bbbce14107a?resourceVersion=id%3A19256"
+      }
+    },
+    "field_training_audience": [
+      {
+        "type": "taxonomy_term--training_audience",
+        "id": "fc2b23ae-59c1-4f64-8071-785d5f00f49b",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/fc2b23ae-59c1-4f64-8071-785d5f00f49b"
+          }
+        },
+        "name": "Managers & Supervisors"
+      }
+    ],
+    "field_training_course_design": {
+      "type": "taxonomy_term--training_course_design",
+      "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
+      "links": {
+        "describedby": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+        },
+        "self": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
+        }
+      },
+      "name": "Blended Delivery"
+    },
+    "field_training_tags": [
+      {
+        "type": "taxonomy_term--training_tags",
+        "id": "f914605b-cf8e-4b61-bdd3-e077362ffad9",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+          }
+        },
+        "name": "Leadership"
+      }
+    ],
+    "field_training_types": {
+      "type": "taxonomy_term--training_types",
+      "id": "9d553759-21b4-4ee5-aefc-4d14f77eff34",
+      "links": {
+        "describedby": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/resource/schema"
+        },
+        "self": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/9d553759-21b4-4ee5-aefc-4d14f77eff34"
+        }
+      },
+      "name": "Workshop"
+    },
+    "title": "Z : Last one.",
+    "body": {
+      "value": "",
+      "format": null,
+      "processed": "",
+      "summary": null
+    },
+    "field_training_contact": null,
+    "field_training_cost": false,
+    "field_training_department": "OID",
+    "field_training_duration": "150 min",
+    "field_training_featured": false,
+    "field_training_frequency": "Often",
+    "field_training_prerequisites": "...",
+    "field_training_website": {
+      "uri": "https://",
+      "title": null,
+      "options": []
+    }
   }
 ]
