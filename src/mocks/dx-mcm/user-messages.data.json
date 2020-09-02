@@ -3,11 +3,13 @@
     "channelId": "dashboard",
     "content": "This is a mocked message for you to see.",
     "contentShort": "This is a mocked message for you to see.",
-    "deliveredAt": "2020-04-20",
+    "deliveredAt": "2020-04-20T16:20:00.000Z",
+    "id": "bobross",
+    "imageUrl": "https://blah.png",
     "messageId": "message-b0b-r0ss-id",
     "onid": "bobross",
     "osuId": "111111111",
-    "sendAt": "2020-04-20",
+    "sendAt": "2020-04-20T16:20:00.000Z",
     "status": "SENT"
   }
 ]
