@@ -66,13 +66,13 @@ export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
   }
 };
 
-export const getProfile = async (user: any): Promise<Types.Profile> => {
+export const getProfile = async (user: any): Promise<Types.PersonsResponse> => {
   try {
-    const response: Types.ProfileResponse = await fetchData(
+    const response: Types.PersonsResponse = await fetchData(
       () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`),
       mockedPersons,
     );
-    return response.data;
+    return response;
   } catch (err) {
     throw err;
   }

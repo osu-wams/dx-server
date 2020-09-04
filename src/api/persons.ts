@@ -12,8 +12,10 @@ const router: Router = Router();
 // Main endpoint with general data about the person
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const response: Types.Profile = await asyncTimedFunction(getProfile, 'getProfile', [req.user]);
-    res.send(response);
+    const response: Types.PersonsResponse = await asyncTimedFunction(getProfile, 'getProfile', [
+      req.user,
+    ]);
+    res.send({ ...response.data.attributes, id: response.data.id });
   } catch (err) {
     logger().error('api/persons failed:', err);
     res.status(500).send({ message: 'Unable to retrieve person information.' });
