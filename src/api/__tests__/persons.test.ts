@@ -34,7 +34,13 @@ describe('/api/persons', () => {
         .query(true)
         .reply(200, personsData);
 
-      await request.get('/api/persons/').expect(200, personsData.data);
+      const response = await request.get('/api/persons/');
+      expect(response.status).toEqual(200);
+
+      expect(response.body).toStrictEqual({
+        ...personsData.data.attributes,
+        id: personsData.data.id,
+      });
     });
 
     it('should return an error if the user is not logged in', async () => {
