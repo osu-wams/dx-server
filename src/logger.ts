@@ -34,13 +34,10 @@ const loggerOptions: LoggerOptions = {
 
 if (ENV === 'test') {
   loggerOptions.transports = [
-    new transports.File({ level: LOG_LEVEL, filename: `${LOG_DIR}/test.log` }),
-  ];
-} else {
-  loggerOptions.transports = [
-    new transports.Console({ level: LOG_LEVEL }),
     new transports.File({ level: LOG_LEVEL, filename: `${LOG_DIR}/${ENV}.log` }),
   ];
+} else {
+  loggerOptions.transports = [new transports.Console({ level: LOG_LEVEL })];
 }
 
 /**
