@@ -7,7 +7,7 @@ import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
 import { getClassification } from './modules/osu'; // eslint-disable-line no-unused-vars
 import User from './models/user'; // eslint-disable-line no-unused-vars
-import { getUserMessages, updateUserMessage } from './modules/dx-mcm';
+import { getUserMessages, markRead } from './modules/dx-mcm';
 
 const router: Router = Router();
 
@@ -134,16 +134,15 @@ router.post('/messages', async (req: Request, res: Response) => {
     if (req.user.masquerade) {
       throw new Error('Cannot mark message as read when masquerading as a user.');
     }
-    const { status, messageId }: { status: string; messageId: string } = req.body;
+    const { status, messageId }: { status: string; messageId?: string } = req.body;
     if (status.toLowerCase() !== 'read') {
+      // TODO: Allow for different statuses to be posted?
       throw new Error(`User message status ${status} update unsupported.`);
     }
     const user: User = req.user; // eslint-disable-line prefer-destructuring
-    const result = await asyncTimedFunction<Types.UserMessage>(
-      updateUserMessage,
-      'updateUserMessage',
-      [status, messageId, user.osuId, user.onid],
-    );
+    const args = [user.osuId, user.onid];
+    if (messageId) args.push(messageId);
+    const result = await asyncTimedFunction<Types.UserMessage>(markRead, 'markRead', args);
     res.json(result);
   } catch (err) {
     logger().error('POST api/user/messages failed:', err);

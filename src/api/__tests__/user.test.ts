@@ -17,11 +17,11 @@ jest.mock('../util.ts', () => ({
 }));
 
 const mockedGetUserMessages = jest.fn();
-const mockedUpdateUserMessage = jest.fn();
+const mockedMarkRead = jest.fn();
 jest.mock('../modules/dx-mcm.ts', () => ({
   ...jest.requireActual('../modules/dx-mcm.ts'),
   getUserMessages: async () => mockedGetUserMessages(),
-  updateUserMessage: async () => mockedUpdateUserMessage(),
+  markRead: async () => mockedMarkRead(),
 }));
 
 const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v1`;
@@ -123,13 +123,27 @@ describe('/api/user', () => {
   describe('post /messages', () => {
     it('updates user message', async () => {
       const updatedUserMessage = { ...mockedUserMessages[0], status: 'READ' };
-      mockedUpdateUserMessage.mockReturnValue({
-        userMessage: updatedUserMessage,
-      });
+      mockedMarkRead.mockReturnValue({ userMessage: updatedUserMessage });
       await request
         .post('/api/user/messages')
         .send({ status: 'READ', messageId: mockedUserMessages[0].messageId })
         .expect(200, { userMessage: updatedUserMessage });
+    });
+
+    it('marks all user messages as read when messageId is not provided', async () => {
+      mockedMarkRead.mockReturnValue({ message: '1 marked as read.' });
+      await request
+        .post('/api/user/messages')
+        .send({ status: 'READ' })
+        .expect(200, { message: '1 marked as read.' });
+    });
+
+    it('marks all user messages as read when messageId is "all"', async () => {
+      mockedMarkRead.mockReturnValue({ message: '1 marked as read.' });
+      await request
+        .post('/api/user/messages')
+        .send({ status: 'READ', messageId: 'all' })
+        .expect(200, { message: '1 marked as read.' });
     });
 
     it('will not update a user message with an invalid status', async () => {
@@ -140,7 +154,7 @@ describe('/api/user', () => {
     });
 
     it('returns an error for failed updating a message', async () => {
-      mockedUpdateUserMessage.mockImplementation(async () => {
+      mockedMarkRead.mockImplementation(async () => {
         throw new Error('boom');
       });
       await request
