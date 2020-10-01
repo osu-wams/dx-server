@@ -70,7 +70,7 @@ export const markRead = async (
   osuId: string,
   onid: string,
   messageId: string = 'all',
-): Promise<Types.UserMessage | string> => {
+): Promise<Types.UserMessage | { message: string }> => {
   try {
     const url = markReadUrl(osuId, onid, messageId);
 
@@ -82,7 +82,7 @@ export const markRead = async (
         }),
       mockedUserMessages[0],
     );
-    return userMessage || message;
+    return userMessage || { message };
   } catch (err) {
     throw err;
   }

@@ -65,7 +65,7 @@ describe('DX Multi-Channel Message Module', () => {
       });
       mockedGetCache.mockResolvedValue(undefined);
       const result = await markRead(osuId, onid);
-      expect(result).toBe('1 marked as read.');
+      expect(result).toStrictEqual({ message: '1 marked as read.' });
     });
 
     it('catches an error response', async () => {
