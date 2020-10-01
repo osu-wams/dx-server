@@ -11,29 +11,28 @@ import { mockedUserMessages } from '../../mocks/dx-mcm';
 
 interface UserMessageApiResponse {
   action: string;
-  object: {
-    userMessageResults?: {
-      items: Types.UserMessage[];
-      count: number;
-      lastKey?: string;
-    };
-    userMessage?: Types.UserMessage;
+  userMessageResults?: {
+    items: Types.UserMessage[];
+    count: number;
+    lastKey?: string;
   };
+  userMessage?: Types.UserMessage;
+  message?: string;
 }
 
 const authHeader = () => {
   return { 'x-api-key': DX_MCM_TOKEN };
 };
 
-export const channelMessagesUrl = (osuId: string, onid: string) =>
+export const findByChannelPath = (osuId: string, onid: string) =>
   `/api/v1/userMessages/channel/${DX_MCM_DASHBOARD_CHANNEL}/${onid}-${osuId}`;
+export const findByChannelUrl = (osuId: string, onid: string) =>
+  `${DX_MCM_BASE_URL}${findByChannelPath(osuId, onid)}`;
 
-export const userMessageStatusUrl = (
-  status: string,
-  messageId: string,
-  osuId: string,
-  onid: string,
-) => `/api/v1/userMessages/${status}/${DX_MCM_DASHBOARD_CHANNEL}/${messageId}/${onid}-${osuId}`;
+export const markReadPath = (osuId: string, onid: string, messageIdOrAll: string) =>
+  `/api/v1/userMessages/read/${DX_MCM_DASHBOARD_CHANNEL}/${messageIdOrAll}/${onid}-${osuId}`;
+export const markReadUrl = (osuId: string, onid: string, messageIdOrAll: string) =>
+  `${DX_MCM_BASE_URL}${markReadPath(osuId, onid, messageIdOrAll)}`;
 
 /**
  * Get the users messages
@@ -44,12 +43,10 @@ export const getUserMessages = async (
   onid: string,
 ): Promise<Types.UserMessageItems> => {
   try {
-    const url = `${DX_MCM_BASE_URL}${channelMessagesUrl(osuId, onid)}`;
+    const url = findByChannelUrl(osuId, onid);
 
     const {
-      object: {
-        userMessageResults: { items, lastKey },
-      },
+      userMessageResults: { items, lastKey },
     }: UserMessageApiResponse = await fetchData(
       () =>
         cache.get(url, { json: true, headers: authHeader() }, true, {
@@ -66,21 +63,18 @@ export const getUserMessages = async (
 };
 
 /**
- * Update the UserMessage status
+ * Update the UserMessage status to mark as read
  * @returns {Promise<UserMessage>}
  */
-export const updateUserMessage = async (
-  status: string,
-  messageId: string,
+export const markRead = async (
   osuId: string,
   onid: string,
-): Promise<Types.UserMessage> => {
+  messageId: string = 'all',
+): Promise<Types.UserMessage | string> => {
   try {
-    const url = `${DX_MCM_BASE_URL}${userMessageStatusUrl(status, messageId, osuId, onid)}`;
+    const url = markReadUrl(osuId, onid, messageId);
 
-    const {
-      object: { userMessage },
-    }: UserMessageApiResponse = await fetchData(
+    const { userMessage, message }: UserMessageApiResponse = await fetchData(
       () =>
         cache.get(url, { json: true, headers: authHeader() }, true, {
           key: url,
@@ -88,7 +82,7 @@ export const updateUserMessage = async (
         }),
       mockedUserMessages[0],
     );
-    return userMessage;
+    return userMessage || message;
   } catch (err) {
     throw err;
   }
