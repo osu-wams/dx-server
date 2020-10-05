@@ -58,7 +58,7 @@ export default {
     baseUrl: 'https://www.getrave.com/rss/oregonstate/channel2',
   },
   cachetApi: {
-    cacheEndpointSec: '900',
+    cacheEndpointSec: '180',
     baseUrl: 'https://status.is.oregonstate.edu/api/v1',
   },
   localist: {
