@@ -47,6 +47,7 @@ describe('/api/user', () => {
       isCanvasOptIn: true,
       classification: {},
       audienceOverride: {},
+      devTools: false,
     });
   });
 
@@ -90,7 +91,7 @@ describe('/api/user', () => {
       await request
         .post('/api/user/settings')
         .send(settings)
-        .expect(200, { audienceOverride: { campusCode: 'C' }, theme: 'light' });
+        .expect(200, { audienceOverride: { campusCode: 'C' }, theme: 'light', devTools: false });
     });
 
     it('returns an error for failed audienceOverride settings', async () => {
