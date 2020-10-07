@@ -24,7 +24,7 @@ export default {
     baseUrl: 'https://data.dx.oregonstate.edu',
   },
   dxMcmApi: {
-    cacheEndpointSec: '1',
+    cacheEndpointSec: '2',
     baseUrl: 'https://dev.mcm.oregonstate.edu',
     token: '',
   },

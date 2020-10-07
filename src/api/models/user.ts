@@ -17,6 +17,7 @@ export interface UserSettings {
   audienceOverride?: AudienceOverride;
   primaryAffiliationOverride?: string;
   theme?: string;
+  devTools?: boolean;
 }
 
 interface AudienceOverrideItem extends AWS.DynamoDB.MapAttributeValue {
@@ -47,6 +48,7 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   audienceOverride?: { M: AudienceOverrideItem };
   primaryAffiliationOverride?: { S: string };
   theme?: { S: string };
+  devTools?: { BOOL: boolean };
   onid?: { S: string };
   lastLogin?: { S: string };
 }
@@ -108,6 +110,9 @@ class User {
   /** User initiated setting to set the application theme, defaults to light theme */
   theme?: string = 'light';
 
+  /** Enables developer tools to troubleshoot issues */
+  devTools?: boolean = false;
+
   /** Users ONID */
   onid?: string = '';
 
@@ -164,6 +169,7 @@ class User {
         };
       }
       if (params.Item.theme) this.theme = params.Item.theme.S;
+      if (params.Item.devTools) this.devTools = params.Item.devTools.BOOL;
       if (params.Item.primaryAffiliationOverride)
         this.primaryAffiliationOverride = params.Item.primaryAffiliationOverride.S;
       if (params.Item.affiliations) this.affiliations = params.Item.affiliations.SS;
@@ -323,8 +329,10 @@ class User {
     try {
       const user = props;
       const theme: string = settings.theme || user.theme || 'light';
-      let updateExpressionString = 'SET theme = :t';
-      const updateExpressionValues = { ':t': { S: theme } };
+      const devTools: boolean = settings.devTools || user.devTools || false;
+
+      let updateExpressionString = 'SET theme = :t, devTools = :d';
+      const updateExpressionValues = { ':t': { S: theme }, ':d': { BOOL: devTools } };
       const params: AWS.DynamoDB.UpdateItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
@@ -370,6 +378,7 @@ class User {
         user.primaryAffiliationOverride = settings.primaryAffiliationOverride;
       }
       user.theme = theme;
+      user.devTools = devTools;
       return user;
     } catch (err) {
       logger().error(`User.updateSettings failed:`, err);
@@ -438,6 +447,7 @@ class User {
       };
     }
     if (props.theme) Item.theme = { S: props.theme };
+    if (props.devTools) Item.devTools = { BOOL: props.devTools };
     if (props.primaryAffiliationOverride) {
       Item.primaryAffiliationOverride = { S: props.primaryAffiliationOverride };
     }

@@ -39,6 +39,7 @@ router.get('/', async (req: Request, res: Response) => {
     classification: userClassification || {},
     primaryAffiliationOverride,
     theme,
+    devTools: req.user.devTools || false,
   });
 });
 
@@ -60,12 +61,14 @@ router.get('/classification', async (req: Request, res: Response) => {
 
 router.post('/settings', async (req: Request, res: Response) => {
   try {
-    const { audienceOverride, theme, primaryAffiliationOverride } = req.body;
+    const { audienceOverride, theme, devTools, primaryAffiliationOverride } = req.body;
+
     const user: User = req.user.masquerade || req.user; // eslint-disable-line prefer-destructuring
     const updatedUser: User = await User.updateSettings(user, {
       audienceOverride,
       primaryAffiliationOverride,
       theme,
+      devTools: req.user.isAdmin ? devTools : false,
     });
 
     if (req.user.masquerade) {
@@ -75,6 +78,8 @@ router.post('/settings', async (req: Request, res: Response) => {
         req.session.passport.user.masquerade.primaryAffiliationOverride =
           updatedUser.primaryAffiliationOverride;
       if (theme !== undefined) req.session.passport.user.masquerade.theme = updatedUser.theme;
+      if (devTools !== undefined)
+        req.session.passport.user.masquerade.devTools = updatedUser.devTools;
     } else {
       if (audienceOverride !== undefined)
         req.session.passport.user.audienceOverride = updatedUser.audienceOverride;
@@ -82,11 +87,13 @@ router.post('/settings', async (req: Request, res: Response) => {
         req.session.passport.user.primaryAffiliationOverride =
           updatedUser.primaryAffiliationOverride;
       if (theme !== undefined) req.session.passport.user.theme = updatedUser.theme;
+      if (devTools !== undefined) req.session.passport.user.devTools = updatedUser.devTools;
     }
 
     res.json({
       audienceOverride: updatedUser.audienceOverride,
       theme: updatedUser.theme,
+      devTools: updatedUser.devTools,
       primaryAffiliationOverride: updatedUser.primaryAffiliationOverride,
     });
   } catch (err) {

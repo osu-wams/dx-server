@@ -39,7 +39,7 @@ router.post('/', async (req: Request, res: Response) => {
         email,
         isCanvasOptIn,
       } = user;
-      req.session.passport.user.masquerade = {
+      req.user.masquerade = {
         lastName,
         lastLogin,
         affiliations,
@@ -54,22 +54,22 @@ router.post('/', async (req: Request, res: Response) => {
         isCanvasOptIn,
       };
     }
-    req.session.passport.user.masqueradeId = masqueradeId;
-    req.session.passport.user.masqueradeReason = masqueradeReason;
+    req.user.masqueradeId = masqueradeId;
+    req.user.masqueradeReason = masqueradeReason;
     logger().info(
-      `User:${req.session.passport.user.osuId}:${req.session.passport.user.email} masqueraded as ${masqueradeId}, '${masqueradeReason}'`,
+      `User:${req.user.osuId}:${req.user.email} masqueraded as ${masqueradeId}, '${masqueradeReason}'`,
       {
         adminAction: 'masquerade',
-        osuId: req.session.passport.user.osuId,
-        email: req.session.passport.user.email,
+        osuId: req.user.osuId,
+        email: req.user.email,
         masqueradeId,
         masqueradeReason,
       },
     );
     res.send('Masquerade session started.');
-  } else if (req.session.passport.user.masqueradeId) {
-    delete req.session.passport.user.masqueradeId;
-    delete req.session.passport.user.masquerade;
+  } else if (req.user.masqueradeId) {
+    delete req.user.masqueradeId;
+    delete req.user.masquerade;
     res.send('Masquerade session ended.');
   } else {
     res.status(500).send({ message: 'No masqueradeId or masqueradeReason supplied.' });
@@ -77,11 +77,11 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 router.get('/', (req, res) => {
-  if (req.session.passport.user.masqueradeId) {
+  if (req.user.masqueradeId) {
     return res.send({
-      masquerade: req.session.passport.user.masquerade,
-      masqueradeId: req.session.passport.user.masqueradeId || '',
-      masqueradeReason: req.session.passport.user.masqueradeReason || '',
+      masquerade: req.user.masquerade,
+      masqueradeId: req.user.masqueradeId || '',
+      masqueradeReason: req.user.masqueradeReason || '',
     });
   }
   return res.send({ masqueradeId: '', masqueradeReason: '' });
