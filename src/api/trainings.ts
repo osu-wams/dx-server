@@ -1,5 +1,5 @@
 /**
- * /api/info-buttons
+ * /api/trainings
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';

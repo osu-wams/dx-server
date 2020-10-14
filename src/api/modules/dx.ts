@@ -6,6 +6,7 @@ import {
   mockedAlerts,
   mockedCategories,
   mockedCuratedResources,
+  mockedCustomCard,
   mockedInformation,
   mockedResources,
   mockedPageContent,
@@ -515,6 +516,76 @@ export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
       id: d.id,
       name: d.name,
     }));
+  } catch (err) {
+    throw err;
+  }
+};
+
+interface CustomCard {
+  id: string;
+  title: string;
+  icon: string;
+  body: string;
+  link: string;
+  resources: string[];
+  audiences: string[];
+  locations: string[];
+  affiliation: string[];
+  pages: string[];
+  machineName: string;
+  infoButtonId: string;
+  weight: number;
+}
+
+/*
+const mappedCustomCards = (items: any[]): CustomCard[] => {
+  return items.map((d) => ({
+    id: d.id,
+    title: d.title,
+    link: d.field_service_url?.uri,
+    icon: d.field_icon_name,
+    affiliation: d.field_affiliation.map((a) => a.name).filter(Boolean),
+    locations: d.field_locations.map((a) => a.name).filter(Boolean),
+    resources: d.field_resources.map((a) => a.name).filter(Boolean),
+    audiences: d.field_audience.map((a) => a.name).filter(Boolean),
+    pages: d.field_pages.map((a) => a.name).filter(Boolean),
+    machineName: d.field_machine_name,
+    weight: d.field_weight,
+    infoButtonId: d.field_info_button_id,
+    body: d.field_body,
+  }));
+};
+*/
+
+/**
+ * Get all custom card data with all associated taxonomy terms
+ */
+export const getCustomCards = async (): Promise<CustomCard[]> => {
+  try {
+    /*
+    const opts = {
+      fields: {
+        'node--custom_cards':
+          'id,title,field_body,field_link,field_services,field_machine_name,field_icon_name,field_affiliation,field_audience,field_service_url,field_locations,field_pages',
+        'taxonomy_term--audience': 'name',
+        'taxonomy_term--affiliation': 'name',
+        'taxonomy_term--locations': 'name',
+        'taxonomy_term--pages': 'name',
+        'node--services': 'id',
+      },
+      include: 'field_affiliation,field_audience,field_locations,field_pages',
+      sort: 'title',
+      filter: {
+        status: 1,
+      },
+    };
+    const data = await fetchData(
+      () => retrieveData('node/custom_cards', opts, LONG_CACHE_SEC),
+      mockedCustomCard,
+    );
+    return mappedCustomCards(data);
+    */
+    return [mockedCustomCard];
   } catch (err) {
     throw err;
   }

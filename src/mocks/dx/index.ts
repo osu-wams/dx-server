@@ -11,6 +11,7 @@ import mockedCuratedResourcesFeaturedEmployee from './resources-featured-employe
 import mockedCuratedResourcesFinancial from './resources-financial.data.json';
 import mockedCuratedResourcesAcademic from './resources-academic.data.json';
 import mockedCuratedResourcesAcademicExpected from './resources-academic.data.expected';
+import mockedCustomCard from './custom-card';
 import mockedInformation from './information.data.json';
 import mockedResources from './resources.data.json';
 import mockedResourcesExpected from './resources.data.expected';
@@ -48,6 +49,7 @@ export {
   mockedCuratedResources,
   mockedCuratedResourcesFeaturedExpected,
   mockedCuratedResourcesAcademicExpected,
+  mockedCustomCard,
   mockedInformation,
   mockedResources,
   mockedResourcesExpected,
