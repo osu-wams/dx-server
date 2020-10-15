@@ -29,6 +29,49 @@ const parseSamlResult = (profile: any, done: any) => {
     lastLogin: lastLogin(),
   };
 
+  if (!user.osuId) {
+    logger().error(
+      `Saml response did not include 'osuId' required field (urn:oid:1.3.6.1.4.1.5016.2.1.2.1) value.`,
+    );
+  }
+
+  if (!user.firstName) {
+    logger().error(
+      `Saml response did not include 'firstName' required field (urn:oid:2.5.4.42) value.`,
+    );
+  }
+
+  if (!user.lastName) {
+    logger().error(
+      `Saml response did not include 'lastName' required field (urn:oid:2.5.4.4) value.`,
+    );
+  }
+
+  if (!user.email) {
+    logger().error(
+      `Saml response did not include 'email' required field (urn:oid:1.3.6.1.4.1.5923.1.1.1.6) value.`,
+    );
+  }
+
+  if (!user.primaryAffiliation) {
+    logger().error(
+      `Saml response did not include 'primaryAffiliation' required field (urn:oid:1.3.6.1.4.1.5923.1.1.1.5) value.`,
+    );
+  }
+
+  if (!user.affiliations) {
+    logger().error(
+      `Saml response did not include 'affiliations' required field (urn:oid:1.3.6.1.4.1.5923.1.1.1.1) values, populating with primaryAffiliation.`,
+    );
+    user.affiliations = [user.primaryAffiliation];
+  }
+
+  if (!user.onid) {
+    logger().error(
+      `Saml response did not include 'onid' required field (urn:oid:0.9.2342.19200300.100.1.1) value.`,
+    );
+  }
+
   const permissions = profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.7'] || [];
   if (permissions.includes(GROUPS.admin)) {
     user.isAdmin = true;
