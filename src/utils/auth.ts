@@ -59,7 +59,7 @@ const parseSamlResult = (profile: any, done: any) => {
     );
   }
 
-  if (!user.affiliations) {
+  if (!user.affiliations || !user.affiliations.length) {
     logger().error(
       `Saml response did not include 'affiliations' required field (urn:oid:1.3.6.1.4.1.5923.1.1.1.1) values, populating with primaryAffiliation.`,
     );
