@@ -62,6 +62,21 @@ describe('parseSamlResult', () => {
       groups: ['masquerade'],
     });
   });
+  it('parses a Saml result with other as primaryAffiliation and affiliations', async () => {
+    parseSamlResult(
+      {
+        ...mockSaml,
+        'urn:oid:1.3.6.1.4.1.5923.1.1.1.5': 'other',
+        'urn:oid:1.3.6.1.4.1.5923.1.1.1.1': ['other'],
+      },
+      mockedDone,
+    );
+    expect(mockedDone).toBeCalledWith(null, {
+      ...mockUser,
+      primaryAffiliation: 'employee',
+      affiliations: ['employee'],
+    });
+  });
 });
 
 describe('encrypt', () => {

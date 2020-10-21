@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import { User as UserLib } from '@osu-wams/lib';
 import { getCache, AUTH_DB, setAsync, selectDbAsync } from '../api/modules/cache';
 import { ENV, GROUPS, IV_LENGTH } from '../constants';
 import User from '../api/models/user'; // eslint-disable-line no-unused-vars
@@ -86,6 +87,22 @@ const parseSamlResult = (profile: any, done: any) => {
       user.groups.push('masquerade');
     }
   }
+
+  if (user.primaryAffiliation.toLowerCase() === 'other') {
+    logger().debug(
+      "Saml user has 'other' as primaryAffiliation, setting it to 'employee' as the default.",
+    );
+    user.primaryAffiliation = UserLib.AFFILIATIONS.employee;
+  }
+
+  const otherIndex = user.affiliations.findIndex((a) => a.toLowerCase() === 'other');
+  if (otherIndex > -1) {
+    logger().debug(
+      "Saml user has 'other' in affiliations, setting it to 'employee' as the default.",
+    );
+    user.affiliations[otherIndex] = UserLib.AFFILIATIONS.employee;
+  }
+
   return done(null, user);
 };
 
