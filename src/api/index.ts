@@ -15,6 +15,7 @@ import ErrorRouter from './errors';
 import StatusRouter from './status';
 import ReleaseNotesRouter from './releaseNotes';
 import TrainingsRouter from './trainings';
+import CardsRouter from './cards';
 
 const router = Router();
 
@@ -33,5 +34,6 @@ router.use('/status', StatusRouter);
 router.use('/page-content', PageContentRouter);
 router.use('/release-notes', ReleaseNotesRouter);
 router.use('/trainings', TrainingsRouter);
+router.use('/cards', CardsRouter);
 
 export default router;

@@ -1,0 +1,220 @@
+[
+  {
+    "type": "node--card_content",
+    "id": "af1e3a30-7c6c-4fba-a712-eb547bb14f19",
+    "links": {
+      "describedby": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/resource/schema"
+      },
+      "self": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/af1e3a30-7c6c-4fba-a712-eb547bb14f19?resourceVersion=id%3A21011"
+      }
+    },
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      }
+    ],
+    "field_audience": [],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "4657195e-93a2-4029-afac-6810b98b8f7f",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/4657195e-93a2-4029-afac-6810b98b8f7f"
+          }
+        },
+        "name": "Corvallis"
+      }
+    ],
+    "field_pages": [
+      {
+        "type": "taxonomy_term--pages",
+        "id": "a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0"
+          }
+        },
+        "name": "Academics"
+      }
+    ],
+    "field_resources": [
+      { "id": "8ea9eaba-8942-4ff6-a075-585b2269c553", "type": "node--services" },
+      { "id": "dad0b014-6a7d-40ba-88ce-970b52bacd27", "type": "node--services" }
+    ],
+    "title": "Simple Card",
+    "sticky": false,
+    "body": {
+      "value": "<p>Sensors indicate human life forms 30 meters below the planet's surface. Stellar flares are increasing in magnitude and frequency. Set course for Rhomboid Dronegar 006, warp seven. There's no evidence of an advanced communication network. Total guidance system failure, with less than 24 hours' reserve power. Shield effectiveness has been reduced 12 percent. We have covered the area in a spherical pattern which a ship without warp drive could cross in the given time.</p>\r\n",
+      "format": "basic_html",
+      "processed": "<p>Sensors indicate human life forms 30 meters below the planet's surface. Stellar flares are increasing in magnitude and frequency. Set course for Rhomboid Dronegar 006, warp seven. There's no evidence of an advanced communication network. Total guidance system failure, with less than 24 hours' reserve power. Shield effectiveness has been reduced 12 percent. We have covered the area in a spherical pattern which a ship without warp drive could cross in the given time.</p>",
+      "summary": ""
+    },
+    "field_card_footer_link": {
+      "uri": "https://duckduckgo.com/",
+      "title": "Better Search",
+      "options": []
+    },
+    "field_icon_name": "fad fa-starship",
+    "field_machine_name": "simple_card",
+    "field_weight": -50
+  },
+  {
+    "type": "node--card_content",
+    "id": "c7363c12-d253-43cf-ac38-3077655a39d9",
+    "links": {
+      "describedby": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/resource/schema"
+      },
+      "self": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/c7363c12-d253-43cf-ac38-3077655a39d9?resourceVersion=id%3A20996"
+      }
+    },
+    "field_affiliation": [
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+          }
+        },
+        "name": "Employee"
+      },
+      {
+        "type": "taxonomy_term--affiliation",
+        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+          }
+        },
+        "name": "Student"
+      }
+    ],
+    "field_audience": [
+      {
+        "type": "taxonomy_term--audience",
+        "id": "46fed8c9-aa59-444b-8f9d-86f393bfe485",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/46fed8c9-aa59-444b-8f9d-86f393bfe485"
+          }
+        },
+        "name": "First Year"
+      },
+      {
+        "type": "taxonomy_term--audience",
+        "id": "91c88ac8-c708-4347-bd06-ea59ed5c3997",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/91c88ac8-c708-4347-bd06-ea59ed5c3997"
+          }
+        },
+        "name": "Graduate Student"
+      }
+    ],
+    "field_locations": [
+      {
+        "type": "taxonomy_term--locations",
+        "id": "8a4c349c-a444-4ffa-9439-a7ac046c40ac",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/8a4c349c-a444-4ffa-9439-a7ac046c40ac"
+          }
+        },
+        "name": "Bend"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "4657195e-93a2-4029-afac-6810b98b8f7f",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/4657195e-93a2-4029-afac-6810b98b8f7f"
+          }
+        },
+        "name": "Corvallis"
+      },
+      {
+        "type": "taxonomy_term--locations",
+        "id": "bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5"
+          }
+        },
+        "name": "Ecampus"
+      }
+    ],
+    "field_pages": [
+      {
+        "type": "taxonomy_term--pages",
+        "id": "a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0"
+          }
+        },
+        "name": "Academics"
+      }
+    ],
+    "field_resources": [
+      { "id": "dd7a79cc-23f2-4a0d-b5c2-9cabc2cc1d17", "type": "node--services" },
+      { "id": "914193e9-eb9a-4966-87b3-70609edf7536", "type": "node--services" }
+    ],
+    "title": "Test Card",
+    "sticky": false,
+    "body": {
+      "value": "<p><strong>test&nbsp;</strong></p>\r\n",
+      "format": "basic_html",
+      "processed": "<p><strong>test </strong></p>",
+      "summary": ""
+    },
+    "field_card_footer_link": { "uri": "http://google.com", "title": "google link", "options": [] },
+    "field_icon_name": "fa-test",
+    "field_machine_name": "test_card",
+    "field_weight": 0
+  }
+]

@@ -6,6 +6,7 @@ import {
   mockedAlerts,
   mockedCategories,
   mockedCuratedResources,
+  mockedCards,
   mockedInformation,
   mockedResources,
   mockedPageContent,
@@ -515,6 +516,67 @@ export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
       id: d.id,
       name: d.name,
     }));
+  } catch (err) {
+    throw err;
+  }
+};
+
+const mappedCards = (items: any[]): Types.DynamicCard[] => {
+  return items.map((d) => ({
+    id: d.id,
+    title: d.title,
+    infoButtonId: d.field_machine_name,
+    locations: d.field_locations.map((a) => a.name).filter(Boolean),
+    affiliation: d.field_affiliation.map((a) => a.name).filter(Boolean),
+    pages: d.field_pages.map((a) => a.name).filter(Boolean),
+    weight: d.field_weight,
+    sticky: d.sticky,
+    resources: d.field_resources?.map((a) => a.id).filter(Boolean),
+    icon: d.field_icon_name,
+    body: d.body?.processed,
+    link: d.field_card_footer_link?.uri,
+    linkText: d.field_card_footer_link?.title,
+    audiences: d.field_audience.map((a) => a.name).filter(Boolean),
+  }));
+};
+
+const sortedCards = (cards: Types.DynamicCard[]): Types.DynamicCard[] => {
+  return cards.sort((a, b) => {
+    if (a.weight < b.weight) return -1;
+    if (a.weight > b.weight) return 1;
+    if (a.title < b.title) return -1;
+    if (a.title > b.title) return 1;
+    return 0;
+  });
+};
+
+/**
+ * Get all custom card data with all associated taxonomy terms
+ */
+export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
+  try {
+    const opts = {
+      fields: {
+        'node--card_content':
+          'id,title,body,field_card_footer_link,sticky,field_resources,field_machine_name,field_icon_name,field_weight,field_affiliation,field_audience,field_locations,field_pages',
+        'taxonomy_term--audience': 'name',
+        'taxonomy_term--affiliation': 'name',
+        'taxonomy_term--locations': 'name',
+        'taxonomy_term--pages': 'name',
+        'node--services': 'id',
+      },
+      include: 'field_affiliation,field_audience,field_locations,field_pages',
+      sort: 'title',
+      filter: {
+        status: 1,
+      },
+    };
+    const data = await fetchData(
+      () => retrieveData('node/card_content', opts, LONG_CACHE_SEC),
+      mockedCards,
+    );
+    const cards = mappedCards(data);
+    return sortedCards(cards);
   } catch (err) {
     throw err;
   }
