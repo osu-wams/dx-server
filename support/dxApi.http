@@ -48,15 +48,15 @@ GET {{baseUrl}}/jsonapi/entity_subqueue/featured HTTP/1.1
 
 ###
 
-# @name getCustomCards
-GET {{baseUrl}}/jsonapi/node/custom_cards HTTP/1.1
-  ?fields[node--custom_cards]=id,title,field_body,field_link,field_services,field_machine_name,field_icon_name,field_affiliation,field_audience,field_service_url,field_locations,field_pages
+# @name getCardContent
+GET {{baseUrl}}/jsonapi/node/card_content HTTP/1.1
+  ?fields[node--card_content]=id,title,body,field_card_footer_link,field_weight,sticky,field_resources,field_machine_name,field_icon_name,field_affiliation,field_audience,field_locations,field_pages
   &fields[taxonomy_term--audience]=name
   &fields[taxonomy_term--affiliation]=name
   &fields[taxonomy_term--locations]=name
   &fields[taxonomy_term--pages]=name
-  ?fields[node--services]=id
-  &include=field_affiliation,field_audience,field_locations,field_pages
+  &fields[node--services]=id
+  &include=field_affiliation,field_audience,field_locations,field_pages,field_resources
   &sort=title
   &filter[status]=1
 
