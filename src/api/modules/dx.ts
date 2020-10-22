@@ -540,6 +540,16 @@ const mappedCards = (items: any[]): Types.DynamicCard[] => {
   }));
 };
 
+const sortedCards = (cards: Types.DynamicCard[]): Types.DynamicCard[] => {
+  return cards.sort((a, b) => {
+    if (a.weight < b.weight) return -1;
+    if (a.weight > b.weight) return 1;
+    if (a.title < b.title) return -1;
+    if (a.title > b.title) return 1;
+    return 0;
+  });
+};
+
 /**
  * Get all custom card data with all associated taxonomy terms
  */
@@ -565,7 +575,8 @@ export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
       () => retrieveData('node/card_content', opts, LONG_CACHE_SEC),
       mockedCards,
     );
-    return mappedCards(data);
+    const cards = mappedCards(data);
+    return sortedCards(cards);
   } catch (err) {
     throw err;
   }
