@@ -6,7 +6,7 @@ import {
   mockedAlerts,
   mockedCategories,
   mockedCuratedResources,
-  mockedCustomCard,
+  mockedCards,
   mockedInformation,
   mockedResources,
   mockedPageContent,
@@ -521,52 +521,34 @@ export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
   }
 };
 
-interface CustomCard {
-  id: string;
-  title: string;
-  icon: string;
-  body: string;
-  link: string;
-  resources: string[];
-  audiences: string[];
-  locations: string[];
-  affiliation: string[];
-  pages: string[];
-  machineName: string;
-  infoButtonId: string;
-  weight: number;
-}
-
-/*
-const mappedCustomCards = (items: any[]): CustomCard[] => {
+const mappedCards = (items: any[]): Types.DynamicCard[] => {
   return items.map((d) => ({
     id: d.id,
     title: d.title,
-    link: d.field_service_url?.uri,
-    icon: d.field_icon_name,
-    affiliation: d.field_affiliation.map((a) => a.name).filter(Boolean),
+    infoButtonId: d.field_machine_name,
     locations: d.field_locations.map((a) => a.name).filter(Boolean),
-    resources: d.field_resources.map((a) => a.name).filter(Boolean),
-    audiences: d.field_audience.map((a) => a.name).filter(Boolean),
+    affiliation: d.field_affiliation.map((a) => a.name).filter(Boolean),
     pages: d.field_pages.map((a) => a.name).filter(Boolean),
-    machineName: d.field_machine_name,
     weight: d.field_weight,
-    infoButtonId: d.field_info_button_id,
-    body: d.field_body,
+    sticky: d.sticky,
+    resources: d.field_resources?.map((a) => a.id).filter(Boolean),
+    icon: d.field_icon_name,
+    body: d.body?.processed,
+    link: d.field_card_footer_link?.uri,
+    linkText: d.field_card_footer_link?.title,
+    audiences: d.field_audience.map((a) => a.name).filter(Boolean),
   }));
 };
-*/
 
 /**
  * Get all custom card data with all associated taxonomy terms
  */
-export const getCustomCards = async (): Promise<CustomCard[]> => {
+export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
   try {
-    /*
     const opts = {
       fields: {
-        'node--custom_cards':
-          'id,title,field_body,field_link,field_services,field_machine_name,field_icon_name,field_affiliation,field_audience,field_service_url,field_locations,field_pages',
+        'node--card_content':
+          'id,title,body,field_card_footer_link,sticky,field_resources,field_machine_name,field_icon_name,field_weight,field_affiliation,field_audience,field_locations,field_pages',
         'taxonomy_term--audience': 'name',
         'taxonomy_term--affiliation': 'name',
         'taxonomy_term--locations': 'name',
@@ -580,12 +562,10 @@ export const getCustomCards = async (): Promise<CustomCard[]> => {
       },
     };
     const data = await fetchData(
-      () => retrieveData('node/custom_cards', opts, LONG_CACHE_SEC),
-      mockedCustomCard,
+      () => retrieveData('node/card_content', opts, LONG_CACHE_SEC),
+      mockedCards,
     );
-    return mappedCustomCards(data);
-    */
-    return [mockedCustomCard];
+    return mappedCards(data);
   } catch (err) {
     throw err;
   }
