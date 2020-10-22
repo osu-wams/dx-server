@@ -329,7 +329,7 @@ class User {
     try {
       const user = props;
       const theme: string = settings.theme || user.theme || 'light';
-      const devTools: boolean = settings.devTools || user.devTools || false;
+      const devTools: boolean = settings.devTools ?? user.devTools ?? false;
 
       let updateExpressionString = 'SET theme = :t, devTools = :d';
       const updateExpressionValues = { ':t': { S: theme }, ':d': { BOOL: devTools } };
