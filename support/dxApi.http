@@ -48,9 +48,9 @@ GET {{baseUrl}}/jsonapi/entity_subqueue/featured HTTP/1.1
 
 ###
 
-# @name getCardContent
-GET {{baseUrl}}/jsonapi/node/card_content HTTP/1.1
-  ?fields[node--card_content]=id,title,body,field_card_footer_link,field_weight,sticky,field_resources,field_machine_name,field_icon_name,field_affiliation,field_audience,field_locations,field_pages
+# @name getContentCard
+GET {{baseUrl}}/jsonapi/node/content_card HTTP/1.1
+  ?fields[node--content_card]=id,title,body,field_card_footer_link,field_weight,sticky,field_resources,field_machine_name,field_icon_name,field_affiliation,field_audience,field_locations,field_pages
   &fields[taxonomy_term--audience]=name
   &fields[taxonomy_term--affiliation]=name
   &fields[taxonomy_term--locations]=name

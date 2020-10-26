@@ -1,13 +1,13 @@
 [
   {
-    "type": "node--card_content",
+    "type": "node--content_card",
     "id": "af1e3a30-7c6c-4fba-a712-eb547bb14f19",
     "links": {
       "describedby": {
-        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/resource/schema"
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/content_card/resource/schema"
       },
       "self": {
-        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/af1e3a30-7c6c-4fba-a712-eb547bb14f19?resourceVersion=id%3A21011"
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/content_card/af1e3a30-7c6c-4fba-a712-eb547bb14f19?resourceVersion=id%3A21011"
       }
     },
     "field_affiliation": [
@@ -78,14 +78,14 @@
     "field_weight": -50
   },
   {
-    "type": "node--card_content",
+    "type": "node--content_card",
     "id": "c7363c12-d253-43cf-ac38-3077655a39d9",
     "links": {
       "describedby": {
-        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/resource/schema"
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/content_card/resource/schema"
       },
       "self": {
-        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/card_content/c7363c12-d253-43cf-ac38-3077655a39d9?resourceVersion=id%3A20996"
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/content_card/c7363c12-d253-43cf-ac38-3077655a39d9?resourceVersion=id%3A20996"
       }
     },
     "field_affiliation": [
