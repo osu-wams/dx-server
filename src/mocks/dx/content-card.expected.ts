@@ -1,5 +1,5 @@
 import { Types } from '@osu-wams/lib';
-import data from './card-content.data.json';
+import data from './content-card.data.json';
 
 export const cards: Types.DynamicCard[] = [
   {

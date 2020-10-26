@@ -557,7 +557,7 @@ export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
   try {
     const opts = {
       fields: {
-        'node--card_content':
+        'node--content_card':
           'id,title,body,field_card_footer_link,sticky,field_resources,field_machine_name,field_icon_name,field_weight,field_affiliation,field_audience,field_locations,field_pages',
         'taxonomy_term--audience': 'name',
         'taxonomy_term--affiliation': 'name',
@@ -572,7 +572,7 @@ export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
       },
     };
     const data = await fetchData(
-      () => retrieveData('node/card_content', opts, LONG_CACHE_SEC),
+      () => retrieveData('node/content_card', opts, LONG_CACHE_SEC),
       mockedCards,
     );
     const cards = mappedCards(data);
