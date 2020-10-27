@@ -2,12 +2,12 @@ import request from 'node-fetch';
 import config from 'config';
 import querystring from 'querystring';
 import { format } from 'date-fns';
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
 import { fetchData } from '../util';
 import logger from '../../logger';
 import mockedCanvasPlannerItems from '../../mocks/canvas/planner-items.data';
-import { Types } from '@osu-wams/lib';
 
 export const CANVAS_BASE_URL: string = config.get('canvasApi.baseUrl');
 const CANVAS_TOKEN: string = config.get('canvasApi.token');
