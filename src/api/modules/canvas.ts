@@ -44,7 +44,7 @@ const appendUserIdParam = (url: string, osuId: number) => {
   return `${url}&as_user_id=sis_user_id:${osuId}`;
 };
 
-const filtered = (plannerItems: Types.PlannerItem[]): any[] => {
+const filtered = (plannerItems: Types.PlannerItem[]): Types.PlannerItem[] => {
   return plannerItems.filter(
     (p) =>
       !p.planner_override ||
