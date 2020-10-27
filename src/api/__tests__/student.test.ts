@@ -534,6 +534,39 @@ describe('/api/student', () => {
         .reply(200, JSON.stringify(plannerItemsData));
       await request.get('/api/student/planner-items').expect(200, plannerItemsData);
     });
+    it('should return planner items that have not been marked complete', async () => {
+      const completedPlannerItem = [
+        plannerItemsData[0],
+        { ...plannerItemsData[1], planner_override: { marked_complete: true, dismissed: false } },
+      ];
+      nock(CANVAS_BASE_URL)
+        .get('/api/v1/planner/items')
+        .query(true)
+        .reply(200, JSON.stringify(completedPlannerItem));
+      await request.get('/api/student/planner-items').expect(200, [plannerItemsData[0]]);
+    });
+    it('should return planner items that have not been dismissed', async () => {
+      const completedPlannerItem = [
+        plannerItemsData[0],
+        { ...plannerItemsData[1], planner_override: { marked_complete: false, dismissed: true } },
+      ];
+      nock(CANVAS_BASE_URL)
+        .get('/api/v1/planner/items')
+        .query(true)
+        .reply(200, JSON.stringify(completedPlannerItem));
+      await request.get('/api/student/planner-items').expect(200, [plannerItemsData[0]]);
+    });
+    it('should return planner items that have not been dismissed and marked complete', async () => {
+      const completedPlannerItem = [
+        plannerItemsData[0],
+        { ...plannerItemsData[1], planner_override: { marked_complete: true, dismissed: true } },
+      ];
+      nock(CANVAS_BASE_URL)
+        .get('/api/v1/planner/items')
+        .query(true)
+        .reply(200, JSON.stringify(completedPlannerItem));
+      await request.get('/api/student/planner-items').expect(200, [plannerItemsData[0]]);
+    });
     it('should return an error', async () => {
       nock(CANVAS_BASE_URL).get('/api/v1/planner/items').query(true).reply(500);
       await request

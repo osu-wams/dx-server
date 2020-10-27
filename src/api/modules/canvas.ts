@@ -2,6 +2,7 @@ import request from 'node-fetch';
 import config from 'config';
 import querystring from 'querystring';
 import { format } from 'date-fns';
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
 import { fetchData } from '../util';
@@ -19,11 +20,6 @@ export const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 export interface ICanvasAPIParams {
   osuId?: number;
   oAuthToken?: string;
-}
-
-// TODO: properly specify the interface members
-export interface UpcomingAssignment {
-  assignment: any;
 }
 
 /* eslint-disable camelcase */
@@ -48,6 +44,14 @@ const appendUserIdParam = (url: string, osuId: number) => {
   return `${url}&as_user_id=sis_user_id:${osuId}`;
 };
 
+const filtered = (plannerItems: Types.PlannerItem[]): Types.PlannerItem[] => {
+  return plannerItems.filter(
+    (p) =>
+      !p.planner_override ||
+      !(p.planner_override?.marked_complete || p.planner_override?.dismissed),
+  );
+};
+
 const getRequest = async (url: string, token: string | undefined): Promise<any> => {
   try {
     logger().debug(`Canvas API GET request url:${url}`);
@@ -55,7 +59,8 @@ const getRequest = async (url: string, token: string | undefined): Promise<any> 
       headers: { Authorization: `Bearer ${token || CANVAS_TOKEN}` },
     });
     if (response.ok) {
-      return await response.text();
+      const data = await response.json();
+      return JSON.stringify(filtered(data));
     }
     throw Object({
       response: {
@@ -75,7 +80,7 @@ const getRequest = async (url: string, token: string | undefined): Promise<any> 
  * * https://canvas.instructure.com/doc/api/planner.html
  * @param params a masqueraded user or a users provide oAuth token
  */
-export const getPlannerItems = async (params: ICanvasAPIParams): Promise<UpcomingAssignment[]> => {
+export const getPlannerItems = async (params: ICanvasAPIParams): Promise<Types.PlannerItem[]> => {
   const today = format(Date.now(), 'yyyy-MM-dd');
   let url = `${CANVAS_BASE_URL}/planner/items?start_date=${today}`;
   if (params.osuId) {
