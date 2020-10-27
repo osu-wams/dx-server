@@ -7,7 +7,10 @@ export default JSON.stringify([
     context_type: 'Course',
     course_id: 1724943,
     plannable_id: 8514159,
-    planner_override: null,
+    planner_override: {
+      marked_complete: true,
+      dismissed: true,
+    },
     plannable_type: 'discussion_topic',
     new_activity: false,
     submissions: {
