@@ -24,6 +24,7 @@ router.get('/', async (req: Request, res: Response) => {
     classification: userClassification,
     primaryAffiliationOverride,
     theme,
+    colleges,
   } = req.user.masquerade || req.user;
   res.send({
     osuId,
@@ -40,6 +41,7 @@ router.get('/', async (req: Request, res: Response) => {
     primaryAffiliationOverride,
     theme,
     devTools: req.user.devTools || false,
+    colleges,
   });
 });
 
