@@ -48,6 +48,11 @@ const SAML_LOGOUT = `${SAML_URL}Logout`;
 const SESSION_SECRET: string = config.get('sessionSecret');
 const USE_MOCKS: number = parseInt(config.get('useMocks'), 10);
 
+const COLLEGES: { [key: string]: string } = {
+  'college of business': '1',
+  'college of engineering': '2',
+};
+
 export {
   API_KEYS,
   APP_URL_REGEX,
@@ -59,6 +64,7 @@ export {
   CANVAS_OAUTH_SCOPE,
   CANVAS_OAUTH_SECRET,
   CANVAS_OAUTH_TOKEN_URL,
+  COLLEGES,
   COOKIE_NAME,
   DYNAMODB_TABLE_PREFIX,
   DX_MCM_BASE_URL,
