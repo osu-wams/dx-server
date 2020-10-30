@@ -97,13 +97,13 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
 };
 
 export const setColleges = async (u: User, degrees: Types.Degree[]): Promise<User> => {
-  if (degrees.length) {
-    const colleges = degrees.map((d) => d.college);
-    const dualDegrees = degrees.filter((d) => d.dualDegree).map((dd) => dd.college);
-    colleges.push(...dualDegrees);
-    // eslint-disable-next-line
-    u.colleges = [...new Set(colleges)].map((name) => COLLEGES[name.toLowerCase()]).filter(Boolean);
-  }
+  if (!degrees.length) return u;
+
+  const colleges = degrees.map((d) => d.college);
+  const dualDegrees = degrees.filter((d) => d.dualDegree).map((dd) => dd.dualDegree.college);
+  colleges.push(...dualDegrees);
+  // eslint-disable-next-line
+  u.colleges = [...new Set(colleges)].map((name) => COLLEGES[name.toLowerCase()]).filter(Boolean);
   const { user } = await findOrUpsertUser(u);
   return user;
 };
