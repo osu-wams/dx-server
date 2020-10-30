@@ -1,3 +1,5 @@
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { COLLEGES } from '../../constants';
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import logger from '../../logger';
 
@@ -53,7 +55,8 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
       user.onid !== u.onid ||
       user.lastLogin !== u.lastLogin ||
       !arraysMatch(user.groups, u.groups) ||
-      !arraysMatch(user.affiliations, u.affiliations)
+      !arraysMatch(user.affiliations, u.affiliations) ||
+      (u.colleges && !arraysMatch(user.colleges ?? [], u.colleges ?? []))
     ) {
       user.email = u.email;
       user.firstName = u.firstName;
@@ -61,6 +64,7 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
       user.primaryAffiliation = u.primaryAffiliation;
       user.affiliations = u.affiliations;
       user.groups = u.groups;
+      user.colleges = u.colleges;
       user.onid = u.onid;
       user.lastLogin = u.lastLogin;
       user = await User.upsert(user);
@@ -68,6 +72,7 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
 
     user.isAdmin = u.isAdmin;
     user.groups = u.groups;
+    user.colleges = u.colleges ?? user.colleges;
     logger().debug('user-account.findOrUpsertUser returned user.', user);
     return { user, isNew };
   } catch (err) {
@@ -89,4 +94,16 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
     logger().error(`user-account.updateOAuthData db failed: ${err.message}`);
     throw err;
   }
+};
+
+export const setColleges = async (u: User, degrees: Types.Degree[]): Promise<User> => {
+  if (degrees.length) {
+    const colleges = degrees.map((d) => d.college);
+    const dualDegrees = degrees.filter((d) => d.dualDegree).map((dd) => dd.college);
+    colleges.push(...dualDegrees);
+    // eslint-disable-next-line
+    u.colleges = [...new Set(colleges)].map((name) => COLLEGES[name.toLowerCase()]).filter(Boolean);
+  }
+  const { user } = await findOrUpsertUser(u);
+  return user;
 };
