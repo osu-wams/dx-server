@@ -127,7 +127,7 @@ app.post(
   },
 
   // Fetch a students degree(s) and update the users record if they haven't already been set
-  async (req, res, next) => {
+  async (_req, res, next) => {
     try {
       const { user } = res.locals as { user: User };
       if (user?.isStudent() && !(user.colleges ?? []).length) {
