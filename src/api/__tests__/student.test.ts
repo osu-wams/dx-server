@@ -11,11 +11,15 @@ import {
 } from '../__mocks__/student.data';
 import { holdsData } from '../__mocks__/holds.data';
 import { plannerItemsData } from '../__mocks__/planner-items.data';
+import mockDegrees from '../../mocks/osu/degrees.data.json';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
-import { DYNAMODB_ENDPOINT } from '../../db/index';
 import { GROUPS, OSU_API_BASE_URL } from '../../constants';
+import * as dynamoDb from '../../db';
+
+jest.mock('../../db');
+const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
@@ -33,10 +37,23 @@ const user = {
   osuId: 111111111,
   isAdmin: true,
   groups: Object.keys(GROUPS),
+  colleges: [],
   isCanvasOptIn: true,
   refreshToken: 'token',
   canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
   canvasOauthToken: 'token',
+};
+
+const dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
+  Item: {
+    osuId: { N: user.osuId.toString() },
+    firstName: { S: user.firstName },
+    lastName: { S: user.lastName },
+    email: { S: user.email },
+    primaryAffiliation: { S: 'employee' },
+    affiliations: { SS: ['employee'] },
+    colleges: { SS: user.colleges },
+  },
 };
 
 const CANVAS_BASE_URL: string = config.get<string>('canvasApi.baseUrl').replace('/api/v1', '');
@@ -45,7 +62,6 @@ let request: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   request = supertest.agent(app);
   mockedUser.mockReturnValue(user);
-  nock(DYNAMODB_ENDPOINT).post(/.*/).reply(200, {}).persist();
 });
 
 describe('handle upstream 502 traffic retry', () => {
@@ -486,17 +502,38 @@ describe('/api/student', () => {
   });
 
   describe('/degrees', () => {
-    it('should return degree information for current user', async () => {
-      const data = 'degrees';
-      mockedGetResponse.mockReturnValue({ data });
+    it('should return degrees and updating users colleges', async () => {
+      mockDynamoDb.getItem
+        .mockImplementationOnce(() => Promise.resolve(dynamoDbUser))
+        .mockImplementationOnce(() =>
+          Promise.resolve({ Item: { ...dynamoDbUser.Item, colleges: { SS: ['2', '3'] } } }),
+        );
+      mockDynamoDb.putItem.mockImplementation(() => Promise.resolve(true)); // no-op
+      mockedGetResponse.mockReturnValue(mockDegrees);
       cache.get = mockedGet;
 
       // Mock response from Apigee
       nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/degrees/)
-        .reply(200, { data });
+        .reply(200, { data: mockDegrees });
 
-      await request.get('/api/student/degrees').expect(200, data);
+      await request.get('/api/student/degrees').expect(200, mockDegrees.data);
+      expect(mockDynamoDb.getItem).toBeCalledTimes(2);
+      expect(mockDynamoDb.putItem).toBeCalledTimes(1);
+    });
+
+    it('should return an empty array when no degree data is found', async () => {
+      mockedGetResponse.mockReturnValue({ data: [] });
+      cache.get = mockedGet;
+
+      // Mock response from Apigee
+      nock(OSU_API_BASE_URL)
+        .get(/v1\/students\/[0-9]+\/degrees/)
+        .reply(200, { data: [] });
+
+      await request.get('/api/student/degrees').expect(200, []);
+      expect(mockDynamoDb.getItem).toBeCalledTimes(0);
+      expect(mockDynamoDb.putItem).toBeCalledTimes(0);
     });
 
     it('should return "Unable to retrieve degrees." when there is a 500 error', async () => {
@@ -516,6 +553,38 @@ describe('/api/student', () => {
       request = supertest.agent(app);
 
       await request.get('/api/student/degrees').expect(401, { message: 'Unauthorized' });
+    });
+
+    describe('with a masqueraded user', () => {
+      beforeEach(async () => {
+        nock(CANVAS_BASE_URL)
+          .post('/login/oauth2/token')
+          .query(true)
+          .reply(200, { access_token: 'token', expires_in: Date.now() + 1000 * 60 * 60 * 24 });
+        mockedUser.mockReturnValue({ ...user, masqueradeId: 111111111 });
+        // login the user as masqueraded
+        await request.get('/login');
+      });
+      it('should return degrees but not update the users colleges ', async () => {
+        mockedUser.mockReturnValue({ ...user, masqueradeId: '123' });
+        mockDynamoDb.getItem
+          .mockImplementationOnce(() => Promise.resolve(dynamoDbUser))
+          .mockImplementationOnce(() =>
+            Promise.resolve({ Item: { ...dynamoDbUser.Item, colleges: { SS: ['2', '3'] } } }),
+          );
+        mockDynamoDb.putItem.mockImplementation(() => Promise.resolve(true)); // no-op
+        mockedGetResponse.mockReturnValue(mockDegrees);
+        cache.get = mockedGet;
+
+        // Mock response from Apigee
+        nock(OSU_API_BASE_URL)
+          .get(/v1\/students\/[0-9]+\/degrees/)
+          .reply(200, { data: mockDegrees });
+
+        await request.get('/api/student/degrees').expect(200, mockDegrees.data);
+        expect(mockDynamoDb.getItem).toBeCalledTimes(0);
+        expect(mockDynamoDb.putItem).toBeCalledTimes(0);
+      });
     });
   });
 
