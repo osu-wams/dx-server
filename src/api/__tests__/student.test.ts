@@ -566,7 +566,6 @@ describe('/api/student', () => {
         await request.get('/login');
       });
       it('should return degrees but not update the users colleges ', async () => {
-        mockedUser.mockReturnValue({ ...user, masqueradeId: '123' });
         mockDynamoDb.getItem
           .mockImplementationOnce(() => Promise.resolve(dynamoDbUser))
           .mockImplementationOnce(() =>
