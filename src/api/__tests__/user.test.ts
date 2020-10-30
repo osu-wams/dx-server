@@ -48,6 +48,7 @@ describe('/api/user', () => {
       classification: {},
       audienceOverride: {},
       devTools: false,
+      colleges: [],
     });
   });
 
