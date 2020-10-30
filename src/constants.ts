@@ -49,9 +49,19 @@ const SESSION_SECRET: string = config.get('sessionSecret');
 const USE_MOCKS: number = parseInt(config.get('useMocks'), 10);
 
 const COLLEGES: { [key: string]: string } = {
-  'college of business': '1',
-  'college of engineering': '2',
-  'college of forestry': '3',
+  'college of agricultural sciences': '1',
+  'college of business': '2',
+  'college of earth, ocean, and atmospheric sciences': '3',
+  'college of education': '4',
+  'college of engineering': '5',
+  'college of forestry': '6',
+  'college of liberal arts': '7',
+  'college of pharmacy': '8',
+  'college of public health and human sciences': '9',
+  'college of science': '10',
+  'college of veterinary medicine': '11',
+  'graduate school': '12',
+  'honors college': '13',
 };
 
 export {

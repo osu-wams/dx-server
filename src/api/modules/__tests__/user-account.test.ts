@@ -68,7 +68,7 @@ describe('User Account module', () => {
     it('returns an existing user with added colleges', async () => {
       expect.assertions(1);
       const user = await setColleges(mockUser, [mockDegrees.data[0].attributes]);
-      expect(user.colleges).toEqual(['2', '3']);
+      expect(user.colleges).toEqual(['5', '6']);
     });
     it('returns an existing user who has no colleges', async () => {
       expect.assertions(1);

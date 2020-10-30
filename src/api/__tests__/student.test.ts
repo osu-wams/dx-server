@@ -506,7 +506,7 @@ describe('/api/student', () => {
       mockDynamoDb.getItem
         .mockImplementationOnce(() => Promise.resolve(dynamoDbUser))
         .mockImplementationOnce(() =>
-          Promise.resolve({ Item: { ...dynamoDbUser.Item, colleges: { SS: ['2', '3'] } } }),
+          Promise.resolve({ Item: { ...dynamoDbUser.Item, colleges: { SS: ['5', '6'] } } }),
         );
       mockDynamoDb.putItem.mockImplementation(() => Promise.resolve(true)); // no-op
       mockedGetResponse.mockReturnValue(mockDegrees);
