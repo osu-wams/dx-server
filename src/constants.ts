@@ -51,6 +51,7 @@ const USE_MOCKS: number = parseInt(config.get('useMocks'), 10);
 const COLLEGES: { [key: string]: string } = {
   'college of business': '1',
   'college of engineering': '2',
+  'college of forestry': '3',
 };
 
 export {
