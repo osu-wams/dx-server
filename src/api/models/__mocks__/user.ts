@@ -10,6 +10,7 @@ export const mockUser = {
   isAdmin: false,
   primaryAffiliation: 'employee',
   groups: [],
+  colleges: [],
   affiliations: ['employee'],
   isStudent: () => false,
   onid: 'rossb',
