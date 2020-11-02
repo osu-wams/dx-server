@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "start": "yarn run build && pm2 kill && concurrently 'yarn run build:watch' 'yarn run pm2:localhost'",
-    "saml": "yarn run build && pm2 kill && concurrently 'yarn run build:watch' 'yarn run pm2:development'",
+    "start": "pm2 kill && concurrently 'yarn run build:watch' 'yarn run pm2:localhost'",
+    "saml": "pm2 kill && concurrently 'yarn run build:watch' 'yarn run pm2:development'",
     "build": "rm -rf dist && tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json -w",
     "pm2:localhost": "truncate -s 0 logs/localhost.log && cross-env NODE_ENV=localhost pm2 --no-daemon --env localhost start pm2.localhost.config.js",
@@ -16,14 +16,12 @@
     "test:coverage": "NODE_ENV=test USE_MOCKS=0 jest --coverage"
   },
   "devDependencies": {
-    "@types/aws-sdk": "^2.7.0",
     "@types/body-parser": "^1.17.0",
     "@types/config": "^0.0.34",
     "@types/connect-redis": "^0.0.10",
     "@types/cookie-parser": "^1.4.1",
     "@types/express": "^4.17.0",
     "@types/express-session": "^1.15.13",
-    "@types/express-winston": "^3.0.4",
     "@types/jest": "^26.0.0",
     "@types/jsonwebtoken": "^8.3.7",
     "@types/nock": "^10.0.3",
@@ -36,7 +34,6 @@
     "@types/redis": "^2.8.13",
     "@types/request-promise": "^4.1.44",
     "@types/supertest": "^2.0.8",
-    "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^4.6.0",
     "@typescript-eslint/parser": "^4.6.0",
     "codecov": "^3.7.1",
@@ -85,7 +82,6 @@
     "passport-saml": "^1.5.0",
     "querystring": "^0.2.0",
     "redis": "^2.8.0",
-    "request": "^2.88.0",
     "rss-parser": "^3.7.2",
     "winston": "^3.2.1"
   },
