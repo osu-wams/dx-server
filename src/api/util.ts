@@ -1,4 +1,4 @@
-import request from 'node-fetch';
+import request from 'node-fetch'; // eslint-disable-line no-unused-vars
 import { USE_MOCKS, OSU_API_CLIENT_ID, OSU_API_CLIENT_SECRET } from '../constants';
 import { asyncTimedFunction } from '../tracer';
 
@@ -8,7 +8,7 @@ export const getToken = async (): Promise<string> => {
     client_secret: OSU_API_CLIENT_SECRET,
     grant_type: 'client_credentials',
   });
-  const requestInit: RequestInit = {
+  const requestInit = {
     method: 'POST',
     body: params,
   };

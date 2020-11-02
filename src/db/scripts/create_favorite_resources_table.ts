@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
 import config from 'config';
-import { AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
+import AWS, { AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import dynamoDb from '../index';
 import FavoriteResource from '../../api/models/favoriteResource';
 import logger from '../../logger';

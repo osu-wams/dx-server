@@ -1,3 +1,4 @@
+import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import config from 'config';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
@@ -21,7 +22,7 @@ export interface UserSettings {
   devTools?: boolean;
 }
 
-interface AudienceOverrideItem extends AWS.DynamoDB.MapAttributeValue {
+interface AudienceOverrideItem extends DynamoDB.MapAttributeValue {
   campusCode?: { S: string };
   firstYear?: { BOOL: boolean };
   international?: { BOOL: boolean };
@@ -31,10 +32,10 @@ interface AudienceOverrideItem extends AWS.DynamoDB.MapAttributeValue {
 
 interface UserParams {
   samlUser?: SamlUser;
-  dynamoDbUser?: AWS.DynamoDB.GetItemOutput;
+  dynamoDbUser?: DynamoDB.GetItemOutput;
 }
 
-export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap {
+export interface DynamoDBUserItem extends DynamoDB.PutItemInputAttributeMap {
   osuId: { N: string };
   firstName: { S: string };
   lastName: { S: string };
@@ -209,7 +210,7 @@ class User {
     // ! doesn't really seem like it needs to fetch the user after having created it
     // ! the first time.
     try {
-      const params: AWS.DynamoDB.PutItemInput = {
+      const params: DynamoDB.PutItemInput = {
         TableName: User.TABLE_NAME,
         Item: User.asDynamoDbItem(props),
         ReturnValues: 'NONE',
@@ -236,7 +237,7 @@ class User {
    */
   static find = async (id: number): Promise<User | null> => {
     try {
-      const params: AWS.DynamoDB.GetItemInput = {
+      const params: DynamoDB.GetItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
           osuId: { N: `${id}` },
@@ -267,7 +268,7 @@ class User {
     const ids = await User.allIds();
     ids.forEach(async (id) => {
       try {
-        const params: AWS.DynamoDB.UpdateItemInput = {
+        const params: DynamoDB.UpdateItemInput = {
           TableName: User.TABLE_NAME,
           Key: {
             osuId: { N: id },
@@ -303,7 +304,7 @@ class User {
   ): Promise<User> => {
     try {
       const user = props;
-      const params: AWS.DynamoDB.UpdateItemInput = {
+      const params: DynamoDB.UpdateItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
           osuId: { N: user.osuId.toString() },
@@ -341,7 +342,7 @@ class User {
 
       let updateExpressionString = 'SET theme = :t, devTools = :d';
       const updateExpressionValues = { ':t': { S: theme }, ':d': { BOOL: devTools } };
-      const params: AWS.DynamoDB.UpdateItemInput = {
+      const params: DynamoDB.UpdateItemInput = {
         TableName: User.TABLE_NAME,
         Key: {
           osuId: { N: user.osuId.toString() },
@@ -382,7 +383,7 @@ class User {
       // Store all the override values
       params.UpdateExpression = updateExpressionString;
       params.ExpressionAttributeValues = updateExpressionValues;
-      const result: AWS.DynamoDB.UpdateItemOutput = await asyncTimedFunction(
+      const result: DynamoDB.UpdateItemOutput = await asyncTimedFunction(
         updateItem,
         'User:updateItem',
         [params],
@@ -410,17 +411,15 @@ class User {
    */
   static allIds = async (): Promise<string[]> => {
     try {
-      const params: AWS.DynamoDB.ScanInput = {
+      const params: DynamoDB.ScanInput = {
         TableName: User.TABLE_NAME,
         AttributesToGet: ['osuId'],
       };
-      const results: AWS.DynamoDB.ScanOutput = await asyncTimedFunction(scan, 'User:scan', [
-        params,
-      ]);
+      const results: DynamoDB.ScanOutput = await asyncTimedFunction(scan, 'User:scan', [params]);
       logger().debug(
         `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`,
       );
-      return results.Items.map((i: AWS.DynamoDB.AttributeMap) => i.osuId.N);
+      return results.Items?.map((i: DynamoDB.AttributeMap) => i.osuId.N);
     } catch (err) {
       logger().error('User.allIds error:', err);
       return [];

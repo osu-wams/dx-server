@@ -43,39 +43,27 @@ const getJson = async (url: string) => {
 };
 
 export const getAddresses = async (user: any): Promise<Types.Address[]> => {
-  try {
-    const response: Types.AddressesResponse = await fetchData(
-      () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`),
-      mockedAddresses,
-    );
-    return response.data;
-  } catch (err) {
-    throw err;
-  }
+  const response: Types.AddressesResponse = await fetchData(
+    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`),
+    mockedAddresses,
+  );
+  return response.data;
 };
 
 export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
-  try {
-    const response: Types.MealPlansResponse = await fetchData(
-      () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`),
-      mockedMealPlans,
-    );
-    return response.data;
-  } catch (err) {
-    throw err;
-  }
+  const response: Types.MealPlansResponse = await fetchData(
+    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`),
+    mockedMealPlans,
+  );
+  return response.data;
 };
 
 export const getProfile = async (user: any): Promise<Types.PersonsResponse> => {
-  try {
-    const response: Types.PersonsResponse = await fetchData(
-      () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`),
-      mockedPersons,
-    );
-    return response;
-  } catch (err) {
-    throw err;
-  }
+  const response: Types.PersonsResponse = await fetchData(
+    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`),
+    mockedPersons,
+  );
+  return response;
 };
 
 interface AcademicStatus {
@@ -95,125 +83,95 @@ export const getAcademicStatus = async (
   user: any,
   termQueryString: any,
 ): Promise<{ academicStanding: string; term: string } | {}> => {
-  try {
-    const response: AcademicStatusResponse = await fetchData(
-      () =>
-        getJson(
-          `${STUDENT_BASE_URL}/${
-            user.masqueradeId || user.osuId
-          }/academic-status${termQueryString}`,
-        ),
-      mockedAcademicStatus,
-    );
-    if (response.data.length > 0) {
-      // Sort the academic status data in descending order based on the id to get the most recent terms first.
-      // * id format : <osuId>-<YYYYMM>
-      const sorted = response.data.sort((a, b) => {
-        if (a.id > b.id) return -1;
-        if (a.id < b.id) return 1;
-        return 0;
-      });
-      const latestTerm = sorted[0];
-      // Get the most recent term which has a valid academicStanding (at times the upcoming term will not include this,
-      // in which case the academic standing isn't returned and falls through to the empty object return)
-      const latestTermWithStanding = sorted.find((a) => a.attributes.academicStanding !== null);
-      if (latestTermWithStanding) {
-        return {
-          academicStanding: latestTermWithStanding.attributes.academicStanding,
-          term: latestTerm.attributes.term,
-        };
-      }
+  const response: AcademicStatusResponse = await fetchData(
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
+      ),
+    mockedAcademicStatus,
+  );
+  if (response.data.length > 0) {
+    // Sort the academic status data in descending order based on the id to get the most recent terms first.
+    // * id format : <osuId>-<YYYYMM>
+    const sorted = response.data.sort((a, b) => {
+      if (a.id > b.id) return -1;
+      if (a.id < b.id) return 1;
+      return 0;
+    });
+    const latestTerm = sorted[0];
+    // Get the most recent term which has a valid academicStanding (at times the upcoming term will not include this,
+    // in which case the academic standing isn't returned and falls through to the empty object return)
+    const latestTermWithStanding = sorted.find((a) => a.attributes.academicStanding !== null);
+    if (latestTermWithStanding) {
+      return {
+        academicStanding: latestTermWithStanding.attributes.academicStanding,
+        term: latestTerm.attributes.term,
+      };
     }
-    return {};
-  } catch (err) {
-    throw err;
   }
+  return {};
 };
 
 export const getAccountBalance = async (user: any) => {
-  try {
-    return await fetchData(
-      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`),
-      mockedAccountBalance,
-    );
-  } catch (err) {
-    throw err;
-  }
+  return fetchData(
+    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`),
+    mockedAccountBalance,
+  );
 };
 
 export const getAccountTransactions = async (user: any) => {
-  try {
-    return await fetchData(
-      () =>
-        getJson(
-          `${STUDENT_BASE_URL}/${
-            user.masqueradeId || user.osuId
-          }/account-transactions?term=current`,
-        ),
-      mockedAccountTransactions,
-    );
-  } catch (err) {
-    throw err;
-  }
+  return fetchData(
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
+      ),
+    mockedAccountTransactions,
+  );
 };
 
 export const getClassSchedule = async (
   user: any,
   term: any,
 ): Promise<{ data: Types.CourseSchedule[] }> => {
-  try {
-    const response: Types.CourseScheduleResponse = await fetchData(
-      () =>
-        getJson(
-          `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
-        ),
-      mockedClassSchedule,
-    );
-    return {
-      data: response.data.map((d: Types.CourseSchedule) => ({
-        attributes: {
-          ...d.attributes,
-          faculty: d.attributes.faculty.map((f) => ({
-            email: f.email,
-            name: f.name,
-            primary: f.primary,
-          })),
-        },
-        type: d.type,
-        id: d.id,
-        links: d.links,
-      })),
-    };
-  } catch (err) {
-    throw err;
-  }
+  const response: Types.CourseScheduleResponse = await fetchData(
+    () =>
+      getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`),
+    mockedClassSchedule,
+  );
+  return {
+    data: response.data.map((d: Types.CourseSchedule) => ({
+      attributes: {
+        ...d.attributes,
+        faculty: d.attributes.faculty.map((f) => ({
+          email: f.email,
+          name: f.name,
+          primary: f.primary,
+        })),
+      },
+      type: d.type,
+      id: d.id,
+      links: d.links,
+    })),
+  };
 };
 
 export const getClassification = async (user: any): Promise<Types.Classification> => {
-  try {
-    const response: Types.ClassificationResponse = await fetchData(
-      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`),
-      mockedClassification,
-    );
-    return response.data;
-  } catch (err) {
-    throw err;
-  }
+  const response: Types.ClassificationResponse = await fetchData(
+    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`),
+    mockedClassification,
+  );
+  return response.data;
 };
 
 export const getGrades = async (user: any, term: any) => {
-  try {
-    let termParam = '';
-    if (term) {
-      termParam = `?term=${term}`;
-    }
-    return await fetchData(
-      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`),
-      mockedGrades,
-    );
-  } catch (err) {
-    throw err;
+  let termParam = '';
+  if (term) {
+    termParam = `?term=${term}`;
   }
+  return fetchData(
+    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`),
+    mockedGrades,
+  );
 };
 
 interface GpaResponse {
@@ -248,30 +206,26 @@ const gpaLevelCodesByPriority = [
 const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
 
 export const getGpa = async (user: any): Promise<Types.GpaLevel[]> => {
-  try {
-    const response: GpaResponse = await fetchData(
-      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`),
-      mockedGpa,
-    );
-    if (response.data && response.data.attributes.gpaLevels.length > 0) {
-      const { gpaLevels } = response.data.attributes;
-      // Produce an array of GpaLevel data to match the order of the levels by priority, and then each to match the order
-      // of the types. The orders of these levels are important as the client expects the first GpaLevel/Type to be
-      // the "preferred" GPA to display while the remaining GpaLevel data might be used in a tabular display.
-      const orderedGpaLevels = gpaLevelCodesByPriority
-        .map((l) => {
-          return gpaLevels
-            .filter((g) => g.levelCode.toLowerCase() === l.toLowerCase())
-            .sort((a, b) => gpaTypeOrder.indexOf(a.gpaType) - gpaTypeOrder.indexOf(b.gpaType));
-        })
-        .reduce((p, c) => p.concat(c))
-        .map((g) => ({ levelCode: g.levelCode, level: g.level, gpaType: g.gpaType, gpa: g.gpa }));
-      return orderedGpaLevels;
-    }
-    return [];
-  } catch (err) {
-    throw err;
+  const response: GpaResponse = await fetchData(
+    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`),
+    mockedGpa,
+  );
+  if (response.data && response.data.attributes.gpaLevels.length > 0) {
+    const { gpaLevels } = response.data.attributes;
+    // Produce an array of GpaLevel data to match the order of the levels by priority, and then each to match the order
+    // of the types. The orders of these levels are important as the client expects the first GpaLevel/Type to be
+    // the "preferred" GPA to display while the remaining GpaLevel data might be used in a tabular display.
+    const orderedGpaLevels = gpaLevelCodesByPriority
+      .map((l) => {
+        return gpaLevels
+          .filter((g) => g.levelCode.toLowerCase() === l.toLowerCase())
+          .sort((a, b) => gpaTypeOrder.indexOf(a.gpaType) - gpaTypeOrder.indexOf(b.gpaType));
+      })
+      .reduce((p, c) => p.concat(c), [])
+      .map((g) => ({ levelCode: g.levelCode, level: g.level, gpaType: g.gpaType, gpa: g.gpa }));
+    return orderedGpaLevels;
   }
+  return [];
 };
 
 interface Hold {
@@ -289,26 +243,22 @@ interface HoldsResponse {
 }
 
 export const getHolds = async (user: any): Promise<[{ description: string }] | []> => {
-  try {
-    const response: HoldsResponse = await fetchData(
-      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`),
-      mockedHolds,
-    );
-    if (response.data && response.data.attributes.holds.length > 0) {
-      const { holds } = response.data.attributes;
-      const currentHolds = holds
-        .filter((h) => h.webDisplay)
-        .filter((h) => {
-          const toDate = Date.parse(h.toDate);
-          return toDate >= Date.now();
-        });
-      if (currentHolds.length === 0) return [];
-      return currentHolds.map((h) => ({ description: h.description })) as [{ description: string }];
-    }
-    return [];
-  } catch (err) {
-    throw err;
+  const response: HoldsResponse = await fetchData(
+    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`),
+    mockedHolds,
+  );
+  if (response.data && response.data.attributes.holds.length > 0) {
+    const { holds } = response.data.attributes;
+    const currentHolds = holds
+      .filter((h) => h.webDisplay)
+      .filter((h) => {
+        const toDate = Date.parse(h.toDate);
+        return toDate >= Date.now();
+      });
+    if (currentHolds.length === 0) return [];
+    return currentHolds.map((h) => ({ description: h.description })) as [{ description: string }];
   }
+  return [];
 };
 
 /**
@@ -317,16 +267,12 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
  * @param term
  */
 export const getDegrees = async (user: any, term = 'current'): Promise<Types.Degree[]> => {
-  try {
-    let termParam = '';
-    if (term) {
-      termParam = `?term=${term}`;
-    }
-    return await fetchData(
-      () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/degrees${termParam}`),
-      mockedDegrees,
-    );
-  } catch (err) {
-    throw err;
+  let termParam = '';
+  if (term) {
+    termParam = `?term=${term}`;
   }
+  return fetchData(
+    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/degrees${termParam}`),
+    mockedDegrees,
+  );
 };

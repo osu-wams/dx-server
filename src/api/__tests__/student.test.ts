@@ -1,3 +1,4 @@
+import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
@@ -44,7 +45,7 @@ const user = {
   canvasOauthToken: 'token',
 };
 
-const dynamoDbUser: AWS.DynamoDB.GetItemOutput = {
+const dynamoDbUser: DynamoDB.GetItemOutput = {
   Item: {
     osuId: { N: user.osuId.toString() },
     firstName: { S: user.firstName },

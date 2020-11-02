@@ -34,7 +34,8 @@ import {
   COOKIE_NAME,
 } from './constants';
 
-interface Auth {
+/* eslint-disable no-unused-vars */
+interface IAuth {
   passportStrategy?: any;
   oAuth2Strategy?: any;
   localStrategy?: any;
@@ -47,6 +48,7 @@ interface Auth {
   ensureAdmin?(req: Request, res: Response, next: NextFunction): void;
   hasCanvasRefreshToken?(req: Request, res: Response, next: NextFunction): void;
 }
+/* eslint-enable */
 
 const canvasOAuthConfig = () => {
   const c = {
@@ -63,7 +65,7 @@ const canvasOAuthConfig = () => {
   return c;
 };
 
-const Auth: Auth = {};
+const Auth: IAuth = {};
 
 switch (ENV) {
   case 'preview':
@@ -166,6 +168,7 @@ Auth.deserializeUser = (user, done) => {
 };
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
+  // eslint-disable-next-line
   return passport.authenticate(['local', 'saml'], (err, user) => {
     logger().debug(`User authenticated: ${user.osuId}`);
     if (err) {
@@ -175,6 +178,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
       return res.status(400).send({ message: 'Bad username or password' });
     }
 
+    // eslint-disable-next-line
     req.login(user, (innerErr: any) => {
       if (innerErr) {
         return next(innerErr);
@@ -185,6 +189,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
   })(req, res, next);
 };
 
+// eslint-disable-next-line
 Auth.logout = (req: Request, res: Response) => {
   try {
     if (!req.user) return res.redirect('/');

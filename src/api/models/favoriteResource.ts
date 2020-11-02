@@ -1,3 +1,4 @@
+import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import config from 'config';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
@@ -7,12 +8,14 @@ import { getCache, setCache } from '../modules/cache';
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 const cacheKey = (osuId: number) => `favorites:${osuId}`;
 
+/* eslint-disable no-use-before-define */
 interface FavoriteResourceParams {
   favoriteResource?: FavoriteResource;
-  dynamoDbFavoriteResource?: AWS.DynamoDB.AttributeMap;
+  dynamoDbFavoriteResource?: DynamoDB.AttributeMap;
 }
+/* eslint-enable no-use-before-define */
 
-export interface DynamoDBFavoriteResourceItem extends AWS.DynamoDB.PutItemInputAttributeMap {
+export interface DynamoDBFavoriteResourceItem extends DynamoDB.PutItemInputAttributeMap {
   active: { BOOL: boolean };
   created: { S: string };
   order: { N: string };
@@ -65,7 +68,7 @@ class FavoriteResource {
     // ! doesn't really seem like it needs to fetch the user after having created it
     // ! the first time.
     try {
-      const params: AWS.DynamoDB.PutItemInput = {
+      const params: DynamoDB.PutItemInput = {
         TableName: FavoriteResource.TABLE_NAME,
         Item: FavoriteResource.asDynamoDbItem(props),
         ReturnValues: 'NONE',
@@ -93,7 +96,7 @@ class FavoriteResource {
         if (cached) return JSON.parse(cached);
       }
 
-      const params: AWS.DynamoDB.QueryInput = {
+      const params: DynamoDB.QueryInput = {
         TableName: FavoriteResource.TABLE_NAME,
         KeyConditionExpression: 'osuId = :value',
         ExpressionAttributeValues: {
@@ -101,7 +104,7 @@ class FavoriteResource {
         },
         Select: 'ALL_ATTRIBUTES',
       };
-      const results: AWS.DynamoDB.QueryOutput = await asyncTimedFunction(
+      const results: DynamoDB.QueryOutput = await asyncTimedFunction(
         query,
         'FavoriteResource:query',
         [params],

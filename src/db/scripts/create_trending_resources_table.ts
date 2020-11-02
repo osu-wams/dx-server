@@ -1,13 +1,13 @@
 /* eslint-disable no-console */
 
 import config from 'config';
-import { AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
+import { DynamoDB, AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import dynamoDb from '../index';
 import TrendingResource from '../../api/models/trendingResource';
 import logger from '../../logger';
 
 const createTable = (): void => {
-  const params: AWS.DynamoDB.CreateTableInput = {
+  const params: DynamoDB.CreateTableInput = {
     AttributeDefinitions: [
       { AttributeName: 'date', AttributeType: 'S' },
       { AttributeName: 'resourceId', AttributeType: 'S' },
@@ -26,7 +26,7 @@ const createTable = (): void => {
     },
   };
 
-  dynamoDb.createTable(params, (err: AWSError, data: AWS.DynamoDB.CreateTableOutput) => {
+  dynamoDb.createTable(params, (err: AWSError, data: DynamoDB.CreateTableOutput) => {
     if (err) {
       logger().error(`Error creating ${TrendingResource.TABLE_NAME} table.`, err);
     } else {

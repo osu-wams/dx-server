@@ -1,9 +1,10 @@
+import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import { DYNAMODB_TABLE_PREFIX } from '../../constants';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
 import { query, putItem } from '../../db';
 
-export interface DynamoDBTrendingResourceItem extends AWS.DynamoDB.PutItemInputAttributeMap {
+export interface DynamoDBTrendingResourceItem extends DynamoDB.PutItemInputAttributeMap {
   date: { S: string };
   resourceId: { S: string };
   affiliation: { S: string };
@@ -21,7 +22,7 @@ interface TrendingResourceParams {
     uniqueEvents: string;
     date: string;
   };
-  dynamoDbTrendingResource?: AWS.DynamoDB.AttributeMap;
+  dynamoDbTrendingResource?: DynamoDB.AttributeMap;
 }
 
 class TrendingResource {
@@ -83,7 +84,7 @@ class TrendingResource {
     // ! doesn't really seem like it needs to fetch the record after having created it
     // ! the first time.
     try {
-      const params: AWS.DynamoDB.PutItemInput = {
+      const params: DynamoDB.PutItemInput = {
         TableName: TrendingResource.TABLE_NAME,
         Item: TrendingResource.asDynamoDbItem(props),
         ReturnValues: 'NONE',
@@ -100,7 +101,7 @@ class TrendingResource {
 
   static findAll = async (date: string): Promise<TrendingResource[] | null> => {
     try {
-      const params: AWS.DynamoDB.QueryInput = {
+      const params: DynamoDB.QueryInput = {
         TableName: TrendingResource.TABLE_NAME,
         KeyConditionExpression: '#dateAttribute = :dateStart',
         ExpressionAttributeNames: {
@@ -111,7 +112,7 @@ class TrendingResource {
         },
         Select: 'ALL_ATTRIBUTES',
       };
-      const results: AWS.DynamoDB.QueryOutput = await asyncTimedFunction(
+      const results: DynamoDB.QueryOutput = await asyncTimedFunction(
         query,
         'TrendingResource:query',
         [params],
@@ -125,7 +126,7 @@ class TrendingResource {
 
   static find = async (resourceId: string, date: string): Promise<TrendingResource | null> => {
     try {
-      const params: AWS.DynamoDB.QueryInput = {
+      const params: DynamoDB.QueryInput = {
         TableName: TrendingResource.TABLE_NAME,
         KeyConditionExpression:
           '#dateAttribute = :dateValue AND #resourceAttribute = :resourceValue',
@@ -139,7 +140,7 @@ class TrendingResource {
         },
         Select: 'ALL_ATTRIBUTES',
       };
-      const results: AWS.DynamoDB.QueryOutput = await asyncTimedFunction(
+      const results: DynamoDB.QueryOutput = await asyncTimedFunction(
         query,
         'TrendingResource:query',
         [params],
