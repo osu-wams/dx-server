@@ -910,15 +910,20 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^14.0.14":
-  version "14.11.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.11.2.tgz#2de1ed6670439387da1c9f549a2ade2b0a799256"
-  integrity sha512-jiE3QIxJ8JLNcb1Ps6rDbysDhN4xa8DJJvuC9prr6w+1tIh+QAbYyNF3tyiZNLDBIuBCf4KEcV2UvQm/V60xfA==
+"@types/node@*":
+  version "14.14.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.6.tgz#146d3da57b3c636cc0d1769396ce1cfa8991147f"
+  integrity sha512-6QlRuqsQ/Ox/aJEQWBEJG7A9+u7oSYl3mem/K8IzxXG/kAGbV1YPD9Bg9Zw3vyxC/YP+zONKwy8hGkSt1jxFMw==
 
 "@types/node@^13.7.0":
   version "13.13.21"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.21.tgz#e48d3c2e266253405cf404c8654d1bcf0d333e5c"
   integrity sha512-tlFWakSzBITITJSxHV4hg4KvrhR/7h3xbJdSFbYJBVzKubrASbnnIFuSgolUh7qKGo/ZeJPKUfbZ0WS6Jp14DQ==
+
+"@types/node@^14.0.14":
+  version "14.11.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.11.2.tgz#2de1ed6670439387da1c9f549a2ade2b0a799256"
+  integrity sha512-jiE3QIxJ8JLNcb1Ps6rDbysDhN4xa8DJJvuC9prr6w+1tIh+QAbYyNF3tyiZNLDBIuBCf4KEcV2UvQm/V60xfA==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -948,7 +953,7 @@
     "@types/passport" "*"
     "@types/passport-strategy" "*"
 
-"@types/passport-saml@^1.1.0":
+"@types/passport-saml@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@types/passport-saml/-/passport-saml-1.1.2.tgz#f32ac2321eb25ec7bdbb1f3a5313b596bb0887e6"
   integrity sha512-vpSdcb7V/bFxrvZJwSqnBr0qEqIhtOnwRBxw+Dvq4UkVbEgcCOkxF4tERCCFfA+FP3lp63VCCAifZLQrF5JkXA==
@@ -1019,12 +1024,12 @@
     form-data "^2.5.0"
 
 "@types/serve-static@*":
-  version "1.13.5"
-  resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.13.5.tgz#3d25d941a18415d3ab092def846e135a08bbcf53"
-  integrity sha512-6M64P58N+OXjU432WoLLBQxbA0LRGBCRm7aAGQJ+SMC1IMl0dgRVi9EFfoDcS2a7Xogygk/eGN94CfwU9UF7UQ==
+  version "1.13.6"
+  resolved "https://registry.yarnpkg.com/@types/serve-static/-/serve-static-1.13.6.tgz#866b1b8dec41c36e28c7be40ac725b88be43c5c1"
+  integrity sha512-nuRJmv7jW7VmCVTn+IgYDkkbbDGyIINOeu/G0d74X3lm6E5KfMeQPJhxIt1ayQeQB3cSxvYs1RA/wipYoFB4EA==
   dependencies:
-    "@types/express-serve-static-core" "*"
     "@types/mime" "*"
+    "@types/node" "*"
 
 "@types/stack-utils@^1.0.1":
   version "1.0.1"
@@ -5465,15 +5470,14 @@ passport-oauth2@^1.5.0:
     uid2 "0.0.x"
     utils-merge "1.x.x"
 
-passport-saml@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/passport-saml/-/passport-saml-1.3.5.tgz#747f2c8bb8b9fed41e8cd14586df5aa83e8a8996"
-  integrity sha512-HFamiqgGiMRCbUBm3wx02WYWKb6ojke0WJHrg4QXI8tx35HrTmDiY8MksUXhouJtEkfcRwXjBL2cSEpRQ6+PgQ==
+passport-saml@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/passport-saml/-/passport-saml-1.5.0.tgz#4f22526b577987fb2304219c29e05d2172fca5cf"
+  integrity sha512-6f4bfnu/X2KNbuqshOryPap0g8BvhOrlt1qDtJdA44qzQXZ5QUMwaTmexAHIf96LTqPqQ91MzPvi5MGsOgTYTw==
   dependencies:
     debug "^3.1.0"
     passport-strategy "*"
-    q "^1.5.0"
-    xml-crypto "^1.4.0"
+    xml-crypto "^2.0.0"
     xml-encryption "1.2.1"
     xml2js "0.4.x"
     xmlbuilder "^11.0.0"
@@ -5851,11 +5855,6 @@ pupa@^2.0.1:
   integrity sha512-hEJH0s8PXLY/cdXh66tNEQGndDrIKNqNC5xmrysZy3i5C3oEoLna7YAOad+7u125+zH1HNXUmGEkrhb3c2VriA==
   dependencies:
     escape-goat "^2.0.0"
-
-q@^1.5.0:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
-  integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
 qs@6.7.0:
   version "6.7.0"
@@ -7113,10 +7112,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@3.7:
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
-  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+typescript@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.5.tgz#ae9dddfd1069f1cb5beb3ef3b2170dd7c1332389"
+  integrity sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
 
 uid-safe@~2.1.5:
   version "2.1.5"
@@ -7466,10 +7465,10 @@ xdg-basedir@^4.0.0:
   resolved "https://registry.yarnpkg.com/xdg-basedir/-/xdg-basedir-4.0.0.tgz#4bc8d9984403696225ef83a1573cbbcb4e79db13"
   integrity sha512-PSNhEJDejZYV7h50BohL09Er9VaIefr2LMAf3OEmpCkjOi34eYyQYAXUTjEQtZJTKcF0E2UKTh+osDLsgNim9Q==
 
-xml-crypto@^1.4.0:
-  version "1.5.3"
-  resolved "https://registry.yarnpkg.com/xml-crypto/-/xml-crypto-1.5.3.tgz#a8f500b90f0dfaf0efa3331c345ecb0fff993c34"
-  integrity sha512-uHkmpUtX15xExe5iimPmakAZN+6CqIvjmaJTy4FwqGzaTjrKRBNeqMh8zGEzVNgW0dk6beFYpyQSgqV/J6C5xA==
+xml-crypto@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/xml-crypto/-/xml-crypto-2.0.0.tgz#54cd268ad9d31930afcf7092cbb664258ca9e826"
+  integrity sha512-/a04qr7RpONRZHOxROZ6iIHItdsQQjN3sj8lJkYDDss8tAkEaAs0VrFjb3tlhmS5snQru5lTs9/5ISSMdPDHlg==
   dependencies:
     xmldom "0.1.27"
     xpath "0.0.27"
