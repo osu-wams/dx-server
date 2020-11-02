@@ -48,6 +48,22 @@ const SAML_LOGOUT = `${SAML_URL}Logout`;
 const SESSION_SECRET: string = config.get('sessionSecret');
 const USE_MOCKS: number = parseInt(config.get('useMocks'), 10);
 
+const COLLEGES: { [key: string]: string } = {
+  'college of agricultural sciences': '1',
+  'college of business': '2',
+  'college of earth, ocean, and atmospheric sciences': '3',
+  'college of education': '4',
+  'college of engineering': '5',
+  'college of forestry': '6',
+  'college of liberal arts': '7',
+  'college of pharmacy': '8',
+  'college of public health and human sciences': '9',
+  'college of science': '10',
+  'college of veterinary medicine': '11',
+  'graduate school': '12',
+  'honors college': '13',
+};
+
 export {
   API_KEYS,
   APP_URL_REGEX,
@@ -59,6 +75,7 @@ export {
   CANVAS_OAUTH_SCOPE,
   CANVAS_OAUTH_SECRET,
   CANVAS_OAUTH_TOKEN_URL,
+  COLLEGES,
   COOKIE_NAME,
   DYNAMODB_TABLE_PREFIX,
   DX_MCM_BASE_URL,

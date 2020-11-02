@@ -51,6 +51,7 @@ export interface DynamoDBUserItem extends AWS.DynamoDB.PutItemInputAttributeMap 
   devTools?: { BOOL: boolean };
   onid?: { S: string };
   lastLogin?: { S: string };
+  colleges?: { SS: string[] };
 }
 
 class User {
@@ -119,6 +120,9 @@ class User {
   /** Last datetime the user logged in */
   lastLogin?: string = '';
 
+  /** Student found to be related to these college(s) */
+  colleges?: string[] = [];
+
   static TABLE_NAME: string = `${tablePrefix}-Users`;
 
   /**
@@ -176,6 +180,7 @@ class User {
       if (params.Item.groups) this.groups = params.Item.groups.SS;
       if (params.Item.onid) this.onid = params.Item.onid.S;
       if (params.Item.lastLogin) this.lastLogin = params.Item.lastLogin.S;
+      if (params.Item.colleges) this.colleges = params.Item.colleges.SS;
     }
   }
 
@@ -452,6 +457,7 @@ class User {
       Item.primaryAffiliationOverride = { S: props.primaryAffiliationOverride };
     }
     if (props.groups.length > 0) Item.groups = { SS: props.groups };
+    if (props.colleges?.length > 0) Item.colleges = { SS: props.colleges };
     if (props.onid) Item.onid = { S: props.onid };
     if (props.lastLogin) Item.lastLogin = { S: props.lastLogin };
     return Item;

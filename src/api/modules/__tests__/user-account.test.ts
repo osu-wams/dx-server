@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 
-import { findOrUpsertUser, updateOAuthData } from '../user-account';
+import { findOrUpsertUser, setColleges, updateOAuthData } from '../user-account';
 import User from '../../models/user';
 import { mockUser } from '../../models/__mocks__/user';
+import mockDegrees from '../../../mocks/osu/degrees.data.json';
 
 jest.mock('../../models/user');
 const mockUserModel = User as jest.Mocked<any>;
@@ -54,6 +55,32 @@ describe('User Account module', () => {
           account: { refreshToken: 'token' },
           isCanvasOptIn: true,
         });
+      } catch (err) {
+        expect(err.message).toBe('happy little accident');
+      }
+    });
+  });
+  describe('setColleges', () => {
+    beforeEach(() => {
+      mockUser.colleges = [];
+    });
+
+    it('returns an existing user with added colleges', async () => {
+      expect.assertions(1);
+      const user = await setColleges(mockUser, [mockDegrees.data[0].attributes]);
+      expect(user.colleges).toEqual(['5', '6']);
+    });
+    it('returns an existing user who has no colleges', async () => {
+      expect.assertions(1);
+      const user = await setColleges(mockUser, []);
+      expect(user.colleges).toEqual([]);
+    });
+    it('throws an error on failure', async () => {
+      mockUserModel.find.mockImplementationOnce(() =>
+        Promise.reject(new Error('happy little accident')),
+      );
+      try {
+        const user = await setColleges(mockUser, [mockDegrees.data[0].attributes]);
       } catch (err) {
         expect(err.message).toBe('happy little accident');
       }

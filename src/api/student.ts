@@ -2,6 +2,7 @@
  * /api/student
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import Auth from '../auth';
 import { getPlannerItems } from './modules/canvas'; // eslint-disable-line no-unused-vars
@@ -17,6 +18,7 @@ import {
   getDegrees,
 } from './modules/osu';
 import { asyncTimedFunction } from '../tracer';
+import { setColleges } from './modules/user-account';
 
 const router = Router();
 
@@ -172,9 +174,19 @@ router.get('/holds', async (req: Request, res: Response) => {
 
 router.get('/degrees', async (req: Request, res: Response) => {
   try {
-    const response = (await asyncTimedFunction(getDegrees, 'getDegrees', [req.user])) as {
-      data: any;
-    };
+    const response = await asyncTimedFunction<{ data: Types.DegreeResponse[] }>(
+      getDegrees,
+      'getDegrees',
+      [req.user],
+    );
+    // If not masqueraded, then upsert this users college(s) to thier user record
+    if (!req.user.masqueradeId) {
+      const degrees = response.data.map((d) => d.attributes);
+      if (degrees.length) {
+        const user = await setColleges(req.user, degrees);
+        req.session.passport.user = user;
+      }
+    }
     res.send(response.data);
   } catch (err) {
     logger().error('api/student/degrees failed:', err);

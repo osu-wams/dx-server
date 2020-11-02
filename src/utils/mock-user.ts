@@ -10,6 +10,7 @@ const mockUser = () => ({
   onid: 'bobross',
   isAdmin: true,
   groups: ['admin', 'masquerade'],
+  colleges: [],
   isCanvasOptIn: true,
   refreshToken: 'token',
   canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,

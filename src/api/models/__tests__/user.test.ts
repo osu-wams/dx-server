@@ -60,6 +60,7 @@ describe('User model', () => {
       expect(user.onid).toEqual(samlUser.onid);
       expect(user.lastLogin).toEqual(samlUser.lastLogin);
       expect(user.isStudent()).toBeFalsy();
+      expect(user.colleges).toEqual([]);
     });
 
     it('builds a Student User from SAML data', () => {
@@ -99,6 +100,7 @@ describe('User model', () => {
         expect(user.isStudent()).toBeFalsy();
         expect(user.onid).toEqual(dynamoDbUser.Item.onid.S);
         expect(user.lastLogin).toEqual(dynamoDbUser.Item.lastLogin.S);
+        expect(user.colleges).toEqual([]);
       });
       it('builds a User missing some data', () => {
         dynamoDbUser = {

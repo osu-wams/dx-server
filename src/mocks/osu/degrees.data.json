@@ -45,6 +45,13 @@
           "second": "Education",
           "third": null,
           "fourth": null
+        },
+        "dualDegree": {
+          "degree": "Bachelor of Science",
+          "level": "Undergraduate",
+          "college": "College of Forestry",
+          "major": "Spanish",
+          "programClassification": "Spanish Language & Literature"
         }
       }
     }

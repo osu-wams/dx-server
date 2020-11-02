@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
+import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import {
   APP_VERSION,
   COOKIE_NAME,
@@ -22,9 +23,11 @@ import Auth from './auth';
 import { redirectReturnUrl, setSessionReturnUrl, setJWTSessionUser } from './utils/routing';
 import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
-import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
+import { findOrUpsertUser, setColleges, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
+import { asyncTimedFunction } from './tracer';
+import { getDegrees } from './api/modules/osu';
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
@@ -103,24 +106,54 @@ app.get('/healthcheck', (req, res) => {
 
 app.post(
   '/login/saml',
-  async (req, res, next) => {
-    logger().debug(
-      `/login/saml before authenticate full request body and session`,
-      req.body,
-      req.session,
-    );
-    next();
-  },
+  // SAML authentication
   passport.authenticate('saml'),
-  async (req, res) => {
+
+  // Find or upsert the user set through SAML authentication
+  async (req, res, next) => {
     try {
       logger().debug('/login/saml authenticated user, fetching updated record and setting session');
-      const { user: foundUser, isNew } = await findOrUpsertUser(req.user);
-      req.session.passport.user = foundUser;
-      const {
-        passport: { user },
-        returnUrl,
-      } = req.session;
+      const { user, isNew } = await findOrUpsertUser(req.user);
+      res.locals.user = user;
+      res.locals.isNew = isNew;
+      next();
+    } catch (err) {
+      logger().error('App Error', {
+        error: '/login/saml failed to find or upsert user',
+        stack: err,
+      });
+      res.redirect('/error.html');
+    }
+  },
+
+  // Fetch a students degree(s) and update the users record if they haven't already been set
+  async (_req, res, next) => {
+    try {
+      const { user } = res.locals as { user: User };
+      if (user?.isStudent() && !(user.colleges ?? []).length) {
+        const response = await asyncTimedFunction<{ data: Types.DegreeResponse[] }>(
+          getDegrees,
+          'getDegrees',
+          [user],
+        );
+        const degrees = response.data.map((d) => d.attributes);
+        if (degrees.length) {
+          const updatedUser = await setColleges(user, degrees);
+          res.locals.user = updatedUser;
+        }
+      }
+    } catch (err) {
+      logger().error(`/login/saml fetching students colleges failed: ${err}`, err);
+    }
+    next();
+  },
+
+  // Set user session and redirect if applicable
+  async (req, res) => {
+    try {
+      const { returnUrl } = req.session;
+      const { isNew, user } = res.locals as { isNew: boolean; user: User };
+      req.session.passport.user = user;
 
       if (isNew && user?.isStudent()) {
         res.redirect('/canvas/login');
@@ -130,8 +163,11 @@ app.post(
         logger().debug(`/login/saml redirecting to: ${returnUrl}`);
         redirectReturnUrl(req, res, user);
       }
-    } catch (error) {
-      logger().error('App Error', { error: '/login/saml failed', stack: error });
+    } catch (err) {
+      logger().error('App Error', {
+        error: '/login/saml failed to set session and redirect user',
+        stack: err,
+      });
       res.redirect('/error.html');
     }
   },
