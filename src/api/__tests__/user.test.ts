@@ -85,14 +85,30 @@ describe('/api/user', () => {
     const settings: UserSettings = {
       audienceOverride: {
         campusCode: 'C',
+        firstYear: true,
+        international: true,
+        graduate: true,
+        colleges: ['1', '2'],
       },
     };
 
     it('updates audienceOverride settings', async () => {
+      await request.post('/api/user/settings').send(settings).expect(200, {
+        audienceOverride: settings.audienceOverride,
+        theme: 'light',
+        devTools: false,
+      });
+    });
+
+    it('can update a singular audienceOverride setting', async () => {
       await request
         .post('/api/user/settings')
-        .send(settings)
-        .expect(200, { audienceOverride: { campusCode: 'C' }, theme: 'light', devTools: false });
+        .send({ ...settings, audienceOverride: { campusCode: 'B' } })
+        .expect(200, {
+          audienceOverride: { campusCode: 'B' },
+          theme: 'light',
+          devTools: false,
+        });
     });
 
     it('returns an error for failed audienceOverride settings', async () => {

@@ -11,6 +11,7 @@ export interface AudienceOverride {
   firstYear?: boolean;
   international?: boolean;
   graduate?: boolean;
+  colleges?: string[];
 }
 
 export interface UserSettings {
@@ -25,6 +26,7 @@ interface AudienceOverrideItem extends AWS.DynamoDB.MapAttributeValue {
   firstYear?: { BOOL: boolean };
   international?: { BOOL: boolean };
   graduate?: { BOOL: boolean };
+  colleges?: { SS: string[] };
 }
 
 interface UserParams {
@@ -170,6 +172,7 @@ class User {
           firstYear: params.Item.audienceOverride.M.firstYear.BOOL,
           international: params.Item.audienceOverride.M.international.BOOL,
           graduate: params.Item.audienceOverride.M.graduate.BOOL,
+          colleges: params.Item.audienceOverride.M.colleges.SS,
         };
       }
       if (params.Item.theme) this.theme = params.Item.theme.S;
@@ -348,13 +351,20 @@ class User {
 
       // Add Audience Overrides
       if (settings.audienceOverride !== undefined) {
-        const { campusCode, firstYear, international, graduate } = settings.audienceOverride;
+        const {
+          campusCode,
+          firstYear,
+          international,
+          graduate,
+          colleges,
+        } = settings.audienceOverride;
         const audienceOverrideItem: AudienceOverrideItem = {};
         if (campusCode !== undefined) audienceOverrideItem.campusCode = { S: campusCode };
         if (firstYear !== undefined) audienceOverrideItem.firstYear = { BOOL: firstYear };
         if (international !== undefined)
           audienceOverrideItem.international = { BOOL: international };
         if (graduate !== undefined) audienceOverrideItem.graduate = { BOOL: graduate };
+        if (colleges !== undefined) audienceOverrideItem.colleges = { SS: colleges };
 
         updateExpressionString += ', audienceOverride = :ao';
         updateExpressionValues[':ao'] = {
@@ -448,6 +458,7 @@ class User {
           firstYear: { BOOL: props.audienceOverride.firstYear },
           international: { BOOL: props.audienceOverride.international },
           graduate: { BOOL: props.audienceOverride.graduate },
+          colleges: { SS: props.audienceOverride.colleges },
         },
       };
     }

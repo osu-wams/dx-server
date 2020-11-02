@@ -325,6 +325,18 @@ describe('User model', () => {
 
     describe('updateSettings', () => {
       it('updates audienceOverride settings', async () => {
+        const audienceOverride = {
+          campusCode: 'C',
+          international: true,
+          graduate: true,
+          firstYear: true,
+          colleges: ['1', '2'],
+        };
+        const result = await User.updateSettings(user, { audienceOverride });
+        expect(result.audienceOverride).toStrictEqual(audienceOverride);
+      });
+
+      it('can update a singular audienceOverride setting', async () => {
         const result = await User.updateSettings(user, {
           audienceOverride: { campusCode: 'C' },
         });
