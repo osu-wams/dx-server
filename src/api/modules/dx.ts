@@ -151,174 +151,154 @@ const retrieveData = async (url: string, kitsuOpts: any, cacheSec?: number): Pro
  * Get all of the announcements from the DX API
  */
 export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('node/announcement', {
-          fields: {
-            'node--announcement':
-              'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations,field_affiliation',
-            'taxonomy_term--audience': 'name',
-            'taxonomy_term--affiliation': 'name',
-            'taxonomy_term--pages': 'name',
-            'taxonomy_term--locations': 'name',
-            'media--image': 'name,field_media_image',
-            'file--file': 'filename,filemime,uri',
-          },
-          include:
-            'field_announcement_image,field_announcement_image.field_media_image,field_affiliation,field_audience,field_pages,field_locations',
-          filter: {
-            status: 1,
-          },
-        }),
-      mockedAnnouncements,
-    );
-    return mappedAnnouncements(data);
-  } catch (err) {
-    throw err;
-  }
+  const data = await fetchData(
+    () =>
+      retrieveData('node/announcement', {
+        fields: {
+          'node--announcement':
+            'id,title,date,field_announcement_body,field_announcement_action,field_announcement_image,field_audience,field_pages,field_locations,field_affiliation',
+          'taxonomy_term--audience': 'name',
+          'taxonomy_term--affiliation': 'name',
+          'taxonomy_term--pages': 'name',
+          'taxonomy_term--locations': 'name',
+          'media--image': 'name,field_media_image',
+          'file--file': 'filename,filemime,uri',
+        },
+        include:
+          'field_announcement_image,field_announcement_image.field_media_image,field_affiliation,field_audience,field_pages,field_locations',
+        filter: {
+          status: 1,
+        },
+      }),
+    mockedAnnouncements,
+  );
+  return mappedAnnouncements(data);
 };
 
 /**
  * Get all resources with all associated categories, audiences, synonyms and media for display.
  */
 export const getResources = async (): Promise<Types.Resource[]> => {
-  try {
-    const opts = {
-      fields: {
-        'node--services':
-          'id,title,field_exclude_trending,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations',
-        'taxonomy_term--categories': 'name',
-        'taxonomy_term--audience': 'name',
-        'taxonomy_term--affiliation': 'name',
-        'taxonomy_term--locations': 'name',
-      },
-      include: 'field_affiliation,field_audience,field_service_category,field_locations',
-      sort: 'title',
-      filter: {
-        status: 1,
-      },
-    };
-    const data = await fetchData(
-      () => retrieveData('node/services', opts, LONG_CACHE_SEC),
-      mockedResources,
-    );
-    return mappedResources(data);
-  } catch (err) {
-    throw err;
-  }
+  const opts = {
+    fields: {
+      'node--services':
+        'id,title,field_exclude_trending,field_icon_name,field_service_category,field_affiliation,field_audience,field_service_synonyms,field_service_url,field_locations',
+      'taxonomy_term--categories': 'name',
+      'taxonomy_term--audience': 'name',
+      'taxonomy_term--affiliation': 'name',
+      'taxonomy_term--locations': 'name',
+    },
+    include: 'field_affiliation,field_audience,field_service_category,field_locations',
+    sort: 'title',
+    filter: {
+      status: 1,
+    },
+  };
+  const data = await fetchData(
+    () => retrieveData('node/services', opts, LONG_CACHE_SEC),
+    mockedResources,
+  );
+  return mappedResources(data);
 };
 
 /**
  * Get all resources for a specific category with all associated categories, audiences, synonyms and media for display.
  */
 export const getCuratedResources = async (category: string): Promise<Types.ResourceEntityQueue> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData(`entity_subqueue/${category}`, {
-          fields: {
-            'entity_subqueue--services': 'items,drupal_internal__name',
-            'node--services':
-              'id,title,field_exclude_trending,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations',
-            'taxonomy_term--categories': 'name',
-            'taxonomy_term--audience': 'name',
-            'taxonomy_term--affiliation': 'name',
-            'taxonomy_term--locations': 'name',
-          },
-          include:
-            'items,items.field_affiliation,items.field_audience,items.field_service_category,items.field_locations',
-        }),
-      mockedCuratedResources(category),
-    );
+  const data = await fetchData(
+    () =>
+      retrieveData(`entity_subqueue/${category}`, {
+        fields: {
+          'entity_subqueue--services': 'items,drupal_internal__name',
+          'node--services':
+            'id,title,field_exclude_trending,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations',
+          'taxonomy_term--categories': 'name',
+          'taxonomy_term--audience': 'name',
+          'taxonomy_term--affiliation': 'name',
+          'taxonomy_term--locations': 'name',
+        },
+        include:
+          'items,items.field_affiliation,items.field_audience,items.field_service_category,items.field_locations',
+      }),
+    mockedCuratedResources(category),
+  );
 
-    let entityQueueTitle = data[0]?.title;
+  let entityQueueTitle = data[0]?.title;
 
-    // Remove everything before a colon to clean up the name. "Employee: Featured" becomes simply "Featured"
-    if (entityQueueTitle?.indexOf(':') > -1) {
-      // eslint-disable-next-line no-unused-vars
-      const [affiliationToDiscard, queueTitle] = entityQueueTitle.split(':');
-      entityQueueTitle = queueTitle.trim();
-    }
-
-    // Clean up the results and include the entityque title
-    const entityqueueResources = {
-      entityQueueTitle,
-      items: mappedResources(data[0].items),
-    };
-
-    return entityqueueResources;
-  } catch (err) {
-    throw err;
+  // Remove everything before a colon to clean up the name. "Employee: Featured" becomes simply "Featured"
+  if (entityQueueTitle?.indexOf(':') > -1) {
+    // eslint-disable-next-line no-unused-vars
+    const [affiliationToDiscard, queueTitle] = entityQueueTitle.split(':');
+    entityQueueTitle = queueTitle.trim();
   }
+
+  // Clean up the results and include the entityque title
+  const entityqueueResources = {
+    entityQueueTitle,
+    items: mappedResources(data[0].items),
+  };
+
+  return entityqueueResources;
 };
 
 /**
  * Get all categories from DX API.
  */
 export const getCategories = async (): Promise<Types.Category[]> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('taxonomy_term/categories', {
-          fields: {
-            'taxonomy_term--categories': 'id,name,field_taxonomy_icon,field_taxonomy_affiliation',
-            'taxonomy_term--affiliation': 'name',
-            'media--image': 'name,field_media_image',
-            'file--file': 'filename,filemime,uri',
-          },
-          include: 'field_taxonomy_icon.field_media_image,field_taxonomy_affiliation',
-          sort: 'weight',
-          filter: {
-            status: 1,
-          },
-        }),
-      mockedCategories,
-    );
+  const data = await fetchData(
+    () =>
+      retrieveData('taxonomy_term/categories', {
+        fields: {
+          'taxonomy_term--categories': 'id,name,field_taxonomy_icon,field_taxonomy_affiliation',
+          'taxonomy_term--affiliation': 'name',
+          'media--image': 'name,field_media_image',
+          'file--file': 'filename,filemime,uri',
+        },
+        include: 'field_taxonomy_icon.field_media_image,field_taxonomy_affiliation',
+        sort: 'weight',
+        filter: {
+          status: 1,
+        },
+      }),
+    mockedCategories,
+  );
 
-    const categoryIconUrl = (item) => {
-      if (item.field_taxonomy_icon?.field_media_image?.uri?.url) {
-        return `${BASE_URL}${item.field_taxonomy_icon.field_media_image.uri.url}`;
-      }
-      return undefined;
-    };
+  const categoryIconUrl = (item) => {
+    if (item.field_taxonomy_icon?.field_media_image?.uri?.url) {
+      return `${BASE_URL}${item.field_taxonomy_icon.field_media_image.uri.url}`;
+    }
+    return undefined;
+  };
 
-    return data.map((d) => ({
-      affiliation: d.field_taxonomy_affiliation.map((a) => a.name),
-      id: d.id,
-      name: d.name,
-      icon: categoryIconUrl(d),
-    }));
-  } catch (err) {
-    throw err;
-  }
+  return data.map((d) => ({
+    affiliation: d.field_taxonomy_affiliation.map((a) => a.name),
+    id: d.id,
+    name: d.name,
+    icon: categoryIconUrl(d),
+  }));
 };
 
 /**
  * Get information button data from DX API.
  */
 export const getInfo = async (): Promise<IInfoResult[]> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('node/information', {
-          fields: {
-            'node--information': 'title,field_machine_name,body',
-          },
-          filter: {
-            status: 1,
-          },
-        }),
-      mockedInformation,
-    );
-    return data.map((d) => ({
-      title: d.title,
-      id: d.field_machine_name,
-      content: d.body?.processed,
-    }));
-  } catch (err) {
-    throw err;
-  }
+  const data = await fetchData(
+    () =>
+      retrieveData('node/information', {
+        fields: {
+          'node--information': 'title,field_machine_name,body',
+        },
+        filter: {
+          status: 1,
+        },
+      }),
+    mockedInformation,
+  );
+  return data.map((d) => ({
+    title: d.title,
+    id: d.field_machine_name,
+    content: d.body?.processed,
+  }));
 };
 
 /**
@@ -328,30 +308,26 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
  */
 
 export const getPageContent = async (pageTitle: string): Promise<IPageContent> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('node/dashboard_content', {
-          fields: {
-            'node--dashboard_content': 'title,body',
-          },
-          filter: {
-            status: 1,
-            'field_pages.name': pageTitle,
-          },
-          page: {
-            limit: 1,
-          },
-        }),
-      mockedPageContent,
-    );
-    return data.map((d) => ({
-      title: d.title,
-      content: d.body.processed,
-    }));
-  } catch (err) {
-    throw err;
-  }
+  const data = await fetchData(
+    () =>
+      retrieveData('node/dashboard_content', {
+        fields: {
+          'node--dashboard_content': 'title,body',
+        },
+        filter: {
+          status: 1,
+          'field_pages.name': pageTitle,
+        },
+        page: {
+          limit: 1,
+        },
+      }),
+    mockedPageContent,
+  );
+  return data.map((d) => ({
+    title: d.title,
+    content: d.body.processed,
+  }));
 };
 
 /**
@@ -361,30 +337,26 @@ export const getPageContent = async (pageTitle: string): Promise<IPageContent> =
  */
 
 export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('node/release_notes', {
-          fields: {
-            'node--release_notes': 'title,body,field_release_notes_date',
-          },
-          filter: {
-            status: 1,
-          },
-          sort: '-created',
-        }),
-      mockedReleaseNotes,
-    );
-    return data
-      .map((d) => ({
-        title: d.title,
-        content: d.body.processed,
-        date: d.field_release_notes_date,
-      }))
-      .slice(0, 6);
-  } catch (err) {
-    throw err;
-  }
+  const data = await fetchData(
+    () =>
+      retrieveData('node/release_notes', {
+        fields: {
+          'node--release_notes': 'title,body,field_release_notes_date',
+        },
+        filter: {
+          status: 1,
+        },
+        sort: '-created',
+      }),
+    mockedReleaseNotes,
+  );
+  return data
+    .map((d) => ({
+      title: d.title,
+      content: d.body.processed,
+      date: d.field_release_notes_date,
+    }))
+    .slice(0, 6);
 };
 
 /**
@@ -396,129 +368,117 @@ export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
  */
 export const getDxAlerts = async (): Promise<Types.Alert[]> => {
   // TODO: Round the time up to the next 30 sec interval
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('node/alerts', {
-          filter: {
-            field_expiration_date: {
-              condition: {
-                operator: '>',
-                path: 'field_alert_expiration_date',
-                value: new Date().toISOString(),
-              },
+  const data = await fetchData(
+    () =>
+      retrieveData('node/alerts', {
+        filter: {
+          field_expiration_date: {
+            condition: {
+              operator: '>',
+              path: 'field_alert_expiration_date',
+              value: new Date().toISOString(),
             },
-            status: 1,
           },
-          fields: {
-            'node--alerts': 'title,created,field_alert_content,field_alert_type',
-          },
-          sort: '-field_alert_expiration_date',
-        }),
-      mockedAlerts,
-    );
-    if (data.length === 0) return [];
+          status: 1,
+        },
+        fields: {
+          'node--alerts': 'title,created,field_alert_content,field_alert_type',
+        },
+        sort: '-field_alert_expiration_date',
+      }),
+    mockedAlerts,
+  );
+  if (data.length === 0) return [];
 
-    /* eslint-disable camelcase */
-    const { field_alert_content, field_alert_type, created, title } = data[0];
-    return [
-      {
-        content: field_alert_content as string,
-        title: title as string,
-        date: created as Date,
-        type: field_alert_type as string,
-      },
-    ];
-    /* eslint-enable camelcase */
-  } catch (err) {
-    throw err;
-  }
+  /* eslint-disable camelcase */
+  const { field_alert_content, field_alert_type, created, title } = data[0];
+  return [
+    {
+      content: field_alert_content as string,
+      title: title as string,
+      date: created as Date,
+      type: field_alert_type as string,
+    },
+  ];
+  /* eslint-enable camelcase */
 };
 
 /**
  * Get all trainings from DX API.
  */
 export const getTrainings = async (): Promise<Types.Training[]> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('node/trainings', {
-          fields: {
-            'node--trainings':
-              'id,title,field_training_audience,field_training_contact,field_training_cost,body,field_training_department,field_training_duration,field_training_featured,field_training_frequency,field_training_prerequisites,field_training_course_design,field_training_image,field_training_tags,field_training_types,field_training_website',
-            'taxonomy_term--training_audience': 'name',
-            'taxonomy_term--training_course_design': 'name',
-            'taxonomy_term--training_tags': 'name',
-            'taxonomy_term--training_types': 'name',
-            'media--image': 'name,field_media_image',
-            'file--file': 'filename,filemime,uri',
-          },
-          include:
-            'field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_tags,field_training_types',
-          filter: {
-            status: 1,
-          },
-        }),
-      mockedTrainings,
-    );
+  const data = await fetchData(
+    () =>
+      retrieveData('node/trainings', {
+        fields: {
+          'node--trainings':
+            'id,title,field_training_audience,field_training_contact,field_training_cost,body,field_training_department,field_training_duration,field_training_featured,field_training_frequency,field_training_prerequisites,field_training_course_design,field_training_image,field_training_tags,field_training_types,field_training_website',
+          'taxonomy_term--training_audience': 'name',
+          'taxonomy_term--training_course_design': 'name',
+          'taxonomy_term--training_tags': 'name',
+          'taxonomy_term--training_types': 'name',
+          'media--image': 'name,field_media_image',
+          'file--file': 'filename,filemime,uri',
+        },
+        include:
+          'field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_tags,field_training_types',
+        filter: {
+          status: 1,
+        },
+      }),
+    mockedTrainings,
+  );
 
-    const trainingImageUrl = (item) => {
-      if (item.field_training_image?.field_media_image?.uri?.url) {
-        return `${BASE_URL}${item.field_training_image.field_media_image.uri.url}`;
-      }
-      return undefined;
-    };
-    const trainings = data.map((d) => ({
-      audiences: d.field_training_audience.map((a) => a.name),
-      id: d.id,
-      title: d.title,
-      image: trainingImageUrl(d),
-      contact: d.field_training_contact,
-      cost: d.field_training_cost,
-      body: d.body?.processed,
-      department: d.field_training_department,
-      duration: d.field_training_duration,
-      featured: d.field_training_featured,
-      frequency: d.field_training_frequency,
-      prerequisites: d.field_training_prerequisites,
-      courseDesign: d.field_training_course_design?.name,
-      tags: d.field_training_tags.map((t) => t.name),
-      type: d.field_training_types?.name,
-      websiteUri: d.field_training_website?.uri,
-      websiteTitle: d.field_training_website?.title,
-    }));
-    return trainings.sort(sortBy(['-featured', 'title']));
-  } catch (err) {
-    throw err;
-  }
+  const trainingImageUrl = (item) => {
+    if (item.field_training_image?.field_media_image?.uri?.url) {
+      return `${BASE_URL}${item.field_training_image.field_media_image.uri.url}`;
+    }
+    return undefined;
+  };
+  const trainings = data.map((d) => ({
+    audiences: d.field_training_audience.map((a) => a.name),
+    id: d.id,
+    title: d.title,
+    image: trainingImageUrl(d),
+    contact: d.field_training_contact,
+    cost: d.field_training_cost,
+    body: d.body?.processed,
+    department: d.field_training_department,
+    duration: d.field_training_duration,
+    featured: d.field_training_featured,
+    frequency: d.field_training_frequency,
+    prerequisites: d.field_training_prerequisites,
+    courseDesign: d.field_training_course_design?.name,
+    tags: d.field_training_tags.map((t) => t.name),
+    type: d.field_training_types?.name,
+    websiteUri: d.field_training_website?.uri,
+    websiteTitle: d.field_training_website?.title,
+  }));
+  return trainings.sort(sortBy(['-featured', 'title']));
 };
 
 /**
  * Get all training tags from DX API.
  */
 export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
-  try {
-    const data = await fetchData(
-      () =>
-        retrieveData('taxonomy_term/training_tags', {
-          fields: {
-            'taxonomy_term--training_tags': 'id,name',
-          },
-          filter: {
-            status: 1,
-          },
-          sort: 'weight',
-        }),
-      mockedTrainingTags,
-    );
+  const data = await fetchData(
+    () =>
+      retrieveData('taxonomy_term/training_tags', {
+        fields: {
+          'taxonomy_term--training_tags': 'id,name',
+        },
+        filter: {
+          status: 1,
+        },
+        sort: 'weight',
+      }),
+    mockedTrainingTags,
+  );
 
-    return data.map((d) => ({
-      id: d.id,
-      name: d.name,
-    }));
-  } catch (err) {
-    throw err;
-  }
+  return data.map((d) => ({
+    id: d.id,
+    name: d.name,
+  }));
 };
 
 const mappedCards = (items: any[]): Types.DynamicCard[] => {
@@ -554,30 +514,26 @@ const sortedCards = (cards: Types.DynamicCard[]): Types.DynamicCard[] => {
  * Get all custom card data with all associated taxonomy terms
  */
 export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
-  try {
-    const opts = {
-      fields: {
-        'node--content_card':
-          'id,title,body,field_card_footer_link,sticky,field_resources,field_machine_name,field_icon_name,field_weight,field_affiliation,field_audience,field_locations,field_pages',
-        'taxonomy_term--audience': 'name',
-        'taxonomy_term--affiliation': 'name',
-        'taxonomy_term--locations': 'name',
-        'taxonomy_term--pages': 'name',
-        'node--services': 'id',
-      },
-      include: 'field_affiliation,field_audience,field_locations,field_pages',
-      sort: 'title',
-      filter: {
-        status: 1,
-      },
-    };
-    const data = await fetchData(
-      () => retrieveData('node/content_card', opts, LONG_CACHE_SEC),
-      mockedCards,
-    );
-    const cards = mappedCards(data);
-    return sortedCards(cards);
-  } catch (err) {
-    throw err;
-  }
+  const opts = {
+    fields: {
+      'node--content_card':
+        'id,title,body,field_card_footer_link,sticky,field_resources,field_machine_name,field_icon_name,field_weight,field_affiliation,field_audience,field_locations,field_pages',
+      'taxonomy_term--audience': 'name',
+      'taxonomy_term--affiliation': 'name',
+      'taxonomy_term--locations': 'name',
+      'taxonomy_term--pages': 'name',
+      'node--services': 'id',
+    },
+    include: 'field_affiliation,field_audience,field_locations,field_pages',
+    sort: 'title',
+    filter: {
+      status: 1,
+    },
+  };
+  const data = await fetchData(
+    () => retrieveData('node/content_card', opts, LONG_CACHE_SEC),
+    mockedCards,
+  );
+  const cards = mappedCards(data);
+  return sortedCards(cards);
 };

@@ -1,9 +1,10 @@
+import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import { lastLogin } from '../../utils/auth';
 
 /* eslint-disable no-unused-vars */
 export const mockQueryReturn = jest.fn();
 
-export const query = jest.fn((params: AWS.DynamoDB.QueryInput) => {
+export const query = jest.fn((params: DynamoDB.QueryInput) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
       if (mockQueryReturn) resolve(mockQueryReturn());
@@ -18,7 +19,7 @@ const mockScanReturn = {
   Items: [{ osuId: { N: '123456' } }],
 };
 
-export const scan = jest.fn((params: AWS.DynamoDB.ScanInput) => {
+export const scan = jest.fn((params: DynamoDB.ScanInput) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
       if (mockScanReturn) resolve(mockScanReturn);
@@ -31,7 +32,7 @@ const mockUpdateItemReturn = {
   thisIsnt: 'used, or necessary yet.',
 };
 
-export const updateItem = jest.fn((params: AWS.DynamoDB.UpdateItemInput) => {
+export const updateItem = jest.fn((params: DynamoDB.UpdateItemInput) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
       if (mockUpdateItemReturn) resolve(mockUpdateItemReturn);
@@ -56,7 +57,7 @@ export const mockGetItemReturn = jest.fn(() => ({
   },
 }));
 
-export const getItem = jest.fn((params: AWS.DynamoDB.GetItemInput) => {
+export const getItem = jest.fn((params: DynamoDB.GetItemInput) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
       if (mockGetItemReturn) resolve(mockGetItemReturn());
@@ -65,7 +66,7 @@ export const getItem = jest.fn((params: AWS.DynamoDB.GetItemInput) => {
   });
 });
 
-export const putItem = jest.fn((params: AWS.DynamoDB.PutItemInput) => {
+export const putItem = jest.fn((params: DynamoDB.PutItemInput) => {
   return new Promise((resolve, reject) => {
     process.nextTick(() => {
       if (mockGetItemReturn) resolve(mockGetItemReturn());

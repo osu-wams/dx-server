@@ -159,27 +159,23 @@ export const get = async (
     if (cached) return Promise.resolve(cached);
   }
 
-  try {
-    logger().debug(`cache.get requesting url:${url}`);
-    const response = await requestRetry(
-      url,
-      {
-        method: 'GET',
-        headers: { ...requestOptions.headers },
-      },
-      { codes: retryStatusCodes ?? [], times: 1 },
-    );
-    if (response.ok) {
-      const responseText = await response.text();
-      if (willCache) {
-        await setCache(key, responseText, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
-      }
-
-      if (requestOptions.json) return JSON.parse(responseText);
-      return responseText;
+  logger().debug(`cache.get requesting url:${url}`);
+  const response = await requestRetry(
+    url,
+    {
+      method: 'GET',
+      headers: { ...requestOptions.headers },
+    },
+    { codes: retryStatusCodes ?? [], times: 1 },
+  );
+  if (response.ok) {
+    const responseText = await response.text();
+    if (willCache) {
+      await setCache(key, responseText, { mode: 'EX', duration: ttlSeconds, flag: 'NX' });
     }
-  } catch (err) {
-    throw err;
+
+    if (requestOptions.json) return JSON.parse(responseText);
+    return responseText;
   }
 };
 /* eslint-enable consistent-return */

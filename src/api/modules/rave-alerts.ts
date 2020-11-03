@@ -13,32 +13,28 @@ const CACHE_SEC = parseInt(config.get('raveApi.cacheEndpointSec'), 10);
  * @returns {Promise<Object[]>}
  */
 export const getAlerts = async (): Promise<Types.Alert[]> => {
-  try {
-    // Rave alerts come as an RSS feed, always containing a single item.
-    const xml = await fetchData(
-      () =>
-        cache.get(BASE_URL, {}, true, {
-          key: BASE_URL,
-          ttlSeconds: CACHE_SEC,
-        }),
-      mockedRaveAlerts,
-    );
-    const { items } = await parser.parseString(xml);
-    const alert: Types.Alert = {
-      title: items[0].title,
-      content: items[0].content,
-      date: items[0].date,
-      type: 'rave',
-    };
+  // Rave alerts come as an RSS feed, always containing a single item.
+  const xml = await fetchData(
+    () =>
+      cache.get(BASE_URL, {}, true, {
+        key: BASE_URL,
+        ttlSeconds: CACHE_SEC,
+      }),
+    mockedRaveAlerts,
+  );
+  const { items } = await parser.parseString(xml);
+  const alert: Types.Alert = {
+    title: items[0].title,
+    content: items[0].content,
+    date: items[0].date,
+    type: 'rave',
+  };
 
-    // Check for the presence of 'all clear' text in the message body
-    // 'all clear' indicates that an alert is NOT active and should not be displayed.
-    const isAlertActive = !alert.title.match(/all clear/im) && !alert.content.match(/all clear/im);
-    const data = isAlertActive ? [alert] : [];
-    return data;
-  } catch (err) {
-    throw err;
-  }
+  // Check for the presence of 'all clear' text in the message body
+  // 'all clear' indicates that an alert is NOT active and should not be displayed.
+  const isAlertActive = !alert.title.match(/all clear/im) && !alert.content.match(/all clear/im);
+  const data = isAlertActive ? [alert] : [];
+  return data;
 };
 
 export default getAlerts;

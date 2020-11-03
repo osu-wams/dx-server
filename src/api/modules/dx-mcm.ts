@@ -42,24 +42,20 @@ export const getUserMessages = async (
   osuId: string,
   onid: string,
 ): Promise<Types.UserMessageItems> => {
-  try {
-    const url = findByChannelUrl(osuId, onid);
+  const url = findByChannelUrl(osuId, onid);
 
-    const {
-      userMessageResults: { items, lastKey },
-    }: UserMessageApiResponse = await fetchData(
-      () =>
-        cache.get(url, { json: true, headers: authHeader() }, true, {
-          key: url,
-          ttlSeconds: DX_MCM_CACHE_SEC,
-        }),
-      mockedUserMessages,
-    );
-    // TODO: if userMessage.lastKey exists, fetch more messages by appending it to the url?
-    return { items, lastKey };
-  } catch (err) {
-    throw err;
-  }
+  const {
+    userMessageResults: { items, lastKey },
+  }: UserMessageApiResponse = await fetchData(
+    () =>
+      cache.get(url, { json: true, headers: authHeader() }, true, {
+        key: url,
+        ttlSeconds: DX_MCM_CACHE_SEC,
+      }),
+    mockedUserMessages,
+  );
+  // TODO: if userMessage.lastKey exists, fetch more messages by appending it to the url?
+  return { items, lastKey };
 };
 
 /**
@@ -71,19 +67,15 @@ export const markRead = async (
   onid: string,
   messageId: string = 'all',
 ): Promise<Types.UserMessage | { message: string }> => {
-  try {
-    const url = markReadUrl(osuId, onid, messageId);
+  const url = markReadUrl(osuId, onid, messageId);
 
-    const { userMessage, message }: UserMessageApiResponse = await fetchData(
-      () =>
-        cache.get(url, { json: true, headers: authHeader() }, true, {
-          key: url,
-          ttlSeconds: DX_MCM_CACHE_SEC,
-        }),
-      mockedUserMessages[0],
-    );
-    return userMessage || { message };
-  } catch (err) {
-    throw err;
-  }
+  const { userMessage, message }: UserMessageApiResponse = await fetchData(
+    () =>
+      cache.get(url, { json: true, headers: authHeader() }, true, {
+        key: url,
+        ttlSeconds: DX_MCM_CACHE_SEC,
+      }),
+    mockedUserMessages[0],
+  );
+  return userMessage || { message };
 };

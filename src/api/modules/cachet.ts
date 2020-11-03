@@ -164,24 +164,20 @@ const mostRecentIncident = (
  * Query Cachet API to get a list of components and its most recent incident if its not operational
  */
 export const getSystemsStatus = async (): Promise<ICachetComponent[]> => {
-  try {
-    const [components, incidents]: [
-      ICachetComponentResponse,
-      ICachetIncidentResponse,
-    ] = await Promise.all([getComponents(), getIncidents()]);
+  const [components, incidents]: [
+    ICachetComponentResponse,
+    ICachetIncidentResponse,
+  ] = await Promise.all([getComponents(), getIncidents()]);
 
-    const data = components?.data.map((c) => ({
-      id: c.id,
-      name: c.name,
-      description: c.description,
-      statusText: c.status_name,
-      status: c.status,
-      updatedAt: c.updated_at,
-      incidents: mostRecentIncident(incidents.data, c),
-    }));
-    if (!data?.length) throw new Error('Cachet API queries failed.');
-    return data;
-  } catch (err) {
-    throw err;
-  }
+  const data = components?.data?.map((c) => ({
+    id: c.id,
+    name: c.name,
+    description: c.description,
+    statusText: c.status_name,
+    status: c.status,
+    updatedAt: c.updated_at,
+    incidents: mostRecentIncident(incidents.data, c),
+  }));
+  if (!data || !data?.length) throw new Error('Cachet API queries failed.');
+  return data;
 };
