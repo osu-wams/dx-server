@@ -40,6 +40,7 @@ interface IAuth {
   oAuth2Strategy?: any;
   localStrategy?: any;
   jwtStrategy?: any;
+  readyEducationStrategy?: any;
   serializeUser?(user: any, done: any): void;
   deserializeUser?(user: any, done: any): void;
   login?(req: Request, res: Response, next: NextFunction): void;
@@ -159,6 +160,32 @@ Auth.localStrategy = new LocalStrategy(
   },
 );
 
+Auth.readyEducationStrategy = new LocalStrategy(
+  {
+    usernameField: 'u',
+    passwordField: 't',
+  },
+  async (u, t, done) => {
+    logger().debug(
+      `User from mobile app with Ready Education auth user token:${t} with username: ${u}`,
+    );
+    if (!t) return done(null, false);
+
+    // const osuId = getUser(reaUserToken);
+    const osuId = t;
+    if (osuId) {
+      const user = await User.find(parseInt(osuId, 10));
+      if (!user) {
+        logger().debug('Ready Education auth user not found, returning unauthenticated.');
+        return done(null, false);
+      }
+      return done(null, user);
+    }
+    return done(null, false);
+  },
+);
+Auth.readyEducationStrategy.name = 'readyEducation';
+
 Auth.serializeUser = (user, done) => {
   done(null, user);
 };
@@ -169,23 +196,43 @@ Auth.deserializeUser = (user, done) => {
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
   // eslint-disable-next-line
-  return passport.authenticate(['local', 'saml'], (err, user) => {
-    logger().debug(`User authenticated: ${user.osuId}`);
-    if (err) {
-      return next(err);
+  return passport.authenticate('readyEducation', (reaErr, reaUser) => {
+    logger().debug(`Ready Education User authenticated: ${reaUser}`);
+    if (reaErr) {
+      logger().error(`Error during Ready Education User authentication: ${reaErr.message}`);
     }
-    if (!user) {
-      return res.status(400).send({ message: 'Bad username or password' });
+    if (!reaUser) {
+      passport.authenticate(['local', 'saml'], (err, user) => {
+        logger().debug(`User authenticated: ${user.osuId}`);
+        if (err) {
+          next(err);
+        }
+        if (!user) {
+          res.status(400).send({ message: 'Bad username or password' });
+        } else {
+          // eslint-disable-next-line
+          req.login(user, (innerErr: any) => {
+            if (innerErr) {
+              return next(innerErr);
+            }
+            logger().debug(`Auth.login redirecting to: ${req.session.returnUrl}`);
+            res.redirect(req.session.returnUrl);
+          });
+        }
+      })(req, res, next);
+    } else {
+      // eslint-disable-next-line
+      req.login(reaUser, (innerErr: any) => {
+        if (innerErr) {
+          return next(innerErr);
+        }
+        // Provide the means for a Ready Education auth flow to include returnUrl=page_name
+        // to direct the users browser to a specific page.
+        const { returnUrl }: { returnUrl?: string } = req.query;
+        logger().debug(`Auth.login Ready Education auth redirecting to: ${returnUrl || '/'}`);
+        res.redirect(returnUrl || '/');
+      });
     }
-
-    // eslint-disable-next-line
-    req.login(user, (innerErr: any) => {
-      if (innerErr) {
-        return next(innerErr);
-      }
-      logger().debug(`Auth.login redirecting to: ${req.session.returnUrl}`);
-      res.redirect(req.session.returnUrl);
-    });
   })(req, res, next);
 };
 
