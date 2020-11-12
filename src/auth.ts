@@ -33,6 +33,7 @@ import {
   SAML_URL,
   COOKIE_NAME,
 } from './constants';
+import { getUser } from './api/modules/ready-education';
 
 /* eslint-disable no-unused-vars */
 interface IAuth {
@@ -171,8 +172,7 @@ Auth.readyEducationStrategy = new LocalStrategy(
     );
     if (!t) return done(null, false);
 
-    // const osuId = getUser(reaUserToken);
-    const osuId = t;
+    const { student_id: osuId } = await getUser(t);
     if (osuId) {
       const user = await User.find(parseInt(osuId, 10));
       if (!user) {
