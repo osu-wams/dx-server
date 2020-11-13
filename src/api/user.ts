@@ -42,6 +42,7 @@ router.get('/', async (req: Request, res: Response) => {
     theme,
     devTools: req.user.devTools || false,
     colleges,
+    isMobile: req.session.isMobile,
   });
 });
 

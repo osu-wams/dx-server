@@ -221,6 +221,8 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
         }
       })(req, res, next);
     } else {
+      // Explicitly identify this session as having been initiated through the mobile app auth flow
+      req.session.isMobile = true; // eslint-disable-line
       // eslint-disable-next-line
       req.login(reaUser, (innerErr: any) => {
         if (innerErr) {
