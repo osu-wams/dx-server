@@ -1,0 +1,10 @@
+@baseUrl = https://api.studentlifemobile.com
+@apiToken = {{$processEnv READY_EDUCATION_API_TOKEN}}
+
+# A bogus token used for testing API
+@userToken = blah
+
+###
+# @name getUser
+GET {{baseUrl}}/public/v1/user/?user_token={{userToken}} HTTP/1.1
+Authorization: {{apiToken}}
