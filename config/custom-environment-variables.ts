@@ -39,4 +39,7 @@ export default {
     host: 'REDIS_HOST',
     port: 'REDIS_PORT',
   },
+  readyEducationApi: {
+    token: 'READY_EDUCATION_API_TOKEN',
+  },
 };

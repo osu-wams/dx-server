@@ -91,4 +91,7 @@ export default {
       tablePrefix: 'development',
     },
   },
+  readyEducationApi: {
+    baseUrl: 'https://api.studentlifemobile.com',
+  },
 };

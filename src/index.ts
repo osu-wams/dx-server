@@ -88,6 +88,7 @@ passport.use(Auth.passportStrategy);
 passport.use(Auth.oAuth2Strategy);
 passport.use(Auth.localStrategy);
 passport.use(Auth.jwtStrategy);
+passport.use(Auth.readyEducationStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
