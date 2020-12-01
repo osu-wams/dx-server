@@ -4,6 +4,7 @@ import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
 import { SamlUser } from '../modules/user-account'; // eslint-disable-line no-unused-vars
 import { scan, updateItem, getItem, putItem } from '../../db';
+import { getCache, setCache } from '../modules/cache';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
 
@@ -173,7 +174,7 @@ class User {
           firstYear: params.Item.audienceOverride.M.firstYear.BOOL,
           international: params.Item.audienceOverride.M.international.BOOL,
           graduate: params.Item.audienceOverride.M.graduate.BOOL,
-          colleges: params.Item.audienceOverride.M.colleges.SS,
+          colleges: params.Item.audienceOverride.M.colleges?.SS,
         };
       }
       if (params.Item.theme) this.theme = params.Item.theme.S;
@@ -265,13 +266,14 @@ class User {
    */
   static clearAllCanvasRefreshTokens = async (): Promise<[boolean, any]> => {
     const errors = [];
-    const ids = await User.allIds();
+    const users = await User.scanAll();
+    const ids = users.map((u) => u.osuId);
     ids.forEach(async (id) => {
       try {
         const params: DynamoDB.UpdateItemInput = {
           TableName: User.TABLE_NAME,
           Key: {
-            osuId: { N: id },
+            osuId: { N: id.toString() },
           },
           UpdateExpression: 'REMOVE canvasRefreshToken SET canvasOptIn = :coi',
           ExpressionAttributeValues: {
@@ -402,28 +404,34 @@ class User {
     }
   };
 
-  /**
-   * Query a list of all IDs from the Users table.
-   * ! This is an expensive (cost-wise and computationally) because it
-   * ! must inspect all items in the table.
-   * * Example use: User.allIds().then(v => console.log(v))
-   * @returns Promise<string[]> - an array of the strings of the IDs
-   */
-  static allIds = async (): Promise<string[]> => {
-    try {
-      const params: DynamoDB.ScanInput = {
-        TableName: User.TABLE_NAME,
-        AttributesToGet: ['osuId'],
-      };
-      const results: DynamoDB.ScanOutput = await asyncTimedFunction(scan, 'User:scan', [params]);
-      logger().debug(
-        `User.allIds found count:${results.Count}, scanned count:${results.ScannedCount}`,
-      );
-      return results.Items?.map((i: DynamoDB.AttributeMap) => i.osuId.N);
-    } catch (err) {
-      logger().error('User.allIds error:', err);
-      return [];
+  static scanAll = async (): Promise<User[]> => {
+    const cached = await getCache(User.TABLE_NAME);
+    if (cached) {
+      return JSON.parse(cached);
     }
+
+    const found = [];
+    let lastKey;
+    do {
+      // eslint-disable-next-line
+      const results = await scan({
+        TableName: User.TABLE_NAME,
+        ExclusiveStartKey: lastKey,
+      });
+      found.push(...results.Items);
+      logger().info(
+        `${User.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,
+      );
+      lastKey = results.LastEvaluatedKey;
+    } while (lastKey);
+
+    const users = found.map((i) => new User({ dynamoDbUser: { Item: i } }));
+    setCache(User.TABLE_NAME, JSON.stringify(users), {
+      mode: 'EX',
+      duration: 24 * 60 * 60,
+      flag: 'NX',
+    });
+    return users;
   };
 
   /**

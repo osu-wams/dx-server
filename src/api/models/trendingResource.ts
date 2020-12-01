@@ -2,7 +2,8 @@ import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import { DYNAMODB_TABLE_PREFIX } from '../../constants';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
-import { query, putItem } from '../../db';
+import { query, putItem, scan } from '../../db';
+import { getCache, setCache } from '../modules/cache';
 
 export interface DynamoDBTrendingResourceItem extends DynamoDB.PutItemInputAttributeMap {
   date: { S: string };
@@ -150,6 +151,36 @@ class TrendingResource {
       logger().error(`TrendingResource.find(${resourceId}, ${date}) failed:`, err);
       throw err;
     }
+  };
+
+  static scanAll = async (): Promise<TrendingResource[]> => {
+    const cached = await getCache(TrendingResource.TABLE_NAME);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+
+    const found = [];
+    let lastKey;
+    do {
+      // eslint-disable-next-line
+      const results = await scan({
+        TableName: TrendingResource.TABLE_NAME,
+        ExclusiveStartKey: lastKey,
+      });
+      found.push(...results.Items);
+      logger().info(
+        `${TrendingResource.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,
+      );
+      lastKey = results.LastEvaluatedKey;
+    } while (lastKey);
+
+    const resources = found.map((i) => new TrendingResource({ dynamoDbTrendingResource: i }));
+    setCache(TrendingResource.TABLE_NAME, JSON.stringify(resources), {
+      mode: 'EX',
+      duration: 24 * 60 * 60,
+      flag: 'NX',
+    });
+    return resources;
   };
 
   /**
