@@ -214,16 +214,16 @@ describe('User model', () => {
       user = new User({ samlUser });
     });
 
-    describe('allIds', () => {
+    describe('scanAll', () => {
       it('returns 1 item', async () => {
-        const ids = await User.allIds();
+        const ids = await User.scanAll();
         expect(ids).toStrictEqual(['123456']);
       });
       it('returns an empty array on error', async () => {
         mockDynamoDb.scan.mockImplementationOnce(() =>
           Promise.reject(new Error('happy little accident')),
         );
-        const ids = await User.allIds();
+        const ids = await User.scanAll();
         expect(ids).toStrictEqual([]);
       });
     });
