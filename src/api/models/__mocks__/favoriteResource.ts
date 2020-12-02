@@ -28,5 +28,13 @@ export const FavoriteResource = {
       });
     });
   }),
+  scanAll: jest.fn(() => {
+    return new Promise((resolve, reject) => {
+      process.nextTick(() => {
+        if (mockFindReturn) resolve([mockFindReturn]);
+        else reject(new Error('happy little accident'));
+      });
+    });
+  }),
 };
 export default FavoriteResource;

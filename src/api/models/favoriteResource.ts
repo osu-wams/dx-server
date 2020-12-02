@@ -2,7 +2,7 @@ import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import config from 'config';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
-import { putItem, query } from '../../db';
+import { putItem, query, scan } from '../../db';
 import { getCache, setCache } from '../modules/cache';
 
 const tablePrefix = config.get('aws.dynamodb.tablePrefix');
@@ -53,11 +53,11 @@ class FavoriteResource {
 
     if (p.dynamoDbFavoriteResource) {
       const { osuId, resourceId, created, active, order } = p.dynamoDbFavoriteResource;
-      this.active = active.BOOL;
-      this.created = created.S;
-      this.order = parseInt(order.N, 10);
+      this.active = active?.BOOL ?? true;
+      this.created = created?.S;
+      this.order = parseInt(order?.N ?? '0', 10);
       this.osuId = parseInt(osuId.N, 10);
-      this.resourceId = resourceId.S;
+      this.resourceId = resourceId?.S;
     }
   }
 
@@ -114,6 +114,36 @@ class FavoriteResource {
       logger().error(`FavoriteResource.findAll(${osuId}) failed:`, err);
       throw err;
     }
+  };
+
+  static scanAll = async (): Promise<FavoriteResource[]> => {
+    const cached = await getCache(FavoriteResource.TABLE_NAME);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+
+    const found = [];
+    let lastKey;
+    do {
+      // eslint-disable-next-line
+      const results = await scan({
+        TableName: FavoriteResource.TABLE_NAME,
+        ExclusiveStartKey: lastKey,
+      });
+      found.push(...results.Items);
+      logger().info(
+        `${FavoriteResource.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,
+      );
+      lastKey = results.LastEvaluatedKey;
+    } while (lastKey);
+
+    const resources = found.map((i) => new FavoriteResource({ dynamoDbFavoriteResource: i }));
+    setCache(FavoriteResource.TABLE_NAME, JSON.stringify(resources), {
+      mode: 'EX',
+      duration: 24 * 60 * 60,
+      flag: 'NX',
+    });
+    return resources;
   };
 
   /**

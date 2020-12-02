@@ -1,4 +1,6 @@
-import { google } from 'googleapis';
+/* eslint-disable camelcase */
+
+import { analytics_v3, google } from 'googleapis';
 import { getCache, setCache } from './cache';
 import logger from '../../logger';
 import { asyncTimedFunction } from '../../tracer';
@@ -18,6 +20,64 @@ const jwt = new google.auth.JWT(
   GOOGLE_PRIVATE_KEY,
   'https://www.googleapis.com/auth/analytics.readonly',
 );
+
+// eslint-disable-next-line
+const getGaData = async (params: analytics_v3.Params$Resource$Data$Ga$Get) =>
+  google.analytics('v3').data.ga.get(params);
+
+export const fetchActiveUsers = async (
+  metrics: 'ga:1dayUsers' | 'ga:7dayUsers' | 'ga:14dayUsers' | 'ga:30dayUsers',
+): Promise<string[][]> =>
+  asyncTimedFunction(
+    async () => {
+      try {
+        await jwt.authorize();
+        const response = await getGaData({
+          auth: jwt,
+          ids: `ga:${GOOGLE_ANALYTICS_VIEW_ID}`,
+          'start-date': `1daysAgo`,
+          'end-date': `1daysAgo`,
+          metrics,
+          dimensions: 'ga:date',
+        });
+        return response.data.rows ?? [];
+      } catch (err) {
+        logger().error(`GoogleAPI:fetchActiveUsers API call failed: ${err}`);
+        throw err;
+      }
+    },
+    'GoogleAPI:fetchActiveUsers',
+    [],
+  );
+
+export const fetchPageViews = async (
+  daysAgo: number,
+  rangeDays: number,
+  maxResults: number,
+): Promise<string[][]> =>
+  asyncTimedFunction(
+    async () => {
+      try {
+        await jwt.authorize();
+        const response = await getGaData({
+          auth: jwt,
+          ids: `ga:${GOOGLE_ANALYTICS_VIEW_ID}`,
+          'start-date': `${daysAgo}daysAgo`,
+          'end-date': `${daysAgo - rangeDays}daysAgo`,
+          metrics: 'ga:pageviews',
+          dimensions: 'ga:pagePath',
+          sort: '-ga:pageviews',
+          'max-results': maxResults,
+        });
+        return response.data.rows ?? [];
+      } catch (err) {
+        logger().error(`GoogleAPI:fetchPageViews API call failed: ${err}`);
+        throw err;
+      }
+    },
+    'GoogleAPI:fetchPageViews',
+    [],
+  );
 
 export const mappedTrendingResources = (rows: string[][], date: string): TrendingResource[] =>
   rows?.map(
@@ -40,13 +100,13 @@ export const mappedTrendingResources = (rows: string[][], date: string): Trendin
  * the day had no events to return but was a successful response.
  * @param daysAgo the number of days ago for the end-date
  *
- * eslint-disable camelcase */
-export const getGaData = async (daysAgo: number): Promise<string[][]> =>
+ */
+export const fetchTrendingResources = async (daysAgo: number): Promise<string[][]> =>
   asyncTimedFunction(
     async () => {
       try {
         await jwt.authorize();
-        const response = await google.analytics('v3').data.ga.get({
+        const response = await getGaData({
           auth: jwt,
           ids: `ga:${GOOGLE_ANALYTICS_VIEW_ID}`,
           'start-date': `${daysAgo + 1}daysAgo`,
@@ -57,14 +117,13 @@ export const getGaData = async (daysAgo: number): Promise<string[][]> =>
         });
         return response.data.rows ?? [];
       } catch (err) {
-        logger().error(`GoogleAPI:getGaData API call failed: ${err}`);
+        logger().error(`GoogleAPI:fetchTrendingResources API call failed: ${err}`);
         throw err;
       }
     },
-    'GoogleAPI:getGaData',
+    'GoogleAPI:fetchTrendingResources',
     [],
   );
-/* eslint-enable camelcase */
 
 const cacheResources = async (cacheKey: string, resources: TrendingResource[]) =>
   setCache(cacheKey, JSON.stringify(resources), {
@@ -75,7 +134,7 @@ const cacheResources = async (cacheKey: string, resources: TrendingResource[]) =
 
 /**
  * The nature of the Google API caused race conditions that lent itself to using `daysAgo` in order to
- * target and query a single days worth of analytics instead of calculating dates directly. See `getGaData` for details.
+ * target and query a single days worth of analytics instead of calculating dates directly. See `fetchTrendingResources` for details.
  *
  * If an error is handled, consider this an failed request to Google API, so don't cache an empty array.. this helps to
  * cause the next time this date is requested to try fetching it from Google until it was successful (even if the sucessful query
@@ -90,7 +149,7 @@ const getTrendingResourcesFromGoogle = async (
   cacheKey: string,
 ): Promise<TrendingResource[]> => {
   try {
-    const rows: string[][] = await getGaData(daysAgo);
+    const rows: string[][] = await fetchTrendingResources(daysAgo);
     const resources = mappedTrendingResources(rows, dateKey);
     if (resources.length > 0) {
       await Promise.all(resources.map((r) => TrendingResource.upsert(r)));
@@ -166,4 +225,62 @@ export const getTrendingResources = async (
     async () => getCachedTrendingResources(daysAgo, dateKey),
     mappedTrendingResources(mockedTrendingResources, dateKey),
   );
+};
+
+/**
+ * The primary method for fetching an array of page view objects for a period of time
+ * @param daysAgo the number of days to query back
+ * @param rangeDays the number of days to include
+ * @param maxResults the number of results to include
+ */
+export const getPageViews = async (
+  daysAgo: number,
+  rangeDays: number,
+  maxResults: number,
+): Promise<{
+  fromDate: string;
+  toDate: string;
+  pageViews: { path: string; count: number }[];
+}> => {
+  const cacheKey = `pageViews.${daysAgo}.daysAgo.${rangeDays}.range.${maxResults}.maxResults`;
+
+  const cached = await getCache(cacheKey);
+  if (cached) {
+    return JSON.parse(cached);
+  }
+
+  const sd = new Date();
+  sd.setDate(sd.getDate() - daysAgo);
+  const fromDate = sd.toISOString().slice(0, 10);
+
+  const ed = new Date();
+  ed.setDate(ed.getDate() - (daysAgo - rangeDays));
+  const toDate = ed.toISOString().slice(0, 10);
+
+  const data = await fetchPageViews(daysAgo, rangeDays, maxResults);
+  const pageViews = data.map((v) => ({ path: v[0], count: parseInt(v[1], 10) }));
+  const results = { fromDate, toDate, pageViews };
+  await setCache(cacheKey, JSON.stringify(results));
+  return results;
+};
+
+/**
+ * The primary method for fetching an array of active users for a period of time
+ * @param metrics the google analytics metric to query
+ */
+export const getActiveUsers = async (
+  metrics: 'ga:1dayUsers' | 'ga:7dayUsers' | 'ga:14dayUsers' | 'ga:30dayUsers',
+): Promise<{ date: string; count: number }[]> => {
+  const startDate = new Date().toISOString().slice(0, 10);
+  const cacheKey = `activeUsers.${metrics}.date.${startDate}`;
+
+  const cached = await getCache(cacheKey);
+  if (cached) {
+    return JSON.parse(cached);
+  }
+
+  const data = await fetchActiveUsers(metrics);
+  const users = data.map((v) => ({ date: v[0], count: parseInt(v[1], 10) }));
+  await setCache(cacheKey, JSON.stringify(users));
+  return users;
 };

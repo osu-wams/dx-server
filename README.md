@@ -70,25 +70,53 @@ Capture cookies send from the server and use cookies provided by the server happ
 
 **A valid DX users `osuId` must be provided along with a valid API key (find this in the dx-infrastructure configurations or the ENV in the server service in ECS).**
 
-    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/login?osuId=#########&key=########
+    curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/login?osuId=#########&key=########
 
-## Then, take a look at the deployed configurations (except sensitive values).
+### Fetch the latest application metrics.
+
+This will return a large JSON payload of the application metrics listed below. Using a tool like
+`jq` will format the output of this API and make consuming the data easier.
+
+- Total Users Count
+- Users by Affiliation Count (dynamic, but currently employee vs student)
+- Users by Theme Count (dynamic, but currently light vs dark)
+- Users Count Grouped by LastLogin Date (number of people who’s last date of login was that date)
+- Favorited Resources Count
+- Unfavorited Resources Count (first marked as favorite, then explicitly unmarked as favorite)
+- Trending Resources (past 30 days) Total Clicks
+- Trending Resources (past 30 days) Clicks by Affiliation (employee vs student)
+- Trending Resources (past 30 days) Clicks for each Campus
+- Trending Resources (past 30 days) Clicks per day
+- Trending Resources (past 30 days) Top 10 resources clicked by Affiliation (employee vs student)
+- Page Views (past 30 days) Count of Top 20 urls visited in application
+- Active Users Count of Unique Users with at least 1 session in the past 1 day
+- Active Users Count of Unique Users with at least 1 session in the past 7 days
+- Active Users Count of Unique Users with at least 1 session in the past 14 days
+- Active Users Count of Unique Users with at least 1 session in the past 30 days
+
+Fetch data;
+
+    curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/api/admin/metrics
+    // or
+    // curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/api/admin/metrics | jq
+
+### Take a look at the deployed configurations (except sensitive values).
 
 This will return a JSON payload of the deployed configurations except for sensitive values like API keys, IDs, certs, and the like. If you have the commandline
 tool `jq`, pipe the output from the command to `jq` to get a formatted display.
 
-    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/config
+    curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/api/admin/config
     // or
-    // curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/config | jq
+    // curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/api/admin/config | jq
 
-## Then, reset all API caches?
+### Reset all API caches?
 
 This feature will clear all of the external API caches in the case that some data changes need to flow out to the front-end ASAP.
 
-    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/reset-api-cache
+    curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/api/admin/reset-api-cache
 
-## Then, reset all user sessions?
+### Reset all user sessions?
 
 This feature is intended to be used infrequently and will cause all users to have to "opt-in" to Canvas OAuth. **use sparingly!**
 
-    curl -b cookie.txt -c cookie.txt http://dev.my.oregonstate.edu/api/admin/reset-sessions
+    curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/api/admin/reset-sessions

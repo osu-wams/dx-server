@@ -8,6 +8,8 @@ import configsForApi from '../utils/config';
 import logger from '../logger';
 import User from './models/user';
 import cache from './modules/cache';
+import { getFavoritesMetrics, getTrendingMetrics, getUsersMetrics } from './modules/aws';
+import { getActiveUsers, getPageViews } from './modules/google';
 
 const router: Router = Router();
 const redisClient = redis.createClient({
@@ -54,6 +56,32 @@ router.get('/reset-api-cache', async (req: Request, res: Response) => {
 
 router.get('/config', async (req: Request, res: Response) => {
   res.status(200).send(configsForApi(req.user.isAdmin));
+});
+
+router.get('/metrics', async (req: Request, res: Response) => {
+  const promises = [
+    getUsersMetrics(14),
+    getFavoritesMetrics(),
+    getTrendingMetrics(30),
+    getPageViews(30, 30, 20),
+    getActiveUsers('ga:1dayUsers'),
+    getActiveUsers('ga:7dayUsers'),
+    getActiveUsers('ga:14dayUsers'),
+    getActiveUsers('ga:30dayUsers'),
+  ];
+  const results = await Promise.all(promises);
+  res.status(200).send({
+    usersMetrics: results[0],
+    favoritesMetrics: results[1],
+    trendingMetrics: results[2],
+    pageViews: results[3],
+    activeUsers: {
+      '1day': results[4],
+      '7day': results[5],
+      '14day': results[6],
+      '30day': results[7],
+    },
+  });
 });
 
 export default router;

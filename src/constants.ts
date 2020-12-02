@@ -16,6 +16,7 @@ const CANVAS_OAUTH_SCOPE: string = config.get('canvasOauth.scope');
 const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
 const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
 const COOKIE_NAME: string = 'dx';
+const DYNAMODB: string = config.get('aws.dynamodb');
 const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
 const DX_MCM_BASE_URL: string = config.get('dxMcmApi.baseUrl');
 const DX_MCM_CACHE_SEC = parseInt(config.get('dxMcmApi.cacheEndpointSec'), 10);
@@ -77,6 +78,7 @@ export {
   CANVAS_OAUTH_TOKEN_URL,
   COLLEGES,
   COOKIE_NAME,
+  DYNAMODB,
   DYNAMODB_TABLE_PREFIX,
   DX_MCM_BASE_URL,
   DX_MCM_CACHE_SEC,
