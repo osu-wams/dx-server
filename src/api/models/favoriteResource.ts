@@ -53,11 +53,11 @@ class FavoriteResource {
 
     if (p.dynamoDbFavoriteResource) {
       const { osuId, resourceId, created, active, order } = p.dynamoDbFavoriteResource;
-      this.active = active.BOOL;
-      this.created = created.S;
-      this.order = parseInt(order.N, 10);
+      this.active = active?.BOOL ?? true;
+      this.created = created?.S;
+      this.order = parseInt(order?.N ?? '0', 10);
       this.osuId = parseInt(osuId.N, 10);
-      this.resourceId = resourceId.S;
+      this.resourceId = resourceId?.S;
     }
   }
 
