@@ -64,6 +64,7 @@
     "connect-redis": "^3.4.2",
     "cookie-parser": "^1.4.4",
     "date-fns": "^2.8.0",
+    "date-fns-tz": "^1.0.12",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
     "express-winston": "^3.2.1",

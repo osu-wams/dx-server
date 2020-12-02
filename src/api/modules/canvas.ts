@@ -2,6 +2,7 @@ import request from 'node-fetch';
 import config from 'config';
 import querystring from 'querystring';
 import { format } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import User from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
@@ -81,7 +82,9 @@ const getRequest = async (url: string, token: string | undefined): Promise<any> 
  * @param params a masqueraded user or a users provide oAuth token
  */
 export const getPlannerItems = async (params: ICanvasAPIParams): Promise<Types.PlannerItem[]> => {
-  const today = format(Date.now(), 'yyyy-MM-dd');
+  // set time to PST
+  const pst = utcToZonedTime(Date.now(), 'America/Los_Angeles');
+  const today = format(pst, 'yyyy-MM-dd');
   let url = `${CANVAS_BASE_URL}/planner/items?start_date=${today}`;
   if (params.osuId) {
     url = appendUserIdParam(url, params.osuId);
