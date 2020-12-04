@@ -8,6 +8,8 @@ import {
   mockedTrainingTagsExpected,
   mockedTrainings,
   mockedTrainingsExpected,
+  mockedTrainingAudiences,
+  mockedTrainingAudiencesExpected,
 } from '../../mocks/dx';
 import { BASE_URL } from '../modules/dx';
 
@@ -57,5 +59,24 @@ describe('/api/trainings/tags', () => {
     await request
       .get('/api/trainings/tags')
       .expect(500, { message: 'Training Tags API queries failed.' });
+  });
+});
+
+describe('/api/trainings/audiences', () => {
+  it('returns the training audiences', async () => {
+    mockCachedData.mockReturnValue(null);
+    cache.getAsync = getAsync;
+    cache.setAsync = setAsync;
+    nock(BASE_URL).get(/.*/).reply(200, { data: mockedTrainingAudiences });
+    const result = await request.get('/api/trainings/audiences');
+    expect(result.ok).toBeTruthy();
+    expect(result.body).toStrictEqual(mockedTrainingAudiencesExpected);
+  });
+
+  it('should return when there is a 500 error', async () => {
+    nock(BASE_URL).get(/.*/).reply(500);
+    await request
+      .get('/api/trainings/audiences')
+      .expect(500, { message: 'Training Audiences API queries failed.' });
   });
 });
