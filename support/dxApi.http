@@ -113,6 +113,14 @@ GET {{baseUrl}}/jsonapi/node/trainings HTTP/1.1
 
 ###
 
+# @name getTrainingAudience
+GET {{baseUrl}}/jsonapi/taxonomy_term/training_audience HTTP/1.1
+  ?fields[taxonomy_term--training_audience]=id,name
+  &filter[status]=1
+  &sort=weight
+
+###
+
 # @name getTrainingTags
 GET {{baseUrl}}/jsonapi/taxonomy_term/training_tags HTTP/1.1
   ?fields[taxonomy_term--training_tags]=id,name
