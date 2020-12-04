@@ -23,11 +23,9 @@ import Auth from './auth';
 import { redirectReturnUrl, setSessionReturnUrl, setJWTSessionUser } from './utils/routing';
 import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
-import { findOrUpsertUser, setColleges, updateOAuthData } from './api/modules/user-account';
+import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
 import User from './api/models/user'; // eslint-disable-line no-unused-vars
-import { asyncTimedFunction } from './tracer';
-import { getDegrees } from './api/modules/osu';
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
