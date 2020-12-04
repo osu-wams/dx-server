@@ -225,7 +225,7 @@ class User {
       logger().debug('User.upsert succeeded:', user);
       return user;
     } catch (err) {
-      logger().error(`User.upsert failed:`, props, err);
+      logger().error(`User.upsert failed:`, props, err, User.asDynamoDbItem(props));
       throw err;
     }
   };
@@ -465,9 +465,11 @@ class User {
           firstYear: { BOOL: props.audienceOverride.firstYear },
           international: { BOOL: props.audienceOverride.international },
           graduate: { BOOL: props.audienceOverride.graduate },
-          colleges: { SS: props.audienceOverride.colleges },
         },
       };
+      if (props.audienceOverride.colleges?.length > 0) {
+        Item.audienceOverride.M.colleges = { SS: props.audienceOverride.colleges };
+      }
     }
     if (props.theme) Item.theme = { S: props.theme };
     if (props.devTools) Item.devTools = { BOOL: props.devTools };
