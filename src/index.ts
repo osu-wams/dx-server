@@ -126,6 +126,8 @@ app.post(
     }
   },
 
+  /*
+  Disabled until we can understand if this load is unmanageble for OSU API
   // Fetch a students degree(s) and update the users record if they haven't already been set
   async (_req, res, next) => {
     try {
@@ -147,6 +149,7 @@ app.post(
     }
     next();
   },
+  */
 
   // Set user session and redirect if applicable
   async (req, res) => {
