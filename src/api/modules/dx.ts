@@ -12,6 +12,7 @@ import {
   mockedPageContent,
   mockedReleaseNotes,
   mockedTrainings,
+  mockedTrainingAudiences,
   mockedTrainingTags,
 } from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
@@ -473,6 +474,30 @@ export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
         sort: 'weight',
       }),
     mockedTrainingTags,
+  );
+
+  return data.map((d) => ({
+    id: d.id,
+    name: d.name,
+  }));
+};
+
+/**
+ * Get all training audiences from DX API.
+ */
+export const getTrainingAudiences = async (): Promise<Types.TrainingAudience[]> => {
+  const data = await fetchData(
+    () =>
+      retrieveData('taxonomy_term/training_audience', {
+        fields: {
+          'taxonomy_term--training_audience': 'id,name',
+        },
+        filter: {
+          status: 1,
+        },
+        sort: 'weight',
+      }),
+    mockedTrainingAudiences,
   );
 
   return data.map((d) => ({
