@@ -9,20 +9,22 @@
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "env": { "NODE_ENV": "localhost" },
-      "args": ["${workspaceFolder}/src/index.ts"],
-      "outFiles": ["${workspaceFolder/dist/**/*.js"]
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "env": { "NODE_ENV": "localhost", "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.json" },
+      "args": ["${workspaceFolder}/src/index.ts", "--transpile-only"],
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"]
     },
     {
       "name": "Launch SAML index.ts",
       "type": "node",
       "request": "launch",
       "console": "integratedTerminal",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "env": { "NODE_ENV": "development" },
-      "args": ["${workspaceFolder}/src/index.ts"],
-      "outFiles": ["${workspaceFolder/dist/**/*.js"]
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register"],
+      "env": { "NODE_ENV": "development", "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.json" },
+      "args": ["${workspaceFolder}/src/index.ts", "--transpile-only"],
+      "cwd": "${workspaceFolder}",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"]
     },
     {
       "name": "Node: Nodemon",
