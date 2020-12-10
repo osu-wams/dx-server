@@ -144,6 +144,19 @@
         "name": "Inclusive Excellence & Diversity"
       }
     ],
+    "field_training_course_length": {
+      "type": "taxonomy_term--training_course_length",
+      "id": "md",
+      "links": {
+        "describedby": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+        },
+        "self": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+        }
+      },
+      "name": "Multiple days"
+    },
     "field_training_types": {
       "type": "taxonomy_term--training_types",
       "id": "9d553759-21b4-4ee5-aefc-4d14f77eff34",
@@ -167,7 +180,6 @@
     "field_training_contact": null,
     "field_training_cost": false,
     "field_training_department": "OID",
-    "field_training_duration": "150 min",
     "field_training_featured": false,
     "field_training_frequency": "May be offered upon consultation with OID",
     "field_training_prerequisites": "...",
@@ -231,6 +243,19 @@
         "name": "Leadership"
       }
     ],
+    "field_training_course_length": {
+      "type": "taxonomy_term--training_course_length",
+      "id": "fd",
+      "links": {
+        "describedby": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+        },
+        "self": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+        }
+      },
+      "name": "Full day"
+    },
     "field_training_types": {
       "type": "taxonomy_term--training_types",
       "id": "9d553759-21b4-4ee5-aefc-4d14f77eff34",
@@ -254,7 +279,6 @@
     "field_training_contact": null,
     "field_training_cost": false,
     "field_training_department": "OID",
-    "field_training_duration": "150 min",
     "field_training_featured": true,
     "field_training_frequency": "Often",
     "field_training_prerequisites": "...",
@@ -303,6 +327,19 @@
       },
       "name": "Blended Delivery"
     },
+    "field_training_course_length": {
+      "type": "taxonomy_term--training_course_length",
+      "id": "hd",
+      "links": {
+        "describedby": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+        },
+        "self": {
+          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+        }
+      },
+      "name": "Half a day"
+    },
     "field_training_tags": [
       {
         "type": "taxonomy_term--training_tags",
@@ -341,7 +378,6 @@
     "field_training_contact": null,
     "field_training_cost": false,
     "field_training_department": "OID",
-    "field_training_duration": "150 min",
     "field_training_featured": false,
     "field_training_frequency": "Often",
     "field_training_prerequisites": "...",
