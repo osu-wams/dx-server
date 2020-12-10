@@ -12,9 +12,9 @@
 
     $ brew install truncate
 
-### Find `local.ts` and copy into place
+### Find `local.ts` and copy into `config` directory
 
-_`local.ts` contains overrides for environment variables that contain authentication keys and other secrets. The WAMS group stores a protected copy of this file in Keeper. Place a copy of this file in `config/`._
+_`local.ts` contains overrides for environment variables that contain authentication keys and other secrets. The WAMS group stores a protected copy of this file in Keeper._
 
 ### Copy the default docker-compose.override.yml into place
 
