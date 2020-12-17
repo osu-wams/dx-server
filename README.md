@@ -52,6 +52,30 @@ To run with SAML authentication, in a separate terminal window run:
 
     $ yarn saml
 
+# Localhost Tips
+
+## Sync a User record from the cloud to localhost
+
+To perform a _full masquerade_ of a user, a record in the local DynamoDB Users table must exist. A _full masquerade_ provides the user record to the front-end and enables it to filter resources and a user experience to most closely match what an end user would see.
+
+Syncing a user from the cloud DynamoDB requires a setting in `config/local.ts`;
+
+    // find the AWS configuration and set it like this
+    aws: {
+      dynamodbCloud: {
+        endpoint: 'https://dynamodb.us-west-2.amazonaws.com',
+        apiVersion: '2012-08-10',
+        tablePrefix: 'development',
+      },
+      dynamodb: {
+        endpoint: 'http://localhost:8000',
+      },
+    }
+
+Execute a utility script to fetch the user, providing thier osuID in place of the _##########_ below, and persist them locally;
+
+    $ yarn exec ts-node src/db/scripts/sync_user.ts #########
+
 # Admin Functions
 
 ## [Inspect a JWT token](support/README.md)
