@@ -57,7 +57,7 @@ describe('setSessionReturnUrl', () => {
     mockedQuery.mockReturnValue({});
   });
   it('returns a url', () => {
-    mockedQuery.mockReturnValue({ returnTo: '/bob-ross' });
+    mockedQuery.mockReturnValue({ return: '/bob-ross' });
     setSessionReturnUrl(mockRequest(), {} as Response, () => {});
     expect(mockedSession()).toStrictEqual({ returnUrl: '/bob-ross' });
   });
