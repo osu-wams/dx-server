@@ -66,7 +66,7 @@ export default {
     eventTypes: '{"employee":115615}',
     eventDaysAgo: '30',
     eventDxQuery: 'dxfa',
-    cacheEndpointSec: '86400',
+    cacheEndpointSec: '28800',
     baseUrl: 'https://events.oregonstate.edu/api/2',
     academicCalendarRSS:
       'https://events.oregonstate.edu/widget/view?schools=oregonstate&days=365&num=10&tags=academic+calendar&format=rss',
