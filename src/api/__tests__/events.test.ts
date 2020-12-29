@@ -6,7 +6,7 @@ import employeeEventsData, { expectedEmployeeEvents } from '../../mocks/localist
 import { academicCalendarData } from '../__mocks__/events-academic.data';
 import { eventsData, eventsResult } from '../__mocks__/events.data';
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
-import { LOCALIST_BASE_URL, ACADEMIC_CALENDAR_URL } from '../modules/localist';
+import { LOCALIST_BASE_URL, LOCALIST_ACADEMIC_CALENDAR_URL } from '../../constants';
 
 const request = supertest.agent(app);
 
@@ -37,7 +37,7 @@ describe('/events/academic-calendar', () => {
     mockedGetResponse.mockReturnValue(academicCalendarData.xml);
     cache.get = mockedGet;
     // Mock response from Localist
-    nock(ACADEMIC_CALENDAR_URL).get('').query(true).reply(200, academicCalendarData.xml, {
+    nock(LOCALIST_ACADEMIC_CALENDAR_URL).get('').query(true).reply(200, academicCalendarData.xml, {
       'Content-Type': 'application/xml',
     });
 
@@ -47,7 +47,7 @@ describe('/events/academic-calendar', () => {
   it('should return "Unable to retrieve academic calendar events." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = mockedGet;
-    nock(ACADEMIC_CALENDAR_URL).get('').reply(500);
+    nock(LOCALIST_ACADEMIC_CALENDAR_URL).get('').reply(500);
 
     await request
       .get('/api/events/academic-calendar')

@@ -34,6 +34,13 @@ const GROUPS = {
 };
 const IV_LENGTH: number = 16;
 const JWT_KEY: string = config.get('jwtKey');
+const LOCALIST_BASE_URL: string = config.get('localist.baseUrl');
+const LOCALIST_ACADEMIC_CALENDAR_URL: string = config.get('localist.academicCalendarRSS');
+const LOCALIST_CACHE_SEC = parseInt(config.get('localist.cacheEndpointSec'), 10);
+const LOCALIST_CAMPUS_IDS = JSON.parse(config.get('localist.campusIds'));
+const LOCALIST_EVENT_TYPES = JSON.parse(config.get('localist.eventTypes'));
+const LOCALIST_EVENT_DAYS_AGO = parseInt(config.get('localist.eventDaysAgo'), 10);
+const LOCALIST_EVENT_DX_QUERY: string = config.get('localist.eventDxQuery');
 const OSU_API_BASE_URL: string = config.get('osuApi.baseUrl');
 const OSU_API_CACHE_SEC: number = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
 const OSU_API_CLIENT_ID: string = config.get('osuApi.clientId');
@@ -93,6 +100,13 @@ export {
   GROUPS,
   IV_LENGTH,
   JWT_KEY,
+  LOCALIST_ACADEMIC_CALENDAR_URL,
+  LOCALIST_BASE_URL,
+  LOCALIST_CACHE_SEC,
+  LOCALIST_CAMPUS_IDS,
+  LOCALIST_EVENT_DAYS_AGO,
+  LOCALIST_EVENT_DX_QUERY,
+  LOCALIST_EVENT_TYPES,
   OSU_API_BASE_URL,
   OSU_API_CACHE_SEC,
   OSU_API_CLIENT_ID,
