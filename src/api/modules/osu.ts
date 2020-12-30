@@ -256,7 +256,9 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
         return toDate >= Date.now();
       });
     if (currentHolds.length === 0) return [];
-    return currentHolds.map((h) => ({ description: h.description })) as [{ description: string }];
+    return currentHolds.map((h) => ({ description: h.description, toDate: h.toDate })) as [
+      { description: string; toDate: string },
+    ];
   }
   return [];
 };
