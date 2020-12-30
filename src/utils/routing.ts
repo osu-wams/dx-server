@@ -18,9 +18,10 @@ export const isAppUrl = (url: any = ''): boolean => APP_URL_REGEX.test(url) || u
  * @param res the Express Response
  * @param next the Express middleware next function
  */
-export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunction) => {
-  const { returnTo, redirectUri } = req.query;
 
+export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunction) => {
+  const { redirectUri } = req.query;
+  const returnTo = req.query.return;
   let url = req.session.returnUrl || '/';
   if (isAppUrl(returnTo)) url = returnTo;
   if (isMobileRedirect(redirectUri)) {
