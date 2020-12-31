@@ -10,6 +10,8 @@ import {
   mockedClassification,
   mockedClassSchedule,
   mockedGrades,
+  mockedEmails,
+  mockedPhones,
   mockedHolds,
   mockedAccountTransactions,
   mockedAccountBalance,
@@ -27,7 +29,7 @@ import { cacheFailureOrPing } from './notifications';
 import logger from '../../logger';
 
 const STUDENT_BASE_URL: string = `${OSU_API_BASE_URL}/v1/students`;
-const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v1/persons`;
+const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v2/persons`;
 const DIRECTORY_BASE_URL: string = `${OSU_API_BASE_URL}/v2/directory`;
 const LOCATION_BASE_URL: string = `${OSU_API_BASE_URL}/v1/locations`;
 
@@ -93,6 +95,22 @@ export const getProfile = async (user: any): Promise<Types.PersonsResponse> => {
         `ALERTS-${PERSON_BASE_URL}/`,
       ),
     mockedPersons,
+  );
+  return response;
+};
+
+export const getEmails = async (user: any): Promise<Types.EmailsResponse> => {
+  const response: Types.EmailsResponse = await fetchData(
+    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/emails`),
+    mockedEmails,
+  );
+  return response;
+};
+
+export const getPhones = async (user: any): Promise<Types.PhonesResponse> => {
+  const response: Types.PhonesResponse = await fetchData(
+    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/phones`),
+    mockedPhones,
   );
   return response;
 };

@@ -1,0 +1,24 @@
+{
+    "links": {
+      "self": "string"
+    },
+    "data": [
+      {
+        "id": "918179",
+        "type": "emails",
+        "links": {
+          "self": "string"
+        },
+        "attributes": {
+          "emailType": {
+            "code": "ONID",
+            "description": "string"
+          },
+          "emailAddress": "john.smith@example.com",
+          "comment": "string",
+          "preferredInd": true,
+          "lastActivityDate": "1970-01-01"
+        }
+      }
+    ]
+  }
