@@ -1,27 +1,65 @@
-import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
-import config from 'config';
+import DynamoDB from 'aws-sdk/clients/dynamodb'; // eslint-disable-line no-unused-vars
+import { Table, Entity } from 'dynamodb-toolbox';
+import { DYNAMODB_TABLE_PREFIX } from '../../constants';
 import logger from '../../logger';
-import { asyncTimedFunction } from '../../tracer';
-import { putItem, query, scan } from '../../db';
+import { DocumentClient } from '../../db';
 import { getCache, setCache } from '../modules/cache';
 
-const tablePrefix = config.get('aws.dynamodb.tablePrefix');
-const cacheKey = (osuId: number) => `favorites:${osuId}`;
+const TABLE_NAME: string = `${DYNAMODB_TABLE_PREFIX}-FavoriteResources`;
 
-/* eslint-disable no-use-before-define */
-interface FavoriteResourceParams {
-  favoriteResource?: FavoriteResource;
-  dynamoDbFavoriteResource?: DynamoDB.AttributeMap;
+interface FavoriteResourceProps {
+  active: boolean;
+  created: string;
+  order: number;
+  osuId: number;
+  resourceId: string;
 }
-/* eslint-enable no-use-before-define */
 
-export interface DynamoDBFavoriteResourceItem extends DynamoDB.PutItemInputAttributeMap {
-  active: { BOOL: boolean };
-  created: { S: string };
-  order: { N: string };
-  osuId: { N: string };
-  resourceId: { S: string };
+interface FavoriteResources {
+  // eslint-disable-next-line no-use-before-define
+  Items: FavoriteResource[];
+  next?: Function;
 }
+
+const table = new Table({
+  name: TABLE_NAME,
+  partitionKey: 'osuId',
+  sortKey: 'resourceId',
+  DocumentClient,
+});
+
+const FavoriteResourceEntity = new Entity({
+  name: 'FavoriteResource',
+  attributes: {
+    osuId: { partitionKey: true, type: 'number' },
+    resourceId: { sortKey: true, type: 'string' },
+    order: { type: 'number', coerce: true },
+    active: { type: 'boolean', coerce: true },
+    // created: { type: 'string' } // Already set as an alias for _ct
+  },
+  table,
+  autoExecute: true,
+  autoParse: true,
+});
+
+export const TableDefinition: DynamoDB.CreateTableInput = {
+  AttributeDefinitions: [
+    { AttributeName: 'osuId', AttributeType: 'N' },
+    { AttributeName: 'resourceId', AttributeType: 'S' },
+  ],
+  KeySchema: [
+    { AttributeName: 'osuId', KeyType: 'HASH' },
+    { AttributeName: 'resourceId', KeyType: 'RANGE' },
+  ],
+  ProvisionedThroughput: {
+    ReadCapacityUnits: 5,
+    WriteCapacityUnits: 5,
+  },
+  TableName: TABLE_NAME,
+  StreamSpecification: {
+    StreamEnabled: false,
+  },
+};
 
 class FavoriteResource {
   active: boolean = true;
@@ -34,50 +72,12 @@ class FavoriteResource {
 
   resourceId: string;
 
-  static TABLE_NAME: string = `${tablePrefix}-FavoriteResources`;
+  static TABLE_NAME: string = TABLE_NAME;
 
-  /**
-   * Initializes a new instance of the FavoriteResource with the supplied data.
-   * @param p [FavoriteResourceParams] - optional params to intitialize the favorite resource with depending
-   *        on the source of data which is passed
-   */
-  constructor(p: FavoriteResourceParams) {
-    if (p.favoriteResource) {
-      const { osuId, resourceId, created, active, order } = p.favoriteResource;
-      this.active = active;
-      this.created = created;
-      this.order = order;
-      this.osuId = osuId;
-      this.resourceId = resourceId;
-    }
-
-    if (p.dynamoDbFavoriteResource) {
-      const { osuId, resourceId, created, active, order } = p.dynamoDbFavoriteResource;
-      this.active = active?.BOOL ?? true;
-      this.created = created?.S;
-      this.order = parseInt(order?.N ?? '0', 10);
-      this.osuId = parseInt(osuId.N, 10);
-      this.resourceId = resourceId?.S;
-    }
-  }
-
-  static upsert = async (props: FavoriteResource): Promise<FavoriteResource> => {
-    // ! DynamoDb only supports 'ALL_OLD' or 'NONE' for return values from the
-    // ! putItem call, which means the only way to get values from ddb would be to
-    // ! getItem with the key after having put the item successfully. The DX use
-    // ! doesn't really seem like it needs to fetch the user after having created it
-    // ! the first time.
+  static upsert = async (props: FavoriteResourceProps): Promise<FavoriteResource> => {
     try {
-      const params: DynamoDB.PutItemInput = {
-        TableName: FavoriteResource.TABLE_NAME,
-        Item: FavoriteResource.asDynamoDbItem(props),
-        ReturnValues: 'NONE',
-      };
-
-      const result = await asyncTimedFunction(putItem, 'FavoriteResource:putItem', [params]);
-      logger().silly('FavoriteResource.upsert succeeded:', result);
-      const all = await FavoriteResource.findAll(props.osuId, false);
-      await setCache(cacheKey(props.osuId), JSON.stringify(all));
+      await FavoriteResourceEntity.put(props);
+      logger().silly('FavoriteResource.upsert succeeded:', props);
       return props;
     } catch (err) {
       logger().error(`FavoriteResource.upsert failed:`, props, err);
@@ -85,31 +85,10 @@ class FavoriteResource {
     }
   };
 
-  static findAll = async (
-    osuId: number,
-    checkCache: boolean = true,
-  ): Promise<FavoriteResource[] | null> => {
+  static findAll = async (osuId: number): Promise<FavoriteResource[] | null> => {
     try {
-      if (checkCache) {
-        // get from cache, if it exists return otherwise query dynamo
-        const cached = await getCache(cacheKey(osuId));
-        if (cached) return JSON.parse(cached);
-      }
-
-      const params: DynamoDB.QueryInput = {
-        TableName: FavoriteResource.TABLE_NAME,
-        KeyConditionExpression: 'osuId = :value',
-        ExpressionAttributeValues: {
-          ':value': { N: `${osuId}` },
-        },
-        Select: 'ALL_ATTRIBUTES',
-      };
-      const results: DynamoDB.QueryOutput = await asyncTimedFunction(
-        query,
-        'FavoriteResource:query',
-        [params],
-      );
-      return results.Items?.map((i) => new FavoriteResource({ dynamoDbFavoriteResource: i }));
+      const results: FavoriteResources = await FavoriteResourceEntity.query(osuId);
+      return results.Items;
     } catch (err) {
       logger().error(`FavoriteResource.findAll(${osuId}) failed:`, err);
       throw err;
@@ -122,46 +101,29 @@ class FavoriteResource {
       return JSON.parse(cached);
     }
 
-    const found = [];
-    let lastKey;
-    do {
-      // eslint-disable-next-line
-      const results = await scan({
-        TableName: FavoriteResource.TABLE_NAME,
-        ExclusiveStartKey: lastKey,
-      });
+    const found: FavoriteResource[] = [];
+    let results: FavoriteResources = await FavoriteResourceEntity.scan();
+    found.push(...results.Items);
+    logger().info(
+      `${FavoriteResource.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,
+    );
+
+    while (results.next) {
+      // eslint-disable-next-line no-await-in-loop
+      results = await results.next();
       found.push(...results.Items);
       logger().info(
         `${FavoriteResource.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,
       );
-      lastKey = results.LastEvaluatedKey;
-    } while (lastKey);
+    }
 
-    const resources = found.map((i) => new FavoriteResource({ dynamoDbFavoriteResource: i }));
-    setCache(FavoriteResource.TABLE_NAME, JSON.stringify(resources), {
+    await setCache(FavoriteResource.TABLE_NAME, JSON.stringify(found), {
       mode: 'EX',
       duration: 24 * 60 * 60,
       flag: 'NX',
     });
-    return resources;
-  };
 
-  /**
-   * Translate the FavoriteResource properties into the properly shaped data as an Item for
-   * Dynamodb.
-   * @param props - the properties to translate to a dynamodb item
-   * @returns DynamoDbFavoriteResourceItem - the Item for use in Dynamodb
-   */
-  static asDynamoDbItem = (props: FavoriteResource): DynamoDBFavoriteResourceItem => {
-    const { osuId, resourceId, created, active, order } = props;
-    const Item: DynamoDBFavoriteResourceItem = {
-      active: { BOOL: active },
-      created: { S: created },
-      order: { N: `${order}` },
-      osuId: { N: `${osuId}` },
-      resourceId: { S: resourceId },
-    };
-    return Item;
+    return found;
   };
 }
 

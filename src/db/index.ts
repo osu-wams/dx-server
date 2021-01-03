@@ -1,13 +1,16 @@
 import config from 'config';
 import AWS from 'aws-sdk';
+import { ENV } from '../constants';
 
 export const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
+export const REGION: string = config.get('aws.region');
+export const DYNAMODB_APIVERSION: string = config.get('aws.dynamodb.apiVersion');
 
 AWS.config.update({
-  region: config.get('aws.region'),
+  region: REGION,
   dynamodb: {
     endpoint: DYNAMODB_ENDPOINT,
-    apiVersion: config.get('aws.dynamodb.apiVersion'),
+    apiVersion: DYNAMODB_APIVERSION,
   },
 });
 
@@ -33,3 +36,9 @@ export const getItem = async (params: AWS.DynamoDB.GetItemInput) => {
 export const putItem = async (params: AWS.DynamoDB.PutItemInput) => {
   return dynamoDb.putItem(params).promise();
 };
+
+export const DocumentClient = new AWS.DynamoDB.DocumentClient({
+  endpoint: DYNAMODB_ENDPOINT,
+  region: ENV === 'test' ? 'localhost' : REGION,
+  apiVersion: DYNAMODB_APIVERSION,
+});
