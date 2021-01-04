@@ -11,7 +11,7 @@ import {
   GOOGLE_SERVICE_ACCOUNT_EMAIL,
 } from '../../constants';
 import { fetchData } from '../util';
-import TrendingResource from '../models/trendingResource';
+import TrendingResource, { GoogleTrendingResource } from '../models/trendingResource';
 import { mockedTrendingResources } from '../../mocks/google/trendingResources';
 
 const jwt = new google.auth.JWT(
@@ -79,19 +79,14 @@ export const fetchPageViews = async (
     [],
   );
 
-export const mappedTrendingResources = (rows: string[][], date: string): TrendingResource[] =>
-  rows?.map(
-    (r: string[]) =>
-      new TrendingResource({
-        trendingResource: {
-          resourceId: r[0],
-          concatenatedTitle: r[1],
-          totalEvents: r[2],
-          uniqueEvents: r[3],
-          date,
-        },
-      }),
-  );
+export const mappedTrendingResources = (rows: string[][], date: string): GoogleTrendingResource[] =>
+  rows?.map((r: string[]) => ({
+    resourceId: r[0],
+    concatenatedTitle: r[1],
+    totalEvents: r[2],
+    uniqueEvents: r[3],
+    date,
+  }));
 
 /**
  * Query Google API for a single day of trending resource events. `daysAgo` is best here because
@@ -150,10 +145,8 @@ const getTrendingResourcesFromGoogle = async (
 ): Promise<TrendingResource[]> => {
   try {
     const rows: string[][] = await fetchTrendingResources(daysAgo);
-    const resources = mappedTrendingResources(rows, dateKey);
-    if (resources.length > 0) {
-      await Promise.all(resources.map((r) => TrendingResource.upsert(r)));
-    }
+    const promises = mappedTrendingResources(rows, dateKey).map((r) => TrendingResource.upsert(r));
+    const resources = await Promise.all(promises);
     await cacheResources(cacheKey, resources || []);
     return resources;
   } catch (err) {

@@ -204,8 +204,8 @@ app.get(
     const user = await getOAuthToken(req.user, code);
     req.user.canvasOauthToken = user.canvasOauthToken;
     req.user.canvasOauthExpire = user.canvasOauthExpire;
-    req.user.isCanvasOptIn = user.isCanvasOptIn;
-    req.user.refreshToken = user.refreshToken;
+    req.user.isCanvasOptIn = user.canvasOptIn;
+    req.user.refreshToken = user.canvasRefreshToken;
     logger().debug(`/canvas/auth redirecting to: ${req.session.returnUrl}`);
     redirectReturnUrl(req, res, req.user);
   },
@@ -214,8 +214,8 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
   const user = await refreshOAuthToken(req.user);
   req.user.canvasOauthToken = user.canvasOauthToken;
   req.user.canvasOauthExpire = user.canvasOauthExpire;
-  req.user.isCanvasOptIn = user.isCanvasOptIn;
-  req.user.refreshToken = user.refreshToken;
+  req.user.isCanvasOptIn = user.canvasOptIn;
+  req.user.refreshToken = user.canvasRefreshToken;
   logger().debug(`/canvas/refresh redirecting to: ${req.session.returnUrl}`);
   redirectReturnUrl(req, res, req.user);
 });
