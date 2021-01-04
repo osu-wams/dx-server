@@ -1,81 +1,53 @@
-import AWS, { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
-import TrendingResource from '../trendingResource';
-import * as dynamoDb from '../../../db';
-import {
-  mockTrendingResource,
-  mockGATrendingResource,
-  mockDynamoDbTrendingResource,
-} from '../__mocks__/trendingResource';
-
-jest.mock('../../../db');
-const mockDynamoDb = dynamoDb as jest.Mocked<any>;
-
-let dynamoDbTrendingResource: AWS.DynamoDB.GetItemOutput;
+import { fromGoogle, fromApi, fromDynamoDb } from '@src/mocks/google/trendingResources';
+import { dynamoDbHandler } from '@src/mocks/handlers';
+import { server } from '@src/mocks/server';
+import TrendingResource, { GoogleTrendingResource } from '../trendingResource';
 
 describe('TrendingResource model', () => {
-  beforeEach(() => {
-    dynamoDbTrendingResource = { ...mockDynamoDbTrendingResource };
-  });
-
-  it('has the DynamoDB table name defined', () => {
+  it('has the DynamoDB table name defined', async () => {
     expect(TrendingResource.TABLE_NAME).toBe(`${TrendingResource.TABLE_NAME}`);
   });
 
-  describe('constructs a new instance', () => {
-    it('builds a TrendingResource from data', () => {
-      const r = new TrendingResource({ trendingResource: mockGATrendingResource });
-      expect(r.affiliation).toEqual(mockTrendingResource.affiliation);
-      expect(r.campus).toEqual(mockTrendingResource.campus);
-      expect(r.date).toEqual(mockTrendingResource.date);
-      expect(r.period).toBeUndefined();
-      expect(r.resourceId).toEqual(mockTrendingResource.resourceId);
-      expect(r.title).toEqual(mockTrendingResource.title);
-      expect(r.totalEvents).toEqual(mockTrendingResource.totalEvents);
-      expect(r.uniqueEvents).toEqual(mockTrendingResource.uniqueEvents);
-    });
-
-    describe('with DynamoDb data', () => {
-      it('builds a fully fleshed out TrendingResource from DynamoDb data', () => {
-        const item = dynamoDbTrendingResource.Item;
-        const r = new TrendingResource({ dynamoDbTrendingResource: item });
-        expect(r.affiliation).toEqual(item.affiliation.S);
-        expect(r.campus).toEqual(item.campus.S);
-        expect(r.date).toEqual(item.date.S);
-        expect(r.period).toBeUndefined();
-        expect(r.resourceId).toEqual(item.resourceId.S);
-        expect(r.title).toEqual(item.title.S);
-        expect(r.totalEvents).toEqual(parseInt(item.totalEvents.N, 10));
-        expect(r.uniqueEvents).toEqual(parseInt(item.uniqueEvents.N, 10));
-      });
-    });
-  });
-
   describe('with DynamoDb API calls', () => {
-    let r: TrendingResource;
+    const g: GoogleTrendingResource = fromGoogle('2020-01-01')[0];
+    const a: TrendingResource = fromApi(g.date, '7day').reverse()[0];
 
-    beforeEach(() => {
-      r = new TrendingResource({ trendingResource: mockGATrendingResource });
-      mockDynamoDb.scan.mockImplementationOnce(() => ({
-        ScannedCount: 1,
-        Count: 1,
-        Items: [dynamoDbTrendingResource.Item],
-      }));
-    });
-    describe('scanAll', () => {
+    describe('find', () => {
       it('returns 1 item', async () => {
-        const results = await TrendingResource.scanAll();
-        expect(results.length).toStrictEqual(1);
-        expect(results[0]).toStrictEqual(r);
+        const result = await TrendingResource.find(a.resourceId, a.date);
+        expect(a).toMatchObject(result);
       });
-      it('returns an empty array on error', async () => {
-        mockDynamoDb.scan.mockImplementationOnce(() =>
-          Promise.reject(new Error('happy little accident')),
-        );
-        try {
-          await TrendingResource.scanAll();
-        } catch (err) {
-          expect(err.message).toBe('happy little accident');
-        }
+    });
+
+    describe('upsert', () => {
+      it('returns 1 item', async () => {
+        const result = await TrendingResource.upsert(g);
+        expect(a).toMatchObject(result);
+      });
+    });
+
+    describe('with two items', () => {
+      beforeEach(() => {
+        const itemMap = {};
+        itemMap[TrendingResource.TABLE_NAME] = {
+          Query: {
+            Count: 2,
+            ScannedCount: 2,
+            Items: fromDynamoDb('2020-01-01'),
+          },
+        };
+        dynamoDbHandler(server, itemMap);
+      });
+      it('findAll returns 2 items', async () => {
+        const results = await TrendingResource.findAll('2020-01-01');
+        expect(results.length).toStrictEqual(2);
+        expect(fromApi('2020-01-01').reverse()).toMatchObject(results);
+      });
+
+      it('scanAll returns 2 items', async () => {
+        const results = await TrendingResource.scanAll();
+        expect(results.length).toStrictEqual(2);
+        expect(fromApi('2020-01-01').reverse()).toMatchObject(results);
       });
     });
   });

@@ -36,15 +36,15 @@ describe('User Account module', () => {
   });
   describe('updateOAuthData', () => {
     it('returns an updated user', async () => {
-      const updatedUser = { ...mockUser, refreshToken: 'token', isCanvasOptIn: true };
+      const updatedUser = { ...mockUser, canvasRefreshToken: 'token', canvasOptIn: true };
       mockUserModel.updateCanvasData.mockImplementationOnce(() => Promise.resolve(updatedUser));
       expect.assertions(2);
       const user = await updateOAuthData(mockUser, {
         account: { refreshToken: 'token' },
         isCanvasOptIn: true,
       });
-      expect(user.refreshToken).toEqual('token');
-      expect(user.isCanvasOptIn).toBeTruthy();
+      expect(user.canvasRefreshToken).toEqual('token');
+      expect(user.canvasOptIn).toBeTruthy();
     });
     it('throws an error on failure', async () => {
       mockUserModel.updateCanvasData.mockImplementationOnce(() =>

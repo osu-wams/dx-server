@@ -6,10 +6,6 @@ import app from '../../index';
 import { UserSettings } from '../models/user'; // eslint-disable-line no-unused-vars
 import { GROUPS, OSU_API_BASE_URL } from '../../constants'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
-import * as dynamoDb from '../../db';
-
-jest.mock('../../db');
-const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
@@ -109,16 +105,6 @@ describe('/api/user', () => {
           theme: 'light',
           devTools: false,
         });
-    });
-
-    it('returns an error for failed audienceOverride settings', async () => {
-      mockDynamoDb.updateItem.mockImplementationOnce(() =>
-        Promise.reject(new Error('happy little accident')),
-      );
-      await request
-        .post('/api/user/settings')
-        .send(settings)
-        .expect(500, { message: 'Failed to update users settings.' });
     });
   });
 
