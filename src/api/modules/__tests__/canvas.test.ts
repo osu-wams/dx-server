@@ -22,7 +22,6 @@ const user = {
   primaryAffiliation: 'employee',
   affiliations: ['employee'],
   groups: [],
-  isStudent: () => false,
 };
 const assignment = { assignment: 'test' };
 

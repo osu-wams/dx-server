@@ -11,7 +11,6 @@ const testUser: User = {
   email: 'bob@bobross.com',
   phone: '5551212',
   isAdmin: false,
-  isStudent: () => false,
   primaryAffiliation: 'employee',
   groups: [],
   affiliations: ['employee'],

@@ -39,7 +39,7 @@ export interface IUser {
   affiliations: string[];
 
   /** Groupers group names from the SAML profile */
-  groups: string[];
+  groups?: string[];
 
   /** From SAML profile */
   phone?: string;
@@ -217,11 +217,12 @@ class User {
   /**
    * Detect if the user is a student, currently by checking only the primaryAffiliation
    */
-  isStudent(): boolean {
+  static isStudent = (props: Partial<User>): boolean => {
     return (
-      this.primaryAffiliation?.toLowerCase() === 'student' || this.affiliations.includes('student')
+      props.primaryAffiliation?.toLowerCase() === 'student' ||
+      props.affiliations.includes('student')
     );
-  }
+  };
 
   /**
    * Insert (or update to match) a User based on the data supplied.
@@ -246,13 +247,13 @@ class User {
    * @param id [Number] - the users id
    * @returns Promise<User | null> - a promise with the User or a null if none found
    */
-  static find = async (id: number): Promise<User | null> => {
+  static find = async (id: number): Promise<User | undefined> => {
     try {
       const result: Users = await UserEntity.query(id);
       return result.Items[0];
     } catch (err) {
       logger().error(`User.find(${id}) failed:`, err);
-      return null;
+      return undefined;
     }
   };
 
