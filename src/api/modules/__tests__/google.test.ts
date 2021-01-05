@@ -3,7 +3,6 @@ import { getTrendingResources, mappedTrendingResources } from '@src/api/modules/
 import {
   trendingResourcesResponse,
   mockedTrendingResources,
-  fromDynamoDb,
 } from '@src/mocks/google/trendingResources';
 import TrendingResource from '@src/api/models/trendingResource';
 import { server } from '@src/mocks/server';
