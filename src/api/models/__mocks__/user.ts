@@ -1,7 +1,8 @@
 import { lastLogin } from '../../../utils/auth';
+import { IUser } from '../user';
 
 /* eslint-disable no-unused-vars */
-export const mockUser: any = {
+export const mockUser: IUser = {
   osuId: 123456,
   firstName: 'Bob',
   lastName: 'Ross',
