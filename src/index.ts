@@ -130,7 +130,7 @@ app.post(
   async (_req, res, next) => {
     try {
       const { user } = res.locals as { user: User };
-      if (user?.isStudent() && !(user.colleges ?? []).length) {
+      if (User.isStudent(user) && !(user.colleges ?? []).length) {
         const response = await asyncTimedFunction<{ data: Types.DegreeResponse[] }>(
           getDegrees,
           'getDegrees',
@@ -156,9 +156,9 @@ app.post(
       const { isNew, user } = res.locals as { isNew: boolean; user: User };
       req.session.passport.user = user;
 
-      if (isNew && user?.isStudent()) {
+      if (isNew && User.isStudent(user)) {
         res.redirect('/canvas/login');
-      } else if (user?.isCanvasOptIn) {
+      } else if (user?.canvasOptIn) {
         res.redirect('/canvas/refresh');
       } else {
         logger().debug(`/login/saml redirecting to: ${returnUrl}`);
@@ -190,7 +190,7 @@ app.get(
   async (req: any, res: Response, next: NextFunction) => {
     if (req.query.error) {
       await updateOAuthData(req.user, { account: { refreshToken: null }, isCanvasOptIn: false });
-      req.user.isCanvasOptIn = false;
+      req.user.canvasOptIn = false;
       logger().debug(`/canvas/auth error in OAuth redirecting to: ${req.session.returnUrl}`);
       redirectReturnUrl(req, res, req.user);
     } else {
@@ -204,7 +204,7 @@ app.get(
     const user = await getOAuthToken(req.user, code);
     req.user.canvasOauthToken = user.canvasOauthToken;
     req.user.canvasOauthExpire = user.canvasOauthExpire;
-    req.user.isCanvasOptIn = user.canvasOptIn;
+    req.user.canvasOptIn = user.canvasOptIn;
     req.user.refreshToken = user.canvasRefreshToken;
     logger().debug(`/canvas/auth redirecting to: ${req.session.returnUrl}`);
     redirectReturnUrl(req, res, req.user);
@@ -214,7 +214,7 @@ app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: R
   const user = await refreshOAuthToken(req.user);
   req.user.canvasOauthToken = user.canvasOauthToken;
   req.user.canvasOauthExpire = user.canvasOauthExpire;
-  req.user.isCanvasOptIn = user.canvasOptIn;
+  req.user.canvasOptIn = user.canvasOptIn;
   req.user.refreshToken = user.canvasRefreshToken;
   logger().debug(`/canvas/refresh redirecting to: ${req.session.returnUrl}`);
   redirectReturnUrl(req, res, req.user);
