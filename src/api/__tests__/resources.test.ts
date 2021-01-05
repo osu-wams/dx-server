@@ -8,16 +8,15 @@ import {
   mockedResourcesExpected,
   mockedCategories,
   mockedCategoriesExpected,
-} from '../../mocks/dx';
-import { fromApi } from '../../mocks/google/trendingResources';
-import app from '../../index';
-import { BASE_URL } from '../modules/dx';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
-import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
-import * as dynamoDb from '../../db';
-
-jest.mock('../../db');
-const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
+} from '@src/mocks/dx';
+import { fromApi } from '@src/mocks/google/trendingResources';
+import app from '@src/index';
+import { BASE_URL } from '@src/api/modules/dx';
+import cache from '@src/api/modules/cache'; // eslint-disable-line no-unused-vars
+import { setAsync, getAsync, mockCachedData } from '@src/api/modules/__mocks__/cache';
+import FavoriteResource from '@src/api/models/favoriteResource';
+import { server } from '@src/mocks/server';
+import { dynamoDbHandler } from '@src/mocks/handlers';
 
 const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
@@ -240,24 +239,16 @@ describe('/resources', () => {
 
         it('should return an array of favorite resources from dynamodb', async () => {
           mockedGetCache.mockReturnValue(null);
-          mockDynamoDb.query.mockImplementationOnce(() =>
-            Promise.resolve({ Items: [favoriteResourceItem] }),
-          );
+          const itemMap = {};
+          itemMap[FavoriteResource.TABLE_NAME] = {
+            Query: {
+              Count: 1,
+              ScannedCount: 1,
+              Items: [favoriteResourceItem],
+            },
+          };
+          dynamoDbHandler(server, itemMap);
           await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
-        });
-
-        it('should return an array of favorite resources from cache', async () => {
-          mockedGetCache.mockReturnValue(JSON.stringify([favoriteResource]));
-          await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
-          expect(mockDynamoDb.query).not.toBeCalled();
-        });
-
-        it('should return a 500 if an error occurs', async () => {
-          mockDynamoDb.query.mockImplementationOnce(() =>
-            Promise.reject(new Error('happy little accident')),
-          );
-
-          await request.get('/api/resources/favorites').expect(500, { message: {} });
         });
       });
     });
@@ -290,12 +281,6 @@ describe('/resources', () => {
 
         it('should save a favorite resource', async () => {
           mockedSetCache.mockReturnValue(true);
-          mockDynamoDb.query.mockImplementationOnce(() =>
-            Promise.resolve({ Items: [favoriteResourceItem] }),
-          );
-          mockDynamoDb.putItem.mockImplementationOnce(() =>
-            Promise.resolve({ Item: favoriteResourceItem }),
-          );
           const response = await request
             .post('/api/resources/favorites')
             .send({
@@ -312,18 +297,7 @@ describe('/resources', () => {
         });
 
         it('should return a 500 if an error occurs', async () => {
-          mockDynamoDb.putItem.mockImplementationOnce(() =>
-            Promise.reject(new Error('happy little accident')),
-          );
-
-          await request
-            .post('/api/resources/favorites')
-            .send({
-              active: true,
-              order: 1,
-              resourceId: 'asdf',
-            })
-            .expect(500, { message: {} });
+          await request.post('/api/resources/favorites').send({}).expect(500, { message: {} });
         });
       });
     });
