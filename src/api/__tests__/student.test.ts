@@ -1,4 +1,3 @@
-import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
@@ -17,8 +16,6 @@ import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
 import { GROUPS, OSU_API_BASE_URL } from '../../constants';
-import User from '../models/user';
-import { mockDynamoDbUser } from '../models/__mocks__/user';
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
