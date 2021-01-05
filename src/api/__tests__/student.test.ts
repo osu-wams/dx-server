@@ -479,7 +479,9 @@ describe('/api/student', () => {
         .get(/v1\/students\/[0-9]+\/holds/)
         .reply(200, holdsData);
 
-      await request.get('/api/student/holds').expect(200, [{ description: 'Permanent Hold' }]);
+      await request
+        .get('/api/student/holds')
+        .expect(200, [{ description: 'Permanent Hold', toDate: '2199-01-01' }]);
     });
 
     it('should return an error if the user is not logged in', async () => {
