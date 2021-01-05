@@ -7,8 +7,11 @@ import User from '@src/api/models/user';
 import { fromDynamoDb } from '@src/mocks/google/trendingResources';
 import { mockDynamoDbUser } from '@src/api/models/__mocks__/user';
 import { mockDynamoDbFavoriteResource } from '@src/api/models/__mocks__/favoriteResource';
+import redis from 'redis';
 
 jest.mock('redis', () => jest.requireActual('redis-mock'));
+
+const redisClient = redis.createClient();
 
 // Establish API mocking before all tests.
 beforeAll(() => server.listen());
@@ -42,7 +45,10 @@ beforeEach(() => {
 
 // Reset any request handlers that we may add during the tests,
 // so they don't affect other tests.
-afterEach(() => server.resetHandlers());
+afterEach(() => {
+  server.resetHandlers();
+  redisClient.flushall();
+});
 
 // Clean up after the tests are finished.
 afterAll(() => server.close());
