@@ -413,17 +413,16 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
       retrieveData('node/trainings', {
         fields: {
           'node--trainings':
-            'id,title,field_training_audience,field_training_contact,field_training_cost,body,field_training_department,field_training_course_length,field_training_featured,field_training_frequency,field_training_prerequisites,field_training_course_design,field_training_image,field_training_tags,field_training_types,field_training_website',
+            'id,title,field_training_audience,field_training_contact,field_training_cost,body,field_training_department,field_training_course_length,field_training_featured,field_training_prerequisites,field_training_course_design,field_training_image,field_training_tags,field_training_website',
           'taxonomy_term--training_audience': 'name',
           'taxonomy_term--training_course_design': 'name',
           'taxonomy_term--training_tags': 'name',
-          'taxonomy_term--training_types': 'name',
           'taxonomy_term--training_course_length': 'name',
           'media--image': 'name,field_media_image',
           'file--file': 'filename,filemime,uri',
         },
         include:
-          'field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_course_length,field_training_tags,field_training_types',
+          'field_training_image,field_training_image.field_media_image,field_training_audience,field_training_course_design,field_training_course_length,field_training_tags',
         filter: {
           status: 1,
         },
@@ -445,14 +444,12 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
     contact: d.field_training_contact,
     cost: d.field_training_cost,
     body: d.body?.processed,
-    department: d.field_training_department,
+    offeredBy: d.field_training_department,
     courseLength: d.field_training_course_length?.name,
     featured: d.field_training_featured,
-    frequency: d.field_training_frequency,
     prerequisites: d.field_training_prerequisites,
-    courseDesign: d.field_training_course_design?.name,
+    deliveryMethod: d.field_training_course_design?.map((dm) => dm.name),
     tags: d.field_training_tags.map((t) => t.name),
-    type: d.field_training_types?.name,
     websiteUri: d.field_training_website?.uri,
     websiteTitle: d.field_training_website?.title,
   }));
