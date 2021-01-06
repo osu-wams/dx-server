@@ -90,19 +90,34 @@
         "name": "Managers & Supervisors"
       }
     ],
-    "field_training_course_design": {
-      "type": "taxonomy_term--training_course_design",
-      "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
-      "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+    "field_training_course_design": [
+      {
+        "type": "taxonomy_term--training_course_design",
+        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d1",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d1"
+          }
         },
-        "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
-        }
+        "name": "Blended Delivery"
       },
-      "name": "Blended Delivery"
-    },
+      {
+        "type": "taxonomy_term--training_course_design",
+        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d2",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d2"
+          }
+        },
+        "name": "Online"
+      }
+    ],
     "field_training_tags": [
       {
         "type": "taxonomy_term--training_tags",
@@ -157,19 +172,6 @@
       },
       "name": "Multiple days"
     },
-    "field_training_types": {
-      "type": "taxonomy_term--training_types",
-      "id": "9d553759-21b4-4ee5-aefc-4d14f77eff34",
-      "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/resource/schema"
-        },
-        "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/9d553759-21b4-4ee5-aefc-4d14f77eff34"
-        }
-      },
-      "name": "Workshop"
-    },
     "title": "Collaborating Across Difference: Creating a Culture of Indispensability",
     "body": {
       "value": "This interactive, multimodal workshop utilizes individual reflection and group activities to explore the nature and organizational implications of individual worldviews. In addition to exploring the theory of worldview psychology and commonly associated negotiations in diverse teams, participants will practice interpersonal communication skills which attend to and mitigate intercultural complexities.",
@@ -181,7 +183,6 @@
     "field_training_cost": false,
     "field_training_department": "OID",
     "field_training_featured": false,
-    "field_training_frequency": "May be offered upon consultation with OID",
     "field_training_prerequisites": "...",
     "field_training_website": {
       "uri": "https://diversity.oregonstate.edu/diversity-education",
@@ -215,19 +216,21 @@
         "name": "Managers & Supervisors"
       }
     ],
-    "field_training_course_design": {
-      "type": "taxonomy_term--training_course_design",
-      "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
-      "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+    "field_training_course_design": [
+      {
+        "type": "taxonomy_term--training_course_design",
+        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
+          }
         },
-        "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
-        }
-      },
-      "name": "Blended Delivery"
-    },
+        "name": "Blended Delivery"
+      }
+    ],
     "field_training_tags": [
       {
         "type": "taxonomy_term--training_tags",
@@ -256,19 +259,6 @@
       },
       "name": "Full day"
     },
-    "field_training_types": {
-      "type": "taxonomy_term--training_types",
-      "id": "9d553759-21b4-4ee5-aefc-4d14f77eff34",
-      "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/resource/schema"
-        },
-        "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/9d553759-21b4-4ee5-aefc-4d14f77eff34"
-        }
-      },
-      "name": "Workshop"
-    },
     "title": "A",
     "body": {
       "value": "",
@@ -280,7 +270,6 @@
     "field_training_cost": false,
     "field_training_department": "OID",
     "field_training_featured": true,
-    "field_training_frequency": "Often",
     "field_training_prerequisites": "...",
     "field_training_website": {
       "uri": "https://",
@@ -314,19 +303,21 @@
         "name": "Managers & Supervisors"
       }
     ],
-    "field_training_course_design": {
-      "type": "taxonomy_term--training_course_design",
-      "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
-      "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+    "field_training_course_design": [
+      {
+        "type": "taxonomy_term--training_course_design",
+        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
+        "links": {
+          "describedby": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+          },
+          "self": {
+            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
+          }
         },
-        "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
-        }
-      },
-      "name": "Blended Delivery"
-    },
+        "name": "Blended Delivery"
+      }
+    ],
     "field_training_course_length": {
       "type": "taxonomy_term--training_course_length",
       "id": "hd",
@@ -355,19 +346,6 @@
         "name": "Leadership"
       }
     ],
-    "field_training_types": {
-      "type": "taxonomy_term--training_types",
-      "id": "9d553759-21b4-4ee5-aefc-4d14f77eff34",
-      "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/resource/schema"
-        },
-        "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_types/9d553759-21b4-4ee5-aefc-4d14f77eff34"
-        }
-      },
-      "name": "Workshop"
-    },
     "title": "Z : Last one.",
     "body": {
       "value": "",
@@ -379,7 +357,6 @@
     "field_training_cost": false,
     "field_training_department": "OID",
     "field_training_featured": false,
-    "field_training_frequency": "Often",
     "field_training_prerequisites": "...",
     "field_training_website": {
       "uri": "https://",
