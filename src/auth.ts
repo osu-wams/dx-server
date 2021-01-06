@@ -283,7 +283,7 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
  */
 Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
-  if (user.isCanvasOptIn && user.refreshToken) {
+  if (user.canvasOptIn && user.canvasRefreshToken) {
     if (
       isNullOrUndefined(user.canvasOauthExpire) ||
       user.canvasOauthExpire === 0 ||

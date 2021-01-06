@@ -1,15 +1,14 @@
 import supertest from 'supertest';
 import nock from 'nock';
 import { mockedUserMessages } from '@src/mocks/dx-mcm';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
-import app from '../../index';
-import { UserSettings } from '../models/user'; // eslint-disable-line no-unused-vars
-import { GROUPS, OSU_API_BASE_URL } from '../../constants'; // eslint-disable-line no-unused-vars
-import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
-import * as dynamoDb from '../../db';
-
-jest.mock('../../db');
-const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
+import cache from '@src/api/modules/cache'; // eslint-disable-line no-unused-vars
+import app from '@src/index';
+import User, { UserSettings } from '@src/api/models/user'; // eslint-disable-line no-unused-vars
+import { GROUPS, OSU_API_BASE_URL } from '@src/constants'; // eslint-disable-line no-unused-vars
+import { mockedGet, mockedGetResponse } from '@src/api/modules/__mocks__/cache';
+import { mockDynamoDbUser } from '@src/api/models/__mocks__/user';
+import { dynamoDbHandler } from '@src/mocks/handlers';
+import { server } from '@src/mocks/server';
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
@@ -93,6 +92,30 @@ describe('/api/user', () => {
     };
 
     it('updates audienceOverride settings', async () => {
+      const itemMap = {};
+      itemMap[User.TABLE_NAME] = {
+        Query: {
+          Count: 1,
+          ScannedCount: 1,
+          Items: [
+            {
+              ...mockDynamoDbUser,
+              audienceOverride: {
+                M: {
+                  campusCode: { S: settings.audienceOverride.campusCode },
+                  firstYear: { BOOL: settings.audienceOverride.firstYear },
+                  international: { BOOL: settings.audienceOverride.international },
+                  graduate: { BOOL: settings.audienceOverride.graduate },
+                  colleges: { SS: settings.audienceOverride.colleges },
+                },
+              },
+              theme: { S: 'light' },
+              devTools: { BOOL: false },
+            },
+          ],
+        },
+      };
+      dynamoDbHandler(server, itemMap);
       await request.post('/api/user/settings').send(settings).expect(200, {
         audienceOverride: settings.audienceOverride,
         theme: 'light',
@@ -101,6 +124,26 @@ describe('/api/user', () => {
     });
 
     it('can update a singular audienceOverride setting', async () => {
+      const itemMap = {};
+      itemMap[User.TABLE_NAME] = {
+        Query: {
+          Count: 1,
+          ScannedCount: 1,
+          Items: [
+            {
+              ...mockDynamoDbUser,
+              audienceOverride: {
+                M: {
+                  campusCode: { S: 'B' },
+                },
+              },
+              theme: { S: 'light' },
+              devTools: { BOOL: false },
+            },
+          ],
+        },
+      };
+      dynamoDbHandler(server, itemMap);
       await request
         .post('/api/user/settings')
         .send({ ...settings, audienceOverride: { campusCode: 'B' } })
@@ -109,16 +152,6 @@ describe('/api/user', () => {
           theme: 'light',
           devTools: false,
         });
-    });
-
-    it('returns an error for failed audienceOverride settings', async () => {
-      mockDynamoDb.updateItem.mockImplementationOnce(() =>
-        Promise.reject(new Error('happy little accident')),
-      );
-      await request
-        .post('/api/user/settings')
-        .send(settings)
-        .expect(500, { message: 'Failed to update users settings.' });
     });
   });
 

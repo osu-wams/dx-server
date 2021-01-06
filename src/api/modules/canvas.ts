@@ -106,13 +106,13 @@ export const postRequest = async (u: User, query: string): Promise<User> => {
     if (response.ok) {
       const { refresh_token, access_token, expires_in } = await response.json();
       const expireTime = Math.floor(Date.now() / 1000) + parseInt(expires_in, 10);
-      if (refresh_token) user.refreshToken = refresh_token;
+      if (refresh_token) user.canvasRefreshToken = refresh_token;
       user.canvasOauthToken = access_token;
       user.canvasOauthExpire = expireTime;
-      user.isCanvasOptIn = true;
+      user.canvasOptIn = true;
       await updateOAuthData(user, {
-        isCanvasOptIn: user.isCanvasOptIn,
-        account: { refreshToken: user.refreshToken },
+        isCanvasOptIn: user.canvasOptIn,
+        account: { refreshToken: user.canvasRefreshToken },
       });
       logger().debug(`canvas.postRequest refreshed user (${user.osuId}) OAuth credentials.`);
       return user;
@@ -130,8 +130,8 @@ export const postRequest = async (u: User, query: string): Promise<User> => {
     await updateOAuthData(user, { isCanvasOptIn: false, account: { refreshToken: null } });
     user.canvasOauthToken = null;
     user.canvasOauthExpire = null;
-    user.isCanvasOptIn = false;
-    user.refreshToken = null;
+    user.canvasOptIn = false;
+    user.canvasRefreshToken = null;
     return user;
   }
 };
@@ -163,7 +163,7 @@ export const refreshOAuthToken = async (u: User): Promise<User> => {
     grant_type: 'refresh_token',
     client_id: CANVAS_OAUTH_ID,
     client_secret: CANVAS_OAUTH_SECRET,
-    refresh_token: user.refreshToken,
+    refresh_token: user.canvasRefreshToken,
   };
   /* eslint-enable camelcase */
   if (CANVAS_OAUTH_SCOPE !== '') {

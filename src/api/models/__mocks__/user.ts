@@ -1,20 +1,33 @@
 import { lastLogin } from '../../../utils/auth';
+import { IUser } from '../user';
 
 /* eslint-disable no-unused-vars */
-export const mockUser = {
+export const mockUser: IUser = {
   osuId: 123456,
   firstName: 'Bob',
   lastName: 'Ross',
   email: 'bob@bobross.com',
   phone: '5551212',
-  isAdmin: false,
   primaryAffiliation: 'employee',
-  groups: [],
-  colleges: [],
   affiliations: ['employee'],
-  isStudent: () => false,
+  canvasRefreshToken: 'refresh-me',
+  canvasOptIn: true,
   onid: 'rossb',
   lastLogin: lastLogin(),
+};
+
+export const mockDynamoDbUser = {
+  osuId: { N: `${mockUser.osuId}` },
+  firstName: { S: mockUser.firstName },
+  lastName: { S: mockUser.lastName },
+  email: { S: mockUser.email },
+  phone: { S: mockUser.phone },
+  primaryAffiliation: { S: mockUser.primaryAffiliation },
+  affiliations: { SS: mockUser.affiliations },
+  canvasRefreshToken: { S: mockUser.canvasRefreshToken },
+  canvasOptIn: { BOOL: mockUser.canvasOptIn },
+  onid: { S: mockUser.onid },
+  lastLogin: { S: mockUser.lastLogin },
 };
 
 export const mockInsertReturn = mockUser;

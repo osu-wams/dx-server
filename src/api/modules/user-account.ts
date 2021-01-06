@@ -39,12 +39,12 @@ const arraysMatch = (a: string[], b: string[]) => {
   return a.length === b.length && a.sort().every((v, i) => v === b.sort()[i]);
 };
 
-export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
+export const findOrUpsertUser = async (u: Partial<User>): Promise<FindOrUpsertUser> => {
   try {
     let user: User = await User.find(u.osuId);
     let isNew = false;
 
-    if (user === null) {
+    if (!user) {
       isNew = true;
       user = await User.upsert(u);
     } else if (
@@ -54,8 +54,8 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
       user.primaryAffiliation !== u.primaryAffiliation ||
       user.onid !== u.onid ||
       user.lastLogin !== u.lastLogin ||
-      !arraysMatch(user.groups, u.groups) ||
-      !arraysMatch(user.affiliations, u.affiliations) ||
+      (u.groups && !arraysMatch(user.groups ?? [], u.groups ?? [])) ||
+      (u.affiliations && !arraysMatch(user.affiliations ?? [], u.affiliations ?? [])) ||
       (u.colleges && !arraysMatch(user.colleges ?? [], u.colleges ?? []))
     ) {
       user.email = u.email;
@@ -81,7 +81,7 @@ export const findOrUpsertUser = async (u: User): Promise<FindOrUpsertUser> => {
   }
 };
 
-export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<User> => {
+export const updateOAuthData = async (u: Partial<User>, oAuthData: OAuthData): Promise<User> => {
   try {
     const user = await User.updateCanvasData(
       u,
@@ -96,8 +96,8 @@ export const updateOAuthData = async (u: User, oAuthData: OAuthData): Promise<Us
   }
 };
 
-export const setColleges = async (u: User, degrees: Types.Degree[]): Promise<User> => {
-  if (!degrees.length) return u;
+export const setColleges = async (u: Partial<User>, degrees: Types.Degree[]): Promise<User> => {
+  if (!degrees.length) return u as User;
 
   const colleges = degrees.map((d) => d.college);
   const dualDegrees = degrees.filter((d) => d.dualDegree).map((dd) => dd.dualDegree.college);

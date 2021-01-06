@@ -22,7 +22,6 @@ const user = {
   primaryAffiliation: 'employee',
   affiliations: ['employee'],
   groups: [],
-  isStudent: () => false,
 };
 const assignment = { assignment: 'test' };
 
@@ -41,7 +40,7 @@ describe('Canvas module', () => {
         // scope: config.get('canvasOauth.scope'),
       });
       const result = await postRequest(user, query);
-      expect(result.isCanvasOptIn).toBeTruthy();
+      expect(result.canvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
       // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)
       expect(result.canvasOauthExpire).toBeGreaterThan(Math.floor(Date.now() / 1000) + 867500);
@@ -72,9 +71,8 @@ describe('Canvas module', () => {
           groups: [],
           canvasOauthToken: null,
           canvasOauthExpire: null,
-          isCanvasOptIn: false,
-          refreshToken: null,
-          isStudent: () => false,
+          canvasOptIn: false,
+          canvasRefreshToken: null,
         }),
       );
     });
@@ -87,7 +85,7 @@ describe('Canvas module', () => {
         .query(true)
         .reply(200, { access_token: 'bobross', expires_in: '8675309' });
       const result = await refreshOAuthToken(user);
-      expect(result.isCanvasOptIn).toBeTruthy();
+      expect(result.canvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
       // make sure the token expiration is moved forward (but don't get tripped by a race-condition in timing on CI)
       expect(result.canvasOauthExpire).toBeGreaterThan(Math.floor(Date.now() / 1000) + 867500);
@@ -96,10 +94,7 @@ describe('Canvas module', () => {
 
   describe('getPlannerItems using oAuth', () => {
     it('returns upcoming assignments', async () => {
-      nock(CANVAS_BASE_URL)
-        .get('/planner/items')
-        .query(true)
-        .reply(200, [assignment]);
+      nock(CANVAS_BASE_URL).get('/planner/items').query(true).reply(200, [assignment]);
       const result = await getPlannerItems({ oAuthToken: 'someToken' });
       expect(result).toStrictEqual(JSON.stringify([assignment]));
     });
@@ -107,10 +102,7 @@ describe('Canvas module', () => {
 
   describe('getPlannerItems as user', () => {
     it('returns upcoming assignments', async () => {
-      nock(CANVAS_BASE_URL)
-        .get('/planner/items')
-        .query(true)
-        .reply(200, [assignment]);
+      nock(CANVAS_BASE_URL).get('/planner/items').query(true).reply(200, [assignment]);
       const result = await getPlannerItems({ osuId: 123456 });
       expect(result).toStrictEqual(JSON.stringify([assignment]));
     });

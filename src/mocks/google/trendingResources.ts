@@ -1,3 +1,4 @@
+import { GoogleTrendingResource } from '@src/api/models/trendingResource';
 import * as trendingResourcesResponse from './trendingResources.data.json';
 
 const mockedTrendingResources: string[][] = trendingResourcesResponse.data['rows'];
@@ -12,7 +13,7 @@ const fromDynamoDb = (date: string) =>
     uniqueEvents: { N: uniqueEvents },
   }));
 
-const fromApi = (date: string, period: string) =>
+const fromApi = (date: string, period?: string) =>
   mockedTrendingResources
     .map(([resourceId, concatenatedTitle, totalEvents, uniqueEvents]) => ({
       resourceId: resourceId,
@@ -26,4 +27,13 @@ const fromApi = (date: string, period: string) =>
     }))
     .reverse();
 
-export { trendingResourcesResponse, mockedTrendingResources, fromDynamoDb, fromApi };
+const fromGoogle = (date: string): GoogleTrendingResource[] =>
+  mockedTrendingResources.map(([resourceId, concatenatedTitle, totalEvents, uniqueEvents]) => ({
+    resourceId: resourceId,
+    date,
+    concatenatedTitle,
+    totalEvents,
+    uniqueEvents,
+  }));
+
+export { trendingResourcesResponse, mockedTrendingResources, fromDynamoDb, fromApi, fromGoogle };

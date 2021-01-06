@@ -1,3 +1,5 @@
+// Mock Saml User for API testing with supertest, this ties into the mock-strategy for
+// test user authentication
 const mockUser = () => ({
   email: 'fake-email@oregonstate.edu',
   firstName: 'Test',
@@ -11,8 +13,8 @@ const mockUser = () => ({
   isAdmin: true,
   groups: ['admin', 'masquerade'],
   colleges: [],
-  isCanvasOptIn: true,
-  refreshToken: 'token',
+  canvasOptIn: true,
+  canvasRefreshToken: 'token',
   canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
   canvasOauthToken: 'token',
 });

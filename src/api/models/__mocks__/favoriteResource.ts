@@ -7,6 +7,14 @@ export const mockFavoriteResource = {
   resourceId: 'test-resource-id',
 };
 
+export const mockDynamoDbFavoriteResource = {
+  active: { BOOL: true },
+  created: { S: mockFavoriteResource.created },
+  order: { N: `${mockFavoriteResource.order}` },
+  osuId: { N: `${mockFavoriteResource.osuId}` },
+  resourceId: { S: mockFavoriteResource.resourceId },
+};
+
 export const mockInsertReturn = mockFavoriteResource;
 export const mockUpdateCanvasDataReturn = mockFavoriteResource;
 export const mockFindReturn = mockFavoriteResource;

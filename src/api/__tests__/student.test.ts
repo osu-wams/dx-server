@@ -1,4 +1,3 @@
-import { DynamoDB } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import supertest from 'supertest';
 import nock from 'nock';
 import config from 'config';
@@ -17,10 +16,6 @@ import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
 import { GROUPS, OSU_API_BASE_URL } from '../../constants';
-import * as dynamoDb from '../../db';
-
-jest.mock('../../db');
-const mockDynamoDb = dynamoDb as jest.Mocked<any>; // eslint-disable-line no-unused-vars
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
@@ -39,22 +34,10 @@ const user = {
   isAdmin: true,
   groups: Object.keys(GROUPS),
   colleges: [],
-  isCanvasOptIn: true,
-  refreshToken: 'token',
+  canvasOptIn: true,
+  canvasRefreshToken: 'token',
   canvasOauthExpire: Date.now() + 1000 * 60 * 60 * 24,
   canvasOauthToken: 'token',
-};
-
-const dynamoDbUser: DynamoDB.GetItemOutput = {
-  Item: {
-    osuId: { N: user.osuId.toString() },
-    firstName: { S: user.firstName },
-    lastName: { S: user.lastName },
-    email: { S: user.email },
-    primaryAffiliation: { S: 'employee' },
-    affiliations: { SS: ['employee'] },
-    colleges: { SS: user.colleges },
-  },
 };
 
 const CANVAS_BASE_URL: string = config.get<string>('canvasApi.baseUrl').replace('/api/v1', '');
@@ -88,6 +71,7 @@ describe('handle upstream 502 traffic retry', () => {
       term: '202001',
     });
   });
+
   it('should not retry fetching again after a 5xx other than 502 from OSU api', async () => {
     nock(OSU_API_BASE_URL)
       .get(/v1\/students\/[0-9]+\/academic-status/)
@@ -97,10 +81,7 @@ describe('handle upstream 502 traffic retry', () => {
           faultstring: 'testing fault string',
           detail: { errorcode: 'just some error code' },
         },
-      })
-      .get(/v1\/students\/[0-9]+\/academic-status/)
-      .query(true)
-      .reply(200, academicStatusData);
+      });
     await request.get('/api/student/academic-status').expect(500);
   });
 });
@@ -507,26 +488,6 @@ describe('/api/student', () => {
   });
 
   describe('/degrees', () => {
-    it('should return degrees and updating users colleges', async () => {
-      mockDynamoDb.getItem
-        .mockImplementationOnce(() => Promise.resolve(dynamoDbUser))
-        .mockImplementationOnce(() =>
-          Promise.resolve({ Item: { ...dynamoDbUser.Item, colleges: { SS: ['5', '6'] } } }),
-        );
-      mockDynamoDb.putItem.mockImplementation(() => Promise.resolve(true)); // no-op
-      mockedGetResponse.mockReturnValue(mockDegrees);
-      cache.get = mockedGet;
-
-      // Mock response from Apigee
-      nock(OSU_API_BASE_URL)
-        .get(/v1\/students\/[0-9]+\/degrees/)
-        .reply(200, { data: mockDegrees });
-
-      await request.get('/api/student/degrees').expect(200, mockDegrees.data);
-      expect(mockDynamoDb.getItem).toBeCalledTimes(2);
-      expect(mockDynamoDb.putItem).toBeCalledTimes(1);
-    });
-
     it('should return an empty array when no degree data is found', async () => {
       mockedGetResponse.mockReturnValue({ data: [] });
       cache.get = mockedGet;
@@ -537,8 +498,6 @@ describe('/api/student', () => {
         .reply(200, { data: [] });
 
       await request.get('/api/student/degrees').expect(200, []);
-      expect(mockDynamoDb.getItem).toBeCalledTimes(0);
-      expect(mockDynamoDb.putItem).toBeCalledTimes(0);
     });
 
     it('should return "Unable to retrieve degrees." when there is a 500 error', async () => {
@@ -571,12 +530,6 @@ describe('/api/student', () => {
         await request.get('/login');
       });
       it('should return degrees but not update the users colleges ', async () => {
-        mockDynamoDb.getItem
-          .mockImplementationOnce(() => Promise.resolve(dynamoDbUser))
-          .mockImplementationOnce(() =>
-            Promise.resolve({ Item: { ...dynamoDbUser.Item, colleges: { SS: ['2', '3'] } } }),
-          );
-        mockDynamoDb.putItem.mockImplementation(() => Promise.resolve(true)); // no-op
         mockedGetResponse.mockReturnValue(mockDegrees);
         cache.get = mockedGet;
 
@@ -586,8 +539,6 @@ describe('/api/student', () => {
           .reply(200, { data: mockDegrees });
 
         await request.get('/api/student/degrees').expect(200, mockDegrees.data);
-        expect(mockDynamoDb.getItem).toBeCalledTimes(0);
-        expect(mockDynamoDb.putItem).toBeCalledTimes(0);
       });
     });
   });
@@ -667,9 +618,6 @@ describe('/api/student', () => {
     });
 
     describe('with an invalid canvas refresh token', () => {
-      beforeEach(() => {
-        mockedUser.mockReturnValue({ ...user, refreshToken: '', canvasOauthExpire: 0 });
-      });
       it('should return an error', async () => {
         nock(CANVAS_BASE_URL)
           .get((uri) => uri.includes('items'))
@@ -682,11 +630,18 @@ describe('/api/student', () => {
     });
 
     describe('with an expired or invalid Canvas oauth expiration', () => {
-      beforeEach(() => {
-        mockedUser.mockReturnValue({ ...user, canvasOauthExpire: 0 });
+      beforeEach(async () => {
+        supertest.agent(app);
+        mockedUser.mockReturnValue({
+          ...user,
+          canvasOauthExpire: 0,
+          canvasOptIn: false,
+          canvasRefreshToken: '',
+        });
+        // Authenticate before each request
+        await request.get('/login');
       });
       it('should return an error', async () => {
-        nock(CANVAS_BASE_URL).get('/api/v1/planner/items').query(true).reply(401);
         await request
           .get('/api/student/planner-items')
           .expect(403, { message: 'User must opt-in to Canvas login' });

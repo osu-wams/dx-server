@@ -19,7 +19,7 @@ router.get('/', async (req: Request, res: Response) => {
     email,
     primaryAffiliation,
     affiliations,
-    isCanvasOptIn,
+    canvasOptIn,
     audienceOverride: userAudienceOverride,
     classification: userClassification,
     primaryAffiliationOverride,
@@ -35,7 +35,7 @@ router.get('/', async (req: Request, res: Response) => {
     affiliations,
     isAdmin: req.user.isAdmin,
     groups: req.user.groups,
-    isCanvasOptIn,
+    isCanvasOptIn: canvasOptIn,
     audienceOverride: userAudienceOverride || {},
     classification: userClassification || {},
     primaryAffiliationOverride,
@@ -49,9 +49,11 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/classification', async (req: Request, res: Response) => {
   let classification = {};
   try {
-    const classificationPromise: Promise<Types.Classification> = asyncTimedFunction<
-      Types.Classification
-    >(getClassification, 'getClassification', [req.user]);
+    const classificationPromise: Promise<Types.Classification> = asyncTimedFunction<Types.Classification>(
+      getClassification,
+      'getClassification',
+      [req.user],
+    );
     const { id, attributes } = await classificationPromise;
     classification = { id, attributes };
     req.user.classification = classification;

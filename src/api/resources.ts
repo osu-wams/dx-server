@@ -8,7 +8,6 @@ import FavoriteResource from './models/favoriteResource';
 import logger from '../logger';
 import { getTrendingResources } from './modules/google';
 import { getDaysInDuration, computeTrendingResources } from '../utils/resources';
-import TrendingResource from './models/trendingResource'; // eslint-disable-line no-unused-vars
 
 const router = Router();
 
@@ -94,7 +93,7 @@ router.get('/favorites', async (req: Request, res: Response) => {
         req.user.groups.includes('masquerade') && req.user.masqueradeId
           ? req.user.masqueradeId
           : req.user.osuId;
-      const data = await FavoriteResource.findAll(osuId, true);
+      const data = await FavoriteResource.findAll(osuId);
       res.send(data);
     }
   } catch (err) {

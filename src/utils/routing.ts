@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'; // eslint-disable-lin
 import logger from '../logger';
 import { APP_URL_REGEX, ENCRYPTION_KEY, JWT_KEY } from '../constants';
 import { decrypt, userFromJWT, issueJWT } from './auth';
-import User from '../api/models/user'; // eslint-disable-line no-unused-vars
+import { IUser } from '../api/models/user';
 
 // Detect if the uri is using a dx-mobile redirect scheme
 export const isMobileRedirect = (uri: any): boolean =>
@@ -68,7 +68,7 @@ export const setJWTSessionUser = async (req: Request, res: Response, next: NextF
  * @param res the Express Response
  * @param user the User data
  */
-export const redirectReturnUrl = async (req: Request, res: Response, user: User) => {
+export const redirectReturnUrl = async (req: Request, res: Response, user: IUser) => {
   logger().debug(`redirectReturnUrl mobileLogin: ${req.session.mobileLogin}, redirect`);
   if (req.session.mobileLogin) {
     const token = await issueJWT(user, ENCRYPTION_KEY, JWT_KEY);
