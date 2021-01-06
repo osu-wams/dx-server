@@ -66,8 +66,8 @@ jobs:
         run: |
           COMMIT_LINK=https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA
           COMMIT_MESSAGE=$(git log --format=%B -n 1 $GITHUB_SHA | cat -)
-          POST_DATA="{\"username\": \"GitHub\", \"text\": \"Stack: ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }}\nStatus: DEPLOYMENT_STARTED\nMessage: $COMMIT_MESSAGE\n$COMMIT_LINK\"}"
-          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WAMS_CICD_HOOK_URL }}
+          POST_DATA="{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX Stage Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Stack: ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }}\", \"activitySubtitle\": \"Status: DEPLOYMENT_STARTED, Message: $COMMIT_MESSAGE $COMMIT_LINK\", \"markdown\": false }] }"
+          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}
           app_version=`cat app_version`
           ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:stage-${app_version}"
           # this next line grabs content of parameter file from s3 bucket the "s3 cp file - " acts like cat, jq updates the ServerImage
@@ -81,8 +81,8 @@ jobs:
           fi
           aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/${{ secrets.CLOUDFORMATION_STAGE_PARAMETERS_FILE }}
           aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }}
-          POST_DATA="{\"username\": \"GitHub\", \"text\": \"CloudFormation Stack Updated:\nStack: ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }}\nStatus: $STACK_STATUS\nMessage: $COMMIT_MESSAGE\n$COMMIT_LINK\"}"
-          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.SLACK_WAMS_CICD_HOOK_URL }}
+          POST_DATA="{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX Stage Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Cloudformation Stack Updated: ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }}\", \"activitySubtitle\": \"Stack: ${{ secrets.CLOUDFORMATION_STAGE_STACKNAME }}, Status: $STACK_STATUS, Message: $COMMIT_MESSAGE $COMMIT_LINK\", \"markdown\": false }] }"
+          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
