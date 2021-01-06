@@ -481,7 +481,9 @@ describe('/api/student', () => {
 
       await request
         .get('/api/student/holds')
-        .expect(200, [{ description: 'Permanent Hold', toDate: '2199-01-01' }]);
+        .expect(200, [
+          { description: 'Permanent Hold', toDate: '2199-01-01', fromDate: '2021-12-05' },
+        ]);
     });
 
     it('should return an error if the user is not logged in', async () => {

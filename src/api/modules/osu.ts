@@ -230,6 +230,7 @@ export const getGpa = async (user: any): Promise<Types.GpaLevel[]> => {
 
 interface Hold {
   toDate: string;
+  fromDate: string;
   description: string;
   webDisplay: boolean;
 }
@@ -256,9 +257,11 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
         return toDate >= Date.now();
       });
     if (currentHolds.length === 0) return [];
-    return currentHolds.map((h) => ({ description: h.description, toDate: h.toDate })) as [
-      { description: string; toDate: string },
-    ];
+    return currentHolds.map((h) => ({
+      description: h.description,
+      toDate: h.toDate,
+      fromDate: h.fromDate,
+    })) as [{ description: string; toDate: string; fromDate: string }];
   }
   return [];
 };
