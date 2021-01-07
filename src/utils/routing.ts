@@ -21,11 +21,11 @@ export const isAppUrl = (url: any = ''): boolean => APP_URL_REGEX.test(url) || u
 
 export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunction) => {
   const { redirectUri } = req.query;
-  const returnTo = req.query.return;
+  const returnTo = req.query.return as string;
   let url = req.session.returnUrl || '/';
   if (isAppUrl(returnTo)) url = returnTo;
   if (isMobileRedirect(redirectUri)) {
-    url = redirectUri;
+    url = redirectUri as string;
     req.session.mobileLogin = true;
   }
   if (url !== '/') {
