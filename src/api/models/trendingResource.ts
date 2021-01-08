@@ -27,34 +27,36 @@ const getTitlePart = (title: string, index: number): string => {
 
 const TABLE_NAME: string = `${DYNAMODB_TABLE_PREFIX}-TrendingResources`;
 
-const table = new Table({
-  name: TABLE_NAME,
-  partitionKey: 'date',
-  sortKey: 'resourceId',
-  DocumentClient,
-});
+const table = (client?: typeof DocumentClient) =>
+  new Table({
+    name: TABLE_NAME,
+    partitionKey: 'date',
+    sortKey: 'resourceId',
+    DocumentClient: client ?? DocumentClient,
+  });
 
-const TrendingResourceEntity = new Entity({
-  name: 'TrendingResource',
-  attributes: {
-    date: { partitionKey: true, type: 'string' },
-    resourceId: {
-      sortKey: true,
-      type: 'string',
-      default: (data) => data.resourceId?.trim() ?? '<missing data>',
+const TrendingResourceEntity = (client?: typeof DocumentClient) =>
+  new Entity({
+    name: 'TrendingResource',
+    attributes: {
+      date: { partitionKey: true, type: 'string' },
+      resourceId: {
+        sortKey: true,
+        type: 'string',
+        default: (data) => data.resourceId?.trim() ?? '<missing data>',
+      },
+      affiliation: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 0) },
+      campus: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 1) },
+      title: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 2) },
+      totalEvents: { type: 'number', coerce: true },
+      uniqueEvents: { type: 'number', coerce: true },
+      period: { type: 'string' },
+      concatenatedTitle: { type: 'string', save: false },
     },
-    affiliation: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 0) },
-    campus: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 1) },
-    title: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 2) },
-    totalEvents: { type: 'number', coerce: true },
-    uniqueEvents: { type: 'number', coerce: true },
-    period: { type: 'string' },
-    concatenatedTitle: { type: 'string', save: false },
-  },
-  table,
-  autoExecute: true,
-  autoParse: true,
-});
+    table: table(client),
+    autoExecute: true,
+    autoParse: true,
+  });
 
 export const TableDefinition: DynamoDB.CreateTableInput = {
   AttributeDefinitions: [
@@ -94,9 +96,12 @@ class TrendingResource {
 
   static TABLE_NAME: string = TABLE_NAME;
 
-  static upsert = async (props: GoogleTrendingResource): Promise<TrendingResource> => {
+  static upsert = async (
+    props: GoogleTrendingResource,
+    client?: typeof DocumentClient,
+  ): Promise<TrendingResource> => {
     try {
-      const result: TrendingResources = await TrendingResourceEntity.put(props);
+      const result: TrendingResources = await TrendingResourceEntity(client).put(props);
       logger().info('TrendingResource.upsert succeeded:', result);
       return TrendingResource.find(props.resourceId, props.date);
     } catch (err) {
@@ -105,9 +110,12 @@ class TrendingResource {
     }
   };
 
-  static findAll = async (date: string): Promise<TrendingResource[] | null> => {
+  static findAll = async (
+    date: string,
+    client?: typeof DocumentClient,
+  ): Promise<TrendingResource[] | null> => {
     try {
-      const results: TrendingResources = await TrendingResourceEntity.query(date);
+      const results: TrendingResources = await TrendingResourceEntity(client).query(date);
       return results.Items;
     } catch (err) {
       logger().error(`TrendingResource.findAll(${date}) failed:`, err);
@@ -115,9 +123,13 @@ class TrendingResource {
     }
   };
 
-  static find = async (resourceId: string, date: string): Promise<TrendingResource | null> => {
+  static find = async (
+    resourceId: string,
+    date: string,
+    client?: typeof DocumentClient,
+  ): Promise<TrendingResource | null> => {
     try {
-      const result: TrendingResources = await TrendingResourceEntity.query(date, {
+      const result: TrendingResources = await TrendingResourceEntity(client).query(date, {
         eq: resourceId,
       });
       return result.Items[0];
@@ -127,14 +139,14 @@ class TrendingResource {
     }
   };
 
-  static scanAll = async (): Promise<TrendingResource[]> => {
+  static scanAll = async (client?: typeof DocumentClient): Promise<TrendingResource[]> => {
     const cached = await getCache(TrendingResource.TABLE_NAME);
     if (cached) {
       return JSON.parse(cached);
     }
 
     const found = [];
-    let results: TrendingResources = await TrendingResourceEntity.scan();
+    let results: TrendingResources = await TrendingResourceEntity(client).scan();
     found.push(...results.Items);
     logger().info(
       `${TrendingResource.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,
