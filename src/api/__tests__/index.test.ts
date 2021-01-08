@@ -1,7 +1,6 @@
 import supertest from 'supertest';
 import nock from 'nock';
 import app from '../../index';
-import User from '../models/user';
 import { USE_MOCKS } from '../../constants';
 import { mockUser } from '../models/__mocks__/user';
 import { BASE_URL } from '../modules/ready-education';
@@ -14,8 +13,12 @@ jest.mock('../modules/canvas', () => ({
   refreshOAuthToken: () => mockRequestOAuthToken,
 }));
 
-jest.mock('../models/user');
-const mockUserModel = User as jest.Mocked<any>;
+const mockFindReturn = jest.fn();
+
+jest.mock('../models/user', () => ({
+  ...jest.requireActual('../models/user'),
+  find: () => mockFindReturn(),
+}));
 
 let request: supertest.SuperTest<supertest.Test>;
 
@@ -55,7 +58,6 @@ describe('/login', () => {
 
 describe('/login with local api key', () => {
   it('redirects the user to /', async () => {
-    mockUserModel.find.mockImplementationOnce(() => Promise.resolve(mockUser));
     await request.get('/login?username=123456&password=blah').then((res) => {
       expect(res.header.location).toBe('/');
     });
@@ -66,7 +68,7 @@ describe('/login with ready education provided token', () => {
   const mockToken = 'abc';
   beforeEach(() => {
     nock(BASE_URL).get(`/public/v1/user/?user_token=${mockToken}`).reply(200, mockedStudent);
-    mockUserModel.find.mockImplementationOnce(() => Promise.resolve(mockUser));
+    mockFindReturn.mockReturnValue(mockUser);
   });
 
   it('redirects the user to /', async () => {

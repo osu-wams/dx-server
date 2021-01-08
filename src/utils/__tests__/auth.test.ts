@@ -1,4 +1,3 @@
-import User, { IUser } from '../../api/models/user'; // eslint-disable-line no-unused-vars
 import parseSamlResult, { encrypt, decrypt, issueJWT, userFromJWT, lastLogin } from '../auth';
 import { ENCRYPTION_KEY, GROUPS, JWT_KEY } from '../../constants';
 

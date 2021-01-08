@@ -1,32 +1,33 @@
 /* eslint-disable no-unused-vars */
 
 import { findOrUpsertUser, setColleges, updateOAuthData } from '../user-account';
-import User from '../../models/user';
 import { mockUser } from '../../models/__mocks__/user';
 import mockDegrees from '../../../mocks/osu/degrees.data.json';
 
-jest.mock('../../models/user');
-const mockUserModel = User as jest.Mocked<any>;
+const mockFindReturn = jest.fn();
+const mockUpdateCanvasDataReturn = jest.fn();
+jest.mock('../../models/user', () => ({
+  ...jest.requireActual('../../models/user'),
+  find: () => mockFindReturn(),
+  updateCanvasData: () => mockUpdateCanvasDataReturn(),
+}));
 
 describe('User Account module', () => {
   describe('findOrUpsertUser', () => {
     it('returns an existing user', async () => {
-      expect.assertions(2);
+      mockFindReturn.mockResolvedValue(mockUser);
       const { user, isNew } = await findOrUpsertUser(mockUser);
       expect(user.osuId).toEqual(mockUser.osuId);
       expect(isNew).toBeFalsy();
     });
     it('returns a new user', async () => {
-      mockUserModel.find.mockImplementationOnce(() => Promise.resolve(null));
-      expect.assertions(2);
+      mockFindReturn.mockResolvedValue(null);
       const { user, isNew } = await findOrUpsertUser(mockUser);
       expect(user.osuId).toEqual(mockUser.osuId);
       expect(isNew).toBeTruthy();
     });
     it('throws an error on failure', async () => {
-      mockUserModel.find.mockImplementationOnce(() =>
-        Promise.reject(new Error('happy little accident')),
-      );
+      mockFindReturn.mockRejectedValue(new Error('happy little accident'));
       try {
         const { user, isNew } = await findOrUpsertUser(mockUser);
       } catch (err) {
@@ -37,7 +38,7 @@ describe('User Account module', () => {
   describe('updateOAuthData', () => {
     it('returns an updated user', async () => {
       const updatedUser = { ...mockUser, canvasRefreshToken: 'token', canvasOptIn: true };
-      mockUserModel.updateCanvasData.mockImplementationOnce(() => Promise.resolve(updatedUser));
+      mockUpdateCanvasDataReturn.mockResolvedValue(updatedUser);
       expect.assertions(2);
       const user = await updateOAuthData(mockUser, {
         account: { refreshToken: 'token' },
@@ -47,9 +48,7 @@ describe('User Account module', () => {
       expect(user.canvasOptIn).toBeTruthy();
     });
     it('throws an error on failure', async () => {
-      mockUserModel.updateCanvasData.mockImplementationOnce(() =>
-        Promise.reject(new Error('happy little accident')),
-      );
+      mockUpdateCanvasDataReturn.mockRejectedValue(new Error('happy little accident'));
       try {
         await updateOAuthData(mockUser, {
           account: { refreshToken: 'token' },
@@ -63,22 +62,19 @@ describe('User Account module', () => {
   describe('setColleges', () => {
     beforeEach(() => {
       mockUser.colleges = [];
+      mockFindReturn.mockResolvedValue(mockUser);
     });
 
     it('returns an existing user with added colleges', async () => {
-      expect.assertions(1);
       const user = await setColleges(mockUser, [mockDegrees.data[0].attributes]);
       expect(user.colleges).toEqual(['5', '6']);
     });
     it('returns an existing user who has no colleges', async () => {
-      expect.assertions(1);
       const user = await setColleges(mockUser, []);
       expect(user.colleges).toEqual([]);
     });
     it('throws an error on failure', async () => {
-      mockUserModel.find.mockImplementationOnce(() =>
-        Promise.reject(new Error('happy little accident')),
-      );
+      mockFindReturn.mockRejectedValueOnce(new Error('happy little accident'));
       try {
         const user = await setColleges(mockUser, [mockDegrees.data[0].attributes]);
       } catch (err) {
