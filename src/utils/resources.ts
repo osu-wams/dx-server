@@ -1,4 +1,4 @@
-import TrendingResource from '../api/models/trendingResource'; // eslint-disable-line no-unused-vars
+import { TrendingResource } from '../api/models/trendingResource'; // eslint-disable-line no-unused-vars
 
 export const getDaysInDuration = (duration: string): [number, Date][] => {
   const [number] = duration.toLowerCase().split('daysago');

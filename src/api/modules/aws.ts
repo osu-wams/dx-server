@@ -1,6 +1,6 @@
 import { groupBy } from '../../utils';
 import FavoriteResource from '../models/favoriteResource';
-import TrendingResource from '../models/trendingResource';
+import { TrendingResource, TABLE_NAME, scanAll } from '../models/trendingResource';
 import User from '../models/user';
 import { getCache, setCache } from './cache';
 
@@ -96,14 +96,14 @@ export const getTrendingMetrics = async (daysAgo: number) => {
   const endDate = d.toISOString().slice(0, 10);
   d.setDate(d.getDate() - daysAgo);
   const startDate = d.toISOString().slice(0, 10);
-  const cacheKey = `metrics.${startDate}.to.${endDate}.${TrendingResource.TABLE_NAME}`;
+  const cacheKey = `metrics.${startDate}.to.${endDate}.${TABLE_NAME}`;
 
   const cached = await getCache(cacheKey);
   if (cached) {
     return JSON.parse(cached);
   }
 
-  const t = await TrendingResource.scanAll();
+  const t = await scanAll();
   const resources = t.filter((resource) => resource.date >= startDate);
 
   const dates = groupBy(resources, 'date');
