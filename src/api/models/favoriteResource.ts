@@ -21,26 +21,28 @@ interface FavoriteResources {
   next?: Function;
 }
 
-const table = new Table({
-  name: TABLE_NAME,
-  partitionKey: 'osuId',
-  sortKey: 'resourceId',
-  DocumentClient,
-});
+const table = (client?: typeof DocumentClient) =>
+  new Table({
+    name: TABLE_NAME,
+    partitionKey: 'osuId',
+    sortKey: 'resourceId',
+    DocumentClient: client ?? DocumentClient,
+  });
 
-const FavoriteResourceEntity = new Entity({
-  name: 'FavoriteResource',
-  attributes: {
-    osuId: { partitionKey: true, type: 'number' },
-    resourceId: { sortKey: true, type: 'string' },
-    order: { type: 'number', coerce: true },
-    active: { type: 'boolean', coerce: true },
-    // created: { type: 'string' } // Already set as an alias for _ct
-  },
-  table,
-  autoExecute: true,
-  autoParse: true,
-});
+const FavoriteResourceEntity = (client?: typeof DocumentClient) =>
+  new Entity({
+    name: 'FavoriteResource',
+    attributes: {
+      osuId: { partitionKey: true, type: 'number' },
+      resourceId: { sortKey: true, type: 'string' },
+      order: { type: 'number', coerce: true },
+      active: { type: 'boolean', coerce: true },
+      // created: { type: 'string' } // Already set as an alias for _ct
+    },
+    table: table(client),
+    autoExecute: true,
+    autoParse: true,
+  });
 
 export const TableDefinition: DynamoDB.CreateTableInput = {
   AttributeDefinitions: [
@@ -74,9 +76,12 @@ class FavoriteResource {
 
   static TABLE_NAME: string = TABLE_NAME;
 
-  static upsert = async (props: FavoriteResourceProps): Promise<FavoriteResource> => {
+  static upsert = async (
+    props: FavoriteResourceProps,
+    client?: typeof DocumentClient,
+  ): Promise<FavoriteResource> => {
     try {
-      await FavoriteResourceEntity.put(props);
+      await FavoriteResourceEntity(client).put(props);
       logger().silly('FavoriteResource.upsert succeeded:', props);
       return props;
     } catch (err) {
@@ -85,9 +90,12 @@ class FavoriteResource {
     }
   };
 
-  static findAll = async (osuId: number): Promise<FavoriteResource[] | null> => {
+  static findAll = async (
+    osuId: number,
+    client?: typeof DocumentClient,
+  ): Promise<FavoriteResource[] | null> => {
     try {
-      const results: FavoriteResources = await FavoriteResourceEntity.query(osuId);
+      const results: FavoriteResources = await FavoriteResourceEntity(client).query(osuId);
       return results.Items;
     } catch (err) {
       logger().error(`FavoriteResource.findAll(${osuId}) failed:`, err);
@@ -95,14 +103,14 @@ class FavoriteResource {
     }
   };
 
-  static scanAll = async (): Promise<FavoriteResource[]> => {
+  static scanAll = async (client?: typeof DocumentClient): Promise<FavoriteResource[]> => {
     const cached = await getCache(FavoriteResource.TABLE_NAME);
     if (cached) {
       return JSON.parse(cached);
     }
 
     const found: FavoriteResource[] = [];
-    let results: FavoriteResources = await FavoriteResourceEntity.scan();
+    let results: FavoriteResources = await FavoriteResourceEntity(client).scan();
     found.push(...results.Items);
     logger().info(
       `${FavoriteResource.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,
