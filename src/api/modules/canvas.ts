@@ -4,7 +4,7 @@ import querystring from 'querystring';
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
-import User from '../models/user'; // eslint-disable-line no-unused-vars
+import { User } from '../models/user'; // eslint-disable-line no-unused-vars
 import { updateOAuthData } from './user-account'; // eslint-disable-line no-unused-vars
 import { fetchData } from '../util';
 import logger from '../../logger';

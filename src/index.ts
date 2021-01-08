@@ -25,7 +25,7 @@ import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
-import User from './api/models/user'; // eslint-disable-line no-unused-vars
+import { User, isStudent } from './api/models/user'; // eslint-disable-line no-unused-vars
 
 const RedisStore = redis(session);
 // const ENV = config.get('env');
@@ -156,7 +156,7 @@ app.post(
       const { isNew, user } = res.locals as { isNew: boolean; user: User };
       req.session.passport.user = user;
 
-      if (isNew && User.isStudent(user)) {
+      if (isNew && isStudent(user)) {
         res.redirect('/canvas/login');
       } else if (user?.canvasOptIn) {
         res.redirect('/canvas/refresh');

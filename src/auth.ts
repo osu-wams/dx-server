@@ -6,9 +6,8 @@ import { Strategy as OAuthStrategy } from 'passport-oauth2';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt'; // eslint-disable-line no-unused-vars
 import DevStrategy from 'passport-dev';
-import { isNullOrUndefined } from 'util';
 import MockStrategy from './utils/mock-strategy';
-import User from './api/models/user'; // eslint-disable-line no-unused-vars
+import { User, find } from './api/models/user'; // eslint-disable-line no-unused-vars
 import { refreshOAuthToken } from './api/modules/canvas';
 import logger from './logger';
 import parseSamlResult, { decrypt } from './utils/auth';
@@ -144,7 +143,7 @@ Auth.localStrategy = new LocalStrategy(
     const apiKey = API_KEYS.filter((k) => k.key !== '').find((k) => k.key === key);
     if (apiKey) {
       logger().debug(`API key found: ${apiKey}`);
-      const user = await User.find(parseInt(osuId, 10));
+      const user = await find(parseInt(osuId, 10));
       if (!user) {
         logger().debug('API user not found, returning unauthenticated.');
         return done(null, false);
@@ -174,7 +173,7 @@ Auth.readyEducationStrategy = new LocalStrategy(
 
     const { student_id: osuId } = await getUser(t);
     if (osuId) {
-      const user = await User.find(parseInt(osuId, 10));
+      const user = await find(parseInt(osuId, 10));
       if (!user) {
         logger().debug('Ready Education auth user not found, returning unauthenticated.');
         return done(null, false);
@@ -284,11 +283,7 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
 Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
   const user: User = req.user; // eslint-disable-line prefer-destructuring
   if (user.canvasOptIn && user.canvasRefreshToken) {
-    if (
-      isNullOrUndefined(user.canvasOauthExpire) ||
-      user.canvasOauthExpire === 0 ||
-      Math.floor(Date.now() / 1000) >= user.canvasOauthExpire
-    ) {
+    if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
       logger().debug('Auth.hasCanvasRefreshToken oauth token expired, refreshing.', user);
       const updatedUser = await refreshOAuthToken(user);
       req.session.passport.user.canvasOauthToken = updatedUser.canvasOauthToken;

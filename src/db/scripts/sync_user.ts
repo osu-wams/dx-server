@@ -3,7 +3,6 @@
 import config from 'config';
 import AWS from 'aws-sdk';
 import User from '../../api/models/user';
-import '../../logger';
 
 const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
 const DYNAMODBCLOUD_ENDPOINT: string = config.get('aws.dynamodbCloud.endpoint');

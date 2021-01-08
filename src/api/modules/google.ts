@@ -11,7 +11,12 @@ import {
   GOOGLE_SERVICE_ACCOUNT_EMAIL,
 } from '../../constants';
 import { fetchData } from '../util';
-import TrendingResource, { GoogleTrendingResource } from '../models/trendingResource';
+import {
+  TrendingResource,
+  GoogleTrendingResource,
+  upsert,
+  findAll,
+} from '../models/trendingResource';
 import { mockedTrendingResources } from '../../mocks/google/trendingResources';
 
 const jwt = new google.auth.JWT(
@@ -145,7 +150,7 @@ const getTrendingResourcesFromGoogle = async (
 ): Promise<TrendingResource[]> => {
   try {
     const rows: string[][] = await fetchTrendingResources(daysAgo);
-    const promises = mappedTrendingResources(rows, dateKey).map((r) => TrendingResource.upsert(r));
+    const promises = mappedTrendingResources(rows, dateKey).map((r) => upsert(r));
     const resources = await Promise.all(promises);
     await cacheResources(cacheKey, resources || []);
     return resources;
@@ -167,7 +172,7 @@ const getTrendingResourcesFromDatabase = async (
   cacheKey: string,
 ): Promise<TrendingResource[]> => {
   try {
-    const resources = await TrendingResource.findAll(dateKey);
+    const resources = await findAll(dateKey);
     if (resources.length > 0) {
       await cacheResources(cacheKey, resources);
     }

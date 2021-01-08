@@ -6,7 +6,7 @@ import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
 import { getClassification } from './modules/osu'; // eslint-disable-line no-unused-vars
-import User from './models/user'; // eslint-disable-line no-unused-vars
+import { User, updateSettings } from './models/user'; // eslint-disable-line no-unused-vars
 import { getUserMessages, markRead } from './modules/dx-mcm';
 
 const router: Router = Router();
@@ -69,7 +69,7 @@ router.post('/settings', async (req: Request, res: Response) => {
     const { audienceOverride, theme, devTools, primaryAffiliationOverride } = req.body;
 
     const user: User = req.user.masquerade || req.user; // eslint-disable-line prefer-destructuring
-    const updatedUser: User = await User.updateSettings(user, {
+    const updatedUser: User = await updateSettings(user, {
       audienceOverride,
       primaryAffiliationOverride,
       theme,

@@ -10,10 +10,15 @@ import {
   CANVAS_OAUTH_BASE_URL,
   CANVAS_OAUTH_TOKEN_URL,
 } from '../canvas';
-import User from '../../models/user';
 
-jest.mock('../../models/user');
-const mockUserModel = User as jest.Mocked<typeof User>;
+const mockFindReturn = jest.fn();
+const mockUpdateCanvasDataReturn = jest.fn();
+jest.mock('../../models/user', () => ({
+  ...jest.requireActual('../../models/user'),
+  find: () => mockFindReturn(),
+  updateCanvasData: () => mockUpdateCanvasDataReturn(),
+}));
+
 const user = {
   osuId: 123456,
   firstName: 'f',
@@ -51,7 +56,7 @@ describe('Canvas module', () => {
         .post(CANVAS_OAUTH_TOKEN_URL)
         .query(true)
         .reply(200, '-unparsable-should-blow-up-the.method-');
-      mockUserModel.updateCanvasData.mockImplementation(() => new Promise((res, rej) => res(user)));
+      mockUpdateCanvasDataReturn.mockImplementation(() => new Promise((res, rej) => res(user)));
       const query = querystring.stringify({
         grant_type: 'refresh_token',
         client_id: 'bogus',

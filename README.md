@@ -38,9 +38,9 @@ _`local.ts` contains overrides for environment variables that contain authentica
 
 _This step is only required the first time you start development and/or if you wipe the docker volumes for this project._
 
-    $ yarn ts-node -T src/db/scripts/create_users_table.ts
-    $ yarn ts-node -T src/db/scripts/create_favorite_resources_table.ts
-    $ yarn ts-node -T src/db/scripts/create_trending_resources_table.ts
+    $ yarn ts-node -T src/db/scripts/create_table.ts user
+    $ yarn ts-node -T src/db/scripts/create_table.ts favorite
+    $ yarn ts-node -T src/db/scripts/create_table.ts trending
 
 ### Run the server for local development
 
@@ -53,6 +53,18 @@ To run with SAML authentication, in a separate terminal window run:
     $ yarn saml
 
 # Localhost Tips
+
+## Scan all records from a table
+
+Query all of the data from a table and save it as a JSON file. _Beware, this could take a long time and will become impractical for very large tables._
+
+    $ yarn ts-node -T src/db/scripts/scan_table.ts [favorite | trending] [output_filename]
+
+## List all tables
+
+Query a list of all of the DynamoDb tables.
+
+    $ yarn ts-node -T src/db/scripts/list_tables.ts
 
 ## Sync a User record from the cloud to localhost
 
@@ -74,7 +86,7 @@ Syncing a user from the cloud DynamoDB requires a setting in `config/local.ts`;
 
 Execute a utility script to fetch the user, providing thier osuID in place of the _##########_ below, and persist them locally;
 
-    $ yarn exec ts-node src/db/scripts/sync_user.ts #########
+    $ yarn ts-node -T src/db/scripts/sync_user.ts #########
 
 # Admin Functions
 

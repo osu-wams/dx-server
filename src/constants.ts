@@ -8,6 +8,7 @@ interface ApiKey {
 const API_KEYS: ApiKey[] = JSON.parse(config.get('apiKeys'));
 const APP_URL_REGEX = RegExp(/^https?:\/\/(\w*.)?my\.oregonstate\.edu\/.*/);
 const APP_VERSION: string = config.get('appVersion');
+const AWS_REGION: string = config.get('aws.region');
 const CANVAS_OAUTH_AUTH_URL: string = config.get('canvasOauth.authUrl');
 const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
 const CANVAS_OAUTH_CALLBACK_URL: string = config.get('canvasOauth.callbackUrl');
@@ -17,6 +18,8 @@ const CANVAS_OAUTH_SECRET: string = config.get('canvasOauth.secret');
 const CANVAS_OAUTH_TOKEN_URL: string = config.get('canvasOauth.tokenUrl');
 const COOKIE_NAME: string = 'dx';
 const DYNAMODB: string = config.get('aws.dynamodb');
+const DYNAMODB_APIVERSION: string = config.get('aws.dynamodb.apiVersion');
+const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
 const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
 const DX_MCM_BASE_URL: string = config.get('dxMcmApi.baseUrl');
 const DX_MCM_CACHE_SEC = parseInt(config.get('dxMcmApi.cacheEndpointSec'), 10);
@@ -76,6 +79,7 @@ export {
   API_KEYS,
   APP_URL_REGEX,
   APP_VERSION,
+  AWS_REGION,
   CANVAS_OAUTH_AUTH_URL,
   CANVAS_OAUTH_BASE_URL,
   CANVAS_OAUTH_CALLBACK_URL,
@@ -86,6 +90,8 @@ export {
   COLLEGES,
   COOKIE_NAME,
   DYNAMODB,
+  DYNAMODB_APIVERSION,
+  DYNAMODB_ENDPOINT,
   DYNAMODB_TABLE_PREFIX,
   DX_MCM_BASE_URL,
   DX_MCM_CACHE_SEC,

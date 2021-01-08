@@ -1,6 +1,6 @@
 /* eslint-disable no-console, no-unused-vars */
 
-import User from '../../api/models/user';
+import { User, upsert } from '../../api/models/user';
 import logger from '../../logger';
 
 // Provide the ability to create a test user for localhost full masquerade
@@ -17,7 +17,7 @@ const testUser: User = {
   onid: 'rossb',
 };
 
-User.upsert(testUser)
+upsert(testUser)
   .then((_v) => {
     logger().info('Created user.', testUser);
   })
