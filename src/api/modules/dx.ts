@@ -1,4 +1,4 @@
-import Kitsu from 'kitsu/node';
+import Kitsu from 'kitsu';
 import config from 'config';
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import {
@@ -38,8 +38,8 @@ const api = new Kitsu({
  * @param item drupal item including field_announcement_image.field_media_image
  */
 const imageUrl = (item) => {
-  if (item.field_announcement_image?.field_media_image?.uri?.url) {
-    return `${BASE_URL}${item.field_announcement_image.field_media_image.uri.url}`;
+  if (item.field_announcement_image?.data?.field_media_image?.data?.uri?.url) {
+    return `${BASE_URL}${item.field_announcement_image.data.field_media_image.data.uri.url}`;
   }
   return undefined;
 };
@@ -71,12 +71,13 @@ const mappedAnnouncements = (items: any[]): IAnnouncementResult[] => {
       let affiliation = [];
       let locations = [];
       if (d.field_audience !== undefined)
-        audiences = d.field_audience.map((a) => a.name).filter(Boolean);
-      if (d.field_pages !== undefined) pages = d.field_pages.map((a) => a.name).filter(Boolean);
+        audiences = d.field_audience.data.map((a) => a.name).filter(Boolean);
+      if (d.field_pages !== undefined)
+        pages = d.field_pages.data.map((a) => a.name).filter(Boolean);
       if (d.field_affiliation !== undefined)
-        affiliation = d.field_affiliation.map((a) => a.name).filter(Boolean);
+        affiliation = d.field_affiliation.data.map((a) => a.name).filter(Boolean);
       if (d.field_locations !== undefined)
-        locations = d.field_locations.map((a) => a.name).filter(Boolean);
+        locations = d.field_locations.data.map((a) => a.name).filter(Boolean);
       return {
         id: d.id,
         type: d.drupal_internal__name,

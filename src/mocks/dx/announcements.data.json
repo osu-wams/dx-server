@@ -7,118 +7,192 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
       },
       "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1?resourceVersion=id%3A7616"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1?resourceVersion=id%3A12281"
       }
     },
-    "field_announcement_image": {
-      "type": "media--image",
-      "id": "c3ccfa1e-7dbc-44d8-8f03-0003f84bffa2",
+    "field_affiliation": {
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/field_affiliation?resourceVersion=id%3A12281"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/c3ccfa1e-7dbc-44d8-8f03-0003f84bffa2?resourceVersion=id%3A5086"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/relationships/field_affiliation?resourceVersion=id%3A12281"
         }
       },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "dfc25bd2-309f-408d-a4a9-7ac1b1c598a5",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/dfc25bd2-309f-408d-a4a9-7ac1b1c598a5"
-          }
-        },
-        "meta": {
-          "alt": "Photo of HSRC basket and pantry.",
-          "title": "",
-          "width": 600,
-          "height": 400
-        },
-        "filename": "HSRC_Basket.jpg",
-        "uri": {
-          "value": "public://2019-11/HSRC_Basket.jpg",
-          "url": "/sites/default/files/2019-11/HSRC_Basket.jpg"
-        },
-        "filemime": "image/jpeg"
-      },
-      "name": "HSRC_Basket.jpg"
+          "name": "Student"
+        }
+      ]
     },
-    "field_audience": [],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "e851785e-6167-4e56-a1c7-218dc9f83756",
+    "field_announcement_image": {
+      "data": {
+        "type": "media--image",
+        "id": "c3ccfa1e-7dbc-44d8-8f03-0003f84bffa2",
         "links": {
           "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
           },
           "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/e851785e-6167-4e56-a1c7-218dc9f83756"
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/c3ccfa1e-7dbc-44d8-8f03-0003f84bffa2?resourceVersion=id%3A5086"
           }
         },
-        "name": "Finances"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-1",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+        "field_media_image": {
+          "data": {
+            "type": "file--file",
+            "id": "dfc25bd2-309f-408d-a4a9-7ac1b1c598a5",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/dfc25bd2-309f-408d-a4a9-7ac1b1c598a5"
+              }
+            },
+            "meta": {
+              "alt": "Photo of HSRC basket and pantry.",
+              "title": "",
+              "width": 600,
+              "height": 400
+            },
+            "filename": "HSRC_Basket.jpg",
+            "uri": {
+              "value": "public://2019-11/HSRC_Basket.jpg",
+              "url": "/sites/default/files/2019-11/HSRC_Basket.jpg"
+            },
+            "filemime": "image/jpeg"
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/c3ccfa1e-7dbc-44d8-8f03-0003f84bffa2/field_media_image?resourceVersion=id%3A5086"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/c3ccfa1e-7dbc-44d8-8f03-0003f84bffa2/relationships/field_media_image?resourceVersion=id%3A5086"
+            }
           }
         },
-        "name": "Bend"
+        "name": "HSRC_Basket.jpg"
       },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/field_announcement_image?resourceVersion=id%3A12281"
         },
-        "name": "Corvallis"
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/relationships/field_announcement_image?resourceVersion=id%3A12281"
+        }
+      }
+    },
+    "field_audience": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/field_audience?resourceVersion=id%3A12281"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/relationships/field_audience?resourceVersion=id%3A12281"
+        }
       },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--audience",
+          "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/18c26921-8e03-4581-a30f-b832c3a803ad"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
+          "name": "Graduate Student"
+        }
+      ]
+    },
+    "field_locations": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/field_locations?resourceVersion=id%3A12281"
         },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/relationships/field_locations?resourceVersion=id%3A12281"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--locations",
+          "id": "8a4c349c-a444-4ffa-9439-a7ac046c40ac",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/8a4c349c-a444-4ffa-9439-a7ac046c40ac"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
+          "name": "Bend"
         },
-        "name": "Student"
-      }
-    ],
+        {
+          "type": "taxonomy_term--locations",
+          "id": "4657195e-93a2-4029-afac-6810b98b8f7f",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/4657195e-93a2-4029-afac-6810b98b8f7f"
+            }
+          },
+          "name": "Corvallis"
+        },
+        {
+          "type": "taxonomy_term--locations",
+          "id": "bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5"
+            }
+          },
+          "name": "Ecampus"
+        }
+      ]
+    },
+    "field_pages": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/field_pages?resourceVersion=id%3A12281"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d67dd5d0-5aab-4941-a1d1-fa81b51630a1/relationships/field_pages?resourceVersion=id%3A12281"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--pages",
+          "id": "e851785e-6167-4e56-a1c7-218dc9f83756",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/e851785e-6167-4e56-a1c7-218dc9f83756"
+            }
+          },
+          "name": "Finances"
+        }
+      ]
+    },
     "title": "SNAP for OSU Students",
     "field_announcement_action": {
       "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Fbeav.es%2FSNAP&token=N1dOAVMk%2B5bq7mRPjK3wNU3g7zZLzG7DskwS4u5uySs%3D",
@@ -129,1108 +203,343 @@
   },
   {
     "type": "node--announcement",
-    "id": "6b0d3f12-590f-4e0c-a743-930fc4d42b32",
+    "id": "1c88f235-f877-4cc0-8f5c-af0997eeffd1",
     "links": {
       "describedby": {
         "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
       },
       "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/6b0d3f12-590f-4e0c-a743-930fc4d42b32?resourceVersion=id%3A7721"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1?resourceVersion=id%3A20611"
       }
     },
-    "field_announcement_image": {
-      "type": "media--image",
-      "id": "a4ab2d77-6694-4ab3-a28c-151853609d67",
+    "field_affiliation": {
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/field_affiliation?resourceVersion=id%3A20611"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/a4ab2d77-6694-4ab3-a28c-151853609d67?resourceVersion=id%3A1961"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/relationships/field_affiliation?resourceVersion=id%3A20611"
         }
       },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "1bd0dc2f-5abc-4bf1-abf4-118808cc973d",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/1bd0dc2f-5abc-4bf1-abf4-118808cc973d"
-          }
+          "name": "Employee"
         },
-        "meta": { "alt": "Amazon lockers", "title": "", "width": 970, "height": 970 },
-        "filename": "amzn_lockers_hero_1200x1200._SX970._CB475759028_.jpg",
-        "uri": {
-          "value": "public://2019-08/amzn_lockers_hero_1200x1200._SX970._CB475759028_.jpg",
-          "url": "/sites/default/files/2019-08/amzn_lockers_hero_1200x1200._SX970._CB475759028_.jpg"
-        },
-        "filemime": "image/jpeg"
-      },
-      "name": "amzn_lockers_hero_1200x1200._SX970._CB475759028_.jpg"
-    },
-    "field_audience": [
-      {
-        "type": "taxonomy_term--audience",
-        "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--audience",
-        "id": "03ec6d31-8fcf-446a-9c7f-aa7172452f52",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/03ec6d31-8fcf-446a-9c7f-aa7172452f52"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
-          }
-        },
-        "name": "Dashboard"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Amazon on campus",
-    "field_announcement_action": null,
-    "field_announcement_body": "Come pick up your Amazon packages at the Memorial Union! Beginning fall term, we will have a set of Amazon lockers for use at your convenience."
-  },
-  {
-    "type": "node--announcement",
-    "id": "d06eaeae-01ec-4390-bc44-7be06159eba9",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/d06eaeae-01ec-4390-bc44-7be06159eba9?resourceVersion=id%3A7736"
-      }
-    },
-    "field_audience": [
-      {
-        "type": "taxonomy_term--audience",
-        "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
-          }
-        },
-        "name": "Corvallis"
-      }
-    ],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
-          }
-        },
-        "name": "Dashboard"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Emergency Contact Info",
-    "field_announcement_action": {
-      "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Foregonstate.edu%2Falerts%2Fosu-alert-portal&token=QE9LytTaaBHkw66ZLRk0zu6zVTapVNkvpO85gm3wHv8%3D",
-      "title": "Go to the Alert Portal",
-      "options": []
-    },
-    "field_announcement_body": "   The OSU Alert portal allows you to provide OSU with your current contact information. This information will only be used to notify you in the event of an emergency. "
-  },
-  {
-    "type": "node--announcement",
-    "id": "2fc825b4-1860-459b-834f-2faacb39fdb7",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/2fc825b4-1860-459b-834f-2faacb39fdb7?resourceVersion=id%3A7751"
-      },
-      "working-copy": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/2fc825b4-1860-459b-834f-2faacb39fdb7?resourceVersion=rel%3Aworking-copy"
-      }
-    },
-    "field_audience": [],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
-          }
-        },
-        "name": "Dashboard"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-1",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
-          }
-        },
-        "name": "Bend"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Get it, Beavs.",
-    "field_announcement_action": null,
-    "field_announcement_body": "The storm said stop. We heard go.   — Beaver Nation "
-  },
-  {
-    "type": "node--announcement",
-    "id": "7c0f8ffb-24c6-403b-b3fa-3ba0fd7ffbb9",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/7c0f8ffb-24c6-403b-b3fa-3ba0fd7ffbb9?resourceVersion=id%3A7816"
-      }
+          "name": "Student"
+        }
+      ]
     },
     "field_announcement_image": {
-      "type": "media--image",
-      "id": "880559bf-15d7-46f2-bdda-3f30e3fa0538",
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/field_announcement_image?resourceVersion=id%3A20611"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/880559bf-15d7-46f2-bdda-3f30e3fa0538?resourceVersion=id%3A5096"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/relationships/field_announcement_image?resourceVersion=id%3A20611"
+        }
+      }
+    },
+    "field_audience": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/field_audience?resourceVersion=id%3A20611"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/relationships/field_audience?resourceVersion=id%3A20611"
         }
       },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "ae52fdae-ad1b-4ce1-a42d-daf43578f430",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/ae52fdae-ad1b-4ce1-a42d-daf43578f430"
-          }
-        },
-        "meta": {
-          "alt": "A student visiting the Wellness Nook.",
-          "title": "",
-          "width": 800,
-          "height": 600
-        },
-        "filename": "WellnessNook.jpg",
-        "uri": {
-          "value": "public://2019-11/WellnessNook.jpg",
-          "url": "/sites/default/files/2019-11/WellnessNook.jpg"
-        },
-        "filemime": "image/jpeg"
-      },
-      "name": "WellnessNook.jpg"
+      "data": []
     },
-    "field_audience": [
-      {
-        "type": "taxonomy_term--audience",
-        "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
-          }
+    "field_locations": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/field_locations?resourceVersion=id%3A20611"
         },
-        "name": "Corvallis"
-      }
-    ],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/relationships/field_locations?resourceVersion=id%3A20611"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--locations",
+          "id": "8a4c349c-a444-4ffa-9439-a7ac046c40ac",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/8a4c349c-a444-4ffa-9439-a7ac046c40ac"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
-          }
+          "name": "Bend"
         },
-        "name": "Dashboard"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+        {
+          "type": "taxonomy_term--locations",
+          "id": "4657195e-93a2-4029-afac-6810b98b8f7f",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/4657195e-93a2-4029-afac-6810b98b8f7f"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
+          "name": "Corvallis"
         },
-        "name": "Corvallis"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+        {
+          "type": "taxonomy_term--locations",
+          "id": "bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
+          "name": "Ecampus"
+        }
+      ]
+    },
+    "field_pages": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/field_pages?resourceVersion=id%3A20611"
         },
-        "name": "Student"
-      }
-    ],
-    "title": "Wellness Nook Opens",
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/1c88f235-f877-4cc0-8f5c-af0997eeffd1/relationships/field_pages?resourceVersion=id%3A20611"
+        }
+      },
+      "data": []
+    },
+    "title": "COVID -19 Health Check",
     "field_announcement_action": {
-      "uri": "https://wellnessnook.oregonstate.edu",
-      "title": "Stop by the Wellness Nook ",
+      "uri": "https://is.oregonstate.edu/wams/mobile",
+      "title": "Download OSU Mobile",
       "options": []
     },
-    "field_announcement_body": "   Check out the new Wellness Nook — a welcoming and comfortable place to learn, ask questions and connect to resources for your well-being — located in the Memorial Union. "
+    "field_announcement_body": "The new Health Check tool and additional COVID-19 resources are now available on OSU Mobile!"
   },
   {
     "type": "node--announcement",
-    "id": "a8788809-4dbe-49df-ad84-911b18b5749c",
+    "id": "43f17907-488b-45f3-aa84-c9429be575ec",
     "links": {
       "describedby": {
         "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
       },
       "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/a8788809-4dbe-49df-ad84-911b18b5749c?resourceVersion=id%3A8061"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec?resourceVersion=id%3A20671"
       }
     },
-    "field_audience": [
-      {
-        "type": "taxonomy_term--audience",
-        "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
-          }
+    "field_affiliation": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/field_affiliation?resourceVersion=id%3A20671"
         },
-        "name": "Corvallis"
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/relationships/field_affiliation?resourceVersion=id%3A20671"
+        }
       },
-      {
-        "type": "taxonomy_term--audience",
-        "id": "91c88ac8-c708-4347-bd06-ea59ed5c3997",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/91c88ac8-c708-4347-bd06-ea59ed5c3997"
-          }
+          "name": "Employee"
         },
-        "name": "Graduate Student"
-      },
-      {
-        "type": "taxonomy_term--audience",
-        "id": "5c8fe443-1fa9-4e2a-886b-67b6e58322ca",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/5c8fe443-1fa9-4e2a-886b-67b6e58322ca"
-          }
-        },
-        "name": "International Student"
-      }
-    ],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
-          }
-        },
-        "name": "Dashboard"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Coffee naps. Say what?!",
-    "field_announcement_action": {
-      "uri": "https://www.sciencedirect.com/science/article/pii/S1388245703002554",
-      "title": "How do I coffee nap?",
-      "options": []
-    },
-    "field_announcement_body": "It may sound counterintuitive, but researchers in the UK and Japan have figured out that a quick coffee break followed by a 20 minute nap can give you that much needed mental boost better than just coffee or a nap can. "
-  },
-  {
-    "type": "node--announcement",
-    "id": "34043ff9-232e-4387-b452-a8109ed29579",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/34043ff9-232e-4387-b452-a8109ed29579?resourceVersion=id%3A8081"
-      }
-    },
-    "field_audience": [],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
-          }
-        },
-        "name": "Dashboard"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-1",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
-          }
-        },
-        "name": "Bend"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Need support? ",
-    "field_announcement_action": {
-      "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Foregonstate.edu%2Freachout&token=Z1CWyybpeZk13rHUCgVR20ypkLs9J1fMP50ljeUfzMg%3D",
-      "title": "Reach Out",
-      "options": []
-    },
-    "field_announcement_body": "   If you are struggling, consider spending time and talking about your feelings with family and friends; taking breaks from social media and the news; and staying active and healthy. "
-  },
-  {
-    "type": "node--announcement",
-    "id": "8983b1a5-dc2a-4680-94f4-f3a0e3205e1e",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/8983b1a5-dc2a-4680-94f4-f3a0e3205e1e?resourceVersion=id%3A8121"
-      }
+          "name": "Student"
+        }
+      ]
     },
     "field_announcement_image": {
-      "type": "media--image",
-      "id": "e0e5167c-58b6-4dc0-87c4-c6171c07b1bf",
+      "data": {
+        "type": "media--image",
+        "id": "4d3e19c9-4525-44e8-8f45-7a841dabb604",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/4d3e19c9-4525-44e8-8f45-7a841dabb604?resourceVersion=id%3A5276"
+          }
+        },
+        "field_media_image": {
+          "data": {
+            "type": "file--file",
+            "id": "d9ad2773-5ea6-424d-8d50-389bde9bb6d1",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/d9ad2773-5ea6-424d-8d50-389bde9bb6d1"
+              }
+            },
+            "meta": {
+              "alt": "person with mask studying",
+              "title": "",
+              "width": 640,
+              "height": 465
+            },
+            "filename": "COVID-9285 (2).jpg",
+            "uri": {
+              "value": "public://2020-10/COVID-9285 (2).jpg",
+              "url": "/sites/default/files/2020-10/COVID-9285%20%282%29.jpg"
+            },
+            "filemime": "image/jpeg"
+          },
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/4d3e19c9-4525-44e8-8f45-7a841dabb604/field_media_image?resourceVersion=id%3A5276"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/4d3e19c9-4525-44e8-8f45-7a841dabb604/relationships/field_media_image?resourceVersion=id%3A5276"
+            }
+          }
+        },
+        "name": "COVID-9285 (2).jpg"
+      },
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/field_announcement_image?resourceVersion=id%3A20671"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/e0e5167c-58b6-4dc0-87c4-c6171c07b1bf?resourceVersion=id%3A5076"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/relationships/field_announcement_image?resourceVersion=id%3A20671"
+        }
+      }
+    },
+    "field_audience": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/field_audience?resourceVersion=id%3A20671"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/relationships/field_audience?resourceVersion=id%3A20671"
         }
       },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "9dd0df7b-b262-44f8-96db-df367b3fd43a",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/9dd0df7b-b262-44f8-96db-df367b3fd43a"
-          }
-        },
-        "meta": {
-          "alt": "Decorative pattern of cross marks.",
-          "title": "",
-          "width": 600,
-          "height": 400
-        },
-        "filename": "plus-grid.jpg",
-        "uri": {
-          "value": "public://2019-11/plus-grid.jpg",
-          "url": "/sites/default/files/2019-11/plus-grid.jpg"
-        },
-        "filemime": "image/jpeg"
-      },
-      "name": "plus-grid.jpg"
+      "data": []
     },
-    "field_audience": [],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0"
-          }
+    "field_locations": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/field_locations?resourceVersion=id%3A20671"
         },
-        "name": "Academics"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-1",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
-          }
-        },
-        "name": "Bend"
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/relationships/field_locations?resourceVersion=id%3A20671"
+        }
       },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--locations",
+          "id": "8a4c349c-a444-4ffa-9439-a7ac046c40ac",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/8a4c349c-a444-4ffa-9439-a7ac046c40ac"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
+          "name": "Bend"
         },
-        "name": "Corvallis"
+        {
+          "type": "taxonomy_term--locations",
+          "id": "4657195e-93a2-4029-afac-6810b98b8f7f",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/4657195e-93a2-4029-afac-6810b98b8f7f"
+            }
+          },
+          "name": "Corvallis"
+        },
+        {
+          "type": "taxonomy_term--locations",
+          "id": "bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/bf3a7e92-0b85-4f4f-89ea-277d31fbbbf5"
+            }
+          },
+          "name": "Ecampus"
+        }
+      ]
+    },
+    "field_pages": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/field_pages?resourceVersion=id%3A20671"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/43f17907-488b-45f3-aa84-c9429be575ec/relationships/field_pages?resourceVersion=id%3A20671"
+        }
       },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--pages",
+          "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Hey Beavs, want to improve your finals grades? ",
+          "name": "Dashboard"
+        }
+      ]
+    },
+    "title": "TRACE OSU",
     "field_announcement_action": {
-      "uri": "https://proxy.qualtrics.com/proxy/?url=https%3A%2F%2Fsuccess.oregonstate.edu%2Fstudent-strategists&token=uQI4YJ29P1S1nVxcIPkJFC0rYawV89Wm3rf%2FheLbHa4%3D",
-      "title": "Visit with an ASC strategist",
+      "uri": "https://trace.oregonstate.edu/osu",
+      "title": "Learn more about TRACE OSU",
       "options": []
     },
-    "field_announcement_body": "Swing by the Academic Success Center and meet with a strategist. Chat about your current test prep and find new ways to get ready for exams. You’ve got a few weeks left. What are you waiting for?! "
-  },
-  {
-    "type": "node--announcement",
-    "id": "f165e7b0-185c-464a-80b2-e20f7ffd5ed5",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/f165e7b0-185c-464a-80b2-e20f7ffd5ed5?resourceVersion=id%3A8161"
-      }
-    },
-    "field_audience": [],
-    "field_pages": [],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-1",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
-          }
-        },
-        "name": "Bend"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Fellow OSU faculty member makes 16,000-year-old discovery",
-    "field_announcement_action": {
-      "uri": "https://www.kezi.com/content/news/OSU-professor-makes-16000-year-old-discovery-in-Western-Idaho-563102261.html",
-      "title": "Read more!",
-      "options": []
-    },
-    "field_announcement_body": "An OSU professor who directed an archaeological excavation in Idaho discovered 16,000-year-old bones and artifacts."
-  },
-  {
-    "type": "node--announcement",
-    "id": "0570480e-98bf-457c-af46-547a3c36d84d",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/0570480e-98bf-457c-af46-547a3c36d84d?resourceVersion=id%3A8191"
-      }
-    },
-    "field_audience": [],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "e851785e-6167-4e56-a1c7-218dc9f83756",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/e851785e-6167-4e56-a1c7-218dc9f83756"
-          }
-        },
-        "name": "Finances"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-1",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
-          }
-        },
-        "name": "Bend"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "FAFSA reminder",
-    "field_announcement_action": {
-      "uri": "https://financialaid.oregonstate.edu/financial-aid",
-      "title": "Fill out your FAFSA",
-      "options": []
-    },
-    "field_announcement_body": "The priority deadline (Feb. 28) for submitting your FAFSA is fast approaching. Not sure how to even begin? Come visit us at OSU Financial Aid. "
-  },
-  {
-    "type": "node--announcement",
-    "id": "bc0c685f-885f-4853-9282-bc932eeb12e1",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/node/announcement/bc0c685f-885f-4853-9282-bc932eeb12e1?resourceVersion=id%3A8206"
-      }
-    },
-    "field_audience": [
-      {
-        "type": "taxonomy_term--audience",
-        "id": "ed064109-1d73-40d1-b0bc-6a94b1f70f38",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/ed064109-1d73-40d1-b0bc-6a94b1f70f38"
-          }
-        },
-        "name": "Bend"
-      },
-      {
-        "type": "taxonomy_term--audience",
-        "id": "d8fddbf9-c1c3-485d-90b7-291f17161a4b",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/d8fddbf9-c1c3-485d-90b7-291f17161a4b"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--audience",
-        "id": "03ec6d31-8fcf-446a-9c7f-aa7172452f52",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/audience/03ec6d31-8fcf-446a-9c7f-aa7172452f52"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_pages": [
-      {
-        "type": "taxonomy_term--pages",
-        "id": "b19b6bd8-6487-40ca-b780-183c1d34decf",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/b19b6bd8-6487-40ca-b780-183c1d34decf"
-          }
-        },
-        "name": "Dashboard"
-      }
-    ],
-    "field_locations": [
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-1",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-1"
-          }
-        },
-        "name": "Bend"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-2",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-2"
-          }
-        },
-        "name": "Corvallis"
-      },
-      {
-        "type": "taxonomy_term--locations",
-        "id": "location-3",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/locations/location-3"
-          }
-        },
-        "name": "Ecampus"
-      }
-    ],
-    "field_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "title": "Duo for Students",
-    "field_announcement_action": {
-      "uri": "https://is.oregonstate.edu/duo",
-      "title": "Sign up now.",
-      "options": []
-    },
-    "field_announcement_body": "Start protecting yourself online today."
+    "field_announcement_body": "Faculty, staff and students play a key role in making our community healthier. Through voluntary testing, TRACE OSU monitors the prevalence of COVID-19 at campuses in Corvallis and Bend and at OSU’s Hatfield Marine Science Center in Newport."
   }
 ]

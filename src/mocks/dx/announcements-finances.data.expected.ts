@@ -7,7 +7,7 @@ export default [
     bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/HSRC_Basket.jpg',
     affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
-    audiences: [],
+    audiences: ['Graduate Student'],
     pages: ['Finances'],
     action: {
       title: 'Learn about SNAP',
@@ -16,32 +16,17 @@ export default [
     },
   },
   {
-    id: 'f165e7b0-185c-464a-80b2-e20f7ffd5ed5',
-    title: 'Fellow OSU faculty member makes 16,000-year-old discovery',
+    id: '1c88f235-f877-4cc0-8f5c-af0997eeffd1',
+    title: 'COVID -19 Health Check',
     body:
-      'An OSU professor who directed an archaeological excavation in Idaho discovered 16,000-year-old bones and artifacts.',
+      'The new Health Check tool and additional COVID-19 resources are now available on OSU Mobile!',
     affiliation: ['Employee', 'Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
     pages: [],
     action: {
-      title: 'Read more!',
-      link:
-        'https://www.kezi.com/content/news/OSU-professor-makes-16000-year-old-discovery-in-Western-Idaho-563102261.html',
-    },
-  },
-  {
-    id: '0570480e-98bf-457c-af46-547a3c36d84d',
-    title: 'FAFSA reminder',
-    body:
-      'The priority deadline (Feb. 28) for submitting your FAFSA is fast approaching. Not sure how to even begin? Come visit us at OSU Financial Aid. ',
-    affiliation: ['Student'],
-    locations: ['Bend', 'Corvallis', 'Ecampus'],
-    audiences: [],
-    pages: ['Finances'],
-    action: {
-      title: 'Fill out your FAFSA',
-      link: 'https://financialaid.oregonstate.edu/financial-aid',
+      title: 'Download OSU Mobile',
+      link: 'https://is.oregonstate.edu/wams/mobile',
     },
   },
 ];
