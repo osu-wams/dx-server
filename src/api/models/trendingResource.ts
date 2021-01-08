@@ -125,7 +125,7 @@ export const upsert = async (
     logger().info('TrendingResource.upsert succeeded:', result);
     return find(props.resourceId, props.date);
   } catch (err) {
-    logger().error(`FavoriteResource.upsert failed:`, props, err);
+    logger().error(`TrendingResource.upsert failed:`, props, err);
     throw err;
   }
 };
