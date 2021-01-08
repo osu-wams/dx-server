@@ -105,10 +105,10 @@ const mappedResources = (items: any[]): Types.Resource[] => {
     title: d.title,
     link: d.field_service_url?.uri,
     iconName: d.field_icon_name,
-    affiliation: d.field_affiliation.map((a) => a.name).filter(Boolean),
-    locations: d.field_locations.map((a) => a.name).filter(Boolean),
-    audiences: d.field_audience.map((a) => a.name).filter(Boolean),
-    categories: d.field_service_category.map((c) => c.name).filter(Boolean),
+    affiliation: d.field_affiliation.data.map((a) => a.name).filter(Boolean),
+    locations: d.field_locations.data.map((a) => a.name).filter(Boolean),
+    audiences: d.field_audience.data.map((a) => a.name).filter(Boolean),
+    categories: d.field_service_category.data.map((c) => c.name).filter(Boolean),
     synonyms: d.field_service_synonyms,
     excludeTrending: d.field_exclude_trending,
   }));
@@ -237,7 +237,7 @@ export const getCuratedResources = async (category: string): Promise<Types.Resou
   // Clean up the results and include the entityque title
   const entityqueueResources = {
     entityQueueTitle,
-    items: mappedResources(data[0].items),
+    items: mappedResources(data[0].items.data),
   };
 
   return entityqueueResources;
@@ -266,14 +266,14 @@ export const getCategories = async (): Promise<Types.Category[]> => {
   );
 
   const categoryIconUrl = (item) => {
-    if (item.field_taxonomy_icon?.field_media_image?.uri?.url) {
-      return `${BASE_URL}${item.field_taxonomy_icon.field_media_image.uri.url}`;
+    if (item.field_taxonomy_icon?.data?.field_media_image?.uri?.url) {
+      return `${BASE_URL}${item.field_taxonomy_icon.data.field_media_image.uri.url}`;
     }
     return undefined;
   };
 
   return data.map((d) => ({
-    affiliation: d.field_taxonomy_affiliation.map((a) => a.name),
+    affiliation: d.field_taxonomy_affiliation.data.map((a) => a.name),
     id: d.id,
     name: d.name,
     icon: categoryIconUrl(d),
@@ -432,13 +432,13 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
   );
 
   const trainingImageUrl = (item) => {
-    if (item.field_training_image?.field_media_image?.uri?.url) {
-      return `${BASE_URL}${item.field_training_image.field_media_image.uri.url}`;
+    if (item.field_training_image?.data?.field_media_image?.uri?.url) {
+      return `${BASE_URL}${item.field_training_image.data.field_media_image.uri.url}`;
     }
     return undefined;
   };
   const trainings = data.map((d) => ({
-    audiences: d.field_training_audience.map((a) => a.name),
+    audiences: d.field_training_audience.data.map((a) => a.name),
     id: d.id,
     title: d.title,
     image: trainingImageUrl(d),
@@ -446,11 +446,11 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
     cost: d.field_training_cost,
     body: d.body?.processed,
     offeredBy: d.field_training_department,
-    courseLength: d.field_training_course_length?.name,
+    courseLength: d.field_training_course_length?.data?.name,
     featured: d.field_training_featured,
     prerequisites: d.field_training_prerequisites,
-    deliveryMethod: d.field_training_course_design?.map((dm) => dm.name),
-    tags: d.field_training_tags.map((t) => t.name),
+    deliveryMethod: d.field_training_course_design?.data.map((dm) => dm.name),
+    tags: d.field_training_tags.data.map((t) => t.name),
     websiteUri: d.field_training_website?.uri,
     websiteTitle: d.field_training_website?.title,
   }));
@@ -510,17 +510,17 @@ const mappedCards = (items: any[]): Types.DynamicCard[] => {
     id: d.id,
     title: d.title,
     infoButtonId: d.field_machine_name,
-    locations: d.field_locations.map((a) => a.name).filter(Boolean),
-    affiliation: d.field_affiliation.map((a) => a.name).filter(Boolean),
-    pages: d.field_pages.map((a) => a.name).filter(Boolean),
+    locations: d.field_locations.data.map((a) => a.name).filter(Boolean),
+    affiliation: d.field_affiliation.data.map((a) => a.name).filter(Boolean),
+    pages: d.field_pages.data.map((a) => a.name).filter(Boolean),
     weight: d.field_weight,
     sticky: d.sticky,
-    resources: d.field_resources?.map((a) => a.id).filter(Boolean),
+    resources: d.field_resources?.data.map((a) => a.id).filter(Boolean),
     icon: d.field_icon_name,
     body: d.body?.processed,
     link: d.field_card_footer_link?.uri,
     linkText: d.field_card_footer_link?.title,
-    audiences: d.field_audience.map((a) => a.name).filter(Boolean),
+    audiences: d.field_audience.data.map((a) => a.name).filter(Boolean),
   }));
 };
 
