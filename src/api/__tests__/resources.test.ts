@@ -48,23 +48,30 @@ describe('/resources', () => {
   it('returns associated data without null values', async () => {
     // JSON.parse/stringify to enforce a deep copied array as to not mutate the original!
     const resources = JSON.parse(JSON.stringify(mockedResources)).slice(0, 1);
-    resources[0].field_locations = resources[0].field_locations.slice(0, 1);
-    resources[0].field_locations[0].name = null;
-    resources[0].field_audience[0].name = null;
+    resources[0].field_locations.data = resources[0].field_locations.data.slice(0, 1);
+    resources[0].field_locations.data[0].name = null;
+    resources[0].field_audience.data[0].name = null;
     const url = '/api/resources';
     mockCachedData.mockReturnValue(JSON.stringify(resources));
     cache.getAsync = getAsync;
     await request.get(url).expect(200, [
       {
-        id: '4c78c92a-baca-480d-97e7-384bb76e3b48',
-        title: 'Academic Advising',
-        link: 'https://catalog.oregonstate.edu/advising/',
-        iconName: 'fal.comments-alt',
-        affiliation: [],
+        id: 'd7792ca0-c761-4511-bd56-360e578491ac',
+        title: '1095 Employer-Provided Health Insurance Offer and Coverage Statement',
+        link:
+          'https://xe.ucsadm.oregonstate.edu:9990/ssomanager/c/SSB?pkg=bwpkxtxs.P_Choose1095cKey',
+        iconName: 'fal.file-invoice-dollar',
+        affiliation: ['Employee'],
         locations: [],
-        audiences: ['Ecampus'],
+        audiences: [],
         categories: [],
-        synonyms: [],
+        synonyms: [
+          'banner',
+          'self-service',
+          'self service',
+          'banner self-service',
+          'banner self service',
+        ],
         excludeTrending: false,
       },
     ]);
@@ -129,9 +136,8 @@ describe('/resources', () => {
       nock(BASE_URL)
         .get(/.*/)
         .reply(200, { data: mockedCuratedResources('featured') });
-      await request
-        .get('/api/resources/category/featured')
-        .expect(200, mockedCuratedResourcesFeaturedExpected);
+      const result = await request.get('/api/resources/category/featured').expect(200);
+      expect(result.body).toEqual(mockedCuratedResourcesFeaturedExpected);
     });
     it('should filter cached the data', async () => {
       mockCachedData.mockReturnValue(JSON.stringify(mockedCuratedResources('featured')));
@@ -144,9 +150,8 @@ describe('/resources', () => {
     it('should filter cached data that does not include related data', async () => {
       mockCachedData.mockReturnValue(JSON.stringify(mockedCuratedResources('academic')));
       cache.getAsync = getAsync;
-      await request
-        .get('/api/resources/category/academic')
-        .expect(200, mockedCuratedResourcesAcademicExpected);
+      const result = await request.get('/api/resources/category/academic').expect(200);
+      expect(result.body).toEqual(mockedCuratedResourcesAcademicExpected);
     });
 
     it('should return a 500 if the site is down', async () => {
