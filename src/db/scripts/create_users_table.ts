@@ -3,28 +3,15 @@
 import config from 'config';
 import { DynamoDB, AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
 import dynamoDb from '../index';
-import User from '../../api/models/user';
+import { TABLE_NAME, TableDefinition } from '../../api/models/user';
 import logger from '../../logger';
 
 const createTable = (): void => {
-  const params: DynamoDB.CreateTableInput = {
-    AttributeDefinitions: [{ AttributeName: 'osuId', AttributeType: 'N' }],
-    KeySchema: [{ AttributeName: 'osuId', KeyType: 'HASH' }],
-    ProvisionedThroughput: {
-      ReadCapacityUnits: 5,
-      WriteCapacityUnits: 5,
-    },
-    TableName: User.TABLE_NAME,
-    StreamSpecification: {
-      StreamEnabled: false,
-    },
-  };
-
-  dynamoDb.createTable(params, (err: AWSError, data: DynamoDB.CreateTableOutput) => {
+  dynamoDb.createTable(TableDefinition, (err: AWSError, data: DynamoDB.CreateTableOutput) => {
     if (err) {
-      logger().error(`Error creating ${User.TABLE_NAME} table.`, err);
+      logger().error(`Error creating ${TABLE_NAME} table.`, err);
     } else {
-      logger().info(`Created ${User.TABLE_NAME} table.`, data);
+      logger().info(`Created ${TABLE_NAME} table.`, data);
     }
   });
 };

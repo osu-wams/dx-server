@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { User as UserLib } from '@osu-wams/lib';
 import { getCache, AUTH_DB, setCache } from '../api/modules/cache';
 import { ENV, GROUPS, IV_LENGTH } from '../constants';
-import User, { IUser } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import { User } from '../api/models/user'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 
 interface Jwt {
@@ -106,7 +106,7 @@ const parseSamlResult = (profile: any, done: any) => {
   return done(null, user);
 };
 
-const cacheKey = (user: IUser, iat: number) => `${iat.toString()}-${user.email}`;
+const cacheKey = (user: User, iat: number) => `${iat.toString()}-${user.email}`;
 
 export const verifiedJwt = (token: string, jwtKey: string): Jwt => jwt.verify(token, jwtKey) as Jwt;
 
@@ -174,7 +174,7 @@ export const userFromJWT = async (token: string, jwtKey: string): Promise<User |
  * @param jwtKey the key for signing the jwt
  */
 export const issueJWT = async (
-  user: IUser,
+  user: User,
   encryptionKey: string,
   jwtKey: string,
 ): Promise<string | null> => {

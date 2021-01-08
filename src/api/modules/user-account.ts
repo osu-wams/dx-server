@@ -1,6 +1,6 @@
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import { COLLEGES } from '../../constants';
-import User from '../models/user'; // eslint-disable-line no-unused-vars
+import { User, find, upsert, updateCanvasData } from '../models/user'; // eslint-disable-line no-unused-vars
 import logger from '../../logger';
 
 export interface SamlUser {
@@ -41,12 +41,12 @@ const arraysMatch = (a: string[], b: string[]) => {
 
 export const findOrUpsertUser = async (u: Partial<User>): Promise<FindOrUpsertUser> => {
   try {
-    let user: User = await User.find(u.osuId);
+    let user: User = await find(u.osuId);
     let isNew = false;
 
     if (!user) {
       isNew = true;
-      user = await User.upsert(u);
+      user = await upsert(u);
     } else if (
       user.email !== u.email ||
       user.firstName !== u.firstName ||
@@ -67,7 +67,7 @@ export const findOrUpsertUser = async (u: Partial<User>): Promise<FindOrUpsertUs
       user.colleges = u.colleges;
       user.onid = u.onid;
       user.lastLogin = u.lastLogin;
-      user = await User.upsert(user);
+      user = await upsert(user);
     }
 
     user.isAdmin = u.isAdmin;
@@ -83,11 +83,7 @@ export const findOrUpsertUser = async (u: Partial<User>): Promise<FindOrUpsertUs
 
 export const updateOAuthData = async (u: Partial<User>, oAuthData: OAuthData): Promise<User> => {
   try {
-    const user = await User.updateCanvasData(
-      u,
-      oAuthData.account.refreshToken,
-      oAuthData.isCanvasOptIn,
-    );
+    const user = await updateCanvasData(u, oAuthData.account.refreshToken, oAuthData.isCanvasOptIn);
     logger().silly('user-account.updateOAuthData returned user.', user);
     return user;
   } catch (err) {
