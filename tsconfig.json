@@ -14,7 +14,8 @@
       "@src/*": ["src/*"],
       "*": ["node_modules/*"]
     },
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": ["./src/types", "./node_modules/@types"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist", "support"]

@@ -3,38 +3,44 @@
 import config from 'config';
 import AWS from 'aws-sdk';
 import User from '../../api/models/user';
+import '../../logger';
 
 const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
 const DYNAMODBCLOUD_ENDPOINT: string = config.get('aws.dynamodbCloud.endpoint');
+const region = config.get('aws.region') as string;
+const apiVersion = config.get('aws.dynamodbCloud.apiVersion') as string;
 
-const dynamoDbCloud = new AWS.DynamoDB({
-  region: config.get('aws.region'),
+const cloudDb = new AWS.DynamoDB.DocumentClient({
   endpoint: DYNAMODBCLOUD_ENDPOINT,
-  apiVersion: config.get('aws.dynamodbCloud.apiVersion'),
+  region,
+  apiVersion,
 });
 
 (async (targetDynamoDb: string, sourceDynamoDb: string) => {
-  if (!targetDynamoDb.includes('localhost') || !sourceDynamoDb) {
-    console.error(
-      `Cannot sync when target dynamodb (${targetDynamoDb}) is not pointing at localhost, or source dynamodb (${sourceDynamoDb}) is unset. Check config/local.ts and ensure that dynamodb and dynamodbCloud are properly set.`,
-    );
-  } else {
-    const dynamoDbUser = await dynamoDbCloud
-      .getItem({
-        TableName: User.TABLE_NAME,
-        Key: {
-          osuId: { N: `${process.argv[2]}` },
-        },
-      })
-      .promise();
-
-    if (!dynamoDbUser.Item) {
-      console.error(`User ${process.argv[2]} not found.`);
+  try {
+    if (!targetDynamoDb.includes('localhost') || !sourceDynamoDb) {
+      console.error(
+        `Cannot sync when target dynamodb (${targetDynamoDb}) is not pointing at localhost, or source dynamodb (${sourceDynamoDb}) is unset. Check config/local.ts and ensure that dynamodb and dynamodbCloud are properly set.`,
+      );
     } else {
-      const foundUser = new User({ dynamoDbUser });
-      const updatedUser = await User.upsert(foundUser);
-      console.log('Upserted user.', updatedUser);
+      const cloudUser = await User.find(parseInt(process.argv[2], 10), cloudDb);
+
+      console.log(cloudUser);
+      if (!cloudUser) {
+        console.error(`User ${process.argv[2]} not found.`);
+      } else {
+        // @ts-ignore dynamodb-toolback returns wrapped sets
+        const affiliations: string[] = cloudUser.affiliations.values;
+
+        const updatedUser = await User.upsert({
+          ...cloudUser,
+          affiliations,
+        });
+        console.log('Upserted user.', updatedUser);
+      }
     }
+  } catch (err) {
+    console.error(err);
   }
   process.exit();
 })(DYNAMODB_ENDPOINT, DYNAMODBCLOUD_ENDPOINT);

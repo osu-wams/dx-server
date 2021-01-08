@@ -96,40 +96,42 @@ interface Users {
 
 const TABLE_NAME: string = `${DYNAMODB_TABLE_PREFIX}-Users`;
 
-const table = new Table({
-  name: TABLE_NAME,
-  partitionKey: 'osuId',
-  DocumentClient,
-});
+const table = (client?: typeof DocumentClient) =>
+  new Table({
+    name: TABLE_NAME,
+    partitionKey: 'osuId',
+    DocumentClient: client ?? DocumentClient,
+  });
 
-const UserEntity = new Entity({
-  name: 'User',
-  attributes: {
-    osuId: { partitionKey: true, type: 'number' },
-    firstName: { type: 'string' },
-    lastName: { type: 'string' },
-    email: { type: 'string' },
-    primaryAffiliation: { type: 'string' },
-    affiliations: { type: 'set', setType: 'string' },
-    groups: { type: 'set', setType: 'string' },
-    phone: { type: 'string' },
-    canvasRefreshToken: { type: 'string' },
-    canvasOptIn: { type: 'boolean', default: false },
-    nameID: { type: 'string' },
-    nameIDFormat: { type: 'string' },
-    audienceOverride: { type: 'map' },
-    primaryAffiliationOverride: { type: 'string' },
-    theme: { type: 'string', default: 'light' },
-    devTools: { type: 'boolean', default: false },
-    onid: { type: 'string' },
-    lastLogin: { type: 'string', default: () => new Date().toISOString().slice(0, 10) },
-    colleges: { type: 'set', setType: 'string' },
-    isAdmin: { type: 'boolean', save: false },
-  },
-  table,
-  autoExecute: true,
-  autoParse: true,
-});
+const UserEntity = (client?: typeof DocumentClient) =>
+  new Entity({
+    name: 'User',
+    attributes: {
+      osuId: { partitionKey: true, type: 'number' },
+      firstName: { type: 'string' },
+      lastName: { type: 'string' },
+      email: { type: 'string' },
+      primaryAffiliation: { type: 'string' },
+      affiliations: { type: 'set', setType: 'string' },
+      groups: { type: 'set', setType: 'string' },
+      phone: { type: 'string' },
+      canvasRefreshToken: { type: 'string' },
+      canvasOptIn: { type: 'boolean', default: false },
+      nameID: { type: 'string' },
+      nameIDFormat: { type: 'string' },
+      audienceOverride: { type: 'map' },
+      primaryAffiliationOverride: { type: 'string' },
+      theme: { type: 'string', default: 'light' },
+      devTools: { type: 'boolean', default: false },
+      onid: { type: 'string' },
+      lastLogin: { type: 'string', default: () => new Date().toISOString().slice(0, 10) },
+      colleges: { type: 'set', setType: 'string' },
+      isAdmin: { type: 'boolean', save: false },
+    },
+    table: table(client),
+    autoExecute: true,
+    autoParse: true,
+  });
 
 export const TableDefinition: DynamoDB.CreateTableInput = {
   AttributeDefinitions: [{ AttributeName: 'osuId', AttributeType: 'N' }],
@@ -230,9 +232,9 @@ class User {
    * @param props - the user properties to translate to a dynamodb user item
    * @returns Promise<User> - a promise with the User that was inserted/updated
    */
-  static upsert = async (props: Partial<User>): Promise<User> => {
+  static upsert = async (props: Partial<User>, client?: typeof DocumentClient): Promise<User> => {
     try {
-      const result: Users = await UserEntity.put(props);
+      const result: Users = await UserEntity(client).put(props);
       logger().debug('User.upsert succeeded:', result);
       return User.find(props.osuId);
     } catch (err) {
@@ -247,9 +249,9 @@ class User {
    * @param id [Number] - the users id
    * @returns Promise<User | null> - a promise with the User or a null if none found
    */
-  static find = async (id: number): Promise<User | undefined> => {
+  static find = async (id: number, client?: typeof DocumentClient): Promise<User | undefined> => {
     try {
-      const result: Users = await UserEntity.query(id);
+      const result: Users = await UserEntity(client).query(id);
       return result.Items[0];
     } catch (err) {
       logger().error(`User.find(${id}) failed:`, err);
@@ -265,14 +267,16 @@ class User {
    * @returns Promise<[boolean, any]> - a promise with an array of boolean and errors,
    *          the boolean indicates if there were no errors, and the 'any' is an array of [id,error]
    */
-  static clearAllCanvasRefreshTokens = async (): Promise<[boolean, any]> => {
+  static clearAllCanvasRefreshTokens = async (
+    client?: typeof DocumentClient,
+  ): Promise<[boolean, any]> => {
     const errors = [];
     const users = await User.scanAll();
     users
       .map((u) => u.osuId)
       .forEach(async (osuId) => {
         try {
-          const result = await UserEntity.update({
+          const result = await UserEntity(client).update({
             osuId,
             canvasOptIn: false,
             $remove: ['canvasRefreshToken'],
@@ -298,10 +302,11 @@ class User {
     props: Partial<User>,
     canvasRefreshToken: string | null,
     canvasOptIn: boolean,
+    client?: typeof DocumentClient,
   ): Promise<User> => {
     try {
       const { osuId } = props;
-      await UserEntity.update({
+      await UserEntity(client).update({
         osuId,
         canvasOptIn,
         canvasRefreshToken,
@@ -317,7 +322,11 @@ class User {
     }
   };
 
-  static updateSettings = async (props: IUser, settings: UserSettings): Promise<User> => {
+  static updateSettings = async (
+    props: IUser,
+    settings: UserSettings,
+    client?: typeof DocumentClient,
+  ): Promise<User> => {
     try {
       const { osuId } = props;
       const theme: string = settings.theme || props.theme || 'light';
@@ -331,7 +340,7 @@ class User {
       if (primaryAffiliationOverride)
         updates.primaryAffiliationOverride = primaryAffiliationOverride;
       if (audienceOverride) updates.audienceOverride = audienceOverride;
-      const result = await UserEntity.update(updates);
+      const result = await UserEntity(client).update(updates);
 
       logger().silly('User.updateSettings updated user:', osuId, result);
       return User.find(osuId);
@@ -341,14 +350,14 @@ class User {
     }
   };
 
-  static scanAll = async (): Promise<User[]> => {
+  static scanAll = async (client?: typeof DocumentClient): Promise<User[]> => {
     const cached = await getCache(User.TABLE_NAME);
     if (cached) {
       return JSON.parse(cached);
     }
 
     const found = [];
-    let results: Users = await UserEntity.scan();
+    let results: Users = await UserEntity(client).scan();
     found.push(...results.Items);
     logger().info(
       `${User.TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`,

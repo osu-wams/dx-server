@@ -1,189 +1,213 @@
 [
   {
     "type": "node--trainings",
-    "id": "ab1e27d3-b73c-4fe6-904b-0bbbce14107a",
+    "id": "63f2fc47-61c4-4f41-ae21-1814e1be677f",
     "links": {
       "describedby": {
-        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
       },
       "self": {
-        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/ab1e27d3-b73c-4fe6-904b-0bbbce14107a?resourceVersion=id%3A19256"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f?resourceVersion=id%3A19531"
       }
     },
-    "field_training_audience": [
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "4585e616-4d42-4566-aac7-52ba34c68c22",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/4585e616-4d42-4566-aac7-52ba34c68c22"
-          }
-        },
-        "name": "OSU Students"
-      },
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "98b052c5-23ad-4a4a-894e-b9de8f30d87f",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/98b052c5-23ad-4a4a-894e-b9de8f30d87f"
-          }
-        },
-        "name": "Graduate Students"
-      },
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "16c59d92-00be-420b-9d9f-45046f8e127d",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/16c59d92-00be-420b-9d9f-45046f8e127d"
-          }
-        },
-        "name": "Academic Faculty"
-      },
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "8828a5c9-87ee-4504-b118-308982db382a",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/8828a5c9-87ee-4504-b118-308982db382a"
-          }
-        },
-        "name": "Professional Faculty"
-      },
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "37c6d7e2-8052-410d-b636-621bdf7f6126",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/37c6d7e2-8052-410d-b636-621bdf7f6126"
-          }
-        },
-        "name": "Classified Staff"
-      },
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "fc2b23ae-59c1-4f64-8071-785d5f00f49b",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/fc2b23ae-59c1-4f64-8071-785d5f00f49b"
-          }
-        },
-        "name": "Managers & Supervisors"
-      }
-    ],
-    "field_training_course_design": [
-      {
-        "type": "taxonomy_term--training_course_design",
-        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d1",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d1"
-          }
-        },
-        "name": "Blended Delivery"
-      },
-      {
-        "type": "taxonomy_term--training_course_design",
-        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d2",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d2"
-          }
-        },
-        "name": "Online"
-      }
-    ],
-    "field_training_tags": [
-      {
-        "type": "taxonomy_term--training_tags",
-        "id": "ee51d669-3fb6-4712-8e87-0d12f26e4527",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/ee51d669-3fb6-4712-8e87-0d12f26e4527"
-          }
-        },
-        "name": "Collaboration & Teams"
-      },
-      {
-        "type": "taxonomy_term--training_tags",
-        "id": "f914605b-cf8e-4b61-bdd3-e077362ffad9",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
-          }
-        },
-        "name": "Leadership"
-      },
-      {
-        "type": "taxonomy_term--training_tags",
-        "id": "c3450e68-da72-4c57-8153-2a317f791486",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/c3450e68-da72-4c57-8153-2a317f791486"
-          }
-        },
-        "name": "Inclusive Excellence & Diversity"
-      }
-    ],
-    "field_training_course_length": {
-      "type": "taxonomy_term--training_course_length",
-      "id": "md",
+    "field_training_audience": {
       "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/field_training_audience?resourceVersion=id%3A19531"
         },
         "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/relationships/field_training_audience?resourceVersion=id%3A19531"
         }
       },
-      "name": "Multiple days"
+      "data": [
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "4a2b5d6f-ada3-4fd9-9737-7044acb09c88",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/4a2b5d6f-ada3-4fd9-9737-7044acb09c88"
+            }
+          },
+          "name": "OSU Students"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "f41d52f2-8f48-4c78-8613-01ef1722fe9a",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/f41d52f2-8f48-4c78-8613-01ef1722fe9a"
+            }
+          },
+          "name": "Graduate Students"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "5fb9d42d-ed91-41ef-9e60-971d3db3e99d",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/5fb9d42d-ed91-41ef-9e60-971d3db3e99d"
+            }
+          },
+          "name": "Academic Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "16bdfb76-bfdb-42a6-9da7-8c37cfe81490",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/16bdfb76-bfdb-42a6-9da7-8c37cfe81490"
+            }
+          },
+          "name": "Professional Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "36690c81-011d-4fca-a1bc-487e7c288446",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/36690c81-011d-4fca-a1bc-487e7c288446"
+            }
+          },
+          "name": "Classified Staff"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "80015f10-ec2a-4ea3-9a32-1945503af2b7",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/80015f10-ec2a-4ea3-9a32-1945503af2b7"
+            }
+          },
+          "name": "Managers & Supervisors"
+        }
+      ]
     },
-    "title": "Collaborating Across Difference: Creating a Culture of Indispensability",
+    "field_training_course_design": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/field_training_course_design?resourceVersion=id%3A19531"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/relationships/field_training_course_design?resourceVersion=id%3A19531"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_course_design",
+          "id": "44972c4f-baab-4659-9a43-9b95f54c8eb1",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/44972c4f-baab-4659-9a43-9b95f54c8eb1"
+            }
+          },
+          "name": "Blended Delivery"
+        }
+      ]
+    },
+    "field_training_course_length": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/field_training_course_length?resourceVersion=id%3A19531"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/relationships/field_training_course_length?resourceVersion=id%3A19531"
+        },
+        "data": {
+          "type": "taxonomy_term--training_course_length",
+          "id": "4a2b5d6f-ada3-4fd9-9737-7044acb09c88",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_length/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_length/4a2b5d6f-ada3-4fd9-9737-7044acb09c88"
+            }
+          },
+          "name": "Full day"
+        }
+      }
+    },
+    "field_training_image": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/field_training_image?resourceVersion=id%3A19531"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/relationships/field_training_image?resourceVersion=id%3A19531"
+        }
+      }
+    },
+    "field_training_tags": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/field_training_tags?resourceVersion=id%3A19531"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/63f2fc47-61c4-4f41-ae21-1814e1be677f/relationships/field_training_tags?resourceVersion=id%3A19531"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "944a0699-50ad-4a84-bf0e-a8df38f6e740",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/944a0699-50ad-4a84-bf0e-a8df38f6e740"
+            }
+          },
+          "name": "Inclusive Excellence & Diversity"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "4d88941e-122c-41c1-b2c3-5162364babda",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/4d88941e-122c-41c1-b2c3-5162364babda"
+            }
+          },
+          "name": "Leadership"
+        }
+      ]
+    },
+    "title": "Identity, Power, & Privilege: Introduction to Diversity, Equity & Inclusion Concepts",
     "body": {
-      "value": "This interactive, multimodal workshop utilizes individual reflection and group activities to explore the nature and organizational implications of individual worldviews. In addition to exploring the theory of worldview psychology and commonly associated negotiations in diverse teams, participants will practice interpersonal communication skills which attend to and mitigate intercultural complexities.",
+      "value": "This interactive, multimodal workshop attempts to demystify the theory and practice of social justice leadership and offers vivid and tangible examples of core concepts relative to participants institutional roles. In addition to exploring conceptual frameworks for identity, power, and privilege, participants will draw upon their own experiences to illustrate the concepts of the workshop and develop a depth of understanding that prepares them to educate others.",
       "format": null,
-      "processed": "<p>This interactive, multimodal workshop utilizes individual reflection and group activities to explore the nature and organizational implications of individual worldviews. In addition to exploring the theory of worldview psychology and commonly associated negotiations in diverse teams, participants will practice interpersonal communication skills which attend to and mitigate intercultural complexities.</p>\n",
+      "processed": "<p>This interactive, multimodal workshop attempts to demystify the theory and practice of social justice leadership and offers vivid and tangible examples of core concepts relative to participants institutional roles. In addition to exploring conceptual frameworks for identity, power, and privilege, participants will draw upon their own experiences to illustrate the concepts of the workshop and develop a depth of understanding that prepares them to educate others.</p>\n",
       "summary": null
     },
     "field_training_contact": null,
     "field_training_cost": false,
-    "field_training_department": "OID",
+    "field_training_department": "OID ",
     "field_training_featured": false,
-    "field_training_prerequisites": "...",
+    "field_training_prerequisites": "Submit a consultation form through OID’s Diversity Education website: https://diversity.oregonstate.edu/diversity-education ",
     "field_training_website": {
       "uri": "https://diversity.oregonstate.edu/diversity-education",
       "title": null,
@@ -192,174 +216,658 @@
   },
   {
     "type": "node--trainings",
-    "id": "123",
+    "id": "e02bd062-aa2e-4889-bf2b-3e4397859b7d",
     "links": {
       "describedby": {
-        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
       },
       "self": {
-        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/ab1e27d3-b73c-4fe6-904b-0bbbce14107a?resourceVersion=id%3A19256"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d?resourceVersion=id%3A19536"
       }
     },
-    "field_training_audience": [
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "fc2b23ae-59c1-4f64-8071-785d5f00f49b",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/fc2b23ae-59c1-4f64-8071-785d5f00f49b"
-          }
-        },
-        "name": "Managers & Supervisors"
-      }
-    ],
-    "field_training_course_design": [
-      {
-        "type": "taxonomy_term--training_course_design",
-        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
-          }
-        },
-        "name": "Blended Delivery"
-      }
-    ],
-    "field_training_tags": [
-      {
-        "type": "taxonomy_term--training_tags",
-        "id": "f914605b-cf8e-4b61-bdd3-e077362ffad9",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
-          }
-        },
-        "name": "Leadership"
-      }
-    ],
-    "field_training_course_length": {
-      "type": "taxonomy_term--training_course_length",
-      "id": "fd",
+    "field_training_audience": {
       "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/field_training_audience?resourceVersion=id%3A19536"
         },
         "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/relationships/field_training_audience?resourceVersion=id%3A19536"
         }
       },
-      "name": "Full day"
+      "data": [
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "4a2b5d6f-ada3-4fd9-9737-7044acb09c88",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/4a2b5d6f-ada3-4fd9-9737-7044acb09c88"
+            }
+          },
+          "name": "OSU Students"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "f41d52f2-8f48-4c78-8613-01ef1722fe9a",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/f41d52f2-8f48-4c78-8613-01ef1722fe9a"
+            }
+          },
+          "name": "Graduate Students"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "5fb9d42d-ed91-41ef-9e60-971d3db3e99d",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/5fb9d42d-ed91-41ef-9e60-971d3db3e99d"
+            }
+          },
+          "name": "Academic Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "16bdfb76-bfdb-42a6-9da7-8c37cfe81490",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/16bdfb76-bfdb-42a6-9da7-8c37cfe81490"
+            }
+          },
+          "name": "Professional Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "36690c81-011d-4fca-a1bc-487e7c288446",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/36690c81-011d-4fca-a1bc-487e7c288446"
+            }
+          },
+          "name": "Classified Staff"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "80015f10-ec2a-4ea3-9a32-1945503af2b7",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/80015f10-ec2a-4ea3-9a32-1945503af2b7"
+            }
+          },
+          "name": "Managers & Supervisors"
+        }
+      ]
     },
-    "title": "A",
+    "field_training_course_design": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/field_training_course_design?resourceVersion=id%3A19536"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/relationships/field_training_course_design?resourceVersion=id%3A19536"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_course_design",
+          "id": "44972c4f-baab-4659-9a43-9b95f54c8eb1",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/44972c4f-baab-4659-9a43-9b95f54c8eb1"
+            }
+          },
+          "name": "Blended Delivery"
+        }
+      ]
+    },
+    "field_training_course_length": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/field_training_course_length?resourceVersion=id%3A19536"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/relationships/field_training_course_length?resourceVersion=id%3A19536"
+        }
+      }
+    },
+    "field_training_image": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/field_training_image?resourceVersion=id%3A19536"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/relationships/field_training_image?resourceVersion=id%3A19536"
+        }
+      }
+    },
+    "field_training_tags": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/field_training_tags?resourceVersion=id%3A19536"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/e02bd062-aa2e-4889-bf2b-3e4397859b7d/relationships/field_training_tags?resourceVersion=id%3A19536"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "61794be8-03f1-4750-9fe6-4c6565b52a70",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/61794be8-03f1-4750-9fe6-4c6565b52a70"
+            }
+          },
+          "name": "Safety & Compliance"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "944a0699-50ad-4a84-bf0e-a8df38f6e740",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/944a0699-50ad-4a84-bf0e-a8df38f6e740"
+            }
+          },
+          "name": "Inclusive Excellence & Diversity"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "4d88941e-122c-41c1-b2c3-5162364babda",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/4d88941e-122c-41c1-b2c3-5162364babda"
+            }
+          },
+          "name": "Leadership"
+        }
+      ]
+    },
+    "title": "Navigating Bias in Learning and Working Environments ",
     "body": {
-      "value": "",
+      "value": "This interactive, multimodal workshop utilizes group work and role plays to help participants learn about bias incidents, what they look like, and their impact on different learning and work environments. Participants will develop a more comprehensive understanding of OSU’s bias intervention framework and protocol as well familiarize themselves with institutional resources.",
       "format": null,
-      "processed": "",
+      "processed": "<p>This interactive, multimodal workshop utilizes group work and role plays to help participants learn about bias incidents, what they look like, and their impact on different learning and work environments. Participants will develop a more comprehensive understanding of OSU’s bias intervention framework and protocol as well familiarize themselves with institutional resources.</p>\n",
       "summary": null
     },
     "field_training_contact": null,
     "field_training_cost": false,
-    "field_training_department": "OID",
+    "field_training_department": "OID ",
     "field_training_featured": true,
-    "field_training_prerequisites": "...",
+    "field_training_prerequisites": "Submit a consultation form through OID’s Diversity Education website: https://diversity.oregonstate.edu/diversity-education ",
     "field_training_website": {
-      "uri": "https://",
+      "uri": "https://diversity.oregonstate.edu/diversity-education",
       "title": null,
       "options": []
     }
   },
   {
     "type": "node--trainings",
-    "id": "123",
+    "id": "0a53fc7a-d34b-4aab-916a-5e481e3d051c",
     "links": {
       "describedby": {
-        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
       },
       "self": {
-        "href": "https://data-stage.dx.oregonstate.edu/jsonapi/node/trainings/ab1e27d3-b73c-4fe6-904b-0bbbce14107a?resourceVersion=id%3A19256"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c?resourceVersion=id%3A19541"
       }
     },
-    "field_training_audience": [
-      {
-        "type": "taxonomy_term--training_audience",
-        "id": "fc2b23ae-59c1-4f64-8071-785d5f00f49b",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/fc2b23ae-59c1-4f64-8071-785d5f00f49b"
-          }
-        },
-        "name": "Managers & Supervisors"
-      }
-    ],
-    "field_training_course_design": [
-      {
-        "type": "taxonomy_term--training_course_design",
-        "id": "54e2aad2-8baf-4017-a5c8-a624f1ecc75d",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
-          },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/54e2aad2-8baf-4017-a5c8-a624f1ecc75d"
-          }
-        },
-        "name": "Blended Delivery"
-      }
-    ],
-    "field_training_course_length": {
-      "type": "taxonomy_term--training_course_length",
-      "id": "hd",
+    "field_training_audience": {
       "links": {
-        "describedby": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/field_training_audience?resourceVersion=id%3A19541"
         },
         "self": {
-          "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/relationships/field_training_audience?resourceVersion=id%3A19541"
         }
       },
-      "name": "Half a day"
-    },
-    "field_training_tags": [
-      {
-        "type": "taxonomy_term--training_tags",
-        "id": "f914605b-cf8e-4b61-bdd3-e077362ffad9",
-        "links": {
-          "describedby": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "4a2b5d6f-ada3-4fd9-9737-7044acb09c88",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/4a2b5d6f-ada3-4fd9-9737-7044acb09c88"
+            }
           },
-          "self": {
-            "href": "https://data-stage.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/f914605b-cf8e-4b61-bdd3-e077362ffad9"
-          }
+          "name": "OSU Students"
         },
-        "name": "Leadership"
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "f41d52f2-8f48-4c78-8613-01ef1722fe9a",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/f41d52f2-8f48-4c78-8613-01ef1722fe9a"
+            }
+          },
+          "name": "Graduate Students"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "5fb9d42d-ed91-41ef-9e60-971d3db3e99d",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/5fb9d42d-ed91-41ef-9e60-971d3db3e99d"
+            }
+          },
+          "name": "Academic Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "16bdfb76-bfdb-42a6-9da7-8c37cfe81490",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/16bdfb76-bfdb-42a6-9da7-8c37cfe81490"
+            }
+          },
+          "name": "Professional Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "36690c81-011d-4fca-a1bc-487e7c288446",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/36690c81-011d-4fca-a1bc-487e7c288446"
+            }
+          },
+          "name": "Classified Staff"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "80015f10-ec2a-4ea3-9a32-1945503af2b7",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/80015f10-ec2a-4ea3-9a32-1945503af2b7"
+            }
+          },
+          "name": "Managers & Supervisors"
+        }
+      ]
+    },
+    "field_training_course_design": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/field_training_course_design?resourceVersion=id%3A19541"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/relationships/field_training_course_design?resourceVersion=id%3A19541"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_course_design",
+          "id": "44972c4f-baab-4659-9a43-9b95f54c8eb1",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/44972c4f-baab-4659-9a43-9b95f54c8eb1"
+            }
+          },
+          "name": "Blended Delivery"
+        }
+      ]
+    },
+    "field_training_course_length": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/field_training_course_length?resourceVersion=id%3A19541"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/relationships/field_training_course_length?resourceVersion=id%3A19541"
+        }
       }
-    ],
-    "title": "Z : Last one.",
+    },
+    "field_training_image": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/field_training_image?resourceVersion=id%3A19541"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/relationships/field_training_image?resourceVersion=id%3A19541"
+        }
+      }
+    },
+    "field_training_tags": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/field_training_tags?resourceVersion=id%3A19541"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/0a53fc7a-d34b-4aab-916a-5e481e3d051c/relationships/field_training_tags?resourceVersion=id%3A19541"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "2d42db91-3b0f-4909-9293-5515d38933b8",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/2d42db91-3b0f-4909-9293-5515d38933b8"
+            }
+          },
+          "name": "Innovation"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "944a0699-50ad-4a84-bf0e-a8df38f6e740",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/944a0699-50ad-4a84-bf0e-a8df38f6e740"
+            }
+          },
+          "name": "Inclusive Excellence & Diversity"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "4d88941e-122c-41c1-b2c3-5162364babda",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/4d88941e-122c-41c1-b2c3-5162364babda"
+            }
+          },
+          "name": "Leadership"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "3fb4341f-d5fe-4293-a596-b034efe395b5",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/3fb4341f-d5fe-4293-a596-b034efe395b5"
+            }
+          },
+          "name": "Performance & Organizational Management"
+        }
+      ]
+    },
+    "title": "Supporting Diverse Learners through Culturally Responsive Teaching ",
     "body": {
-      "value": "",
+      "value": "This interactive, multimodal workshop utilizes group work and multimedia activities to introduce core concepts of culturally responsive teaching. Participants will expand their notions of excellence in teaching and cultivate enthusiasm about beginning or continuing cultural responsive practice. Participants will generate ideas about where and how they may begin to transform their teaching practices to redress educational inequities.",
       "format": null,
-      "processed": "",
+      "processed": "<p>This interactive, multimodal workshop utilizes group work and multimedia activities to introduce core concepts of culturally responsive teaching. Participants will expand their notions of excellence in teaching and cultivate enthusiasm about beginning or continuing cultural responsive practice. Participants will generate ideas about where and how they may begin to transform their teaching practices to redress educational inequities.</p>\n",
       "summary": null
     },
     "field_training_contact": null,
     "field_training_cost": false,
-    "field_training_department": "OID",
+    "field_training_department": "OID ",
     "field_training_featured": false,
-    "field_training_prerequisites": "...",
+    "field_training_prerequisites": "Submit a consultation form through OID’s Diversity Education website: https://diversity.oregonstate.edu/diversity-education ",
     "field_training_website": {
-      "uri": "https://",
+      "uri": "https://diversity.oregonstate.edu/diversity-education",
+      "title": null,
+      "options": []
+    }
+  },
+  {
+    "type": "node--trainings",
+    "id": "cfbb052d-5e84-4104-867c-de916c36b038",
+    "links": {
+      "describedby": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/resource/schema"
+      },
+      "self": {
+        "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038?resourceVersion=id%3A19546"
+      }
+    },
+    "field_training_audience": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/field_training_audience?resourceVersion=id%3A19546"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/relationships/field_training_audience?resourceVersion=id%3A19546"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "4a2b5d6f-ada3-4fd9-9737-7044acb09c88",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/4a2b5d6f-ada3-4fd9-9737-7044acb09c88"
+            }
+          },
+          "name": "OSU Students"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "f41d52f2-8f48-4c78-8613-01ef1722fe9a",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/f41d52f2-8f48-4c78-8613-01ef1722fe9a"
+            }
+          },
+          "name": "Graduate Students"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "5fb9d42d-ed91-41ef-9e60-971d3db3e99d",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/5fb9d42d-ed91-41ef-9e60-971d3db3e99d"
+            }
+          },
+          "name": "Academic Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "16bdfb76-bfdb-42a6-9da7-8c37cfe81490",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/16bdfb76-bfdb-42a6-9da7-8c37cfe81490"
+            }
+          },
+          "name": "Professional Faculty"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "36690c81-011d-4fca-a1bc-487e7c288446",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/36690c81-011d-4fca-a1bc-487e7c288446"
+            }
+          },
+          "name": "Classified Staff"
+        },
+        {
+          "type": "taxonomy_term--training_audience",
+          "id": "80015f10-ec2a-4ea3-9a32-1945503af2b7",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_audience/80015f10-ec2a-4ea3-9a32-1945503af2b7"
+            }
+          },
+          "name": "Managers & Supervisors"
+        }
+      ]
+    },
+    "field_training_course_design": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/field_training_course_design?resourceVersion=id%3A19546"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/relationships/field_training_course_design?resourceVersion=id%3A19546"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_course_design",
+          "id": "44972c4f-baab-4659-9a43-9b95f54c8eb1",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_course_design/44972c4f-baab-4659-9a43-9b95f54c8eb1"
+            }
+          },
+          "name": "Blended Delivery"
+        }
+      ]
+    },
+    "field_training_course_length": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/field_training_course_length?resourceVersion=id%3A19546"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/relationships/field_training_course_length?resourceVersion=id%3A19546"
+        }
+      }
+    },
+    "field_training_image": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/field_training_image?resourceVersion=id%3A19546"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/relationships/field_training_image?resourceVersion=id%3A19546"
+        }
+      }
+    },
+    "field_training_tags": {
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/field_training_tags?resourceVersion=id%3A19546"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/node/trainings/cfbb052d-5e84-4104-867c-de916c36b038/relationships/field_training_tags?resourceVersion=id%3A19546"
+        }
+      },
+      "data": [
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "29d52be3-bc16-489b-981b-655fa5e0226f",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/29d52be3-bc16-489b-981b-655fa5e0226f"
+            }
+          },
+          "name": "Collaboration & Teams"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "4d88941e-122c-41c1-b2c3-5162364babda",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/4d88941e-122c-41c1-b2c3-5162364babda"
+            }
+          },
+          "name": "Leadership"
+        },
+        {
+          "type": "taxonomy_term--training_tags",
+          "id": "944a0699-50ad-4a84-bf0e-a8df38f6e740",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/training_tags/944a0699-50ad-4a84-bf0e-a8df38f6e740"
+            }
+          },
+          "name": "Inclusive Excellence & Diversity"
+        }
+      ]
+    },
+    "title": "Queer and Trans Issues in Higher Education: Knowledge and Skills for Advocacy ",
+    "body": {
+      "value": "This interactive, multimodal workshop utilizes small and large group activities to raise participants’ consciousness to contemporary Queer and Trans issues in higher education. Participants will be challenged to broaden and complicate their understandings of gender and sexuality. Participants will also investigate the interdependent systems of oppression which sustain inequities for Queer and Trans people. Participants will also be equipped with skills and resources to develop their capacity to engage in solidarity with Queer and Trans people. ",
+      "format": null,
+      "processed": "<p>This interactive, multimodal workshop utilizes small and large group activities to raise participants’ consciousness to contemporary Queer and Trans issues in higher education. Participants will be challenged to broaden and complicate their understandings of gender and sexuality. Participants will also investigate the interdependent systems of oppression which sustain inequities for Queer and Trans people. Participants will also be equipped with skills and resources to develop their capacity to engage in solidarity with Queer and Trans people. </p>\n",
+      "summary": null
+    },
+    "field_training_contact": null,
+    "field_training_cost": false,
+    "field_training_department": "OID ",
+    "field_training_featured": false,
+    "field_training_prerequisites": "Submit a consultation form through OID’s Diversity Education website: https://diversity.oregonstate.edu/diversity-education ",
+    "field_training_website": {
+      "uri": "https://diversity.oregonstate.edu/diversity-education",
       "title": null,
       "options": []
     }

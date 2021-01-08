@@ -2,9 +2,10 @@ module.exports = {
   apps: [
     {
       name: 'dx-server',
-      script: 'dist/src/index.js',
-      watch: ['dist/src'],
-      instances: 2,
+      script: 'src/index.ts',
+      interpreter: 'node',
+      interpreter_args: '--require ts-node/register --require tsconfig-paths/register',
+      watch: ['src'],
       env: {
         NODE_ENV: 'localhost',
       },

@@ -17,9 +17,10 @@ describe('/api/announcements', () => {
   it('returns announcements without null values', async () => {
     // JSON.parse/stringify to enforce a deep copied array as to not mutate the original!
     const announcements = JSON.parse(JSON.stringify(mockedAnnouncements)).slice(0, 1);
-    announcements[0].field_locations = announcements[0].field_locations.slice(0, 1);
-    announcements[0].field_locations[0].name = null;
-    announcements[0].field_pages[0].name = null;
+    announcements[0].field_locations.data = announcements[0].field_locations.data.slice(0, 1);
+    announcements[0].field_locations.data[0].name = null;
+    announcements[0].field_pages.data[0].name = null;
+    announcements[0].field_audience.data[0].name = null;
     mockCachedData.mockReturnValueOnce(JSON.stringify(announcements));
     cache.getAsync = getAsync;
     await request.get('/api/announcements').expect(200, [
@@ -59,10 +60,7 @@ describe('/api/announcements', () => {
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
-    nock(BASE_URL)
-      .get('/jsonapi/node/announcement')
-      .query(true)
-      .replyWithError('boom');
+    nock(BASE_URL).get('/jsonapi/node/announcement').query(true).replyWithError('boom');
     await request
       .get('/api/announcements')
       .expect(500, { message: 'Unable to retrieve announcements.' });
@@ -80,10 +78,7 @@ describe('/api/announcements/academics', () => {
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
-    nock(BASE_URL)
-      .get('/jsonapi/node/announcement')
-      .query(true)
-      .replyWithError('boom');
+    nock(BASE_URL).get('/jsonapi/node/announcement').query(true).replyWithError('boom');
     await request
       .get('/api/announcements/academics')
       .expect(500, { message: 'Unable to retrieve announcements.' });
@@ -94,10 +89,7 @@ describe('/api/announcements/finances', () => {
   it('returns announcements', async () => {
     mockCachedData.mockReturnValue(JSON.stringify(mockedAnnouncements));
     cache.getAsync = getAsync;
-    nock(BASE_URL)
-      .get('/jsonapi/node/announcement')
-      .query(true)
-      .reply(200, mockedAnnouncements);
+    nock(BASE_URL).get('/jsonapi/node/announcement').query(true).reply(200, mockedAnnouncements);
     await request
       .get('/api/announcements/finances')
       .expect(200, mockedAnnouncementsFinancesExpected);
@@ -105,10 +97,7 @@ describe('/api/announcements/finances', () => {
   it('returns an error', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
-    nock(BASE_URL)
-      .get('/jsonapi/node/announcement')
-      .query(true)
-      .replyWithError('boom');
+    nock(BASE_URL).get('/jsonapi/node/announcement').query(true).replyWithError('boom');
     await request
       .get('/api/announcements/finances')
       .expect(500, { message: 'Unable to retrieve announcements.' });

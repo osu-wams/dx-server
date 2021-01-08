@@ -10,65 +10,95 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c"
       }
     },
-    "field_taxonomy_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "field_taxonomy_icon": {
-      "type": "media--image",
-      "id": "b23d828b-6e45-45a2-96a7-148757b4c88f",
+    "field_taxonomy_affiliation": {
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c/field_taxonomy_affiliation"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/b23d828b-6e45-45a2-96a7-148757b4c88f?resourceVersion=id%3A1444"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c/relationships/field_taxonomy_affiliation"
         }
       },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "e7cda0c1-fbb3-4773-a1d0-3dabae8113a6",
+      "data": [
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+            }
+          },
+          "name": "Employee"
+        },
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+            }
+          },
+          "name": "Student"
+        }
+      ]
+    },
+    "field_taxonomy_icon": {
+      "data": {
+        "type": "media--image",
+        "id": "b23d828b-6e45-45a2-96a7-148757b4c88f",
         "links": {
           "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
           },
           "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/e7cda0c1-fbb3-4773-a1d0-3dabae8113a6"
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/b23d828b-6e45-45a2-96a7-148757b4c88f?resourceVersion=id%3A1444"
           }
         },
-        "meta": { "alt": null, "title": "star", "width": null, "height": null },
-        "filename": "star.svg",
-        "uri": {
-          "value": "public://2019-05/star.svg",
-          "url": "/sites/default/files/2019-05/star.svg"
+        "field_media_image": {
+          "data": {
+            "type": "file--file",
+            "id": "e7cda0c1-fbb3-4773-a1d0-3dabae8113a6",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/e7cda0c1-fbb3-4773-a1d0-3dabae8113a6"
+              }
+            },
+            "meta": { "alt": null, "title": "star", "width": null, "height": null },
+            "filename": "star.svg",
+            "uri": {
+              "value": "public://2019-05/star.svg",
+              "url": "/sites/default/files/2019-05/star.svg"
+            },
+            "filemime": "image/svg+xml"
+          },
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/b23d828b-6e45-45a2-96a7-148757b4c88f/field_media_image?resourceVersion=id%3A1444"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/b23d828b-6e45-45a2-96a7-148757b4c88f/relationships/field_media_image?resourceVersion=id%3A1444"
+            }
+          }
         },
-        "filemime": "image/svg+xml"
+        "name": "star"
       },
-      "name": "star"
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c/field_taxonomy_icon"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/6b7cd598-d71e-45f7-911c-d71551ec0a7c/relationships/field_taxonomy_icon"
+        }
+      }
     },
     "name": "Featured"
   },
@@ -83,405 +113,186 @@
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/2cd0a3c4-a7f1-4080-bf2e-e458559de2a3"
       }
     },
-    "field_taxonomy_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "field_taxonomy_icon": {
-      "type": "media--image",
-      "id": "ba784330-0f3d-4043-b211-b30e62f53ccd",
+    "field_taxonomy_affiliation": {
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/2cd0a3c4-a7f1-4080-bf2e-e458559de2a3/field_taxonomy_affiliation"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/ba784330-0f3d-4043-b211-b30e62f53ccd?resourceVersion=id%3A680"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/2cd0a3c4-a7f1-4080-bf2e-e458559de2a3/relationships/field_taxonomy_affiliation"
         }
       },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "b8c8587f-ebe8-4ce3-82ce-a92c10018b77",
+      "data": [
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+            }
+          },
+          "name": "Employee"
+        },
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
+            }
+          },
+          "name": "Student"
+        }
+      ]
+    },
+    "field_taxonomy_icon": {
+      "data": {
+        "type": "media--image",
+        "id": "ba784330-0f3d-4043-b211-b30e62f53ccd",
         "links": {
           "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
           },
           "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/b8c8587f-ebe8-4ce3-82ce-a92c10018b77"
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/ba784330-0f3d-4043-b211-b30e62f53ccd?resourceVersion=id%3A680"
           }
         },
-        "meta": { "alt": null, "title": "graduation-cap", "width": null, "height": null },
-        "filename": "graduation-cap.svg",
-        "uri": {
-          "value": "public://2019-05/graduation-cap.svg",
-          "url": "/sites/default/files/2019-05/graduation-cap.svg"
+        "field_media_image": {
+          "data": {
+            "type": "file--file",
+            "id": "b8c8587f-ebe8-4ce3-82ce-a92c10018b77",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/b8c8587f-ebe8-4ce3-82ce-a92c10018b77"
+              }
+            },
+            "meta": { "alt": null, "title": "graduation-cap", "width": null, "height": null },
+            "filename": "graduation-cap.svg",
+            "uri": {
+              "value": "public://2019-05/graduation-cap.svg",
+              "url": "/sites/default/files/2019-05/graduation-cap.svg"
+            },
+            "filemime": "image/svg+xml"
+          },
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/ba784330-0f3d-4043-b211-b30e62f53ccd/field_media_image?resourceVersion=id%3A680"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/ba784330-0f3d-4043-b211-b30e62f53ccd/relationships/field_media_image?resourceVersion=id%3A680"
+            }
+          }
         },
-        "filemime": "image/svg+xml"
+        "name": "graduation-cap"
       },
-      "name": "graduation-cap"
+      "links": {
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/2cd0a3c4-a7f1-4080-bf2e-e458559de2a3/field_taxonomy_icon"
+        },
+        "self": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/2cd0a3c4-a7f1-4080-bf2e-e458559de2a3/relationships/field_taxonomy_icon"
+        }
+      }
     },
     "name": "Academic"
   },
   {
     "type": "taxonomy_term--categories",
-    "id": "e2730988-0614-43b7-b3ce-0b047e8219e0",
+    "id": "81e84924-2e56-45b1-b2d0-36632ece6b7e",
     "links": {
       "describedby": {
         "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
       },
       "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/e2730988-0614-43b7-b3ce-0b047e8219e0"
+        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/81e84924-2e56-45b1-b2d0-36632ece6b7e"
       }
     },
-    "field_taxonomy_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "field_taxonomy_icon": {
-      "type": "media--image",
-      "id": "72587d42-8cf0-44b2-98cc-1c3f0b007f6e",
+    "field_taxonomy_affiliation": {
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/81e84924-2e56-45b1-b2d0-36632ece6b7e/field_taxonomy_affiliation"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/72587d42-8cf0-44b2-98cc-1c3f0b007f6e?resourceVersion=id%3A734"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/81e84924-2e56-45b1-b2d0-36632ece6b7e/relationships/field_taxonomy_affiliation"
         }
       },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "f71e3278-c508-4c96-a81c-8d9ff782aa96",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+      "data": [
+        {
+          "type": "taxonomy_term--affiliation",
+          "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
+          "links": {
+            "describedby": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
+            }
           },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/f71e3278-c508-4c96-a81c-8d9ff782aa96"
-          }
-        },
-        "meta": { "alt": null, "title": "hands-usd", "width": null, "height": null },
-        "filename": "hands-usd.svg",
-        "uri": {
-          "value": "public://2019-05/hands-usd.svg",
-          "url": "/sites/default/files/2019-05/hands-usd.svg"
-        },
-        "filemime": "image/svg+xml"
-      },
-      "name": "hands-usd"
+          "name": "Employee"
+        }
+      ]
     },
-    "name": "Financial"
-  },
-  {
-    "type": "taxonomy_term--categories",
-    "id": "382db473-acfc-40b0-80cc-6c2db55d18ea",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/382db473-acfc-40b0-80cc-6c2db55d18ea"
-      }
-    },
-    "field_taxonomy_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
     "field_taxonomy_icon": {
-      "type": "media--image",
-      "id": "b6f1775a-c5ba-4205-bab5-a90f7b7c4e59",
+      "data": {
+        "type": "media--image",
+        "id": "fa5385ee-2b43-403a-8646-598cb8f626f3",
+        "links": {
+          "describedby": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+          },
+          "self": {
+            "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/fa5385ee-2b43-403a-8646-598cb8f626f3?resourceVersion=id%3A212"
+          }
+        },
+        "field_media_image": {
+          "data": {
+            "type": "file--file",
+            "id": "ac764a01-9723-4933-bb81-0abc112637ca",
+            "links": {
+              "describedby": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/ac764a01-9723-4933-bb81-0abc112637ca"
+              }
+            },
+            "meta": { "alt": null, "title": "briefcase", "width": null, "height": null },
+            "filename": "briefcase.svg",
+            "uri": {
+              "value": "public://2019-05/briefcase.svg",
+              "url": "/sites/default/files/2019-05/briefcase.svg"
+            },
+            "filemime": "image/svg+xml"
+          },
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/fa5385ee-2b43-403a-8646-598cb8f626f3/field_media_image?resourceVersion=id%3A212"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/fa5385ee-2b43-403a-8646-598cb8f626f3/relationships/field_media_image?resourceVersion=id%3A212"
+            }
+          }
+        },
+        "name": "briefcase"
+      },
       "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
+        "related": {
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/81e84924-2e56-45b1-b2d0-36632ece6b7e/field_taxonomy_icon"
         },
         "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/b6f1775a-c5ba-4205-bab5-a90f7b7c4e59?resourceVersion=id%3A764"
+          "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/81e84924-2e56-45b1-b2d0-36632ece6b7e/relationships/field_taxonomy_icon"
         }
-      },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "95de69d1-49e7-48d7-b71f-873910c30b63",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/95de69d1-49e7-48d7-b71f-873910c30b63"
-          }
-        },
-        "meta": { "alt": null, "title": "hiking", "width": null, "height": null },
-        "filename": "hiking.svg",
-        "uri": {
-          "value": "public://2019-05/hiking.svg",
-          "url": "/sites/default/files/2019-05/hiking.svg"
-        },
-        "filemime": "image/svg+xml"
-      },
-      "name": "hiking"
-    },
-    "name": "Getting Involved"
-  },
-  {
-    "type": "taxonomy_term--categories",
-    "id": "cf44f3d0-6c17-490b-b3e3-753b5dd9ae6f",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/cf44f3d0-6c17-490b-b3e3-753b5dd9ae6f"
       }
     },
-    "field_taxonomy_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "field_taxonomy_icon": {
-      "type": "media--image",
-      "id": "88c9fead-f113-481a-87ab-b273ec4c1012",
-      "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
-        },
-        "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/88c9fead-f113-481a-87ab-b273ec4c1012?resourceVersion=id%3A1238"
-        }
-      },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "ce0567ed-c2b3-4508-b096-841bd8cee146",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/ce0567ed-c2b3-4508-b096-841bd8cee146"
-          }
-        },
-        "meta": { "alt": null, "title": "laptop", "width": null, "height": null },
-        "filename": "laptop.svg",
-        "uri": {
-          "value": "public://2019-05/laptop_0.svg",
-          "url": "/sites/default/files/2019-05/laptop_0.svg"
-        },
-        "filemime": "image/svg+xml"
-      },
-      "name": "laptop"
-    },
-    "name": "Technology"
-  },
-  {
-    "type": "taxonomy_term--categories",
-    "id": "22db6473-91d6-422f-ab7b-cc9d7a9f0865",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/22db6473-91d6-422f-ab7b-cc9d7a9f0865"
-      }
-    },
-    "field_taxonomy_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "field_taxonomy_icon": {
-      "type": "media--image",
-      "id": "93dcc832-ea01-4c06-a0ac-d02cef59ceaa",
-      "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
-        },
-        "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/93dcc832-ea01-4c06-a0ac-d02cef59ceaa?resourceVersion=id%3A1303"
-        }
-      },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "812887cd-767d-46df-98ae-d9f8219d60da",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/812887cd-767d-46df-98ae-d9f8219d60da"
-          }
-        },
-        "meta": { "alt": null, "title": "shuttle-van", "width": null, "height": null },
-        "filename": "shuttle-van.svg",
-        "uri": {
-          "value": "public://2019-05/shuttle-van.svg",
-          "url": "/sites/default/files/2019-05/shuttle-van.svg"
-        },
-        "filemime": "image/svg+xml"
-      },
-      "name": "shuttle-van"
-    },
-    "name": "Transportation"
-  },
-  {
-    "type": "taxonomy_term--categories",
-    "id": "231ea7e3-cda2-462d-97d4-9e5a5c23e015",
-    "links": {
-      "describedby": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/resource/schema"
-      },
-      "self": {
-        "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/categories/231ea7e3-cda2-462d-97d4-9e5a5c23e015"
-      }
-    },
-    "field_taxonomy_affiliation": [
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "38a439e3-21d4-4315-8333-6699bf9710d6",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/38a439e3-21d4-4315-8333-6699bf9710d6"
-          }
-        },
-        "name": "Employee"
-      },
-      {
-        "type": "taxonomy_term--affiliation",
-        "id": "18c26921-8e03-4581-a30f-b832c3a803ad",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/taxonomy_term/affiliation/18c26921-8e03-4581-a30f-b832c3a803ad"
-          }
-        },
-        "name": "Student"
-      }
-    ],
-    "field_taxonomy_icon": {
-      "type": "media--image",
-      "id": "ee7df84f-85b4-4f9a-8385-a7f3cd2d8009",
-      "links": {
-        "describedby": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/resource/schema"
-        },
-        "self": {
-          "href": "https://data.dx.oregonstate.edu/jsonapi/media/image/ee7df84f-85b4-4f9a-8385-a7f3cd2d8009?resourceVersion=id%3A731"
-        }
-      },
-      "field_media_image": {
-        "type": "file--file",
-        "id": "bf34081b-9fc2-41cc-b811-87c5da987192",
-        "links": {
-          "describedby": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/resource/schema"
-          },
-          "self": {
-            "href": "https://data.dx.oregonstate.edu/jsonapi/file/file/bf34081b-9fc2-41cc-b811-87c5da987192"
-          }
-        },
-        "meta": { "alt": null, "title": "hands-heart", "width": null, "height": null },
-        "filename": "hands-heart.svg",
-        "uri": {
-          "value": "public://2019-05/hands-heart.svg",
-          "url": "/sites/default/files/2019-05/hands-heart.svg"
-        },
-        "filemime": "image/svg+xml"
-      },
-      "name": "hands-heart"
-    },
-    "name": "Wellness"
+    "name": "Employment"
   }
 ]
