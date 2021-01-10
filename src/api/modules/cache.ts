@@ -25,6 +25,7 @@ export const selectDbAsync = promisify(client.select).bind(client);
 export const flushDbAsync = promisify(client.flushdb).bind(client);
 export const getAsync = promisify(client.get).bind(client);
 export const setAsync = promisify(client.set).bind(client);
+export const delAsync = promisify(client.del).bind(client);
 /*
   set(key: string, value: string, cb?: Callback<'OK'>): R;
   set(key: string, value: string, flag: string, cb?: Callback<'OK'>): R;
@@ -144,4 +145,5 @@ export default {
   setAsync,
   flushDbAsync,
   selectDbAsync,
+  delAsync,
 };

@@ -1,4 +1,5 @@
 export default {
+  msTeamsHook: 'MS_TEAMS_HOOK',
   env: 'NODE_ENV',
   useMocks: 'USE_MOCKS',
   apiKeys: 'API_KEYS',

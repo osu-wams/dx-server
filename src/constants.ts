@@ -23,6 +23,8 @@ const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
 const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
 const DX_MCM_BASE_URL: string = config.get('dxMcmApi.baseUrl');
 const DX_MCM_CACHE_SEC = parseInt(config.get('dxMcmApi.cacheEndpointSec'), 10);
+const OSU_ERROR_SEC_THRESH = parseInt(config.get('osuApi.thresholdErrorSeconds'), 10);
+const OSU_ERROR_OCCUR_THRESH = parseInt(config.get('osuApi.thresholdErrorOccurance'), 10);
 const DX_MCM_DASHBOARD_CHANNEL = 'dashboard';
 const DX_MCM_TOKEN: string = config.get('dxMcmApi.token');
 const ENCRYPTION_KEY: string = config.get('encryptionKey');
@@ -117,6 +119,8 @@ export {
   OSU_API_CACHE_SEC,
   OSU_API_CLIENT_ID,
   OSU_API_CLIENT_SECRET,
+  OSU_ERROR_SEC_THRESH,
+  OSU_ERROR_OCCUR_THRESH,
   REDIS_HOST,
   REDIS_PORT,
   SAML_CALLBACK_URL,

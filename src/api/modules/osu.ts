@@ -16,35 +16,45 @@ import {
   mockedDegrees,
 } from '../../mocks/osu';
 import { OSU_API_BASE_URL, OSU_API_CACHE_SEC } from '../../constants';
+import { cacheFailureOrPing } from './notifications';
 
 const STUDENT_BASE_URL: string = `${OSU_API_BASE_URL}/v1/students`;
 const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v1/persons`;
 
-const getJson = async (url: string) => {
+const getJson = async (url: string, exceptionKey: string) => {
   // TODO: Can we cache this for a period of time and reuse the token reliably?
   const bearerToken = await getToken();
 
   // * Cached API call will not use the token until the time it's called
   // * after the cache had expired.
-  const response = await cache.get(
-    url,
-    {
-      headers: { Authorization: `Bearer ${bearerToken}` },
-      json: true,
-    },
-    true,
-    {
-      key: url,
-      ttlSeconds: OSU_API_CACHE_SEC,
-    },
-    [502],
-  );
-  return response;
+  try {
+    const response = await cache.get(
+      url,
+      {
+        headers: { Authorization: `Bearer ${bearerToken}` },
+        json: true,
+      },
+      true,
+      {
+        key: url,
+        ttlSeconds: OSU_API_CACHE_SEC,
+      },
+      [502],
+    );
+    return response;
+  } catch (err) {
+    await cacheFailureOrPing(err, exceptionKey);
+    throw err;
+  }
 };
 
 export const getAddresses = async (user: any): Promise<Types.Address[]> => {
   const response: Types.AddressesResponse = await fetchData(
-    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`),
+    () =>
+      getJson(
+        `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`,
+        `${PERSON_BASE_URL}/addresses`,
+      ),
     mockedAddresses,
   );
   return response.data;
@@ -52,7 +62,11 @@ export const getAddresses = async (user: any): Promise<Types.Address[]> => {
 
 export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
   const response: Types.MealPlansResponse = await fetchData(
-    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`),
+    () =>
+      getJson(
+        `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`,
+        `${PERSON_BASE_URL}/meal-plans`,
+      ),
     mockedMealPlans,
   );
   return response.data;
@@ -60,7 +74,7 @@ export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
 
 export const getProfile = async (user: any): Promise<Types.PersonsResponse> => {
   const response: Types.PersonsResponse = await fetchData(
-    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`),
+    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`, `${PERSON_BASE_URL}/`),
     mockedPersons,
   );
   return response;
@@ -87,6 +101,7 @@ export const getAcademicStatus = async (
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
+        `${STUDENT_BASE_URL}/academic-status`,
       ),
     mockedAcademicStatus,
   );
@@ -114,7 +129,11 @@ export const getAcademicStatus = async (
 
 export const getAccountBalance = async (user: any) => {
   return fetchData(
-    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`),
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`,
+        `${STUDENT_BASE_URL}/account-balance`,
+      ),
     mockedAccountBalance,
   );
 };
@@ -124,6 +143,7 @@ export const getAccountTransactions = async (user: any) => {
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
+        `${STUDENT_BASE_URL}/account-transactions?term=current`,
       ),
     mockedAccountTransactions,
   );
@@ -135,7 +155,10 @@ export const getClassSchedule = async (
 ): Promise<{ data: Types.CourseSchedule[] }> => {
   const response: Types.CourseScheduleResponse = await fetchData(
     () =>
-      getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`),
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
+        `${STUDENT_BASE_URL}/class-schedule`,
+      ),
     mockedClassSchedule,
   );
   return {
@@ -157,7 +180,11 @@ export const getClassSchedule = async (
 
 export const getClassification = async (user: any): Promise<Types.Classification> => {
   const response: Types.ClassificationResponse = await fetchData(
-    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`),
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`,
+        `${STUDENT_BASE_URL}/classification`,
+      ),
     mockedClassification,
   );
   return response.data;
@@ -169,7 +196,11 @@ export const getGrades = async (user: any, term: any) => {
     termParam = `?term=${term}`;
   }
   return fetchData(
-    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`),
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`,
+        `${STUDENT_BASE_URL}/grades`,
+      ),
     mockedGrades,
   );
 };
@@ -207,7 +238,11 @@ const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
 
 export const getGpa = async (user: any): Promise<Types.GpaLevel[]> => {
   const response: GpaResponse = await fetchData(
-    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`),
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`,
+        `${STUDENT_BASE_URL}/gpa`,
+      ),
     mockedGpa,
   );
   if (response.data && response.data.attributes.gpaLevels.length > 0) {
@@ -245,7 +280,11 @@ interface HoldsResponse {
 
 export const getHolds = async (user: any): Promise<[{ description: string }] | []> => {
   const response: HoldsResponse = await fetchData(
-    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`),
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`,
+        `${STUDENT_BASE_URL}/holds`,
+      ),
     mockedHolds,
   );
   if (response.data && response.data.attributes.holds.length > 0) {
@@ -277,7 +316,11 @@ export const getDegrees = async (user: any, term = 'current'): Promise<Types.Deg
     termParam = `?term=${term}`;
   }
   return fetchData(
-    () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/degrees${termParam}`),
+    () =>
+      getJson(
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/degrees${termParam}`,
+        `${STUDENT_BASE_URL}/degrees`,
+      ),
     mockedDegrees,
   );
 };
