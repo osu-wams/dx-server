@@ -53,7 +53,7 @@ describe('/masquerade', () => {
         firstName: 'Bob',
         osuId: 123123,
         email: 'bob@bobross.com',
-        isCanvasOptIn: true,
+        canvasOptIn: true,
       },
       masqueradeId: 123123,
       masqueradeReason: 'Because',

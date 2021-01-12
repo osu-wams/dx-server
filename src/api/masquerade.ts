@@ -23,7 +23,7 @@ const router: Router = Router();
 router.post('/', async (req: Request, res: Response) => {
   const { masqueradeId, masqueradeReason } = req.body;
   if (masqueradeId && masqueradeReason) {
-    const user = await User.find(masqueradeId);
+    const user = await User.find(parseInt(masqueradeId, 10));
     if (user) {
       const {
         lastName,
@@ -51,7 +51,7 @@ router.post('/', async (req: Request, res: Response) => {
         theme,
         osuId,
         email,
-        isCanvasOptIn: canvasOptIn,
+        canvasOptIn,
       };
     }
     req.user.masqueradeId = masqueradeId;
