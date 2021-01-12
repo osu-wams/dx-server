@@ -51,7 +51,7 @@ router.post('/', async (req: Request, res: Response) => {
         theme,
         osuId,
         email,
-        isCanvasOptIn: canvasOptIn,
+        canvasOptIn,
       };
     }
     req.user.masqueradeId = masqueradeId;
