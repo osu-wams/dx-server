@@ -28,8 +28,11 @@ const cloudDb = new AWS.DynamoDB.DocumentClient({
       if (!cloudUser) {
         console.error(`User ${process.argv[2]} not found.`);
       } else {
-        // @ts-ignore dynamodb-toolback returns wrapped sets
-        const affiliations: string[] = cloudUser.affiliations.values;
+        let affiliations: string[] = ['employee'];
+        if (cloudUser.affiliations) {
+          // @ts-ignore dynamodb-toolback returns wrapped sets
+          affiliations = cloudUser.affiliations.values;
+        }
 
         const updatedUser = await User.upsert({
           ...cloudUser,
