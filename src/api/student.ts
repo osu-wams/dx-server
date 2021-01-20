@@ -191,7 +191,7 @@ router.get('/degrees', async (req: Request, res: Response) => {
     // if user's degree contains "in", get rid of it
     if (response.data.length > 0) {
       if (response.data[0].attributes.degree.includes(' in')) {
-        let degree = response.data[0].attributes.degree.replace(' in', '');
+        const degree = response.data[0].attributes.degree.replace(' in', '');
         response.data[0].attributes.degree = degree;
       }
     }
