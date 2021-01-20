@@ -266,8 +266,8 @@ export const getCategories = async (): Promise<Types.Category[]> => {
   );
 
   const categoryIconUrl = (item) => {
-    if (item.field_taxonomy_icon?.data?.field_media_image?.uri?.url) {
-      return `${BASE_URL}${item.field_taxonomy_icon.data.field_media_image.uri.url}`;
+    if (item.field_taxonomy_icon?.data?.field_media_image?.data?.uri?.url) {
+      return `${BASE_URL}${item.field_taxonomy_icon.data.field_media_image.data.uri.url}`;
     }
     return undefined;
   };
@@ -432,8 +432,8 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
   );
 
   const trainingImageUrl = (item) => {
-    if (item.field_training_image?.data?.field_media_image?.uri?.url) {
-      return `${BASE_URL}${item.field_training_image.data.field_media_image.uri.url}`;
+    if (item.field_training_image?.data?.field_media_image?.data?.uri?.url) {
+      return `${BASE_URL}${item.field_training_image.data.field_media_image.data.uri.url}`;
     }
     return undefined;
   };
