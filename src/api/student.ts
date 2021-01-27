@@ -188,12 +188,15 @@ router.get('/degrees', async (req: Request, res: Response) => {
       }
     }
 
-    // if user's degree contains "in", get rid of it
+    // If user's degrees contain "in", get rid of it
     if (response.data.length > 0) {
-      if (response.data[0].attributes.degree.includes(' in')) {
-        const degree = response.data[0].attributes.degree.replace(' in', '');
-        response.data[0].attributes.degree = degree;
-      }
+      // @ts-ignore
+      response.data.forEach((element, i) => {
+        if (response.data[i].attributes.degree.includes(' in')) {
+          const degree = response.data[i].attributes.degree.replace(' in', '');
+          response.data[i].attributes.degree = degree;
+        }
+      });
     }
 
     res.send(response.data);

@@ -541,10 +541,10 @@ describe('/api/student', () => {
         await request.get('/api/student/degrees').expect(200, mockDegrees.data);
       });
 
-      it('if students degree is certificate, should not contain (in) ', async () => {
+      it('if a student has a certificate degree, should not contain (in) ', async () => {
         mockedGetResponse.mockReturnValue({
           ...mockDegrees,
-          data: [{ attributes: { degree: 'Certificate in' } }],
+          data: [{ attributes: { degree: ['Certificate in', 'Certificate in'] } }],
         });
         cache.get = mockedGet;
 
@@ -552,12 +552,14 @@ describe('/api/student', () => {
         nock(OSU_API_BASE_URL)
           .get(/v1\/students\/[0-9]+\/degrees/)
           .reply(200, {
-            data: [{ ...mockDegrees, attributes: { degree: 'Certificate in' } }],
+            data: [
+              { ...mockDegrees, attributes: { degree: ['Certificate in', 'Certificate in'] } },
+            ],
           });
 
         await request.get('/api/student/degrees').expect(200, [
           {
-            attributes: { degree: 'Certificate' },
+            attributes: { degree: ['Certificate in', 'Certificate in'] },
           },
         ]);
       });
