@@ -187,6 +187,18 @@ router.get('/degrees', async (req: Request, res: Response) => {
         req.session.passport.user = user;
       }
     }
+
+    // If user's degrees contain "in", get rid of it
+    if (response.data.length > 0) {
+      // @ts-ignore
+      response.data.forEach((element, i) => {
+        if (response.data[i].attributes.degree.includes(' in')) {
+          const degree = response.data[i].attributes.degree.replace(' in', '');
+          response.data[i].attributes.degree = degree;
+        }
+      });
+    }
+
     res.send(response.data);
   } catch (err) {
     logger().error('api/student/degrees failed:', err);
