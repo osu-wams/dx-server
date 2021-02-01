@@ -15,12 +15,8 @@ const request = supertest.agent(app);
  * it not currently possible to mock cache.get instead.
  */
 beforeEach(() => {
-  nock(CACHET_BASE_URL)
-    .get('/components')
-    .reply(200, componentsResponse);
-  nock(CACHET_BASE_URL)
-    .get('/incidents')
-    .reply(200, incidentsResponse);
+  nock(CACHET_BASE_URL).get('/components').query(true).reply(200, componentsResponse);
+  nock(CACHET_BASE_URL).get('/incidents').query(true).reply(200, incidentsResponse);
 });
 
 describe('/status', () => {
@@ -31,9 +27,7 @@ describe('/status', () => {
   it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = mockedGet;
-    nock(CACHET_BASE_URL)
-      .get('/components')
-      .reply(500);
+    nock(CACHET_BASE_URL).get('/components').query(true).reply(500);
 
     await request.get('/api/status').expect(500, { message: 'Cachet API queries failed.' });
   });
