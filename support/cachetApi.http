@@ -1,10 +1,10 @@
 @baseUrl = https://status.is.oregonstate.edu/api/v1
 
 # @name getComponents
-GET {{baseUrl}}/components HTTP/1.1
+GET {{baseUrl}}/components?per_page=100 HTTP/1.1
 
 ###
 
 # @name getIncidents
-GET {{baseUrl}}/incidents HTTP/1.1
+GET {{baseUrl}}/incidents?sort=status&order=desc&per_page=100 HTTP/1.1
 
