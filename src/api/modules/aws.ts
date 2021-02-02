@@ -3,6 +3,7 @@ import FavoriteResource from '../models/favoriteResource';
 import { TrendingResource, TABLE_NAME, scanAll } from '../models/trendingResource';
 import User from '../models/user';
 import { getCache, setCache } from './cache';
+import { getResources } from './dx';
 
 const top10 = (resources: TrendingResource[], affiliation: string) => {
   const groupedByResourceId = groupBy(
@@ -20,6 +21,24 @@ const top10 = (resources: TrendingResource[], affiliation: string) => {
     }))
     .sort((a, b) => (a.count < b.count ? 1 : -1))
     .slice(0, 9);
+};
+
+const clicks1000 = (resources: TrendingResource[], affiliation: string) => {
+  const groupedByResourceId = groupBy(
+    resources.filter((r) => r.affiliation === affiliation),
+    'resourceId',
+  );
+  return Object.keys(groupedByResourceId)
+    .map((k) => ({
+      resourceId: k,
+      title: groupedByResourceId[k][0].title,
+      count: groupedByResourceId[k].reduce(
+        (p, c) => p + parseInt(c.uniqueEvents.toString(), 10),
+        0,
+      ),
+    }))
+    .sort((a, b) => (a.count < b.count ? 1 : -1))
+    .filter((v) => v.count > 1000);
 };
 
 export const getUsersMetrics = async (daysAgo: number) => {
@@ -84,10 +103,34 @@ export const getUsersMetrics = async (daysAgo: number) => {
 };
 
 export const getFavoritesMetrics = async () => {
+  const dxResources = await getResources();
   const resources = await FavoriteResource.scanAll();
+  const favorites = resources.filter((f) => f.active);
+  const unfavorites = resources.filter((f) => !f.active);
+  const groupedFavorites = groupBy(favorites, 'resourceId');
+  const groupedUnFavorites = groupBy(unfavorites, 'resourceId');
+  const topGroupedFavorites = Object.keys(groupedFavorites)
+    .map((k) => ({
+      resource: k,
+      count: groupedFavorites[k].length,
+      title: dxResources.find((r) => r.id === k)?.title,
+    }))
+    .sort((a, b) => (a.count > b.count ? 1 : -1))
+    .slice(0, 9);
+  const topGroupedUnFavorites = Object.keys(groupedUnFavorites)
+    .map((k) => ({
+      resource: k,
+      count: groupedUnFavorites[k].length,
+      title: dxResources.find((r) => r.id === k)?.title,
+    }))
+    .sort((a, b) => (a.count > b.count ? 1 : -1))
+    .slice(0, 9);
+
   return {
     favorited: resources.filter((f) => f.active).length,
     unfavorited: resources.filter((f) => !f.active).length,
+    topfavorited: topGroupedFavorites,
+    topunfavorited: topGroupedUnFavorites,
   };
 };
 
@@ -135,6 +178,10 @@ export const getTrendingMetrics = async (daysAgo: number) => {
     resourcesTop10ByAffiliation: {
       student: top10(resources, 'Student'),
       employee: top10(resources, 'Employee'),
+    },
+    resourcesWith1000ClicksByAffiliation: {
+      student: clicks1000(resources, 'Student'),
+      employee: clicks1000(resources, 'Employee'),
     },
   };
   setCache(cacheKey, JSON.stringify(metrics), {

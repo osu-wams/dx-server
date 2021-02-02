@@ -258,7 +258,11 @@ export const getPageViews = async (
   const data = await fetchPageViews(daysAgo, rangeDays, maxResults);
   const pageViews = data.map((v) => ({ path: v[0], count: parseInt(v[1], 10) }));
   const results = { fromDate, toDate, pageViews };
-  await setCache(cacheKey, JSON.stringify(results));
+  setCache(cacheKey, JSON.stringify(results), {
+    mode: 'EX',
+    duration: GOOGLE_CACHE_SEC,
+    flag: 'NX',
+  });
   return results;
 };
 
@@ -279,6 +283,10 @@ export const getActiveUsers = async (
 
   const data = await fetchActiveUsers(metrics);
   const users = data.map((v) => ({ date: v[0], count: parseInt(v[1], 10) }));
-  await setCache(cacheKey, JSON.stringify(users));
+  setCache(cacheKey, JSON.stringify(users), {
+    mode: 'EX',
+    duration: GOOGLE_CACHE_SEC,
+    flag: 'NX',
+  });
   return users;
 };
