@@ -111,7 +111,7 @@ export interface ICachetComponent {
 }
 
 const getComponents = async (): Promise<ICachetComponentResponse> => {
-  const url = `${CACHET_BASE_URL}/components`;
+  const url = `${CACHET_BASE_URL}/components?per_page=100`;
   return fetchData(
     () =>
       cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
@@ -123,7 +123,7 @@ const getComponents = async (): Promise<ICachetComponentResponse> => {
 };
 
 const getIncidents = async (): Promise<ICachetIncidentResponse> => {
-  const url = `${CACHET_BASE_URL}/incidents`;
+  const url = `${CACHET_BASE_URL}/incidents?sort=status&order=desc&per_page=100`;
   return fetchData(
     () =>
       cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
