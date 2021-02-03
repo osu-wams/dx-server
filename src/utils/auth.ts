@@ -32,43 +32,55 @@ const parseSamlResult = (profile: any, done: any) => {
 
   if (!user.osuId) {
     logger().error(
-      `Saml response did not include 'osuId' required field (urn:oid:1.3.6.1.4.1.5016.2.1.2.1) value. \n Response values: `,
-      user,
+      `Saml response did not include 'osuId' required field (urn:oid:1.3.6.1.4.1.5016.2.1.2.1) value. Response values: `,
+      JSON.stringify(user),
+      ` Profile values: `,
+      JSON.stringify(profile),
     );
   }
 
   if (!user.firstName) {
     logger().error(
       `Saml response did not include 'firstName' required field (urn:oid:2.5.4.42) value. \n Response values: `,
-      user,
+      JSON.stringify(user),
+      ` Profile values: `,
+      JSON.stringify(profile),
     );
   }
 
   if (!user.lastName) {
     logger().error(
       `Saml response did not include 'lastName' required field (urn:oid:2.5.4.4) value. \n Response values: `,
-      user,
+      JSON.stringify(user),
+      ` Profile values: `,
+      JSON.stringify(profile),
     );
   }
 
   if (!user.email) {
     logger().error(
       `Saml response did not include 'email' required field (urn:oid:1.3.6.1.4.1.5923.1.1.1.6) value. \n Response values: `,
-      user,
+      JSON.stringify(user),
+      ` Profile values: `,
+      JSON.stringify(profile),
     );
   }
 
   if (!user.primaryAffiliation) {
     logger().error(
       `Saml response did not include 'primaryAffiliation' required field (urn:oid:1.3.6.1.4.1.5923.1.1.1.5) value. \n Response values: `,
-      user,
+      JSON.stringify(user),
+      ` Profile values: `,
+      JSON.stringify(profile),
     );
   }
 
   if (!user.affiliations || !user.affiliations.length) {
     logger().error(
       `Saml response did not include 'affiliations' required field (urn:oid:1.3.6.1.4.1.5923.1.1.1.1) values, populating with primaryAffiliation.\n Response values: `,
-      user,
+      JSON.stringify(user),
+      ` Profile values: `,
+      JSON.stringify(profile),
     );
     user.affiliations = [user.primaryAffiliation];
   }
@@ -76,7 +88,9 @@ const parseSamlResult = (profile: any, done: any) => {
   if (!user.onid) {
     logger().error(
       `Saml response did not include 'onid' required field (urn:oid:0.9.2342.19200300.100.1.1) value.\n Response values: `,
-      user,
+      JSON.stringify(user),
+      ` Profile values: `,
+      JSON.stringify(profile),
     );
   }
 
