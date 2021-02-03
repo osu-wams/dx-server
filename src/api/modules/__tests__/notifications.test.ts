@@ -1,7 +1,10 @@
+/* eslint-disable import/prefer-default-export */
+
 import nock from 'nock';
 import config from 'config';
 
 import { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing } from '../notifications';
+
 export const MS_TEAMS_URL: string = config.get('msTeamsHook');
 
 const mockedGetAsync = jest.fn();
@@ -43,7 +46,7 @@ const teamsPayload = {
 describe('Notifications module', () => {
   beforeEach(() => {
     nock('https://outlook.office.com')
-      .filteringPath((path) => '/')
+      .filteringPath(() => '/')
       .post('/')
       .reply(200);
   });
@@ -72,7 +75,7 @@ describe('Notifications module', () => {
 
       const mockTime = Date.now() - (mockSecThreshhold + 1) * 1000;
 
-      mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); //Make this return cache format w time > timeThreshold
+      mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // Make this return cache format w time > timeThreshold
 
       const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
 
@@ -104,7 +107,7 @@ describe('Notifications module', () => {
 
       mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // time < timeThreshold
 
-      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 1 }; //Err threshold of 1, new error should send teams message
+      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 1 }; // Err threshold of 1, new error should send teams message
 
       await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
 
@@ -120,7 +123,7 @@ describe('Notifications module', () => {
 
     it('should throw error upon message teams failure', async () => {
       nock('https://outlook.office.com')
-        .filteringPath((path) => '/')
+        .filteringPath(() => '/')
         .post('/')
         .reply(500);
       try {

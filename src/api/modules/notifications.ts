@@ -26,60 +26,11 @@ export const createTeamsPayload = (title: string, subtitle?: string, facts?: Fac
         activityTitle: title,
         activitySubtitle: subtitle,
         activityImage: 'https://teamsnodesample.azurewebsites.net/static/img/image5.png',
-        facts: facts,
+        facts,
         markdown: true,
       },
     ],
   };
-};
-
-export const computeHasExpired = (time, cacheData, config) => {
-  return time - cacheData.slice(-1)[0].d > config.timeThreshold * 1000;
-};
-
-export const cacheFailureOrPing = async (err: Object, exceptionKey: string, config: Config) => {
-  const time = Date.now();
-
-  const newData = [{ d: time, e: err }];
-
-  let cacheData = JSON.parse(await cache.getAsync(exceptionKey));
-
-  let hasExpired = true;
-
-  if (cacheData) {
-    hasExpired = computeHasExpired(time, cacheData, config);
-  }
-
-  if (!cacheData || hasExpired) {
-    await cache.setAsync(exceptionKey, JSON.stringify(newData));
-  } else {
-    cacheData = cacheData.concat(newData);
-    if (cacheData.length >= config.errThreshold) {
-      let facts = [
-        {
-          name: 'Failing endpoint',
-          value: exceptionKey,
-        },
-        {
-          name: 'Number of failed requests',
-          value: config.errThreshold,
-        },
-        {
-          name: 'Within Timespan of',
-          value: `${config.timeThreshold} seconds`,
-        },
-      ];
-      const payload = createTeamsPayload('API Endpoint Failing', 'DX-Server', facts);
-
-      logger().debug(`Sending API Fail message to 'MOS-Alerts' in MS Teams`);
-
-      await sendTeamsMessage(payload);
-
-      await cache.delAsync(exceptionKey);
-    } else {
-      await cache.setAsync(exceptionKey, JSON.stringify(cacheData));
-    }
-  }
 };
 
 const postTeamsMessage = async (url: string, payload: Object): Promise<boolean> => {
@@ -107,5 +58,58 @@ const postTeamsMessage = async (url: string, payload: Object): Promise<boolean> 
 
 export const sendTeamsMessage = async (payload: Object): Promise<boolean> =>
   postTeamsMessage(MS_TEAMS_URL, payload);
+
+export const computeHasExpired = (time, cacheData, configLocal) => {
+  return time - cacheData.slice(-1)[0].d > configLocal.timeThreshold * 1000;
+};
+
+export const cacheFailureOrPing = async (
+  err: Object,
+  exceptionKey: string,
+  configLocal: Config,
+) => {
+  const time = Date.now();
+
+  const newData = [{ d: time, e: err }];
+
+  let cacheData = JSON.parse(await cache.getAsync(exceptionKey));
+
+  let hasExpired = true;
+
+  if (cacheData) {
+    hasExpired = computeHasExpired(time, cacheData, configLocal);
+  }
+
+  if (!cacheData || hasExpired) {
+    await cache.setAsync(exceptionKey, JSON.stringify(newData));
+  } else {
+    cacheData = cacheData.concat(newData);
+    if (cacheData.length >= configLocal.errThreshold) {
+      const facts = [
+        {
+          name: 'Failing endpoint',
+          value: exceptionKey,
+        },
+        {
+          name: 'Number of failed requests',
+          value: configLocal.errThreshold,
+        },
+        {
+          name: 'Within Timespan of',
+          value: `${configLocal.timeThreshold} seconds`,
+        },
+      ];
+      const payload = createTeamsPayload('API Endpoint Failing', 'DX-Server', facts);
+
+      logger().debug(`Sending API Fail message to 'MOS-Alerts' in MS Teams`);
+
+      await sendTeamsMessage(payload);
+
+      await cache.delAsync(exceptionKey);
+    } else {
+      await cache.setAsync(exceptionKey, JSON.stringify(cacheData));
+    }
+  }
+};
 
 export default { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing, computeHasExpired };
