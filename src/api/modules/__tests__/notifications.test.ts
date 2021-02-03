@@ -74,9 +74,9 @@ describe('Notifications module', () => {
 
       mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); //Make this return cache format w time > timeThreshold
 
-      const config = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
+      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
 
-      await cacheFailureOrPing({ e: 'test' }, 'testkey', config);
+      await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
 
       expect(mockedSetAsync).toHaveBeenCalled();
 
@@ -89,9 +89,9 @@ describe('Notifications module', () => {
 
       mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // time < timeThreshold
 
-      const config = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
+      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
 
-      await cacheFailureOrPing({ e: 'test' }, 'testkey', config);
+      await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
 
       expect(mockedSetAsync).toHaveBeenCalled();
 
@@ -104,9 +104,9 @@ describe('Notifications module', () => {
 
       mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // time < timeThreshold
 
-      const config = { timeThreshold: mockSecThreshhold, errThreshold: 1 }; //Err threshold of 1, new error should send teams message
+      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 1 }; //Err threshold of 1, new error should send teams message
 
-      await cacheFailureOrPing({ e: 'test' }, 'testkey', config);
+      await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
 
       expect(mockedDelAsync).toHaveBeenCalled();
     });
