@@ -1,4 +1,5 @@
 export default {
+  msTeamsHook: 'https://outlook.office.com/webhook/blahblahblah',
   env: 'test',
   sessionSecret: 'bobross',
   encryptionKey: 'thisoneis32characterslong1234567',

@@ -15,7 +15,12 @@ import {
   mockedAccountBalance,
   mockedDegrees,
 } from '../../mocks/osu';
-import { OSU_API_BASE_URL, OSU_API_CACHE_SEC } from '../../constants';
+import {
+  OSU_API_BASE_URL,
+  OSU_API_CACHE_SEC,
+  OSU_ERROR_SEC_THRESH,
+  OSU_ERROR_OCCUR_THRESH,
+} from '../../constants';
 import { cacheFailureOrPing } from './notifications';
 
 const STUDENT_BASE_URL: string = `${OSU_API_BASE_URL}/v1/students`;
@@ -43,7 +48,12 @@ const getJson = async (url: string, exceptionKey: string) => {
     );
     return response;
   } catch (err) {
-    await cacheFailureOrPing(err, exceptionKey);
+    const config = {
+      timeThreshold: OSU_ERROR_SEC_THRESH,
+      errThreshold: OSU_ERROR_OCCUR_THRESH,
+    };
+
+    await cacheFailureOrPing(err, exceptionKey, config);
     throw err;
   }
 };
