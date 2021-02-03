@@ -205,7 +205,7 @@ export const getGrades = async (user: any, term: any) => {
   if (term) {
     termParam = `?term=${term}`;
   }
-  return fetchData(
+  const response = await fetchData(
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`,
