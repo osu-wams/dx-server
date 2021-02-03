@@ -213,6 +213,16 @@ export const getGrades = async (user: any, term: any) => {
       ),
     mockedGrades,
   );
+  if (!response.data) {
+    return [];
+  }
+  return response.data.map((g) => ({
+    ...g,
+    attributes: {
+      ...g.attributes,
+      courseSubjectNumber: `${g.attributes.courseSubject} ${g.attributes.courseNumber}`,
+    },
+  }));
 };
 
 interface GpaResponse {
