@@ -145,11 +145,9 @@ router.get('/gpa', async (req: Request, res: Response) => {
 router.get('/grades', async (req: Request, res: Response) => {
   try {
     const { term } = req.query;
-    const response = (await asyncTimedFunction(getGrades, 'getGrades', [req.user, term])) as {
-      data: any;
-    };
+    const grades: GradeTerm[] = await asyncTimedFunction(getGrades, 'getGrades', [req.user, term]);
     // sort and use sortGradesByTerm to sort banner return newest to oldest
-    const sorted = response.data.sort((a: GradeTerm, b: GradeTerm): number => {
+    const sorted = grades.sort((a: GradeTerm, b: GradeTerm): number => {
       if (!b) return 0;
       if (a.attributes.term < b.attributes.term) return 1;
       if (a.attributes.term > b.attributes.term) return -1;

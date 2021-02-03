@@ -168,10 +168,20 @@ export const getGrades = async (user: any, term: any) => {
   if (term) {
     termParam = `?term=${term}`;
   }
-  return fetchData(
+  const response = await fetchData(
     () => getJson(`${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`),
     mockedGrades,
   );
+  if (!response.data) {
+    return [];
+  }
+  return response.data.map((g) => ({
+    ...g,
+    attributes: {
+      ...g.attributes,
+      courseSubjectNumber: `${g.attributes.courseSubject} ${g.attributes.courseNumber}`,
+    },
+  }));
 };
 
 interface GpaResponse {
