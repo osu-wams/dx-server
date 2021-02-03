@@ -12,6 +12,7 @@ import {
 import { holdsData } from '../__mocks__/holds.data';
 import { plannerItemsData } from '../__mocks__/planner-items.data';
 import mockDegrees from '../../mocks/osu/degrees.data.json';
+import mockGrades from '../../mocks/osu/grades.data.json';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
@@ -368,56 +369,99 @@ describe('/api/student', () => {
   });
 
   describe('/grades', () => {
+    const expectedGrades = mockGrades.data
+      .map((g) => ({
+        ...g,
+        attributes: {
+          ...g.attributes,
+          courseSubjectNumber: `${g.attributes.courseSubject} ${g.attributes.courseNumber}`,
+        },
+      }))
+      .sort((a: { attributes: { term: string } }, b: { attributes: { term: string } }): number => {
+        if (!b) return 0;
+        if (a.attributes.term < b.attributes.term) return 1;
+        if (a.attributes.term > b.attributes.term) return -1;
+        return 0;
+      });
     it('should return grades for the current user', async () => {
-      const data = ['grades'];
-      mockedGetResponse.mockReturnValue({ data });
+      mockedGetResponse.mockReturnValue(mockGrades);
       cache.get = mockedGet;
 
       // Mock response from Apigee
       nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/grades/)
         .query(true)
-        .reply(200, { data });
+        .reply(200, mockGrades);
 
-      await request.get('/api/student/grades').expect(200, data);
+      await request.get('/api/student/grades').expect(200, expectedGrades);
     });
 
     it('should return grades for a specified term, or the current term if none provided', async () => {
-      const data = [
-        { attributes: { term: '201701' } },
-        { attributes: { term: '201901' } },
-        { attributes: { term: 'current' } },
-        { attributes: { term: '201901' } },
-        { attributes: { term: '201803' } },
-      ];
-
-      mockedGetResponse.mockReturnValue({ data: [data[0]] });
+      mockedGetResponse.mockReturnValue({ data: [mockGrades.data[14]] });
       cache.get = mockedGet;
 
       // Mock default (term=current) response
       nock(OSU_API_BASE_URL)
         .get(/v1\/students\/[0-9]+\/grades/)
-        .query(data[0].attributes)
-        .reply(200, { data: [data[0]] });
+        .query({ term: '202001' })
+        .reply(200, { data: [mockGrades.data[14]] });
 
-      await request.get('/api/student/grades?term=201701').expect(200, [data[0]]);
+      await request.get('/api/student/grades?term=202001').expect(200, [expectedGrades[0]]);
     });
 
     it('should return grades for a specified term, or the current term if none provided', async () => {
       const data = [
-        { attributes: { term: '201701' } },
-        { attributes: { term: '201901' } },
-        { attributes: { term: 'current' } },
-        { attributes: { term: '201901' } },
-        { attributes: { term: '201803' } },
+        {
+          attributes: {
+            term: '201701',
+            courseSubject: 'BA',
+            courseNumber: '101',
+            courseSubjectNumber: 'BA 101',
+          },
+        },
+        {
+          attributes: {
+            term: '201901',
+            courseSubject: 'BA',
+            courseNumber: '101',
+            courseSubjectNumber: 'BA 101',
+          },
+        },
+        {
+          attributes: {
+            term: 'current',
+            courseSubject: 'BA',
+            courseNumber: '101',
+            courseSubjectNumber: 'BA 101',
+          },
+        },
       ];
 
       const dataSorted = [
-        { attributes: { term: 'current' } },
-        { attributes: { term: '201901' } },
-        { attributes: { term: '201901' } },
-        { attributes: { term: '201803' } },
-        { attributes: { term: '201701' } },
+        {
+          attributes: {
+            term: 'current',
+            courseSubject: 'BA',
+            courseNumber: '101',
+            courseSubjectNumber: 'BA 101',
+          },
+        },
+        {
+          attributes: {
+            term: '201901',
+            courseSubject: 'BA',
+            courseNumber: '101',
+            courseSubjectNumber: 'BA 101',
+          },
+        },
+        {
+          attributes: {
+            term: '201701',
+            courseSubject: 'BA',
+            courseNumber: '101',
+            courseSubjectNumber: 'BA 101',
+          },
+        },
       ];
       mockedGetResponse.mockReturnValue({ data });
       cache.get = mockedGet;
