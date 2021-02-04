@@ -48,12 +48,10 @@ const getJson = async (url: string, exceptionKey: string) => {
     );
     return response;
   } catch (err) {
-    const config = {
+    await cacheFailureOrPing(err, exceptionKey, {
       timeThreshold: OSU_ERROR_SEC_THRESH,
       errThreshold: OSU_ERROR_OCCUR_THRESH,
-    };
-
-    await cacheFailureOrPing(err, exceptionKey, config);
+    });
     throw err;
   }
 };

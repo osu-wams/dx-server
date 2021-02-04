@@ -69,17 +69,12 @@ export const cacheFailureOrPing = async (
   configLocal: Config,
 ) => {
   const time = Date.now();
-
   const newData = [{ d: time, e: err }];
-
   let cacheData = JSON.parse(await cache.getAsync(exceptionKey));
-
   let hasExpired = true;
-
   if (cacheData) {
     hasExpired = computeHasExpired(time, cacheData, configLocal);
   }
-
   if (!cacheData || hasExpired) {
     await cache.setAsync(exceptionKey, JSON.stringify(newData));
   } else {
@@ -100,11 +95,8 @@ export const cacheFailureOrPing = async (
         },
       ];
       const payload = createTeamsPayload('API Endpoint Failing', 'DX-Server', facts);
-
       logger().debug(`Sending API Fail message to 'MOS-Alerts' in MS Teams`);
-
       await sendTeamsMessage(payload);
-
       await cache.delAsync(exceptionKey);
     } else {
       await cache.setAsync(exceptionKey, JSON.stringify(cacheData));
