@@ -1,4 +1,6 @@
 export default {
+  // Overridden by process.env.MS_TEAMS_HOOK
+  msTeamsHook: '',
   // Overridden by process.env.NODE_ENV
   env: '',
   // Overridden by process.env.USE_MOCKS
@@ -29,6 +31,9 @@ export default {
     token: '',
   },
   osuApi: {
+    // caching thresholds here
+    thresholdErrorSeconds: '10',
+    thresholdErrorOccurrence: '10',
     cacheEndpointSec: '3600',
     // Overridden by process.env.OSU_API_CLIENT_ID
     clientId: '',
