@@ -128,6 +128,7 @@ export const classScheduleDataResult = [
           primary: true,
         },
       ],
+      courseSubjectNumber: 'PSY 485',
     },
     type: 'class-schedule',
     id: '999999999-202001-14683',

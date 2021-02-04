@@ -147,6 +147,7 @@ export const getClassSchedule = async (
           name: f.name,
           primary: f.primary,
         })),
+        courseSubjectNumber: `${d.attributes.courseSubject} ${d.attributes.courseNumber}`,
       },
       type: d.type,
       id: d.id,
