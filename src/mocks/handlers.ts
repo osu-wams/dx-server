@@ -15,7 +15,6 @@ export const dynamoDbHandler = (
 ) => {
   server.use(
     rest.post(endpoint, async (req, res, ctx) => {
-      console.log(req); // debug DDB calls
       const { TableName, Item, KeyConditionExpression, UpdateExpression } = req.body as {
         TableName: string;
         Item: any;
@@ -52,11 +51,11 @@ export const dynamoDbHandler = (
 
 export const handlers = [
   rest.post('*', async (req, res, ctx) => {
-    console.log('post *', req);
+    // console.log('post *', req);
     // Notice no `return res()` statement
   }),
   rest.get('*', async (req, res, ctx) => {
-    console.log('get *', req);
+    // console.log('get *', req);
     // Notice no `return res()` statement
   }),
 ];

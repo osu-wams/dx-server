@@ -185,7 +185,15 @@ export const upsert = async (
   client?: typeof DocumentClient,
 ): Promise<User> => {
   try {
-    const result: Users = await UserEntity(client).put(props);
+    const u = { ...props };
+    // Ensure empty (and optional) sets aren't persisted, because they fail
+    if (!u.groups?.length) {
+      u.groups = undefined;
+    }
+    if (!u.colleges?.length) {
+      u.colleges = undefined;
+    }
+    const result: Users = await UserEntity(client).put(u);
     logger().debug('User.upsert succeeded:', result);
     return find(props.osuId);
   } catch (err) {

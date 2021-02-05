@@ -90,6 +90,21 @@ describe('User model', () => {
         mockUser.affiliations = null;
         expect(result).toStrictEqual({ ...mockUser, phone: value });
       });
+      it('does not persist optional sets', async () => {
+        const itemMap = {};
+        itemMap[User.TABLE_NAME] = {
+          Update: {}, // not necessary
+          Query: {
+            Count: 1,
+            ScannedCount: 1,
+            Items: [{ ...mockDynamoDbUser }],
+          },
+        };
+        dynamoDbHandler(server, itemMap);
+        const result = await User.upsert({ ...mockUser, groups: [], colleges: [] });
+        expect(result.groups).toBeFalsy();
+        expect(result.colleges).toBeFalsy();
+      });
     });
 
     describe('updateSettings', () => {
