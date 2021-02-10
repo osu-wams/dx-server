@@ -14,6 +14,8 @@ import {
   mockedAccountTransactions,
   mockedAccountBalance,
   mockedDegrees,
+  mockedDirectory,
+  mockedLocations,
 } from '../../mocks/osu';
 import {
   OSU_API_BASE_URL,
@@ -25,6 +27,8 @@ import { cacheFailureOrPing } from './notifications';
 
 const STUDENT_BASE_URL: string = `${OSU_API_BASE_URL}/v1/students`;
 const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v1/persons`;
+const DIRECTORY_BASE_URL: string = `${OSU_API_BASE_URL}/v2/directory`;
+const LOCATION_BASE_URL: string = `${OSU_API_BASE_URL}/v1/locations`;
 
 const getJson = async (url: string, exceptionKey: string) => {
   // TODO: Can we cache this for a period of time and reuse the token reliably?
@@ -341,5 +345,58 @@ export const getDegrees = async (user: any, term = 'current'): Promise<Types.Deg
         `${STUDENT_BASE_URL}/degrees`,
       ),
     mockedDegrees,
+  );
+};
+
+export const getDirectory = async (name: string): Promise<Partial<Types.Directory>[]> => {
+  const response: Types.DirectoryResponse = await fetchData(
+    () =>
+      getJson(
+        `${DIRECTORY_BASE_URL}?page[size]=10&page[number]=1&filter[fullName][fuzzy]=${name}`,
+        `${DIRECTORY_BASE_URL}?page[size]=10&page[number]=1&filter[fullName][fuzzy]=${name}`,
+      ),
+    mockedDirectory,
+  );
+  return response.data.map((d) => ({
+    id: d.id,
+    firstName: d.attributes.firstName,
+    lastName: d.attributes.lastName,
+    department: d.attributes.department,
+  }));
+};
+
+export const getLocations = async (location: string): Promise<Partial<Types.Location>[]> => {
+  const response: Types.LocationResponse = await fetchData(
+    () => getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`),
+    mockedLocations,
+  );
+  return response.data.map(
+    ({
+      id,
+      attributes: {
+        name,
+        website,
+        thumbnails,
+        description,
+        descriptionHTML,
+        address,
+        city,
+        state,
+        zip,
+        campus,
+      },
+    }) => ({
+      id,
+      name,
+      link: website,
+      image: thumbnails.length ? thumbnails[0] : null,
+      description,
+      descriptionHTML,
+      address,
+      city,
+      state,
+      zip,
+      campus,
+    }),
   );
 };
