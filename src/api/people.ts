@@ -19,8 +19,8 @@ router.get('/:name', async (req: Request, res: Response) => {
     );
     res.send(people);
   } catch (err) {
-    logger().error('api/directory failed:', err);
-    res.status(500).send({ message: 'Unable to retrieve directory information.' });
+    logger().error(`api/directory failed: ${err.message}`);
+    res.status(500).send(err.message);
   }
 });
 
