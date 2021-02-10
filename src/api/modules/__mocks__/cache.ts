@@ -55,6 +55,14 @@ export const flushDbAsync = jest.fn().mockImplementation(() => {
   });
 });
 
+export const selectDbAsync = jest.fn().mockImplementation(() => {
+  return new Promise((resolve) => {
+    process.nextTick(() => {
+      resolve(true);
+    });
+  });
+});
+
 export const mockedFlushDbResponse = jest.fn();
 export const mockedFlushDb = jest.fn().mockImplementation(
   (): Promise<boolean> => {
