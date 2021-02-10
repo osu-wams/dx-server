@@ -365,6 +365,7 @@ export const getDirectory = async (
         ),
       mockedDirectory,
     );
+
     return response.data
       .filter((d) => d.attributes.osuUid)
       .map((d) => ({
@@ -375,6 +376,7 @@ export const getDirectory = async (
       }))
       .sort((a, b) => (a.lastName > b.lastName ? 1 : -1));
   } catch (err: any) {
+    let errorMessage = err.response?.statusText;
     const body = err.response?.body;
     if (body) {
       let json: { errors: { code?: string; detail?: string }[] };
@@ -385,10 +387,12 @@ export const getDirectory = async (
       }
       if (json && json.errors.length) {
         const error = json.errors.find((e) => e.code === '1400');
-        if (error) throw new Error(error.detail);
+        if (error) errorMessage = error.detail;
+      } else {
+        errorMessage = body;
       }
     }
-    throw err;
+    throw new Error(errorMessage);
   }
 };
 
