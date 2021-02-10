@@ -19,8 +19,10 @@ router.get('/:name', async (req: Request, res: Response) => {
     );
     res.send(people);
   } catch (err) {
-    logger().error(`api/directory failed: ${err.message}`);
-    res.status(500).send(err.message);
+    const { message }: { message: string } = err;
+    const expectedError = message.includes('search too broad');
+    logger().error(`api/directory failed: ${message}`);
+    res.status(expectedError ? 400 : 500).send(message);
   }
 });
 
