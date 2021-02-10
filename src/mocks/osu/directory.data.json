@@ -7,10 +7,10 @@
     "prev": null
   },
   "meta": {
-    "totalResults": 27,
-    "totalPages": 14,
+    "totalResults": 3,
+    "totalPages": 1,
     "currentPageNumber": 1,
-    "currentPageSize": 2
+    "currentPageSize": 3
   },
   "data": [
     {
@@ -57,6 +57,28 @@
         "username": "steveross",
         "alternatePhoneNumber": null,
         "osuUid": "987"
+      }
+    },
+    {
+      "type": "directory",
+      "links": {
+        "self": "https://api.oregonstate.edu/v2/directory/null"
+      },
+      "attributes": {
+        "firstName": null,
+        "lastName": "N/A",
+        "fullName": "Library, IS - Library-General Information",
+        "primaryAffiliation": null,
+        "jobTitle": null,
+        "department": null,
+        "departmentMailingAddress": null,
+        "officePhoneNumber": "+1 541 555 1212",
+        "officeAddress": null,
+        "faxNumber": "+1 541 555 1212",
+        "emailAddress": null,
+        "username": null,
+        "alternatePhoneNumber": null,
+        "osuUid": null
       }
     }
   ]
