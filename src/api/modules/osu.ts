@@ -349,7 +349,7 @@ export const getDegrees = async (user: any, term = 'current'): Promise<Types.Deg
 };
 
 export const getDirectory = async (name: string): Promise<Partial<Types.Directory>[]> => {
-  const response: Types.DirectoryResponse = await fetchData(
+  const response: { data: { id: string; attributes: Types.Directory }[] } = await fetchData(
     () =>
       getJson(
         `${DIRECTORY_BASE_URL}?page[size]=10&page[number]=1&filter[fullName][fuzzy]=${name}`,
@@ -366,7 +366,7 @@ export const getDirectory = async (name: string): Promise<Partial<Types.Director
 };
 
 export const getLocations = async (location: string): Promise<Partial<Types.Location>[]> => {
-  const response: Types.LocationResponse = await fetchData(
+  const response: { data: { id: string; attributes: Types.Location }[] } = await fetchData(
     () => getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`),
     mockedLocations,
   );
