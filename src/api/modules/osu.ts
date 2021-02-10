@@ -349,7 +349,7 @@ export const getDegrees = async (user: any, term = 'current'): Promise<Types.Deg
 };
 
 export const getDirectory = async (name: string): Promise<Partial<Types.Directory>[]> => {
-  const response: { data: { id: string; attributes: Types.Directory }[] } = await fetchData(
+  const response: { data: { id?: string; attributes: Types.Directory }[] } = await fetchData(
     () =>
       getJson(
         `${DIRECTORY_BASE_URL}?page[size]=10&page[number]=1&filter[fullName][fuzzy]=${name}`,
@@ -357,12 +357,14 @@ export const getDirectory = async (name: string): Promise<Partial<Types.Director
       ),
     mockedDirectory,
   );
-  return response.data.map((d) => ({
-    id: d.id,
-    firstName: d.attributes.firstName,
-    lastName: d.attributes.lastName,
-    department: d.attributes.department,
-  }));
+  return response.data
+    .filter((d) => d.id)
+    .map((d) => ({
+      id: d.id,
+      firstName: d.attributes.firstName,
+      lastName: d.attributes.lastName,
+      department: d.attributes.department,
+    }));
 };
 
 export const getLocations = async (location: string): Promise<Partial<Types.Location>[]> => {
