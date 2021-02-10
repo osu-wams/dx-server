@@ -1,0 +1,63 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v2/directory?filter%5BfullName%5D%5Bfuzzy%5D=Ross&page%5Bnumber%5D=1&page%5Bsize%5D=2",
+    "first": "https://api.oregonstate.edu/v2/directory?filter%5BfullName%5D%5Bfuzzy%5D=Ross&page%5Bnumber%5D=1&page%5Bsize%5D=2",
+    "last": "https://api.oregonstate.edu/v2/directory?filter%5BfullName%5D%5Bfuzzy%5D=Ross&page%5Bnumber%5D=14&page%5Bsize%5D=2",
+    "next": "https://api.oregonstate.edu/v2/directory?filter%5BfullName%5D%5Bfuzzy%5D=Ross&page%5Bnumber%5D=2&page%5Bsize%5D=2",
+    "prev": null
+  },
+  "meta": {
+    "totalResults": 27,
+    "totalPages": 14,
+    "currentPageNumber": 1,
+    "currentPageSize": 2
+  },
+  "data": [
+    {
+      "type": "directory",
+      "id": "123",
+      "links": {
+        "self": "https://api.oregonstate.edu/v2/directory/123"
+      },
+      "attributes": {
+        "firstName": "Bob",
+        "lastName": "Ross",
+        "fullName": "Ross, Bob",
+        "primaryAffiliation": "Employee",
+        "jobTitle": "Academic Wage Appt - Salaried",
+        "department": "Acad Prog / Student Aff",
+        "departmentMailingAddress": "Acad Prog/Student Aff, OSU Cascades Campus, 1500 SW Chandler Avenue, Bend, OR 97702-3237",
+        "officePhoneNumber": null,
+        "officeAddress": null,
+        "faxNumber": null,
+        "emailAddress": "noreply@oregonstate.edu",
+        "username": "bobross",
+        "alternatePhoneNumber": null,
+        "osuUid": "123"
+      }
+    },
+    {
+      "type": "directory",
+      "id": "987",
+      "links": {
+        "self": "https://api.oregonstate.edu/v2/directory/987"
+      },
+      "attributes": {
+        "firstName": "Steve",
+        "lastName": "Ross",
+        "fullName": "Ross, Steve",
+        "primaryAffiliation": "Student",
+        "jobTitle": null,
+        "department": "Mechanical Engineering",
+        "departmentMailingAddress": null,
+        "officePhoneNumber": null,
+        "officeAddress": null,
+        "faxNumber": null,
+        "emailAddress": "noreply@oregonstate.edu",
+        "username": "steveross",
+        "alternatePhoneNumber": null,
+        "osuUid": "987"
+      }
+    }
+  ]
+}

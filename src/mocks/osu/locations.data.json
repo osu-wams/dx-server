@@ -1,0 +1,211 @@
+{
+  "links": {
+    "self": "https://api.oregonstate.edu/v1/locations?q=Cascades&page%5Bnumber%5D=1&page%5Bsize%5D=10",
+    "first": "https://api.oregonstate.edu/v1/locations?q=Cascades&page%5Bnumber%5D=1&page%5Bsize%5D=10",
+    "last": "https://api.oregonstate.edu/v1/locations?q=Cascades&page%5Bnumber%5D=1&page%5Bsize%5D=10",
+    "prev": null,
+    "next": null
+  },
+  "data": [
+    {
+      "id": "20eeddae11a47affc9a524052ba12955",
+      "type": "locations",
+      "attributes": {
+        "name": "Cascades Hall-COCC",
+        "tags": [],
+        "openHours": {},
+        "type": "building",
+        "abbreviation": "CSB",
+        "geometry": {
+          "type": null,
+          "coordinates": null
+        },
+        "summary": null,
+        "description": null,
+        "descriptionHTML": null,
+        "address": "2600 NW COLLEGE WAY",
+        "city": "BEND",
+        "state": "OR",
+        "zip": "97703",
+        "county": null,
+        "telephone": null,
+        "fax": null,
+        "thumbnails": [],
+        "images": [],
+        "departments": [],
+        "website": null,
+        "sqft": null,
+        "calendar": null,
+        "campus": "Cascades",
+        "giRestroomCount": 0,
+        "giRestroomLimit": null,
+        "giRestroomLocations": null,
+        "synonyms": [],
+        "bldgID": "2001",
+        "parkingZoneGroup": null,
+        "propID": null,
+        "adaParkingSpaceCount": null,
+        "motorcycleParkingSpaceCount": null,
+        "evParkingSpaceCount": null,
+        "weeklyMenu": null,
+        "adaEntries": [],
+        "aedInventories": [],
+        "latitude": null,
+        "longitude": null
+      },
+      "links": {
+        "self": "https://api.oregonstate.edu/v1/locations/20eeddae11a47affc9a524052ba12955"
+      },
+      "relationships": null
+    },
+    {
+      "id": "c5e354b41718cec09640c9c9efed1880",
+      "type": "locations",
+      "attributes": {
+        "name": "OSU Cascades Residence Hall",
+        "tags": [],
+        "openHours": {},
+        "type": "building",
+        "abbreviation": null,
+        "geometry": {
+          "type": null,
+          "coordinates": null
+        },
+        "summary": null,
+        "description": null,
+        "descriptionHTML": null,
+        "address": "1500 CHANDLER AVENUE",
+        "city": "BEND",
+        "state": "OR",
+        "zip": "97701",
+        "county": null,
+        "telephone": null,
+        "fax": null,
+        "thumbnails": [],
+        "images": [],
+        "departments": [],
+        "website": null,
+        "sqft": null,
+        "calendar": null,
+        "campus": "Cascades",
+        "giRestroomCount": 0,
+        "giRestroomLimit": null,
+        "giRestroomLocations": null,
+        "synonyms": [],
+        "bldgID": "0928",
+        "parkingZoneGroup": null,
+        "propID": null,
+        "adaParkingSpaceCount": null,
+        "motorcycleParkingSpaceCount": null,
+        "evParkingSpaceCount": null,
+        "weeklyMenu": null,
+        "adaEntries": [],
+        "aedInventories": [],
+        "latitude": null,
+        "longitude": null
+      },
+      "links": {
+        "self": "https://api.oregonstate.edu/v1/locations/c5e354b41718cec09640c9c9efed1880"
+      },
+      "relationships": null
+    },
+    {
+      "id": "665e5039a9e92e7c47f52dd90e091899",
+      "type": "locations",
+      "attributes": {
+        "name": "Cascade Hall",
+        "tags": [],
+        "openHours": {},
+        "type": "building",
+        "abbreviation": "CASC",
+        "geometry": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [-123.275389579193, 44.5613845537232],
+              [-123.275390389914, 44.5613403941745],
+              [-123.275292241614, 44.5613394729408],
+              [-123.275291935251, 44.5613561582197],
+              [-123.27503965026, 44.5613537882446],
+              [-123.275033900887, 44.5616666393278],
+              [-123.276217683152, 44.5616777536516],
+              [-123.276218917197, 44.5616105323336],
+              [-123.276182870939, 44.5616101944852],
+              [-123.276184666413, 44.5615123701232],
+              [-123.275582347129, 44.561506716275],
+              [-123.27558242546, 44.5615024505868],
+              [-123.275563243091, 44.5615022708766],
+              [-123.275563667749, 44.5614791397679],
+              [-123.275486851285, 44.5614784185306],
+              [-123.275488559258, 44.5613854832527],
+              [-123.275389579193, 44.5613845537232]
+            ]
+          ]
+        },
+        "summary": null,
+        "description": "\r\n\tAccessibility:\r\n\r\n\r\n\tENTRIES: Northwest entry to ceramics lab only.\r\n\tFLOORS: Ceramics lab (1st floor) only; 11/2 lip up to 1st on other.\r\n",
+        "descriptionHTML": "<h4>\n\tAccessibility:</h4>\n<p>\n\tENTRIES: Northwest entry to ceramics lab only.<br />\n\tFLOORS: Ceramics lab (1st floor) only; 11/2 lip up to 1st on other.</p>\n",
+        "address": "601 SW 17th Street",
+        "city": "CORVALLIS",
+        "state": "OR",
+        "zip": "97331",
+        "county": null,
+        "telephone": null,
+        "fax": null,
+        "thumbnails": [
+          "https://map.oregonstate.edu/sites/map.oregonstate.edu/files/styles/thumbnail/public/locations/9.jpg"
+        ],
+        "images": ["https://map.oregonstate.edu/sites/map.oregonstate.edu/files/locations/9.jpg"],
+        "departments": [],
+        "website": "https://map.oregonstate.edu/?id=665e5039a9e92e7c47f52dd90e091899",
+        "sqft": null,
+        "calendar": null,
+        "campus": "Corvallis",
+        "giRestroomCount": 2,
+        "giRestroomLimit": false,
+        "giRestroomLocations": "0125, 0126",
+        "synonyms": [],
+        "bldgID": "xxxx",
+        "parkingZoneGroup": null,
+        "propID": null,
+        "adaParkingSpaceCount": null,
+        "motorcycleParkingSpaceCount": null,
+        "evParkingSpaceCount": null,
+        "weeklyMenu": null,
+        "adaEntries": [
+          {
+            "lon": -123.275569592677,
+            "lat": 44.5615023300737,
+            "accessible": true,
+            "function": "Exit"
+          },
+          {
+            "lon": -123.275574848783,
+            "lat": 44.5616717195192,
+            "accessible": true,
+            "function": "Entry"
+          }
+        ],
+        "aedInventories": [
+          {
+            "lon": -123.2755,
+            "lat": 44.56155,
+            "location": "Inside 1st floor lobby area opposite restrooms.",
+            "floor": 1,
+            "make": "Phillips",
+            "model": "HeartStart M5066A",
+            "serialNo": "xxxx",
+            "departmentOwner": "EH&S",
+            "contact": "xxxx"
+          }
+        ],
+        "latitude": "44.561501",
+        "longitude": "-123.27538"
+      },
+      "links": {
+        "self": "https://api.oregonstate.edu/v1/locations/665e5039a9e92e7c47f52dd90e091899"
+      },
+      "relationships": null
+    }
+  ]
+}
