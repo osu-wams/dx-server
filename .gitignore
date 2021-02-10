@@ -13,3 +13,5 @@ dist/
 docker-compose.override.yml
 *osuIds.csv
 newrelic_agent.log
+.yalc/
+yalc.lock
