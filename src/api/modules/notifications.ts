@@ -70,16 +70,16 @@ export const cacheFailureOrPing = async (
 ) => {
   const time = Date.now();
   const newData = [{ d: time, e: err }];
-  let cacheData = JSON.parse(await cache.getAsync(exceptionKey));
+  const cacheData = await cache.getAsync(exceptionKey);
   let hasExpired = true;
   if (cacheData) {
-    hasExpired = computeHasExpired(time, cacheData, configLocal);
+    hasExpired = computeHasExpired(time, JSON.parse(cacheData), configLocal);
   }
   if (!cacheData || hasExpired) {
     await cache.setAsync(exceptionKey, JSON.stringify(newData));
   } else {
-    cacheData = cacheData.concat(newData);
-    if (cacheData.length >= configLocal.errThreshold) {
+    const moreCache = JSON.parse(cacheData).concat(newData);
+    if (moreCache.length >= configLocal.errThreshold) {
       const facts = [
         {
           name: 'Failing endpoint',
@@ -99,7 +99,7 @@ export const cacheFailureOrPing = async (
       await sendTeamsMessage(payload);
       await cache.delAsync(exceptionKey);
     } else {
-      await cache.setAsync(exceptionKey, JSON.stringify(cacheData));
+      await cache.setAsync(exceptionKey, JSON.stringify(moreCache));
     }
   }
 };

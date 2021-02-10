@@ -37,6 +37,7 @@ describe('DX Multi-Channel Message Module', () => {
         await getUserMessages(osuId, onid);
       } catch (error) {
         expect(error.response).toStrictEqual({
+          body: 'boom',
           status: 500,
           statusCode: 500,
           statusText: 'Internal Server Error',
@@ -74,6 +75,7 @@ describe('DX Multi-Channel Message Module', () => {
         await markRead(osuId, onid, messageId);
       } catch (error) {
         expect(error.response).toStrictEqual({
+          body: 'boom',
           status: 500,
           statusCode: 500,
           statusText: 'Internal Server Error',
