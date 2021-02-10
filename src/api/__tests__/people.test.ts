@@ -36,16 +36,16 @@ describe('/api/people', () => {
       expect(response.status).toEqual(200);
       expect(response.body).toStrictEqual([
         {
-          id: '987',
-          firstName: 'Steve',
-          lastName: 'Ross',
-          department: 'Mechanical Engineering',
-        },
-        {
           id: '123',
           firstName: 'Bob',
           lastName: 'Ross',
           department: 'Acad Prog / Student Aff',
+        },
+        {
+          id: '987',
+          firstName: 'Steve',
+          lastName: 'Ross',
+          department: 'Mechanical Engineering',
         },
       ]);
     });

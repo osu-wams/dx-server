@@ -374,7 +374,7 @@ export const getDirectory = async (
         lastName: d.attributes.lastName,
         department: d.attributes.department,
       }))
-      .sort((a, b) => (a.lastName > b.lastName ? 1 : -1));
+      .sort((a, b) => (a.lastName + a.firstName > b.lastName + b.firstName ? 1 : -1));
   } catch (err: any) {
     let errorMessage = err.response?.statusText;
     const body = err.response?.body;
