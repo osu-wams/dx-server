@@ -14,6 +14,8 @@ import {
   mockedAccountTransactions,
   mockedAccountBalance,
   mockedDegrees,
+  mockedDirectory,
+  mockedLocations,
 } from '../../mocks/osu';
 import {
   OSU_API_BASE_URL,
@@ -22,9 +24,12 @@ import {
   OSU_ERROR_OCCUR_THRESH,
 } from '../../constants';
 import { cacheFailureOrPing } from './notifications';
+import logger from '../../logger';
 
 const STUDENT_BASE_URL: string = `${OSU_API_BASE_URL}/v1/students`;
 const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v1/persons`;
+const DIRECTORY_BASE_URL: string = `${OSU_API_BASE_URL}/v2/directory`;
+const LOCATION_BASE_URL: string = `${OSU_API_BASE_URL}/v1/locations`;
 
 const getJson = async (url: string, exceptionKey: string) => {
   // TODO: Can we cache this for a period of time and reuse the token reliably?
@@ -61,7 +66,7 @@ export const getAddresses = async (user: any): Promise<Types.Address[]> => {
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`,
-        `${PERSON_BASE_URL}/addresses`,
+        `ALERTS-${PERSON_BASE_URL}/addresses`,
       ),
     mockedAddresses,
   );
@@ -73,7 +78,7 @@ export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`,
-        `${PERSON_BASE_URL}/meal-plans`,
+        `ALERTS-${PERSON_BASE_URL}/meal-plans`,
       ),
     mockedMealPlans,
   );
@@ -82,7 +87,11 @@ export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
 
 export const getProfile = async (user: any): Promise<Types.PersonsResponse> => {
   const response: Types.PersonsResponse = await fetchData(
-    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`, `${PERSON_BASE_URL}/`),
+    () =>
+      getJson(
+        `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`,
+        `ALERTS-${PERSON_BASE_URL}/`,
+      ),
     mockedPersons,
   );
   return response;
@@ -109,7 +118,7 @@ export const getAcademicStatus = async (
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
-        `${STUDENT_BASE_URL}/academic-status`,
+        `ALERTS-${STUDENT_BASE_URL}/academic-status`,
       ),
     mockedAcademicStatus,
   );
@@ -140,7 +149,7 @@ export const getAccountBalance = async (user: any) => {
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`,
-        `${STUDENT_BASE_URL}/account-balance`,
+        `ALERTS-${STUDENT_BASE_URL}/account-balance`,
       ),
     mockedAccountBalance,
   );
@@ -151,7 +160,7 @@ export const getAccountTransactions = async (user: any) => {
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
-        `${STUDENT_BASE_URL}/account-transactions?term=current`,
+        `ALERTS-${STUDENT_BASE_URL}/account-transactions?term=current`,
       ),
     mockedAccountTransactions,
   );
@@ -165,7 +174,7 @@ export const getClassSchedule = async (
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
-        `${STUDENT_BASE_URL}/class-schedule`,
+        `ALERTS-${STUDENT_BASE_URL}/class-schedule`,
       ),
     mockedClassSchedule,
   );
@@ -192,7 +201,7 @@ export const getClassification = async (user: any): Promise<Types.Classification
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`,
-        `${STUDENT_BASE_URL}/classification`,
+        `ALERTS-${STUDENT_BASE_URL}/classification`,
       ),
     mockedClassification,
   );
@@ -208,7 +217,7 @@ export const getGrades = async (user: any, term: any) => {
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`,
-        `${STUDENT_BASE_URL}/grades`,
+        `ALERTS-${STUDENT_BASE_URL}/grades`,
       ),
     mockedGrades,
   );
@@ -260,7 +269,7 @@ export const getGpa = async (user: any): Promise<Types.GpaLevel[]> => {
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`,
-        `${STUDENT_BASE_URL}/gpa`,
+        `ALERTS-${STUDENT_BASE_URL}/gpa`,
       ),
     mockedGpa,
   );
@@ -302,7 +311,7 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`,
-        `${STUDENT_BASE_URL}/holds`,
+        `ALERTS-${STUDENT_BASE_URL}/holds`,
       ),
     mockedHolds,
   );
@@ -338,8 +347,90 @@ export const getDegrees = async (user: any, term = 'current'): Promise<Types.Deg
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/degrees${termParam}`,
-        `${STUDENT_BASE_URL}/degrees`,
+        `ALERTS-${STUDENT_BASE_URL}/degrees`,
       ),
     mockedDegrees,
   );
+};
+
+export const getDirectory = async (
+  name: string,
+): Promise<Partial<Types.Directory>[] | { error: { code: string; detail: string } }> => {
+  try {
+    const response: { data: { id?: string; attributes: Types.Directory }[] } = await fetchData(
+      () =>
+        getJson(
+          `${DIRECTORY_BASE_URL}?page[size]=100&page[number]=1&filter[fullName][fuzzy]=${name}`,
+          `ALERTS-${DIRECTORY_BASE_URL}?page[size]=100&page[number]=1&filter[fullName][fuzzy]=${name}`,
+        ),
+      mockedDirectory,
+    );
+
+    return response.data
+      .filter((d) => d.attributes.osuUid)
+      .map((d) => ({
+        id: d.id,
+        firstName: d.attributes.firstName,
+        lastName: d.attributes.lastName,
+        department: d.attributes.department,
+      }))
+      .sort((a, b) => (a.lastName + a.firstName > b.lastName + b.firstName ? 1 : -1));
+  } catch (err: any) {
+    let errorMessage = err.response?.statusText;
+    const body = err.response?.body;
+    if (body) {
+      let json: { errors: { code?: string; detail?: string }[] };
+      try {
+        json = JSON.parse(body);
+      } catch {
+        logger().error(`getDirectory handled error but could not parse response body: ${body}`);
+      }
+      if (json && json.errors.length) {
+        const error = json.errors.find((e) => e.code === '1400');
+        if (error) errorMessage = error.detail;
+      } else {
+        errorMessage = body;
+      }
+    }
+    throw new Error(errorMessage);
+  }
+};
+
+export const getLocations = async (location: string): Promise<Partial<Types.Location>[]> => {
+  const response: { data: { id: string; attributes: Types.Location }[] } = await fetchData(
+    () => getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`),
+    mockedLocations,
+  );
+  return response.data
+    .map(
+      ({
+        id,
+        attributes: {
+          name,
+          website,
+          thumbnails,
+          description,
+          descriptionHTML,
+          address,
+          city,
+          state,
+          zip,
+          campus,
+        },
+      }) => ({
+        id,
+        name,
+        link: website,
+        image: thumbnails.length ? thumbnails[0] : null,
+        description,
+        descriptionHTML,
+        address,
+        city,
+        state,
+        zip,
+        campus,
+      }),
+    )
+    .filter((i) => i.link)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
 };

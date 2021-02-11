@@ -97,3 +97,17 @@ Authorization: Bearer {{token}}
 # @name getDegrees
 GET {{baseUrl}}/v1/students/{{osuId}}/degrees HTTP/1.1
 Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getDirectoryV2
+GET {{baseUrl}}/v2/directory?page[number]=1&page[size]=2&filter[fullName][fuzzy]=Gum HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getLocations
+GET {{baseUrl}}/v1/locations?q=Cascade HTTP/1.1
+Authorization: Bearer {{token}}

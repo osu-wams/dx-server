@@ -16,6 +16,8 @@ import StatusRouter from './status';
 import ReleaseNotesRouter from './releaseNotes';
 import TrainingsRouter from './trainings';
 import CardsRouter from './cards';
+import PeopleRouter from './people';
+import LocationsRouter from './locations';
 
 const router = Router();
 
@@ -35,5 +37,7 @@ router.use('/page-content', PageContentRouter);
 router.use('/release-notes', ReleaseNotesRouter);
 router.use('/trainings', TrainingsRouter);
 router.use('/cards', CardsRouter);
+router.use('/people', PeopleRouter);
+router.use('/locations', LocationsRouter);
 
 export default router;

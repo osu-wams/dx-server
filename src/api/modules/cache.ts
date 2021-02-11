@@ -73,6 +73,7 @@ const requestRetry = async (
         status: response.status,
         statusCode: response.status,
         statusText: response.statusText,
+        body: await response.text(),
       },
     });
   } catch (err) {

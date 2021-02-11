@@ -602,10 +602,10 @@
     "@opencensus/core" "^0.0.8"
     uuid "^3.2.1"
 
-"@osu-wams/lib@^0.1.68":
-  version "0.1.68"
-  resolved "https://npm.pkg.github.com/download/@osu-wams/lib/0.1.68/a3fbd1e7989fb691f0474abb553b683922960516f423635fda64fcc91064c37d#39b0f80aac01858b456476fb3e4a93d2aafac9c2"
-  integrity sha512-o6C/885Kb65sEGxQ76EhEarTo3x4NV6r5H8FmQiFCvA0fr9czztNiRVjrDMqqxjHG0iu0t0mEXyS8UJKz2Wb2A==
+"@osu-wams/lib@^0.1.69":
+  version "0.1.69"
+  resolved "https://npm.pkg.github.com/download/@osu-wams/lib/0.1.69/956eae0d4fd6adf310be31d34d83912c672b1f64a6100759760587333930afde#79e398cabb48fdbca5d356b5c6f7c0d489de1fe9"
+  integrity sha512-riPNFeE5FP5Fn+CprJ+oC0/EXRD4tOFaWBtHWVLgff420bSotH/1vG19ca/6pP6fNLSXM2CTreUe9XB6qQPK9Q==
 
 "@pm2/agent-node@^1.1.10":
   version "1.1.10"
