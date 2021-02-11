@@ -401,13 +401,27 @@ export const getLocations = async (location: string): Promise<Partial<Types.Loca
     () => getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`),
     mockedLocations,
   );
-  return response.data.map(
-    ({
-      id,
-      attributes: {
+  return response.data
+    .map(
+      ({
+        id,
+        attributes: {
+          name,
+          website,
+          thumbnails,
+          description,
+          descriptionHTML,
+          address,
+          city,
+          state,
+          zip,
+          campus,
+        },
+      }) => ({
+        id,
         name,
-        website,
-        thumbnails,
+        link: website,
+        image: thumbnails.length ? thumbnails[0] : null,
         description,
         descriptionHTML,
         address,
@@ -415,19 +429,8 @@ export const getLocations = async (location: string): Promise<Partial<Types.Loca
         state,
         zip,
         campus,
-      },
-    }) => ({
-      id,
-      name,
-      link: website,
-      image: thumbnails.length ? thumbnails[0] : null,
-      description,
-      descriptionHTML,
-      address,
-      city,
-      state,
-      zip,
-      campus,
-    }),
-  );
+      }),
+    )
+    .filter((i) => i.link)
+    .sort((a, b) => (a.name > b.name ? 1 : -1));
 };
