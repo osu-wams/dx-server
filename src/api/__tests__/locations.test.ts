@@ -30,32 +30,6 @@ describe('/api/locations', () => {
 
       expect(response.body).toStrictEqual([
         {
-          id: '20eeddae11a47affc9a524052ba12955',
-          name: 'Cascades Hall-COCC',
-          link: null,
-          image: null,
-          description: null,
-          descriptionHTML: null,
-          address: '2600 NW COLLEGE WAY',
-          city: 'BEND',
-          state: 'OR',
-          zip: '97703',
-          campus: 'Cascades',
-        },
-        {
-          id: 'c5e354b41718cec09640c9c9efed1880',
-          name: 'OSU Cascades Residence Hall',
-          link: null,
-          image: null,
-          description: null,
-          descriptionHTML: null,
-          address: '1500 CHANDLER AVENUE',
-          city: 'BEND',
-          state: 'OR',
-          zip: '97701',
-          campus: 'Cascades',
-        },
-        {
           id: '665e5039a9e92e7c47f52dd90e091899',
           name: 'Cascade Hall',
           link: 'https://map.oregonstate.edu/?id=665e5039a9e92e7c47f52dd90e091899',
