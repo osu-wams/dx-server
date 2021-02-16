@@ -32,8 +32,8 @@ export default {
   },
   osuApi: {
     // caching thresholds here
-    thresholdErrorSeconds: '10',
-    thresholdErrorOccurrence: '10',
+    thresholdErrorSeconds: '300',
+    thresholdErrorOccurrence: '25',
     cacheEndpointSec: '3600',
     // Overridden by process.env.OSU_API_CLIENT_ID
     clientId: '',
