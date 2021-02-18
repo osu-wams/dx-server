@@ -77,7 +77,9 @@ describe('/api/people', () => {
           }),
         );
 
-      await request.get('/api/people/lee').expect(400, 'Size Limit Exceeded (search too broad)');
+      await request
+        .get('/api/people/lee')
+        .expect(400, 'There are too many results to display. Please try a more specific search.');
     });
   });
 });

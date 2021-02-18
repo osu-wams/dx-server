@@ -22,7 +22,13 @@ router.get('/:name', async (req: Request, res: Response) => {
     const { message }: { message: string } = err;
     const expectedError = message.includes('search too broad');
     logger().error(`api/directory failed: ${message}`);
-    res.status(expectedError ? 400 : 500).send(message);
+    res
+      .status(expectedError ? 400 : 500)
+      .send(
+        expectedError
+          ? 'There are too many results to display. Please try a more specific search.'
+          : message,
+      );
   }
 });
 
