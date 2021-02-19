@@ -75,8 +75,6 @@ app.use(session(sessionOptions));
 
 // Set JWT Session User prior to sessionLogger to add default logging
 app.use(setJWTSessionUser);
-app.use(setSessionReturnUrl);
-
 app.use(sessionLogger);
 
 // Configure Passport
@@ -90,7 +88,7 @@ passport.use(Auth.readyEducationStrategy);
 passport.serializeUser(Auth.serializeUser);
 passport.deserializeUser(Auth.deserializeUser);
 
-app.get('/login', Auth.login);
+app.get('/login', setSessionReturnUrl, Auth.login);
 app.get('/logout', Auth.logout);
 
 // Health Check (path configured in cloudformation template)
