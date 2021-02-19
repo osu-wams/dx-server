@@ -28,6 +28,7 @@ export const expectedEmployeeEvents = [
     type: 'localist',
     campus_id: 272,
     campus_code: 'C',
+    campus_name: 'corvallis',
     city: 'Corvallis',
   },
   {
@@ -43,6 +44,7 @@ export const expectedEmployeeEvents = [
     type: 'localist',
     campus_id: 272,
     campus_code: 'C',
+    campus_name: 'corvallis',
     city: 'Corvallis',
   },
   {
@@ -57,6 +59,7 @@ export const expectedEmployeeEvents = [
     type: 'localist',
     campus_id: 272,
     campus_code: 'C',
+    campus_name: 'corvallis',
     city: 'Corvallis',
   },
   {
@@ -71,6 +74,7 @@ export const expectedEmployeeEvents = [
     type: 'localist',
     campus_id: 273,
     campus_code: 'B',
+    campus_name: 'bend',
     city: 'Bend',
   },
 ];

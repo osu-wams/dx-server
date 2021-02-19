@@ -224,8 +224,9 @@ export const eventsResult = [
     title: 'Sea-inspired paintings on exhibit',
     type: 'localist',
     campus_id: 272,
-    city: 'Corvallis',
     campus_code: 'C',
+    campus_name: 'corvallis',
+    city: 'Corvallis',
   },
   {
     action: { link: 'https://events.oregonstate.edu/event/pathogetesto' },
@@ -235,8 +236,9 @@ export const eventsResult = [
     title: 'Pathogen Environmental Monitoring Workshop for Pacific Northwest Food Ind',
     type: 'localist',
     campus_id: 272,
-    city: 'Corvallis',
     campus_code: 'C',
+    campus_name: 'corvallis',
+    city: 'Corvallis',
   },
   {
     action: { link: 'https://events.oregonstate.edu/testo' },
@@ -246,7 +248,8 @@ export const eventsResult = [
     title: 'Katherine Dziedzic - Integrative Biology PhD Defense Seminar',
     type: 'localist',
     campus_id: 272,
-    city: 'Corvallis',
     campus_code: 'C',
+    campus_name: 'corvallis',
+    city: 'Corvallis',
   },
 ];
