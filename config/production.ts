@@ -1,5 +1,8 @@
 export default {
   env: 'production',
+  dxApi: {
+    baseUrl: 'https://data.dx.oregonstate.edu',
+  },
   osuApi: {
     baseUrl: 'https://api.oregonstate.edu',
   },

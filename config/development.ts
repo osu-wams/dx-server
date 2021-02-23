@@ -3,7 +3,7 @@ export default {
   logLevel: 'silly',
   appVersion: 'development-123',
   dxApi: {
-    baseUrl: 'https://data-stage.dx.oregonstate.edu',
+    baseUrl: 'https://data-dev.dx.oregonstate.edu',
   },
   dxMcmApi: {
     baseUrl: 'https://dev.mcm.oregonstate.edu',

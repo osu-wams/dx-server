@@ -1,5 +1,8 @@
 export default {
   env: 'stage',
+  dxApi: {
+    baseUrl: 'https://data-stage.dx.oregonstate.edu',
+  },
   osuApi: {
     baseUrl: 'https://api.oregonstate.edu',
   },
