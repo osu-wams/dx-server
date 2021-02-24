@@ -47,8 +47,8 @@ interface ILocalistEvents {
   events: ILocalistEvent[];
 }
 
-const getCampusCode = (campus_id?: number): string | undefined => {
-  if (!campus_id) return undefined;
+const getCampus = (campus_id?: number): { campus_code?: string; campus_name?: string } => {
+  if (!campus_id) return { campus_code: undefined, campus_name: undefined };
   // get the key name matching by provided campus_id, then get the campus code value for that key.
   // CAMPUS_IDS from configuration (ie. { corvallis: 1234, bend: 4321 })
   // CAMPUS_CODES from @osu-wams/lib (ie. { corvallis: ['C', 'J'], bend: ['B'], ecampus: ['DSC'] })
@@ -56,26 +56,30 @@ const getCampusCode = (campus_id?: number): string | undefined => {
     (k) => LOCALIST_CAMPUS_IDS[k] === campus_id,
   );
   // If there is no matching campus ID configuration, revert to it being applied to all (undefined)
-  if (!campus_name) return undefined;
+  if (!campus_name) return { campus_code: undefined, campus_name: undefined };
   // Safe to use the first value of the campus codes for this campus name because filtering methods
   // take into account all codes when checking for association.
-  return User.CAMPUS_CODES[campus_name][0];
+  return { campus_code: User.CAMPUS_CODES[campus_name][0], campus_name };
 };
 
 const mappedEvents = (events: ILocalistEvent[]): Types.LocalistEvent[] => {
-  return events.map((e: ILocalistEvent) => ({
-    action: {
-      link: e.event.localist_url,
-    },
-    bg_image: e.event.photo_url,
-    date: e.event.event_instances[0].event_instance.start,
-    id: e.event.event_instances[0].event_instance.id,
-    title: e.event.title,
-    type: 'localist',
-    campus_id: e.event.campus_id,
-    campus_code: getCampusCode(e.event.campus_id),
-    city: e.event.geo.city,
-  }));
+  return events.map((e: ILocalistEvent) => {
+    const { campus_code, campus_name } = getCampus(e.event.campus_id);
+    return {
+      action: {
+        link: e.event.localist_url,
+      },
+      bg_image: e.event.photo_url,
+      date: e.event.event_instances[0].event_instance.start,
+      id: e.event.event_instances[0].event_instance.id,
+      title: e.event.title,
+      type: 'localist',
+      campus_id: e.event.campus_id,
+      campus_code,
+      campus_name,
+      city: e.event.geo.city,
+    };
+  });
 };
 /* eslint-enable camelcase */
 
