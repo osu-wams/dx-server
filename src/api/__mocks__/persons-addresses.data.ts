@@ -4,8 +4,10 @@ export const personsAddressesData: any = {
       id: '111',
       type: 'addresses',
       attributes: {
-        addressType: 'CM',
-        addressTypeDescription: 'Current Mailing',
+        addressType: {
+          code: 'CM',
+          description: 'Current Mailing'
+        },
         addressLine1: 'Bogus 1st Ave SW',
         addressLine2: null,
         addressLine3: null,
@@ -27,8 +29,10 @@ export const personsAddressesData: any = {
       id: '222',
       type: 'addresses',
       attributes: {
-        addressType: 'DM',
-        addressTypeDescription: 'Department (US Mail)',
+        addressType: {
+          code: 'DM',
+          description: 'Department (US Mail)'
+        },
         addressLine1: 'Sch of Civil/Constr Engr',
         addressLine2: 'Oregon State University',
         addressLine3: '220 Owen Hall',
@@ -50,8 +54,10 @@ export const personsAddressesData: any = {
       id: '333',
       type: 'addresses',
       attributes: {
-        addressType: 'PA',
-        addressTypeDescription: 'Student Alternate Contact',
+        addressType: {
+          code: 'PA',
+          description: 'Student Alternate Contact'
+        },
         addressLine1: 'Bogus 4th Ave SW',
         addressLine2: null,
         addressLine3: null,
@@ -73,8 +79,10 @@ export const personsAddressesData: any = {
       id: '444',
       type: 'addresses',
       attributes: {
-        addressType: 'RK',
-        addressTypeDescription: 'Financial Aid Address',
+        addressType: {
+          code: 'RK',
+          description: 'Financial Aid Address'
+        },
         addressLine1: 'Bogus 6th Ave SE',
         addressLine2: null,
         addressLine3: null,
@@ -96,8 +104,10 @@ export const personsAddressesData: any = {
       id: '555',
       type: 'addresses',
       attributes: {
-        addressType: 'RN',
-        addressTypeDescription: 'Geographic Origin-First Admit',
+        addressType: {
+          code: 'RN',
+          description: 'Geographic Origin-First Admit',
+        },
         addressLine1: 'Bogus 8th Ave NW',
         addressLine2: null,
         addressLine3: null,
@@ -122,8 +132,10 @@ export const personsMailingAddressData: any = {
   id: '111',
   type: 'addresses',
   attributes: {
-    addressType: 'CM',
-    addressTypeDescription: 'Current Mailing',
+    addressType: {
+      code: 'CM',
+      description: 'Current Mailing'
+    },
     addressLine1: 'Bogus 1st Ave SW',
     addressLine2: null,
     addressLine3: null,
