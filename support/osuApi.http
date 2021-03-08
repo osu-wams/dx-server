@@ -39,7 +39,7 @@ Authorization: Bearer {{token}}
 @token = {{getToken.response.body.$.access_token}}
 
 # @name getPerson
-GET {{baseUrl}}/v1/persons/{{osuId}} HTTP/1.1
+GET {{baseUrl}}/v2/persons/{{osuId}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###
