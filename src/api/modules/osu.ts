@@ -100,7 +100,7 @@ export const getProfile = async (user: any): Promise<Types.Persons> => {
 };
 
 export const getEmails = async (user: any): Promise<Types.Email[]> => {
-  return await fetchData(
+  return fetchData(
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/emails`,
@@ -108,11 +108,10 @@ export const getEmails = async (user: any): Promise<Types.Email[]> => {
       ),
     mockedEmails,
   ).then(e => e.data);
-  // return response.data;
 };
 
 export const getPhones = async (user: any): Promise<Types.Phone[]> => {
-  return await fetchData(
+  return fetchData(
     () => getJson(
       `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/phones`,
       `ALERTS-${PERSON_BASE_URL}/phones`),
