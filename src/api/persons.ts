@@ -5,17 +5,17 @@ import { Router, Request, Response } from 'express'; // eslint-disable-line no-u
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
-import { getProfile, getMealPlan, getAddresses } from './modules/osu'; // eslint-disable-line no-unused-vars
+import { getProfile, getMealPlan, getAddresses, getEmails, getPhones } from './modules/osu'; // eslint-disable-line no-unused-vars
 
 const router: Router = Router();
 
 // Main endpoint with general data about the person
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const response: Types.PersonsResponse = await asyncTimedFunction(getProfile, 'getProfile', [
+    const response: Types.Persons = await asyncTimedFunction(getProfile, 'getProfile', [
       req.user,
     ]);
-    res.send({ ...response.data.attributes, id: response.data.id });
+    res.send({ ...response.attributes, id: response.id });
   } catch (err) {
     logger().error('api/persons failed:', err);
     res.status(500).send({ message: 'Unable to retrieve person information.' });
@@ -42,7 +42,7 @@ router.get('/addresses', async (req: Request, res: Response) => {
       req.user,
     ]);
     const mailingAddress = response.find((address: any) => {
-      return address.attributes.addressType === 'CM';
+      return address.attributes.addressType.code === 'CM';
     });
     res.send(mailingAddress);
   } catch (err) {
@@ -50,5 +50,33 @@ router.get('/addresses', async (req: Request, res: Response) => {
     res.status(500).send({ message: 'Unable to retrieve addresses' });
   }
 });
+
+// Phone numbers by osu id - Apigee endpoint
+router.get('/phones', async (req: Request, res: Response) => {
+  try {
+    const response: Types.Phone[] = await asyncTimedFunction(getPhones, 'getPhones', [
+      req.user,
+    ]);
+    res.send(response);
+  } catch (err) {
+    logger().error('api/persons/phones failed:', err);
+    res.status(500).send({ message: 'Unable to retrieve phone information.' });
+  }
+});
+
+// Email addresses by osu id - Apigee endpoint
+router.get('/emails', async (req: Request, res: Response) => {
+  try {
+    const response: Types.Email[] = await asyncTimedFunction(getEmails, 'getEmails', [
+      req.user,
+    ]);
+    res.send(response);
+  } catch (err) {
+    logger().error('api/persons/emails failed:', err);
+    res.status(500).send({ message: 'Unable to retrieve email information.' });
+  }
+});
+
+
 
 export default router;

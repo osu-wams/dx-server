@@ -87,7 +87,7 @@ export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
   return response.data;
 };
 
-export const getProfile = async (user: any): Promise<Types.PersonsResponse> => {
+export const getProfile = async (user: any): Promise<Types.Persons> => {
   const response: Types.PersonsResponse = await fetchData(
     () =>
       getJson(
@@ -96,23 +96,28 @@ export const getProfile = async (user: any): Promise<Types.PersonsResponse> => {
       ),
     mockedPersons,
   );
-  return response;
+  return response.data;
 };
 
-export const getEmails = async (user: any): Promise<Types.EmailsResponse> => {
-  const response: Types.EmailsResponse = await fetchData(
-    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/emails`),
+export const getEmails = async (user: any): Promise<Types.Email[]> => {
+  return await fetchData(
+    () =>
+      getJson(
+        `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/emails`,
+        `ALERTS-${PERSON_BASE_URL}/emails`,
+      ),
     mockedEmails,
-  );
-  return response;
+  ).then(e => e.data);
+  // return response.data;
 };
 
-export const getPhones = async (user: any): Promise<Types.PhonesResponse> => {
-  const response: Types.PhonesResponse = await fetchData(
-    () => getJson(`${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/phones`),
+export const getPhones = async (user: any): Promise<Types.Phone[]> => {
+  return await fetchData(
+    () => getJson(
+      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/phones`,
+      `ALERTS-${PERSON_BASE_URL}/phones`),
     mockedPhones,
-  );
-  return response;
+  ).then(e => e.data);
 };
 
 interface AcademicStatus {

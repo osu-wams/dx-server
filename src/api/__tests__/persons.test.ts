@@ -15,7 +15,7 @@ jest.mock('../util.ts', () => ({
   getToken: () => Promise.resolve('bearer token'),
 }));
 
-const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v1`;
+const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v2`;
 let request = supertest.agent(app);
 
 describe('/api/persons', () => {

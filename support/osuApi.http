@@ -43,6 +43,19 @@ GET {{baseUrl}}/v1/persons/{{osuId}} HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###
+
+# @name getPhones
+GET {{baseUrl}}/v2/persons/{{osuId}}/phones HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
+# @name getEmails
+GET {{baseUrl}}/v2/persons/{{osuId}}/emails HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+
 @token = {{getToken.response.body.$.access_token}}
 
 # @name getClassSchedule
@@ -53,14 +66,14 @@ Authorization: Bearer {{token}}
 @token = {{getToken.response.body.$.access_token}}
 
 # @name getMealPlans
-GET {{baseUrl}}/v1/persons/{{osuId}}/meal-plans HTTP/1.1
+GET {{baseUrl}}/v2/persons/{{osuId}}/meal-plans HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###
 @token = {{getToken.response.body.$.access_token}}
 
 # @name getAddresses
-GET {{baseUrl}}/v1/persons/{{osuId}}/addresses HTTP/1.1
+GET {{baseUrl}}/v2/persons/{{osuId}}/addresses HTTP/1.1
 Authorization: Bearer {{token}}
 
 ###

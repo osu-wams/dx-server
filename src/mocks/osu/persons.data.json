@@ -1,42 +1,35 @@
 {
   "links": {
-    "self": "https://api.oregonstate.edu/v1/persons/111111111"
+    "self": "string"
   },
   "data": {
-    "id": "111111111",
+    "id": "string",
     "type": "person",
-    "attributes": {
-      "birthDate": "1942-10-29",
-      "firstName": "Bob",
-      "middleName": null,
-      "lastName": "Ross",
-      "preferredName": null,
-      "previousRecords": [
-        {
-          "osuID": "111111111",
-          "firstName": "Bob",
-          "middleName": "Norman",
-          "lastName": "Ross",
-          "preferredName": null
-        }
-      ],
-      "citizen": "C",
-      "sex": "M",
-      "homePhone": null,
-      "alternatePhone": null,
-      "osuUID": "12345678901",
-      "primaryPhone": null,
-      "mobilePhone": null,
-      "currentStudent": false,
-      "currentEmployee": true,
-      "employeeStatus": "A",
-      "email": "test-user@test.com",
-      "username": "rossb",
-      "confidential": false,
-      "ssnStatus": "valid"
-    },
     "links": {
-      "self": "https://api.oregonstate.edu/v1/persons/111111111"
+      "self": "string"
+    },
+    "attributes": {
+      "firstName": "John",
+      "lastName": "Smith",
+      "middleName": "Adam",
+      "birthDate": "1970-01-21",
+      "citizen": {
+        "code": "FN",
+        "description": "string"
+      },
+      "sex": "M",
+      "displayFirstName": "John",
+      "displayMiddleName": "Adam",
+      "displayLastName": "Smith",
+      "onid": "smithj",
+      "confidentialInd": true,
+      "currentStudentInd": true,
+      "employeeStatus": {
+        "code": "A",
+        "description": "Active"
+      },
+      "ssnStatus": "vault",
+      "lastPaidDate": "2019-06-30"
     }
   }
 }
