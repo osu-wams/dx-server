@@ -1,0 +1,30 @@
+{
+    "link": {
+      "self": "string"
+    },
+    "data": [
+      {
+        "id": "string",
+        "type": "phones",
+        "links": {
+          "self": "string"
+        },
+        "attributes": {
+          "areaCode": "541",
+          "phoneNumber": "4443333",
+          "phoneExtension": "20",
+          "primaryInd": true,
+          "phoneType": {
+            "code": "PA",
+            "description": "Current"
+          },
+          "addressType": {
+            "code": "PA",
+            "description": "Current Mailing"
+          },
+          "fullPhoneNumber": "5414443333",
+          "lastModified": "2015-10-19"
+        }
+      }
+    ]
+  }

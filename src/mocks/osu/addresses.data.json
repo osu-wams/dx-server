@@ -8,8 +8,10 @@
       "type": "addresses",
       "attributes": {
         "id": "12345678-1a41-4e29-9a67-41eb6f64b6c3",
-        "addressType": "CM",
-        "addressTypeDescription": "Current Mailing",
+        "addressType": {
+          "code": "CM",
+          "description": "Current Mailing"
+        },
         "addressLine1": "123 Main St.",
         "addressLine2": null,
         "addressLine3": null,
@@ -34,8 +36,10 @@
       "type": "addresses",
       "attributes": {
         "id": "12345678-8e42-4d31-b30d-486cd2963158",
-        "addressType": "RN",
-        "addressTypeDescription": "Geographic Origin-First Admit",
+        "addressType": {
+          "code": "RN",
+          "description": "Geographic Origin-First Admit"
+        },
         "addressLine1": "123 Main St.",
         "addressLine2": null,
         "addressLine3": null,
