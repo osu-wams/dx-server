@@ -203,17 +203,17 @@ app.get(
     req.user.canvasOauthToken = user.canvasOauthToken;
     req.user.canvasOauthExpire = user.canvasOauthExpire;
     req.user.canvasOptIn = user.canvasOptIn;
-    req.user.refreshToken = user.canvasRefreshToken;
+    req.user.canvasRefreshToken = user.canvasRefreshToken;
     logger().debug(`/canvas/auth redirecting to: ${req.session.returnUrl}`);
     redirectReturnUrl(req, res, req.user);
   },
 );
 app.get('/canvas/refresh', Auth.ensureAuthenticated, async (req: Request, res: Response) => {
-  const user = await refreshOAuthToken(req.user);
+  const user: User = await refreshOAuthToken(req.user);
   req.user.canvasOauthToken = user.canvasOauthToken;
   req.user.canvasOauthExpire = user.canvasOauthExpire;
   req.user.canvasOptIn = user.canvasOptIn;
-  req.user.refreshToken = user.canvasRefreshToken;
+  req.user.canvasRefreshToken = user.canvasRefreshToken;
   logger().debug(`/canvas/refresh redirecting to: ${req.session.returnUrl}`);
   redirectReturnUrl(req, res, req.user);
 });
