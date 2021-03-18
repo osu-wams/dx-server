@@ -84,7 +84,7 @@ switch (ENV) {
         entryPoint: `${SAML_URL}SAML2/Redirect/SSO`,
         issuer: 'https://my.oregonstate.edu',
         cert: SAML_CERT,
-        privateCert: SAML_PVK.replace(/\\n/g, '\n'),
+        privateKey: SAML_PVK.replace(/\\n/g, '\n'),
         decryptionPvk: SAML_PVK.replace(/\\n/g, '\n'),
         signatureAlgorithm: 'sha256',
       },
