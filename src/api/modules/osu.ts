@@ -212,6 +212,7 @@ export const getClassSchedule = async (
       attributes: {
         ...d.attributes,
         faculty: d.attributes.faculty.map((f) => ({
+          osuId: f.osuId,
           email: f.email,
           name: f.name,
           primary: f.primary,

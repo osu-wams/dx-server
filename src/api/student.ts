@@ -37,7 +37,7 @@ router.get('/planner-items', Auth.hasCanvasRefreshToken, async (req: Request, re
       ]);
       logger().info('Masqueraded Canvas Planner Items', {
         canvasAction: 'planner-items',
-        masqueradeId: req.user.masqueradedId,
+        masqueradeId: req.user.masqueradeId,
         osuId: req.session.passport.user.osuId,
         email: req.session.passport.user.email,
       });
