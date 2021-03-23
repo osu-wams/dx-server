@@ -221,12 +221,13 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
       })(req, res, next);
     } else {
       // Explicitly identify this session as having been initiated through the mobile app auth flow
-      req.session.isMobile = true; // eslint-disable-line
+      req.session.isMobile = true;
       // eslint-disable-next-line
       req.login(reaUser, (innerErr: any) => {
         if (innerErr) {
           return next(innerErr);
         }
+        req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 30; // 30 days in milliseconds
         // Provide the means for a Ready Education auth flow to include returnUrl=page_name
         // to direct the users browser to a specific page.
         const { returnUrl }: { returnUrl?: string } = req.query;
