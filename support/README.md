@@ -25,7 +25,7 @@ eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvc3VJZCI6MTExMTExMTExLCJlbWFpbCI6Im5vcmV
   groups: [ 'admin', 'masquerade' ],
   affiliations: [ 'employee', 'member' ],
   isAdmin: true,
-  refreshToken: 'refresh-token-here',
+  canvasRefreshToken: 'refresh-token-here',
   canvasOauthToken: 'oauth-token-here',
   canvasOauthExpire: 1580942924,
   isCanvasOptIn: true,

@@ -48,6 +48,7 @@ const LOCALIST_EVENT_DAYS_AGO = parseInt(config.get('localist.eventDaysAgo'), 10
 const LOCALIST_EVENT_DX_QUERY: string = config.get('localist.eventDxQuery');
 const OSU_API_BASE_URL: string = config.get('osuApi.baseUrl');
 const OSU_API_CACHE_SEC: number = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
+const OSU_API_LONG_CACHE_SEC: number = parseInt(config.get('osuApi.longCacheEndpointSec'), 10);
 const OSU_API_CLIENT_ID: string = config.get('osuApi.clientId');
 const OSU_API_CLIENT_SECRET: string = config.get('osuApi.clientSecret');
 const REDIS_HOST: string = config.get('redis.host');
@@ -119,6 +120,7 @@ export {
   OSU_API_CACHE_SEC,
   OSU_API_CLIENT_ID,
   OSU_API_CLIENT_SECRET,
+  OSU_API_LONG_CACHE_SEC,
   OSU_ERROR_SEC_THRESH,
   OSU_ERROR_OCCUR_THRESH,
   REDIS_HOST,

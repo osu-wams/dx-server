@@ -24,6 +24,7 @@ import {
   OSU_API_CACHE_SEC,
   OSU_ERROR_SEC_THRESH,
   OSU_ERROR_OCCUR_THRESH,
+  OSU_API_LONG_CACHE_SEC,
 } from '../../constants';
 import { cacheFailureOrPing } from './notifications';
 import logger from '../../logger';
@@ -33,7 +34,11 @@ const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v2/persons`;
 const DIRECTORY_BASE_URL: string = `${OSU_API_BASE_URL}/v2/directory`;
 const LOCATION_BASE_URL: string = `${OSU_API_BASE_URL}/v1/locations`;
 
-const getJson = async (url: string, exceptionKey: string) => {
+const getJson = async (
+  url: string,
+  exceptionKey: string,
+  ttlSeconds: number = OSU_API_CACHE_SEC,
+) => {
   // TODO: Can we cache this for a period of time and reuse the token reliably?
   const bearerToken = await getToken();
 
@@ -49,7 +54,7 @@ const getJson = async (url: string, exceptionKey: string) => {
       true,
       {
         key: url,
-        ttlSeconds: OSU_API_CACHE_SEC,
+        ttlSeconds,
       },
       [502],
     );
@@ -107,16 +112,18 @@ export const getEmails = async (user: any): Promise<Types.Email[]> => {
         `ALERTS-${PERSON_BASE_URL}/emails`,
       ),
     mockedEmails,
-  ).then(e => e.data);
+  ).then((e) => e.data);
 };
 
 export const getPhones = async (user: any): Promise<Types.Phone[]> => {
   return fetchData(
-    () => getJson(
-      `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/phones`,
-      `ALERTS-${PERSON_BASE_URL}/phones`),
+    () =>
+      getJson(
+        `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/phones`,
+        `ALERTS-${PERSON_BASE_URL}/phones`,
+      ),
     mockedPhones,
-  ).then(e => e.data);
+  ).then((e) => e.data);
 };
 
 interface AcademicStatus {
@@ -205,6 +212,7 @@ export const getClassSchedule = async (
       attributes: {
         ...d.attributes,
         faculty: d.attributes.faculty.map((f) => ({
+          osuId: f.osuId,
           email: f.email,
           name: f.name,
           primary: f.primary,
@@ -384,6 +392,7 @@ export const getDirectory = async (
         getJson(
           `${DIRECTORY_BASE_URL}?page[size]=100&page[number]=1&filter[fullName][fuzzy]=${name}`,
           `ALERTS-${DIRECTORY_BASE_URL}?page[size]=100&page[number]=1&filter[fullName][fuzzy]=${name}`,
+          OSU_API_LONG_CACHE_SEC,
         ),
       mockedDirectory,
     );
@@ -420,7 +429,8 @@ export const getDirectory = async (
 
 export const getLocations = async (location: string): Promise<Partial<Types.Location>[]> => {
   const response: { data: { id: string; attributes: Types.Location }[] } = await fetchData(
-    () => getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`),
+    () =>
+      getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`, OSU_API_LONG_CACHE_SEC),
     mockedLocations,
   );
   return response.data

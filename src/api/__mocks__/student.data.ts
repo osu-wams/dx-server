@@ -123,6 +123,7 @@ export const classScheduleDataResult = [
       ],
       faculty: [
         {
+          osuId: '999999999',
           name: 'Lastname, Firstname',
           email: 'noreply@onid.orst.edu',
           primary: true,
