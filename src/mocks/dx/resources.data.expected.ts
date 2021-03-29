@@ -16,6 +16,7 @@ export default [
       'banner self service',
     ],
     excludeTrending: false,
+    itSystem: null,
   },
   {
     id: '4c78c92a-baca-480d-97e7-384bb76e3b48',
@@ -28,6 +29,7 @@ export default [
     categories: [],
     synonyms: [],
     excludeTrending: false,
+    itSystem: 'Zoom',
   },
   {
     id: '9a9db419-68d4-400f-9aaa-288fd9fb4cfd',
@@ -40,6 +42,7 @@ export default [
     categories: ['Academic'],
     synonyms: [],
     excludeTrending: false,
+    itSystem: null,
   },
   {
     id: 'd6cfd606-df0f-441b-afe5-659b8463d4eb',
@@ -52,6 +55,7 @@ export default [
     categories: ['Academic'],
     synonyms: ['classes', 'courses', 'course catalog'],
     excludeTrending: false,
+    itSystem: 'OSU Websites',
   },
   {
     id: 'ac115aaa-3eb6-4cf5-a84c-e53054a55d61',
@@ -64,6 +68,7 @@ export default [
     categories: [],
     synonyms: [],
     excludeTrending: false,
+    itSystem: null,
   },
   {
     id: '9c56b651-cec1-4c68-82ae-3d35903c53c1',
@@ -76,5 +81,6 @@ export default [
     categories: [],
     synonyms: [],
     excludeTrending: false,
+    itSystem: null,
   },
 ];
