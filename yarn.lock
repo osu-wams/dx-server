@@ -638,7 +638,7 @@
     "@opencensus/core" "^0.0.8"
     uuid "^3.2.1"
 
-"@osu-wams/lib@^0.1.71":
+"@osu-wams/lib@^0.1.73":
   version "0.1.73"
   resolved "https://npm.pkg.github.com/download/@osu-wams/lib/0.1.73/29dcc24aea1f7f98a6a44933952047bd68b6758623e861c05b13ab8c487e395e#098473b2be8f7d92eb22028a74aaeb913d67d061"
   integrity sha512-ceTLBdl/C/mSxEpr8E6/aExyKnRapkJ74GPxOm1wQDcCHq+PFxvgd4wk/dXRaYpUzFce9Z0vqBVbJpNeWOJHUQ==
