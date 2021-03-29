@@ -59,6 +59,19 @@
               "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/75833320-e1ba-4b06-8df5-434855ae94ab?resourceVersion=id%3A20396"
             }
           },
+          "field_it_system": {
+            "data": {
+              "name": null
+            },
+            "links": {
+              "related": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/relationships/field_it_system?resourceVersion=id%3A12556"
+              }
+            }
+          },
           "field_affiliation": {
             "links": {
               "related": {
@@ -218,6 +231,19 @@
               "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/198917a4-47ad-4d45-9074-3a76dc495de1?resourceVersion=id%3A19061"
             }
           },
+          "field_it_system": {
+            "data": {
+              "name": "G Suite"
+            },
+            "links": {
+              "related": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/relationships/field_it_system?resourceVersion=id%3A12556"
+              }
+            }
+          },
           "field_affiliation": {
             "links": {
               "related": {
@@ -368,6 +394,19 @@
             },
             "self": {
               "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/8feb6e93-3376-4190-a981-ec9dc1bd6b67?resourceVersion=id%3A13806"
+            }
+          },
+          "field_it_system": {
+            "data": {
+              "name": "Canvas"
+            },
+            "links": {
+              "related": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/relationships/field_it_system?resourceVersion=id%3A12556"
+              }
             }
           },
           "field_affiliation": {
@@ -527,6 +566,19 @@
             },
             "self": {
               "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/62c491e3-4c41-4335-bdff-9b083d6d3acf?resourceVersion=id%3A20081"
+            }
+          },
+          "field_it_system": {
+            "data": {
+              "name": null
+            },
+            "links": {
+              "related": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
+              },
+              "self": {
+                "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/relationships/field_it_system?resourceVersion=id%3A12556"
+              }
             }
           },
           "field_affiliation": {

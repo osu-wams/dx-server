@@ -12,6 +12,7 @@ export default {
       categories: ['Featured', 'Technology'],
       synonyms: ['email', 'mail'],
       excludeTrending: true,
+      itSystem: null,
     },
     {
       id: '198917a4-47ad-4d45-9074-3a76dc495de1',
@@ -24,6 +25,7 @@ export default {
       categories: ['Featured'],
       synonyms: ['lms', 'homework', 'assignments', 'learn', 'learn@oregonstate'],
       excludeTrending: false,
+      itSystem: 'G Suite',
     },
     {
       id: '8feb6e93-3376-4190-a981-ec9dc1bd6b67',
@@ -36,6 +38,7 @@ export default {
       categories: ['Featured', 'Technology'],
       synonyms: ['file storage'],
       excludeTrending: false,
+      itSystem: 'Canvas',
     },
     {
       id: '62c491e3-4c41-4335-bdff-9b083d6d3acf',
@@ -48,6 +51,7 @@ export default {
       categories: ['Featured', 'Financial'],
       synonyms: ['payment'],
       excludeTrending: false,
+      itSystem: null,
     },
   ],
 };
