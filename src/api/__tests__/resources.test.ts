@@ -73,7 +73,6 @@ describe('/resources', () => {
           'banner self service',
         ],
         excludeTrending: false,
-        itSystem: null,
       },
     ]);
   });

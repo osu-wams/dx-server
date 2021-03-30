@@ -12,7 +12,6 @@ export default {
       categories: ['Featured'],
       synonyms: ['lms', 'homework', 'assignments', 'learn', 'learn@oregonstate'],
       excludeTrending: false,
-      itSystem: null,
     },
     {
       id: 'a95a5e95-973e-4356-81f5-cf804a961666',

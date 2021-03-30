@@ -12,7 +12,6 @@ export default {
       categories: ['Featured', 'Technology'],
       synonyms: ['email', 'mail'],
       excludeTrending: true,
-      itSystem: null,
     },
     {
       id: '198917a4-47ad-4d45-9074-3a76dc495de1',
@@ -51,7 +50,6 @@ export default {
       categories: ['Featured', 'Financial'],
       synonyms: ['payment'],
       excludeTrending: false,
-      itSystem: null,
     },
   ],
 };
