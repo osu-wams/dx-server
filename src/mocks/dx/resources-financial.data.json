@@ -60,9 +60,7 @@
             }
           },
           "field_it_system": {
-            "data": {
-              "name": null
-            },
+            "data": null,
             "links": {
               "related": {
                 "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
@@ -219,9 +217,7 @@
             }
           },
           "field_it_system": {
-            "data": {
-              "name": null
-            },
+            "data": null,
             "links": {
               "related": {
                 "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
