@@ -582,7 +582,6 @@ export const getSearchIndexPages = async (): Promise<any> => {
       }),
     mockedPageSearchIndex,
   );
-  console.log(data);
   return data.map((d) => ({
     id: d.id,
     page: d.field_search_index_page.data.name,
