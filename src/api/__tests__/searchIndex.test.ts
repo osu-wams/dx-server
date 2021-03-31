@@ -25,15 +25,11 @@ describe('/api/searchIndex/pages', () => {
     nock(BASE_URL).get(/.*/).reply(200, { data: mockedPageSearchIndex });
     const result = await request.get('/api/searchIndex/pages');
     expect(result.ok).toBeTruthy();
-    // console.log(result.body);
-    // console.log(mockedPageSearchIndexExpected);
-    // !TODO: logic needed to match this (does not get the page name)
-    // expect(result.body).toStrictEqual(mockedPageSearchIndexExpected);
+    expect(result.body).toStrictEqual(mockedPageSearchIndexExpected);
   });
 
   it('should return error message there is a 500 error', async () => {
     nock(BASE_URL).get(/.*/).reply(500);
-    // !TODO: check open handle warning
     await request
       .get('/api/searchIndex/pages')
       .expect(500, { message: 'Search Index Pages API failed.' });

@@ -1,174 +1,76 @@
 [
   {
     "type": "node--page_index",
+    "id": "2192de9b-ef10-4535-9f58-52d70d4a6fd8",
+    "links": {
+      "describedby": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/resource/schema"
+      },
+      "self": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/2192de9b-ef10-4535-9f58-52d70d4a6fd8?resourceVersion=id%3A24086"
+      }
+    },
+    "field_search_index_page": {
+      "data": {
+        "type": "taxonomy_term--pages",
+        "id": "a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0"
+          }
+        },
+        "name": "Academics"
+      },
+      "links": {
+        "related": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/2192de9b-ef10-4535-9f58-52d70d4a6fd8/field_search_index_page?resourceVersion=id%3A24086"
+        },
+        "self": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/2192de9b-ef10-4535-9f58-52d70d4a6fd8/relationships/field_search_index_page?resourceVersion=id%3A24086"
+        }
+      }
+    },
+    "field_search_index_description": "Courses, grades, and academic resources",
+    "field_search_index_terms": ["courses", "grades", "past courses"]
+  },
+  {
+    "type": "node--page_index",
     "id": "43f124d0-f6e5-4482-809e-35bb28f856aa",
     "links": {
       "describedby": {
         "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/resource/schema"
       },
       "self": {
-        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa?resourceVersion=id%3A24076"
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa?resourceVersion=id%3A24096"
       }
     },
-    "attributes": {
-      "drupal_internal__nid": 5406,
-      "drupal_internal__vid": 24076,
-      "langcode": "en",
-      "revision_timestamp": "2021-03-15T19:03:49+00:00",
-      "revision_log": null,
-      "status": true,
-      "title": "Testo 1",
-      "created": "2021-03-15T19:02:47+00:00",
-      "changed": "2021-03-15T19:03:49+00:00",
-      "promote": true,
-      "sticky": false,
-      "default_langcode": true,
-      "revision_translation_affected": true,
-      "moderation_state": null,
-      "path": {
-        "alias": null,
-        "pid": null,
-        "langcode": "en"
-      },
-      "publish_on": null,
-      "unpublish_on": null,
-      "publish_state": null,
-      "unpublish_state": null,
-      "body": null,
-      "field_search_index_description": "Aboutpage description",
-      "field_search_index_terms": ["About data", "random "]
-    },
-    "relationships": {
-      "node_type": {
-        "data": {
-          "type": "node_type--node_type",
-          "id": "4accdbc4-78d0-4940-8fb0-b24e03c8df94"
-        },
+    "field_search_index_page": {
+      "data": {
+        "type": "taxonomy_term--pages",
+        "id": "0fe8aa9d-d1ee-444a-8a06-0da984a59817",
         "links": {
-          "related": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/node_type?resourceVersion=id%3A24076"
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
           },
           "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/relationships/node_type?resourceVersion=id%3A24076"
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/0fe8aa9d-d1ee-444a-8a06-0da984a59817"
           }
-        }
-      },
-      "revision_uid": {
-        "data": null,
-        "links": {
-          "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/relationships/revision_uid?resourceVersion=id%3A24076"
-          }
-        }
-      },
-      "uid": {
-        "data": null,
-        "links": {
-          "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/relationships/uid?resourceVersion=id%3A24076"
-          }
-        }
-      },
-      "field_search_index_page": {
-        "data": {
-          "type": "taxonomy_term--pages",
-          "id": "0fe8aa9d-d1ee-444a-8a06-0da984a59817"
         },
-        "links": {
-          "related": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/field_search_index_page?resourceVersion=id%3A24076"
-          },
-          "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/relationships/field_search_index_page?resourceVersion=id%3A24076"
-          }
+        "name": "About"
+      },
+      "links": {
+        "related": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/field_search_index_page?resourceVersion=id%3A24096"
+        },
+        "self": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/relationships/field_search_index_page?resourceVersion=id%3A24096"
         }
       }
-    }
-  },
-  {
-    "type": "node--page_index",
-    "id": "8078a423-ac92-4607-a470-a7d0def3ed51",
-    "links": {
-      "describedby": {
-        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/resource/schema"
-      },
-      "self": {
-        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/8078a423-ac92-4607-a470-a7d0def3ed51?resourceVersion=id%3A24081"
-      }
     },
-    "attributes": {
-      "drupal_internal__nid": 5411,
-      "drupal_internal__vid": 24081,
-      "langcode": "en",
-      "revision_timestamp": "2021-03-15T19:06:47+00:00",
-      "revision_log": null,
-      "status": true,
-      "title": "Academics",
-      "created": "2021-03-15T19:06:10+00:00",
-      "changed": "2021-03-15T19:06:47+00:00",
-      "promote": true,
-      "sticky": false,
-      "default_langcode": true,
-      "revision_translation_affected": true,
-      "moderation_state": null,
-      "path": {
-        "alias": null,
-        "pid": null,
-        "langcode": "en"
-      },
-      "publish_on": null,
-      "unpublish_on": null,
-      "publish_state": null,
-      "unpublish_state": null,
-      "body": null,
-      "field_search_index_description": "Academics page description",
-      "field_search_index_terms": ["Past Courses", "Academic Resources", "Assignments"]
-    },
-    "relationships": {
-      "node_type": {
-        "data": {
-          "type": "node_type--node_type",
-          "id": "4accdbc4-78d0-4940-8fb0-b24e03c8df94"
-        },
-        "links": {
-          "related": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/8078a423-ac92-4607-a470-a7d0def3ed51/node_type?resourceVersion=id%3A24081"
-          },
-          "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/8078a423-ac92-4607-a470-a7d0def3ed51/relationships/node_type?resourceVersion=id%3A24081"
-          }
-        }
-      },
-      "revision_uid": {
-        "data": null,
-        "links": {
-          "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/8078a423-ac92-4607-a470-a7d0def3ed51/relationships/revision_uid?resourceVersion=id%3A24081"
-          }
-        }
-      },
-      "uid": {
-        "data": null,
-        "links": {
-          "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/8078a423-ac92-4607-a470-a7d0def3ed51/relationships/uid?resourceVersion=id%3A24081"
-          }
-        }
-      },
-      "field_search_index_page": {
-        "data": {
-          "type": "taxonomy_term--pages",
-          "id": "a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0"
-        },
-        "links": {
-          "related": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/8078a423-ac92-4607-a470-a7d0def3ed51/field_search_index_page?resourceVersion=id%3A24081"
-          },
-          "self": {
-            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/8078a423-ac92-4607-a470-a7d0def3ed51/relationships/field_search_index_page?resourceVersion=id%3A24081"
-          }
-        }
-      }
-    }
+    "field_search_index_description": "About page description",
+    "field_search_index_terms": ["About data", "random "]
   }
 ]
