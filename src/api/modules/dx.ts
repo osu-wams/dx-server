@@ -14,6 +14,7 @@ import {
   mockedTrainings,
   mockedTrainingAudiences,
   mockedTrainingTags,
+  mockedPageSearchIndex,
 } from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
@@ -560,4 +561,31 @@ export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
   );
   const cards = mappedCards(data);
   return sortedCards(cards);
+};
+
+/**
+ * Get all the search terms for pages in MyOregonState
+ */
+export const getSearchIndexPages = async (): Promise<any> => {
+  const data = await fetchData(
+    () =>
+      retrieveData('node/page_index', {
+        fields: {
+          'node--page_index':
+            'id,field_search_index_page,field_search_index_description,field_search_index_terms',
+          'taxonomy_term--pages': 'name',
+        },
+        include: 'field_search_index_page',
+        filter: {
+          status: 1,
+        },
+      }),
+    mockedPageSearchIndex,
+  );
+  return data.map((d) => ({
+    id: d.id,
+    page: d.field_search_index_page.data.name,
+    description: d.field_search_index_description,
+    searchTerms: d.field_search_index_terms,
+  }));
 };

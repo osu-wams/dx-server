@@ -57,7 +57,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "@osu-wams/lib": "0.1.73 ",
+    "@osu-wams/lib": "0.1.74",
     "aws-sdk": "^2.510.0",
     "body-parser": "^1.19.0",
     "config": "^3.2.2",
