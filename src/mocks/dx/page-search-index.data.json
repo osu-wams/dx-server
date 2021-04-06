@@ -1,0 +1,76 @@
+[
+  {
+    "type": "node--page_index",
+    "id": "2192de9b-ef10-4535-9f58-52d70d4a6fd8",
+    "links": {
+      "describedby": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/resource/schema"
+      },
+      "self": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/2192de9b-ef10-4535-9f58-52d70d4a6fd8?resourceVersion=id%3A24086"
+      }
+    },
+    "field_search_index_page": {
+      "data": {
+        "type": "taxonomy_term--pages",
+        "id": "a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/a8055bb1-e00c-4ed7-a4b6-395cadc9d5e0"
+          }
+        },
+        "name": "Academics"
+      },
+      "links": {
+        "related": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/2192de9b-ef10-4535-9f58-52d70d4a6fd8/field_search_index_page?resourceVersion=id%3A24086"
+        },
+        "self": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/2192de9b-ef10-4535-9f58-52d70d4a6fd8/relationships/field_search_index_page?resourceVersion=id%3A24086"
+        }
+      }
+    },
+    "field_search_index_description": "Courses, grades, and academic resources",
+    "field_search_index_terms": ["courses", "grades", "past courses"]
+  },
+  {
+    "type": "node--page_index",
+    "id": "43f124d0-f6e5-4482-809e-35bb28f856aa",
+    "links": {
+      "describedby": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/resource/schema"
+      },
+      "self": {
+        "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa?resourceVersion=id%3A24096"
+      }
+    },
+    "field_search_index_page": {
+      "data": {
+        "type": "taxonomy_term--pages",
+        "id": "0fe8aa9d-d1ee-444a-8a06-0da984a59817",
+        "links": {
+          "describedby": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/resource/schema"
+          },
+          "self": {
+            "href": "https://data-dev.dx.oregonstate.edu/jsonapi/taxonomy_term/pages/0fe8aa9d-d1ee-444a-8a06-0da984a59817"
+          }
+        },
+        "name": "About"
+      },
+      "links": {
+        "related": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/field_search_index_page?resourceVersion=id%3A24096"
+        },
+        "self": {
+          "href": "https://data-dev.dx.oregonstate.edu/jsonapi/node/page_index/43f124d0-f6e5-4482-809e-35bb28f856aa/relationships/field_search_index_page?resourceVersion=id%3A24096"
+        }
+      }
+    },
+    "field_search_index_description": "About page description",
+    "field_search_index_terms": ["About data", "random "]
+  }
+]
