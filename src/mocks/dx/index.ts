@@ -24,8 +24,6 @@ import mockedTrainingTags from './training-tags.data.json';
 import mockedTrainingTagsExpected from './training-tags.data.expected';
 import mockedTrainingAudiences from './training-audiences.data.json';
 import mockedTrainingAudiencesExpected from './training-audiences.data.expected';
-import mockedPageSearchIndex from './page-search-index.data.json';
-import mockedPageSearchIndexExpected from './search-page-index.data.expected';
 
 // TODO: Add remaining categories from the entity_queue API
 const mockedCuratedResources = (category: string) => {
@@ -60,8 +58,6 @@ export {
   mockedResources,
   mockedResourcesExpected,
   mockedPageContent,
-  mockedPageSearchIndex,
-  mockedPageSearchIndexExpected,
   mockedReleaseNotes,
   mockedTrainings,
   mockedTrainingsExpected,
