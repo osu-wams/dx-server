@@ -54,10 +54,10 @@
     "supertest": "^4.0.2",
     "ts-jest": "^26.4.3",
     "ts-node": "^8.3.0",
-    "typescript": "^4.2.3"
+    "typescript": "^4.0.5"
   },
   "dependencies": {
-    "@osu-wams/lib": "0.1.74",
+    "@osu-wams/lib": "^0.1.73",
     "aws-sdk": "^2.510.0",
     "body-parser": "^1.19.0",
     "config": "^3.2.2",

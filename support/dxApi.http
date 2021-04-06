@@ -127,12 +127,3 @@ GET {{baseUrl}}/jsonapi/taxonomy_term/training_tags HTTP/1.1
   ?fields[taxonomy_term--training_tags]=id,name
   &filter[status]=1
   &sort=weight
-
-###
-
-# @name getPageSearchIndex
-GET {{baseUrl}}/jsonapi/node/page_index HTTP/1.1
-  ?fields[node--page_index]=id,name,title,field_search_index_page,field_search_index_description,field_search_index_terms
-  &fields[taxonomy_term--pages]=name
-  &include=field_search_index_page,field_pages
-  &filter[status]=1

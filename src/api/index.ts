@@ -18,7 +18,6 @@ import TrainingsRouter from './trainings';
 import CardsRouter from './cards';
 import PeopleRouter from './people';
 import LocationsRouter from './locations';
-import SearchIndexRouter from './searchIndex';
 
 const router = Router();
 
@@ -40,7 +39,5 @@ router.use('/trainings', TrainingsRouter);
 router.use('/cards', CardsRouter);
 router.use('/people', PeopleRouter);
 router.use('/locations', LocationsRouter);
-router.use('/searchIndex', SearchIndexRouter);
-
 
 export default router;
