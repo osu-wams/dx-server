@@ -34,6 +34,7 @@ router.get('/', async (req: Request, res: Response) => {
     primaryAffiliation,
     affiliations,
     isAdmin: req.user.isAdmin,
+    isMasquerade: req.user.isAdmin && (req.user.masqueradeId ?? 0) > 0,
     groups: req.user.groups,
     isCanvasOptIn: canvasOptIn,
     audienceOverride: userAudienceOverride || {},
