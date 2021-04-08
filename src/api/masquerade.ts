@@ -22,8 +22,9 @@ const router: Router = Router();
  */
 router.post('/', async (req: Request, res: Response) => {
   const { masqueradeId, masqueradeReason } = req.body;
-  if (masqueradeId && masqueradeReason) {
-    const user = await User.find(parseInt(masqueradeId, 10));
+  const masqueradeOsuId = parseInt(masqueradeId, 10);
+  if (masqueradeOsuId && masqueradeReason) {
+    const user = await User.find(masqueradeOsuId);
     if (user) {
       const {
         lastName,
@@ -53,16 +54,18 @@ router.post('/', async (req: Request, res: Response) => {
         email,
         canvasOptIn,
       };
+    } else {
+      delete req.user.masquerade;
     }
-    req.user.masqueradeId = masqueradeId;
+    req.user.masqueradeId = masqueradeOsuId;
     req.user.masqueradeReason = masqueradeReason;
     logger().info(
-      `User:${req.user.osuId}:${req.user.email} masqueraded as ${masqueradeId}, '${masqueradeReason}'`,
+      `User:${req.user.osuId}:${req.user.email} masqueraded as ${masqueradeOsuId}, '${masqueradeReason}'`,
       {
         adminAction: 'masquerade',
         osuId: req.user.osuId,
         email: req.user.email,
-        masqueradeId,
+        masqueradeOsuId,
         masqueradeReason,
       },
     );
