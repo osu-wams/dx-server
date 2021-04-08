@@ -54,6 +54,8 @@ router.post('/', async (req: Request, res: Response) => {
         email,
         canvasOptIn,
       };
+    } else {
+      delete req.user.masquerade;
     }
     req.user.masqueradeId = masqueradeOsuId;
     req.user.masqueradeReason = masqueradeReason;
