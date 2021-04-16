@@ -24,14 +24,13 @@ describe('/alerts', () => {
         title: 'Weather closure 10/12',
         content: 'Snow causes dangerous road conditions',
         type: 'rave',
+        updated: '2018-05-29T18:47:39Z',
       },
     ];
     mockedGetResponse.mockReturnValue(alertPresent.xml);
     cache.get = mockedGet;
 
-    nock(BASE_URL)
-      .get('')
-      .reply(200, alertPresent.xml, { 'Content-Type': 'application/xml' });
+    nock(BASE_URL).get('').reply(200, alertPresent.xml, { 'Content-Type': 'application/xml' });
 
     await request.get('/api/alerts').expect(200, data);
   });
@@ -39,9 +38,7 @@ describe('/alerts', () => {
   it('should return an empty array [] when "All Clear" is present in the data', async () => {
     mockedGetResponse.mockReturnValue(alertClear.xml);
     cache.get = mockedGet;
-    nock(BASE_URL)
-      .get('')
-      .reply(200, alertClear.xml, { 'Content-Type': 'application/xml' });
+    nock(BASE_URL).get('').reply(200, alertClear.xml, { 'Content-Type': 'application/xml' });
 
     await request.get('/api/alerts').expect(200, alertClear.response);
   });
@@ -49,9 +46,7 @@ describe('/alerts', () => {
   it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
     mockedGetResponse.mockReturnValue(undefined);
     cache.get = mockedGet;
-    nock(BASE_URL)
-      .get('')
-      .reply(500);
+    nock(BASE_URL).get('').reply(500);
 
     await request.get('/api/alerts').expect(500, { message: 'Unable to retrieve rave alerts.' });
   });
@@ -79,10 +74,7 @@ describe('/alerts/dx', () => {
   it('should return "Unable to retrieve alerts." when there is a 500 error', async () => {
     mockCachedData.mockReturnValue(null);
     cache.getAsync = getAsync;
-    nock(DX_BASE_URL)
-      .get('/jsonapi/node/alerts')
-      .query(true)
-      .reply(500);
+    nock(DX_BASE_URL).get('/jsonapi/node/alerts').query(true).reply(500);
 
     await request.get('/api/alerts/dx').expect(500, { message: 'Unable to retrieve dx alerts.' });
   });
