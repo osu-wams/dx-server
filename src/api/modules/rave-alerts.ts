@@ -28,6 +28,7 @@ export const getAlerts = async (): Promise<Types.Alert[]> => {
     content: items[0].content,
     date: items[0].date,
     type: 'rave',
+    updated: items[0].date,
   };
 
   // Check for the presence of 'all clear' text in the message body
