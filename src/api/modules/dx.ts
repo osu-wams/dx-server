@@ -394,13 +394,14 @@ export const getDxAlerts = async (): Promise<Types.Alert[]> => {
   if (data.length === 0) return [];
 
   /* eslint-disable camelcase */
-  const { field_alert_content, field_alert_type, created, title } = data[0];
+  const { field_alert_content, field_alert_type, created, title, revision_timestamp } = data[0];
   return [
     {
       content: field_alert_content as string,
       title: title as string,
       date: created as Date,
       type: field_alert_type as string,
+      updated: revision_timestamp as Date,
     },
   ];
   /* eslint-enable camelcase */

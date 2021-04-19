@@ -24,6 +24,7 @@ export const alertPresent = {
   response: [
     {
       date: '2018-05-29T18:47:39Z',
+      updated: '2018-05-29T18:47:39Z',
       title: 'Weather closure 10/12',
       link: '',
       pubDate: 'Tue, 10 Dec 2018 18:47:39 GMT',
@@ -31,9 +32,9 @@ export const alertPresent = {
       content: 'Snow causes dangerous road conditions',
       contentSnippet: 'Snow causes dangerous road conditions',
       guid: '',
-      isoDate: '2018-12-10T18:47:39.000Z'
-    }
-  ]
+      isoDate: '2018-12-10T18:47:39.000Z',
+    },
+  ],
 };
 
 export const alertClear: any = {
@@ -54,7 +55,7 @@ export const alertClear: any = {
         </channel>
     </rss>
   `,
-  response: []
+  response: [],
 };
 
 export const dxAlert: any = [
@@ -62,8 +63,9 @@ export const dxAlert: any = [
     title: 'BobRoss',
     date: '2018-05-29T18:47:39+00:00',
     content: 'Lets paint some stuff.',
-    type: 'info'
-  }
+    type: 'info',
+    updated: '2019-08-26T18:03:38+00:00',
+  },
 ];
 
 export const dxAPIAlerts: any = [
@@ -87,10 +89,10 @@ export const dxAPIAlerts: any = [
     path: {
       alias: null,
       pid: null,
-      langcode: 'en'
+      langcode: 'en',
     },
     field_alert_content: 'Lets paint some stuff.',
     field_alert_expiration_date: '2100-08-23T15:26:56-07:00',
-    field_alert_type: 'info'
-  }
+    field_alert_type: 'info',
+  },
 ];
