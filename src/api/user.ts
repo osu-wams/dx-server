@@ -26,23 +26,30 @@ router.get('/', async (req: Request, res: Response) => {
     theme,
     colleges,
   } = req.user.masquerade || req.user;
+
+  const isMasquerade = (req.user.isAdmin && (req.user.masqueradeId ?? 0) > 0) || undefined;
+  const devTools = req.user.devTools || false;
+  const audienceOverride = userAudienceOverride || {};
+  const classification = userClassification || {};
+
   res.send({
-    osuId,
-    firstName,
-    lastName,
-    email,
-    primaryAffiliation,
     affiliations,
-    isAdmin: req.user.isAdmin,
+    audienceOverride,
+    classification,
+    colleges,
+    devTools,
+    email,
+    firstName,
     groups: req.user.groups,
+    isAdmin: req.user.isAdmin,
     isCanvasOptIn: canvasOptIn,
-    audienceOverride: userAudienceOverride || {},
-    classification: userClassification || {},
+    isMasquerade,
+    isMobile: req.session.isMobile,
+    lastName,
+    osuId,
+    primaryAffiliation,
     primaryAffiliationOverride,
     theme,
-    devTools: req.user.devTools || false,
-    colleges,
-    isMobile: req.session.isMobile,
   });
 });
 

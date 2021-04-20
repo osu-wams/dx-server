@@ -1,0 +1,5 @@
+# @name getAlerts
+GET https://www.getrave.com/rss/oregonstate/channel2 HTTP/1.1
+Accept: */*
+
+
