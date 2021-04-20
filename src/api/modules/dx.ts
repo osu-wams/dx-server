@@ -217,14 +217,15 @@ export const getCuratedResources = async (category: string): Promise<Types.Resou
         fields: {
           'entity_subqueue--services': 'items,drupal_internal__name',
           'node--services':
-            'id,title,field_exclude_trending,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations',
+            'id,title,field_exclude_trending,field_icon_name,field_affiliation,field_audience,field_service_category,field_service_synonyms,field_service_url,field_locations,field_it_system',
           'taxonomy_term--categories': 'name',
           'taxonomy_term--audience': 'name',
           'taxonomy_term--affiliation': 'name',
           'taxonomy_term--locations': 'name',
+          'taxonomy_term--it_systems': 'name',
         },
         include:
-          'items,items.field_affiliation,items.field_audience,items.field_service_category,items.field_locations',
+          'items,items.field_affiliation,items.field_audience,items.field_service_category,items.field_locations,items.field_it_system',
       }),
     mockedCuratedResources(category),
   );
