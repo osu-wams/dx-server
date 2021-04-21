@@ -4,7 +4,7 @@ export default [
     title: 'SNAP for OSU Students',
     body:
       '   Supplemental Nutrition Assistance Program (SNAP) can help eligible students afford up to $194 in groceries each month. Find out if you are eligible and where to sign up. ',
-    bg_image: 'https://data-dev.dx.oregonstate.edu/sites/default/files/2019-11/HSRC_Basket.jpg',
+    bg_image: 'https://data.dx.oregonstate.edu/sites/default/files/2019-11/HSRC_Basket.jpg',
     affiliation: ['Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: ['Graduate Student'],
@@ -35,7 +35,7 @@ export default [
     body:
       'Faculty, staff and students play a key role in making our community healthier. Through voluntary testing, TRACE OSU monitors the prevalence of COVID-19 at campuses in Corvallis and Bend and at OSU’s Hatfield Marine Science Center in Newport.',
     bg_image:
-      'https://data-dev.dx.oregonstate.edu/sites/default/files/2020-10/COVID-9285%20%282%29.jpg',
+      'https://data.dx.oregonstate.edu/sites/default/files/2020-10/COVID-9285%20%282%29.jpg',
     affiliation: ['Employee', 'Student'],
     locations: ['Bend', 'Corvallis', 'Ecampus'],
     audiences: [],
