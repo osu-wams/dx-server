@@ -31,6 +31,7 @@ export default {
         'registration',
       ],
       excludeTrending: false,
+      itSystem: 'Canvas',
     },
     {
       id: '1a3f4821-a682-413c-9265-0c75d1d2d948',
@@ -43,6 +44,7 @@ export default {
       categories: ['Academic'],
       synonyms: ['catalog', 'course'],
       excludeTrending: false,
+      itSystem: 'Banner',
     },
   ],
 };

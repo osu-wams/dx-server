@@ -23,6 +23,17 @@
             "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/9d615d11-bc00-4f03-a90c-502103928d30?resourceVersion=id%3A8176"
           }
         },
+        "field_it_system": {
+          "data": null,
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/relationships/field_it_system?resourceVersion=id%3A12556"
+            }
+          }
+        },
         "field_affiliation": [
           {
             "type": "taxonomy_term--affiliation",
@@ -114,6 +125,17 @@
           },
           "self": {
             "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/a4997f74-7ae9-46a0-a180-faac22d229be?resourceVersion=id%3A8171"
+          }
+        },
+        "field_it_system": {
+          "data": null,
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/relationships/field_it_system?resourceVersion=id%3A12556"
+            }
           }
         },
         "field_affiliation": [
@@ -220,6 +242,19 @@
           },
           "self": {
             "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/d12aa441-d7f1-49a2-b7f6-5dd1644db25a?resourceVersion=id%3A8166"
+          }
+        },
+        "field_it_system": {
+          "data": {
+            "name": "Banner"
+          },
+          "links": {
+            "related": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/field_it_system?resourceVersion=id%3A12556"
+            },
+            "self": {
+              "href": "https://data.dx.oregonstate.edu/jsonapi/node/services/fec4e377-8b1c-4894-9bac-b2ebf0d059ac/relationships/field_it_system?resourceVersion=id%3A12556"
+            }
           }
         },
         "field_affiliation": [

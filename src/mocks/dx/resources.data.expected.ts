@@ -28,6 +28,7 @@ export default [
     categories: [],
     synonyms: [],
     excludeTrending: false,
+    itSystem: 'Zoom',
   },
   {
     id: '9a9db419-68d4-400f-9aaa-288fd9fb4cfd',
@@ -52,6 +53,7 @@ export default [
     categories: ['Academic'],
     synonyms: ['classes', 'courses', 'course catalog'],
     excludeTrending: false,
+    itSystem: 'OSU Websites',
   },
   {
     id: 'ac115aaa-3eb6-4cf5-a84c-e53054a55d61',
