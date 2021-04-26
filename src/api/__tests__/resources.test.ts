@@ -288,17 +288,19 @@ describe('/resources', () => {
           mockedSetCache.mockReturnValue(true);
           const response = await request
             .post('/api/resources/favorites')
-            .send({
-              active: true,
-              order: 1,
-              resourceId: 'asdf',
-            })
+            .send([
+              {
+                active: true,
+                order: 1,
+                resourceId: 'asdf',
+              },
+            ])
             .expect(200);
-          expect(response.body.active).toBe(true);
-          expect(response.body.order).toBe(1);
-          expect(response.body.osuId).toBe(111111111);
-          expect(response.body.resourceId).toBe('asdf');
-          expect(response.body.created).not.toBeNull();
+          expect(response.body[0].active).toBe(true);
+          expect(response.body[0].order).toBe(1);
+          expect(response.body[0].osuId).toBe(111111111);
+          expect(response.body[0].resourceId).toBe('asdf');
+          expect(response.body[0].created).not.toBeNull();
         });
 
         it('should return a 500 if an error occurs', async () => {
