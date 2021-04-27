@@ -1,13 +1,10 @@
 {
   "restartable": "rs",
-  "ignore": [".git", "node_modules/**/node_modules", "dist/**"],
+  "ignore": [".git", "node_modules/**/node_modules"],
   "verbose": true,
   "execMap": {
-    "ts": "node --require ts-node/register"
+    "ts": "ts-node"
   },
   "watch": ["src/"],
-  "env": {
-    "NODE_ENV": "localhost"
-  },
   "ext": "js,json,ts"
 }

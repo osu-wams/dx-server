@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [13.x]
+        node-version: [14.x]
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
@@ -27,7 +27,7 @@ jobs:
           GITHUB_NPM_TOKEN: ${{ secrets.GH_NPM_TOKEN }}
       - name: report code coverage
         run: npx codecov@3
-        if: matrix.node-version == '13.x'
+        if: matrix.node-version == '14.x'
         env:
           CI: true
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
