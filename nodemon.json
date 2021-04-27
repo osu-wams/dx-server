@@ -3,7 +3,7 @@
   "ignore": [".git", "node_modules/**/node_modules"],
   "verbose": true,
   "execMap": {
-    "ts": "ts-node"
+    "ts": "ts-node -T"
   },
   "watch": ["src/"],
   "ext": "js,json,ts"

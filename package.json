@@ -5,6 +5,7 @@
   "scripts": {
     "start": "truncate -s 0 logs/localhost.log && cross-env NODE_ENV=localhost nodemon src/index.ts",
     "saml": "truncate -s 0 logs/development.log && cross-env NODE_ENV=development nodemon src/index.ts",
+    "prebuild": "tsc --project . --noEmit",
     "lint": "eslint --ext .js,.ts 'src/**'",
     "lint:fix": "eslint --ext .js,.ts 'src/**' --fix",
     "test": "cross-env NODE_ENV=test USE_MOCKS=0 jest --no-coverage --detectOpenHandles --forceExit",
@@ -83,7 +84,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "yarn lint && yarn test"
+      "pre-push": "yarn prebuild && yarn lint && yarn test"
     }
   }
 }
