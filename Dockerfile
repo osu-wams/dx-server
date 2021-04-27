@@ -34,4 +34,4 @@ ENV NODE_ENV=$NODE_ENV
 ARG APP_VERSION=development
 ENV APP_VERSION=$APP_VERSION
 
-CMD [ "sh", "-c", "ts-node src/index.ts" ]
+CMD [ "sh", "-c", "ts-node -T src/index.ts" ]
