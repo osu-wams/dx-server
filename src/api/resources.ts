@@ -94,7 +94,7 @@ router.get('/favorites', async (req: Request, res: Response) => {
           ? req.user.masqueradeId
           : req.user.osuId;
       const data = await FavoriteResource.findAll(parseInt(osuId.toString(), 10));
-      res.send(data);
+      res.send(data.sort((a, b) => a.order - b.order));
     }
   } catch (err) {
     logger().error(`api/resources/favorites failed: ${err.message}, trace: ${err.stack}`);
@@ -102,26 +102,31 @@ router.get('/favorites', async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * Handles one or more favorite resources
+ */
 router.post('/favorites', async (req: Request, res: Response) => {
   try {
     if (!req.user) {
       logger().debug('api/resources/favorites post had no user session, returning empty response');
       res.status(400).send({});
     } else {
-      const { resourceId, active, order } = req.body;
+      const favorites: { resourceId: string; active: boolean; order: number }[] = req.body;
       const osuId =
         req.user.groups.includes('masquerade') && req.user.masqueradeId
           ? req.user.masqueradeId
           : req.user.osuId;
-
-      const data = await FavoriteResource.upsert({
-        active,
-        created: new Date().toISOString(),
-        order,
-        osuId,
-        resourceId,
-      });
-      res.send(data);
+      const promises = favorites.map(({ active, order, resourceId }) =>
+        FavoriteResource.upsert({
+          active,
+          created: new Date().toISOString(),
+          order,
+          osuId,
+          resourceId,
+        }),
+      );
+      const results = await Promise.all(promises);
+      res.send(results);
     }
   } catch (err) {
     logger().error(`api/resources/favorites failed:`, err);
