@@ -1,15 +1,10 @@
 /* eslint-disable no-console, import/first, global-require */
-if (process.env.NODE_ENV !== 'test' && process.env.NEW_RELIC_LICENSE_KEY) {
-  require('newrelic');
-}
-
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
 import redis from 'connect-redis';
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import {
   APP_VERSION,
   COOKIE_NAME,

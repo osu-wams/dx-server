@@ -1,4 +1,4 @@
-FROM node:13-alpine
+FROM node:14-alpine
 
 # RUN apk add --no-cache yarn
 RUN npm install -g yarn@1.22.4 --force
@@ -18,8 +18,7 @@ ADD ./package.json ./
 ADD ./yarn.lock ./
 ADD ./.npmrc ./
 RUN yarn install
-RUN yarn global add nodemon ts-node typescript pm2
-RUN pm2 install typescript
+RUN yarn global add ts-node typescript
 
 # Now add application files
 ADD . ./
@@ -35,4 +34,4 @@ ENV NODE_ENV=$NODE_ENV
 ARG APP_VERSION=development
 ENV APP_VERSION=$APP_VERSION
 
-CMD [ "sh", "-c", "pm2-runtime start pm2.config.js --env ${NODE_ENV}" ]
+CMD [ "sh", "-c", "ts-node -T src/index.ts" ]
