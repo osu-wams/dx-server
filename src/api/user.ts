@@ -1,13 +1,16 @@
 /**
  * /api/user
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
 import { getClassification } from './modules/osu'; // eslint-disable-line no-unused-vars
 import { User, updateSettings } from './models/user'; // eslint-disable-line no-unused-vars
 import { getUserMessages, markRead } from './modules/dx-mcm';
+import { ENCRYPTION_KEY, JWT_KEY } from '../constants';
+import { issueJWT } from '../utils/auth';
+import { hasRefreshToken } from '../utils/routing';
 
 const router: Router = Router();
 
@@ -167,6 +170,12 @@ router.post('/messages', async (req: Request, res: Response) => {
     logger().error('POST api/user/messages failed:', err);
     res.status(500).send({ message: 'Failed to update user message.' });
   }
+});
+
+router.get('/token', hasRefreshToken, async (req: Request, res: Response) => {
+  const token = await issueJWT(req.user, ENCRYPTION_KEY, JWT_KEY);
+  logger().debug(`api/user/token issuing new JWT for: ${req.user.email}`);
+  res.send({ token });
 });
 
 export default router;

@@ -87,6 +87,9 @@ export interface User {
 
   /** Student found to be related to these college(s) */
   colleges?: string[];
+
+  /** Mobile app Refresh JWT token */
+  mobileRefreshToken?: string;
 }
 interface Users {
   // eslint-disable-next-line no-use-before-define
@@ -140,6 +143,7 @@ const UserEntity = (client?: typeof DocumentClient) =>
       lastLogin: { type: 'string', default: () => new Date().toISOString().slice(0, 10) },
       colleges: { type: 'set', setType: 'string' },
       isAdmin: { type: 'boolean', save: false },
+      mobileRefreshToken: { type: 'string' },
     },
     table: table(client),
     autoExecute: true,
