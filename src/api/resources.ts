@@ -2,6 +2,7 @@
  * /api/resources
  */
 import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib';
 import { getResources, getCuratedResources, getCategories } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';
 import FavoriteResource from './models/favoriteResource';
@@ -111,7 +112,11 @@ router.post('/favorites', async (req: Request, res: Response) => {
       logger().debug('api/resources/favorites post had no user session, returning empty response');
       res.status(400).send({});
     } else {
-      const favorites: { resourceId: string; active: boolean; order: number }[] = req.body;
+      const favorites: Partial<Types.FavoriteResource>[] = Array.isArray(req.body)
+        ? req.body
+        : [req.body];
+
+      if (!favorites.length) throw new Error('No favorites posted');
       const osuId =
         req.user.groups.includes('masquerade') && req.user.masqueradeId
           ? req.user.masqueradeId

@@ -284,7 +284,7 @@ describe('/resources', () => {
           await request.get('/login');
         });
 
-        it('should save a favorite resource', async () => {
+        it('should save a favorite resource array', async () => {
           mockedSetCache.mockReturnValue(true);
           const response = await request
             .post('/api/resources/favorites')
@@ -295,6 +295,23 @@ describe('/resources', () => {
                 resourceId: 'asdf',
               },
             ])
+            .expect(200);
+          expect(response.body[0].active).toBe(true);
+          expect(response.body[0].order).toBe(1);
+          expect(response.body[0].osuId).toBe(111111111);
+          expect(response.body[0].resourceId).toBe('asdf');
+          expect(response.body[0].created).not.toBeNull();
+        });
+
+        it('should save a single favorite resource', async () => {
+          mockedSetCache.mockReturnValue(true);
+          const response = await request
+            .post('/api/resources/favorites')
+            .send({
+              active: true,
+              order: 1,
+              resourceId: 'asdf',
+            })
             .expect(200);
           expect(response.body[0].active).toBe(true);
           expect(response.body[0].order).toBe(1);
