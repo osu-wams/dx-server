@@ -1,6 +1,5 @@
 /* eslint-disable no-console, import/first, global-require */
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
-import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
@@ -28,8 +27,8 @@ const RedisStore = redis(session);
 // App Configuration
 const app: Application = express();
 app.use(expressLogger);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 interface SessionOptions {
