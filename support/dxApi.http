@@ -3,7 +3,7 @@
 
 # @name getAlerts
 GET {{baseUrl}}/jsonapi/node/alerts HTTP/1.1
-  ?fields[node--alerts]=title,created,field_alert_content,field_alert_type
+  ?fields[node--alerts]=title,created,revision_timestamp,field_alert_content,field_alert_type
   &sort=-field_alert_expiration_date
   &filter[status]=1
 

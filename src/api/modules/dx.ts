@@ -389,7 +389,7 @@ export const getDxAlerts = async (): Promise<Types.Alert[]> => {
           status: 1,
         },
         fields: {
-          'node--alerts': 'title,created,field_alert_content,field_alert_type',
+          'node--alerts': 'title,created,revision_timestamp,field_alert_content,field_alert_type',
         },
         sort: '-field_alert_expiration_date',
       }),
