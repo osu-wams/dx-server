@@ -42,21 +42,27 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
 };
 
 /**
- * Express middleware to validate the JWT provided is a refresh token
- * @param req the Express Request
- * @param res the Express Response
- * @param next the Express middleware next function
+ * Express middleware to validate the JWT provided has the required scope
  */
-export const hasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
+export const hasToken = (requiredScope: string) => (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (!req.session.jwtAuth) return next();
   const { authorization } = req.headers;
   if (authorization) {
     const jwt = decrypt(authorization, ENCRYPTION_KEY);
     const { scope } = verifiedJwt(jwt, JWT_KEY);
-    if (scope === 'refresh') {
+    if (scope === requiredScope) {
       return next();
     }
+    logger().error(`hasToken(${requiredScope}) scope failed for request`);
     return res.status(500).send({ error: 'Invalid token scope to access endpoint.' });
   }
+  logger().error(
+    `hasToken(${requiredScope}) missing authorization header on a jwtAuth session, this is a serious problem. jwtAuth shouldn't be detected without an Authorization header.`,
+  );
   return res.status(500).send({ error: 'Missing authorization header.' });
 };
 
@@ -72,6 +78,7 @@ export const setJWTSessionUser = async (req: Request, res: Response, next: NextF
     const jwt = decrypt(authorization, ENCRYPTION_KEY);
     const user = await userFromJWT(jwt, JWT_KEY);
     if (user) {
+      logger().debug(`setJWTSessionUser set user ${user.email} from a valid JWT`);
       req.session.jwtAuth = true;
       req.user = user;
     } else {
@@ -89,7 +96,7 @@ export const setJWTSessionUser = async (req: Request, res: Response, next: NextF
  */
 export const redirectReturnUrl = async (req: Request, res: Response, user: User) => {
   if (req.session.mobileLogin) {
-    logger().debug(`mobileLogin: ${req.session.mobileLogin}, issue JWT refresh token`);
+    logger().debug(`mobileLogin: ${req.session.mobileLogin}, issue new JWT refresh token to user`);
     const token = await issueRefresh(user, ENCRYPTION_KEY, JWT_KEY);
     res.redirect(`${req.session.returnUrl}?token=${token}`);
   } else {

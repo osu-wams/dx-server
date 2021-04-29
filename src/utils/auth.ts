@@ -170,9 +170,8 @@ export const decrypt = (encrypted: string, key: string): string | null => {
  */
 export const userFromJWT = async (token: string, jwtKey: string): Promise<User | undefined> => {
   try {
-    const { email, exp, osuId } = verifiedJwt(token, jwtKey);
-    const validated = await getCache(cacheKey(email, exp), AUTH_DB);
-    if (validated) {
+    const { osuId } = verifiedJwt(token, jwtKey);
+    if (osuId) {
       // TODO: Does it make sense here to instead store the full user record in the JWT and bypass a roundtrip to DDB to find the user?
       return find(osuId);
     }
@@ -198,22 +197,12 @@ export const issueJWT = async (
   try {
     const hourInSec = 60 * 60;
     const iat = Date.now();
-    const exp = Date.now() + hourInSec * 1000;
+    const exp = hourInSec * 1000 + iat;
     const signed = jwt.sign(
       { osuId: user.osuId, email: user.email, iat, exp, scope: 'api' },
       jwtKey,
     );
-    // ! Track more data in the cache, issueAt, lastUsed, etc?
-    const didCache = await setCache(
-      cacheKey(user.email, exp),
-      iat.toString(),
-      { mode: 'EX', duration: hourInSec, flag: 'NX' },
-      AUTH_DB,
-    );
-    if (didCache) {
-      return encrypt(signed, encryptionKey);
-    }
-    return null;
+    return encrypt(signed, encryptionKey);
   } catch (err) {
     logger().error(
       `utils/Auth#issueJWT failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err.stack}`,
@@ -235,12 +224,16 @@ export const issueRefresh = async (
 ): Promise<string | null> => {
   try {
     const iat = Date.now();
-    const exp = Date.now() + 365 * 24 * 60 * 60 * 1000; // a year from now
+    const exp = 365 * 24 * 60 * 60 * 1000 + iat; // a year from now
     const mobileRefreshToken = jwt.sign(
       { osuId: user.osuId, email: user.email, iat, exp, scope: 'refresh' },
       jwtKey,
     );
-    const updatedUser = await upsert({ ...user, mobileRefreshToken });
+    const mobileRefreshTokenHash = crypto
+      .createHash('sha256')
+      .update(mobileRefreshToken)
+      .digest('base64');
+    const updatedUser = await upsert({ ...user, mobileRefreshTokenHash });
     if (updatedUser) {
       return encrypt(mobileRefreshToken, encryptionKey);
     }

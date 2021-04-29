@@ -9,8 +9,11 @@ import FavoriteResource from './models/favoriteResource';
 import logger from '../logger';
 import { getTrendingResources } from './modules/google';
 import { getDaysInDuration, computeTrendingResources } from '../utils/resources';
+import { hasToken } from '../utils/routing';
 
 const router = Router();
+
+router.use(hasToken('api'));
 
 router.get('/', async (req: Request, res: Response) => {
   try {
