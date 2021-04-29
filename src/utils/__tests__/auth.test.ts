@@ -1,5 +1,6 @@
 import parseSamlResult, { encrypt, decrypt, issueJWT, userFromJWT, lastLogin } from '../auth';
 import { ENCRYPTION_KEY, GROUPS, JWT_KEY } from '../../constants';
+import { mockUser as modelMockUser } from '../../api/models/__mocks__/user';
 
 const mockedDone = jest.fn();
 const mockSaml = {
@@ -97,11 +98,6 @@ describe('issueJWT', () => {
     const jwt = await issueJWT(mockUser, undefined, undefined);
     expect(jwt).toBe(null);
   });
-  xit('fails to cache the text', async () => {
-    // TODO: mocking redis return?
-    const jwt = await issueJWT(mockUser, ENCRYPTION_KEY, JWT_KEY);
-    expect(jwt).toBe(null);
-  });
 });
 
 describe('userFromJWT', () => {
@@ -113,15 +109,10 @@ describe('userFromJWT', () => {
   });
   it('gets the user from the JWT', async () => {
     const user = await userFromJWT(jwt, JWT_KEY);
-    expect(user).toMatchObject(mockUser);
+    expect(user.osuId).toBe(modelMockUser.osuId);
   });
   it('fails to get the user with a bad key', async () => {
     jwt = decrypt(encrypted, undefined);
-    expect(await userFromJWT(jwt, undefined)).toBe(null);
-  });
-  xit('fails to find an expected jwt from cache', async () => {
-    // TODO: mocking redis return?
-    jwt = decrypt(encrypted, ENCRYPTION_KEY);
-    expect(await userFromJWT(jwt, JWT_KEY)).toBe(null);
+    expect(await userFromJWT(jwt, undefined)).toBe(undefined);
   });
 });
