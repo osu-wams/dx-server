@@ -122,8 +122,6 @@ const parseSamlResult = (profile: any, done: any) => {
   return done(null, user);
 };
 
-const cacheKey = (email: string, exp: number) => `${exp.toString()}-${email}`;
-
 export const verifiedJwt = (token: string, jwtKey: string): Jwt => jwt.verify(token, jwtKey) as Jwt;
 
 /**
