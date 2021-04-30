@@ -87,6 +87,9 @@ export interface User {
 
   /** Student found to be related to these college(s) */
   colleges?: string[];
+
+  /** Mobile app Refresh JWT token */
+  mobileRefreshTokenHash?: string;
 }
 interface Users {
   // eslint-disable-next-line no-use-before-define
@@ -140,6 +143,7 @@ const UserEntity = (client?: typeof DocumentClient) =>
       lastLogin: { type: 'string', default: () => new Date().toISOString().slice(0, 10) },
       colleges: { type: 'set', setType: 'string' },
       isAdmin: { type: 'boolean', save: false },
+      mobileRefreshTokenHash: { type: 'string' },
     },
     table: table(client),
     autoExecute: true,
@@ -167,7 +171,9 @@ export const find = async (
 ): Promise<User | undefined> => {
   try {
     const result: Users = await UserEntity(client).query(id);
-    return result.Items[0];
+    const user = result.Items[0];
+    logger().debug(`User.find found: ${JSON.stringify(user)}`);
+    return user;
   } catch (err) {
     logger().error(`User.find(${id}) failed:`, err);
     return undefined;
@@ -193,8 +199,8 @@ export const upsert = async (
     if (!u.colleges?.length) {
       u.colleges = undefined;
     }
-    const result: Users = await UserEntity(client).put(u);
-    logger().debug('User.upsert succeeded:', result);
+    await UserEntity(client).put(u);
+    logger().debug('User.upsert succeeded');
     return find(props.osuId);
   } catch (err) {
     logger().error(`User.upsert failed:`, props, err);

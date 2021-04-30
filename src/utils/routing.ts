@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { APP_URL_REGEX, ENCRYPTION_KEY, JWT_KEY } from '../constants';
-import { decrypt, userFromJWT, issueJWT } from './auth';
+import { decrypt, userFromJWT, issueRefresh, verifiedJwt } from './auth';
 import { User } from '../api/models/user';
 
 // Detect if the uri is using a dx-mobile redirect scheme
@@ -42,17 +42,43 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
 };
 
 /**
+ * Express middleware to validate the JWT provided has the required scope
+ */
+export const jwtUserHasToken = (requiredScope: string) => (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  if (!req.session.jwtAuth) return next();
+  const { authorization } = req.headers;
+  if (authorization) {
+    const jwt = decrypt(authorization, ENCRYPTION_KEY);
+    const { scope } = verifiedJwt(jwt, JWT_KEY);
+    if (scope === requiredScope) {
+      return next();
+    }
+    logger().error(`jwtUserHasToken(${requiredScope}) scope failed for request`);
+    return res.status(500).send({ error: 'Invalid token scope to access endpoint.' });
+  }
+  logger().error(
+    `jwtUserHasToken(${requiredScope}) missing authorization header on a jwtAuth session, this is a serious problem. jwtAuth shouldn't be detected without an Authorization header.`,
+  );
+  return res.status(500).send({ error: 'Missing authorization header.' });
+};
+
+/**
  * Express middleware to set the session user if it's been provided by a valid jwt in the authorization header
  * @param req the Express Request
  * @param res the Express Response
  * @param next the Express middleware next function
  */
-export const setJWTSessionUser = async (req: Request, res: Response, next: NextFunction) => {
+export const setJwtUserSession = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
   if (authorization && !req.user) {
     const jwt = decrypt(authorization, ENCRYPTION_KEY);
     const user = await userFromJWT(jwt, JWT_KEY);
     if (user) {
+      logger().debug(`setJwtUserSession set user ${user.email} from a valid JWT`);
       req.session.jwtAuth = true;
       req.user = user;
     } else {
@@ -63,17 +89,18 @@ export const setJWTSessionUser = async (req: Request, res: Response, next: NextF
 };
 
 /**
- * Conditionally set the redirect to include a new jwt token for mobile login flow, otherwise a regular redirect
+ * Conditionally set the redirect to include a new jwt refresh token for mobile login flow, otherwise a regular redirect
  * @param req the Express Request
  * @param res the Express Response
  * @param user the User data
  */
 export const redirectReturnUrl = async (req: Request, res: Response, user: User) => {
-  logger().debug(`redirectReturnUrl mobileLogin: ${req.session.mobileLogin}, redirect`);
   if (req.session.mobileLogin) {
-    const token = await issueJWT(user, ENCRYPTION_KEY, JWT_KEY);
+    logger().debug(`mobileLogin: ${req.session.mobileLogin}, issue new JWT refresh token to user`);
+    const token = await issueRefresh(user, ENCRYPTION_KEY, JWT_KEY);
     res.redirect(`${req.session.returnUrl}?token=${token}`);
   } else {
+    logger().debug(`redirecting to ${req.session.returnUrl}`);
     res.redirect(req.session.returnUrl);
   }
 };

@@ -1,6 +1,5 @@
 /* eslint-disable no-console, import/first, global-require */
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
-import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
@@ -15,7 +14,7 @@ import {
   USE_MOCKS,
 } from './constants';
 import Auth from './auth';
-import { redirectReturnUrl, setSessionReturnUrl, setJWTSessionUser } from './utils/routing';
+import { redirectReturnUrl, setSessionReturnUrl, setJwtUserSession } from './utils/routing';
 import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
@@ -28,8 +27,8 @@ const RedisStore = redis(session);
 // App Configuration
 const app: Application = express();
 app.use(expressLogger);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 interface SessionOptions {
@@ -69,7 +68,7 @@ if (['production', 'stage', 'development', 'preview', 'localhost'].includes(ENV)
 app.use(session(sessionOptions));
 
 // Set JWT Session User prior to sessionLogger to add default logging
-app.use(setJWTSessionUser);
+app.use(setJwtUserSession);
 app.use(sessionLogger);
 
 // Configure Passport

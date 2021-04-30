@@ -2,14 +2,16 @@ import { Request, Response, NextFunction } from 'express'; // eslint-disable-lin
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { User as UserLib } from '@osu-wams/lib';
-import { getCache, AUTH_DB, setCache } from '../api/modules/cache';
 import { ENV, GROUPS, IV_LENGTH } from '../constants';
-import { User } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import { User, find, upsert } from '../api/models/user'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 
 interface Jwt {
-  user: User;
+  email: string;
+  osuId: number;
   iat: number;
+  exp: number;
+  scope: string;
 }
 
 export const lastLogin = (): string => new Date().toISOString().slice(0, 10);
@@ -120,8 +122,6 @@ const parseSamlResult = (profile: any, done: any) => {
   return done(null, user);
 };
 
-const cacheKey = (user: User, iat: number) => `${iat.toString()}-${user.email}`;
-
 export const verifiedJwt = (token: string, jwtKey: string): Jwt => jwt.verify(token, jwtKey) as Jwt;
 
 /**
@@ -165,20 +165,19 @@ export const decrypt = (encrypted: string, key: string): string | null => {
  * @param token the jwt to verify
  * @param jwtKey the key to used when signing the jwt
  */
-export const userFromJWT = async (token: string, jwtKey: string): Promise<User | null> => {
+export const userFromJWT = async (token: string, jwtKey: string): Promise<User | undefined> => {
   try {
-    const verified = verifiedJwt(token, jwtKey);
-    const validated = await getCache(cacheKey(verified.user, verified.iat), AUTH_DB);
-    if (validated) {
-      return verified.user;
+    const { osuId } = verifiedJwt(token, jwtKey);
+    if (osuId) {
+      // TODO: Does it make sense here to instead store the full user record in the JWT and bypass a roundtrip to DDB to find the user?
+      return find(osuId);
     }
-    return null;
   } catch (err) {
     logger().error(
       `utils/Auth#userFromJWT failed to verify the provided token, this is a serious problem that indicates the signing key (JWT_KEY) has been changed and this token is still being used, or that the token was malformed or tampered with. At any rate, this problem needs attention. Error: ${err}`,
     );
-    return null;
   }
+  return undefined;
 };
 
 /**
@@ -193,17 +192,47 @@ export const issueJWT = async (
   jwtKey: string,
 ): Promise<string | null> => {
   try {
+    const hourInSec = 60 * 60;
     const iat = Date.now();
-    const signed = jwt.sign({ user, iat }, jwtKey);
-    // ! Track more data in the cache, issueAt, lastUsed, etc?
-    const didCache = await setCache(
-      cacheKey(user, iat),
-      iat.toString(),
-      { mode: 'EX', duration: 365 * 24 * 60 * 60, flag: 'NX' },
-      AUTH_DB,
+    const exp = hourInSec * 1000 + iat;
+    const signed = jwt.sign(
+      { osuId: user.osuId, email: user.email, iat, exp, scope: 'api' },
+      jwtKey,
     );
-    if (didCache) {
-      return encrypt(signed, encryptionKey);
+    return encrypt(signed, encryptionKey);
+  } catch (err) {
+    logger().error(
+      `utils/Auth#issueJWT failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err.stack}`,
+    );
+    return null;
+  }
+};
+
+/**
+ * Issue a new Refresh JWT token for user or null if there was an error.
+ * @param user the user to create a jwt of
+ * @param encryptionKey the key for encrypting the jwt
+ * @param jwtKey the key for signing the jwt
+ */
+export const issueRefresh = async (
+  user: User,
+  encryptionKey: string,
+  jwtKey: string,
+): Promise<string | null> => {
+  try {
+    const iat = Date.now();
+    const exp = 365 * 24 * 60 * 60 * 1000 + iat; // a year from now
+    const mobileRefreshToken = jwt.sign(
+      { osuId: user.osuId, email: user.email, iat, exp, scope: 'refresh' },
+      jwtKey,
+    );
+    const mobileRefreshTokenHash = crypto
+      .createHash('sha256')
+      .update(mobileRefreshToken)
+      .digest('base64');
+    const updatedUser = await upsert({ ...user, mobileRefreshTokenHash });
+    if (updatedUser) {
+      return encrypt(mobileRefreshToken, encryptionKey);
     }
     return null;
   } catch (err) {
