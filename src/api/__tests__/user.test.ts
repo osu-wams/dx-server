@@ -4,11 +4,12 @@ import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import cache from '@src/api/modules/cache'; // eslint-disable-line no-unused-vars
 import app from '@src/index';
 import User, { UserSettings } from '@src/api/models/user'; // eslint-disable-line no-unused-vars
-import { GROUPS, OSU_API_BASE_URL } from '@src/constants'; // eslint-disable-line no-unused-vars
+import { ENCRYPTION_KEY, GROUPS, JWT_KEY, OSU_API_BASE_URL } from '@src/constants'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '@src/api/modules/__mocks__/cache';
-import { mockDynamoDbUser } from '@src/api/models/__mocks__/user';
+import { mockDynamoDbUser, mockUser } from '@src/api/models/__mocks__/user';
 import { dynamoDbHandler } from '@src/mocks/handlers';
 import { server } from '@src/mocks/server';
+import { issueRefresh } from '@src/utils/auth';
 
 jest.mock('../util.ts', () => ({
   ...jest.requireActual('../util.ts'),
@@ -213,5 +214,18 @@ describe('/api/user', () => {
         .send({ status: 'READ', messageId: mockedUserMessages[0].messageId })
         .expect(500, { message: 'Failed to update user message.' });
     });
+  });
+});
+
+// Do not /login to establish a user session, this test mocks how a mobile app user
+// would be fetching a new JWT token
+describe('get /token', () => {
+  it('fetches a new user JWT token', async () => {
+    const refreshToken = await issueRefresh(mockUser, ENCRYPTION_KEY, JWT_KEY);
+    await request
+      .get('/api/user/token')
+      .set('Authorization', refreshToken)
+      .expect(200)
+      .expect((response) => response.body.token.length > 0);
   });
 });

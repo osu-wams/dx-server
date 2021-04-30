@@ -14,7 +14,7 @@ import {
   USE_MOCKS,
 } from './constants';
 import Auth from './auth';
-import { redirectReturnUrl, setSessionReturnUrl, setJWTSessionUser } from './utils/routing';
+import { redirectReturnUrl, setSessionReturnUrl, setJwtUserSession } from './utils/routing';
 import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
@@ -68,7 +68,7 @@ if (['production', 'stage', 'development', 'preview', 'localhost'].includes(ENV)
 app.use(session(sessionOptions));
 
 // Set JWT Session User prior to sessionLogger to add default logging
-app.use(setJWTSessionUser);
+app.use(setJwtUserSession);
 app.use(sessionLogger);
 
 // Configure Passport

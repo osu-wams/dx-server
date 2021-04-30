@@ -44,7 +44,7 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
 /**
  * Express middleware to validate the JWT provided has the required scope
  */
-export const hasToken = (requiredScope: string) => (
+export const jwtUserHasToken = (requiredScope: string) => (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -57,11 +57,11 @@ export const hasToken = (requiredScope: string) => (
     if (scope === requiredScope) {
       return next();
     }
-    logger().error(`hasToken(${requiredScope}) scope failed for request`);
+    logger().error(`jwtUserHasToken(${requiredScope}) scope failed for request`);
     return res.status(500).send({ error: 'Invalid token scope to access endpoint.' });
   }
   logger().error(
-    `hasToken(${requiredScope}) missing authorization header on a jwtAuth session, this is a serious problem. jwtAuth shouldn't be detected without an Authorization header.`,
+    `jwtUserHasToken(${requiredScope}) missing authorization header on a jwtAuth session, this is a serious problem. jwtAuth shouldn't be detected without an Authorization header.`,
   );
   return res.status(500).send({ error: 'Missing authorization header.' });
 };
@@ -72,13 +72,13 @@ export const hasToken = (requiredScope: string) => (
  * @param res the Express Response
  * @param next the Express middleware next function
  */
-export const setJWTSessionUser = async (req: Request, res: Response, next: NextFunction) => {
+export const setJwtUserSession = async (req: Request, res: Response, next: NextFunction) => {
   const { authorization } = req.headers;
   if (authorization && !req.user) {
     const jwt = decrypt(authorization, ENCRYPTION_KEY);
     const user = await userFromJWT(jwt, JWT_KEY);
     if (user) {
-      logger().debug(`setJWTSessionUser set user ${user.email} from a valid JWT`);
+      logger().debug(`setJwtUserSession set user ${user.email} from a valid JWT`);
       req.session.jwtAuth = true;
       req.user = user;
     } else {

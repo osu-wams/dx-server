@@ -19,11 +19,13 @@ import CardsRouter from './cards';
 import PeopleRouter from './people';
 import LocationsRouter from './locations';
 import SearchIndexRouter from './searchIndex';
+import { jwtUserHasToken } from '../utils/routing';
 
 const router = Router();
 
-router.use('/admin', Auth.ensureAdmin, AdminRouter);
 router.use('/user', Auth.ensureAuthenticated, UserRouter);
+router.use(jwtUserHasToken('api'));
+router.use('/admin', Auth.ensureAdmin, AdminRouter);
 router.use('/masquerade', Auth.ensureAdmin, MasqueradeRouter);
 router.use('/student', Auth.ensureAuthenticated, StudentRouter);
 router.use('/persons', Auth.ensureAuthenticated, PersonsRouter);
@@ -41,6 +43,5 @@ router.use('/cards', CardsRouter);
 router.use('/people', PeopleRouter);
 router.use('/locations', LocationsRouter);
 router.use('/searchIndex', SearchIndexRouter);
-
 
 export default router;
