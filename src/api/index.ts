@@ -22,8 +22,9 @@ import SearchIndexRouter from './searchIndex';
 import { jwtUserHasToken } from '../utils/routing';
 
 const router = Router();
-
+// User API contains an endpoint requiring a 'refresh' scoped token, and others requiring 'api' scoped token
 router.use('/user', Auth.ensureAuthenticated, UserRouter);
+// All following endpoints should just require an 'api' scoped token
 router.use(jwtUserHasToken('api'));
 router.use('/admin', Auth.ensureAdmin, AdminRouter);
 router.use('/masquerade', Auth.ensureAdmin, MasqueradeRouter);
