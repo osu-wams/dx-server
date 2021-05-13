@@ -1,9 +1,7 @@
 import request from 'node-fetch';
-import config from 'config';
 import logger from '../../logger';
 import cache from './cache';
-
-export const MS_TEAMS_URL: string = config.get('msTeamsHook');
+import { MS_TEAMS_URL } from '../../constants';
 
 interface Facts {
   name: string;
@@ -15,7 +13,25 @@ interface Config {
   errThreshold: number;
 }
 
-export const createTeamsPayload = (title: string, subtitle?: string, facts?: Facts[]) => {
+interface TeamsPayload {
+  '@type': string;
+  '@context': string;
+  themeColor: string;
+  summary: string;
+  sections: {
+    activityTitle: string;
+    activitySubtitle?: string;
+    activityImage: string;
+    facts: Facts[];
+    markdown: boolean;
+  }[];
+}
+
+export const createTeamsPayload = (
+  title: string,
+  subtitle?: string,
+  facts?: Facts[],
+): TeamsPayload => {
   return {
     '@type': 'MessageCard',
     '@context': 'http://schema.org/extensions',
@@ -33,8 +49,10 @@ export const createTeamsPayload = (title: string, subtitle?: string, facts?: Fac
   };
 };
 
-const postTeamsMessage = async (url: string, payload: Object): Promise<boolean> => {
+const postTeamsMessage = async (url: string, payload: TeamsPayload): Promise<boolean> => {
   try {
+    if (!url) return false; // Do not attempt to post a message if the url hasn't been set
+
     logger().debug(`MS Teams API POST request url:${url}`);
     const response = await request(url, {
       method: 'post',
@@ -56,7 +74,7 @@ const postTeamsMessage = async (url: string, payload: Object): Promise<boolean> 
   }
 };
 
-export const sendTeamsMessage = async (payload: Object): Promise<boolean> =>
+export const sendTeamsMessage = async (payload: TeamsPayload): Promise<boolean> =>
   postTeamsMessage(MS_TEAMS_URL, payload);
 
 export const computeHasExpired = (time, cacheData, configLocal) => {
