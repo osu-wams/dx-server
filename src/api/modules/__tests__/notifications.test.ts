@@ -1,11 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import nock from 'nock';
-import config from 'config';
-
 import { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing } from '../notifications';
-
-export const MS_TEAMS_URL: string = config.get('msTeamsHook');
 
 const mockedGetAsync = jest.fn();
 const mockedSetAsync = jest.fn();

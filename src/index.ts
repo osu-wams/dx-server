@@ -1,9 +1,10 @@
 /* eslint-disable no-console, import/first, global-require */
+import redis from 'redis';
 import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
-import redis from 'connect-redis';
+import connectRedis from 'connect-redis';
 import {
   APP_VERSION,
   COOKIE_NAME,
@@ -21,7 +22,7 @@ import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
 import { User, isStudent } from './api/models/user'; // eslint-disable-line no-unused-vars
 
-const RedisStore = redis(session);
+const RedisStore = connectRedis(session);
 // const ENV = config.get('env');
 
 // App Configuration
@@ -41,7 +42,7 @@ interface SessionOptions {
     httpOnly: boolean;
     maxAge: number;
   };
-  store?: redis.RedisStore;
+  store?: connectRedis.RedisStore;
 }
 // Configure Sessions
 const sessionOptions: SessionOptions = {
@@ -58,10 +59,12 @@ const sessionOptions: SessionOptions = {
 
 if (['production', 'stage', 'development', 'preview', 'localhost'].includes(ENV)) {
   console.log(`Server started with ENV=${ENV}, VERSION=${APP_VERSION}`);
-  sessionOptions.store = new RedisStore({
+  const redisClient = redis.createClient({
     host: REDIS_HOST,
     port: REDIS_PORT,
-    logErrors: true,
+  });
+  sessionOptions.store = new RedisStore({
+    client: redisClient,
   });
 }
 

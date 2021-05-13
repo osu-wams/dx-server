@@ -23,8 +23,6 @@ const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
 const DYNAMODB_TABLE_PREFIX: string = config.get('aws.dynamodb.tablePrefix');
 const DX_MCM_BASE_URL: string = config.get('dxMcmApi.baseUrl');
 const DX_MCM_CACHE_SEC = parseInt(config.get('dxMcmApi.cacheEndpointSec'), 10);
-const OSU_ERROR_SEC_THRESH = parseInt(config.get('osuApi.thresholdErrorSeconds'), 10);
-const OSU_ERROR_OCCUR_THRESH = parseInt(config.get('osuApi.thresholdErrorOccurrence'), 10);
 const DX_MCM_DASHBOARD_CHANNEL = 'dashboard';
 const DX_MCM_TOKEN: string = config.get('dxMcmApi.token');
 const ENCRYPTION_KEY: string = config.get('encryptionKey');
@@ -46,11 +44,14 @@ const LOCALIST_CAMPUS_IDS = JSON.parse(config.get('localist.campusIds'));
 const LOCALIST_EVENT_TYPES = JSON.parse(config.get('localist.eventTypes'));
 const LOCALIST_EVENT_DAYS_AGO = parseInt(config.get('localist.eventDaysAgo'), 10);
 const LOCALIST_EVENT_DX_QUERY: string = config.get('localist.eventDxQuery');
+const MS_TEAMS_URL: string = config.get('msTeamsHook');
 const OSU_API_BASE_URL: string = config.get('osuApi.baseUrl');
 const OSU_API_CACHE_SEC: number = parseInt(config.get('osuApi.cacheEndpointSec'), 10);
 const OSU_API_LONG_CACHE_SEC: number = parseInt(config.get('osuApi.longCacheEndpointSec'), 10);
 const OSU_API_CLIENT_ID: string = config.get('osuApi.clientId');
 const OSU_API_CLIENT_SECRET: string = config.get('osuApi.clientSecret');
+const OSU_ERROR_SEC_THRESH = parseInt(config.get('osuApi.thresholdErrorSeconds'), 10);
+const OSU_ERROR_OCCUR_THRESH = parseInt(config.get('osuApi.thresholdErrorOccurrence'), 10);
 const REDIS_HOST: string = config.get('redis.host');
 const REDIS_PORT: number = parseInt(config.get('redis.port'), 10);
 const SAML_CALLBACK_URL: string = config.get('saml.callbackUrl');
@@ -116,6 +117,7 @@ export {
   LOCALIST_EVENT_DAYS_AGO,
   LOCALIST_EVENT_DX_QUERY,
   LOCALIST_EVENT_TYPES,
+  MS_TEAMS_URL,
   OSU_API_BASE_URL,
   OSU_API_CACHE_SEC,
   OSU_API_CLIENT_ID,

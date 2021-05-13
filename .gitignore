@@ -15,3 +15,4 @@ docker-compose.override.yml
 newrelic_agent.log
 .yalc/
 yalc.lock
+ts-jest.log
