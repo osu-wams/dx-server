@@ -44,27 +44,24 @@ export const setSessionReturnUrl = (req: Request, res: Response, next: NextFunct
 /**
  * Express middleware to validate the JWT provided has the required scope
  */
-export const jwtUserHasToken = (requiredScope: string) => (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  if (!req.session.jwtAuth) return next();
-  const { authorization } = req.headers;
-  if (authorization) {
-    const jwt = decrypt(authorization, ENCRYPTION_KEY);
-    const { scope } = verifiedJwt(jwt, JWT_KEY);
-    if (scope === requiredScope) {
-      return next();
+export const jwtUserHasToken =
+  (requiredScope: string) => (req: Request, res: Response, next: NextFunction) => {
+    if (!req.session.jwtAuth) return next();
+    const { authorization } = req.headers;
+    if (authorization) {
+      const jwt = decrypt(authorization, ENCRYPTION_KEY);
+      const { scope } = verifiedJwt(jwt, JWT_KEY);
+      if (scope === requiredScope) {
+        return next();
+      }
+      logger().error(`jwtUserHasToken(${requiredScope}) scope failed for request`);
+      return res.status(401).send({ error: 'Invalid token scope to access endpoint.' });
     }
-    logger().error(`jwtUserHasToken(${requiredScope}) scope failed for request`);
-    return res.status(500).send({ error: 'Invalid token scope to access endpoint.' });
-  }
-  logger().error(
-    `jwtUserHasToken(${requiredScope}) missing authorization header on a jwtAuth session, this is a serious problem. jwtAuth shouldn't be detected without an Authorization header.`,
-  );
-  return res.status(500).send({ error: 'Missing authorization header.' });
-};
+    logger().error(
+      `jwtUserHasToken(${requiredScope}) missing authorization header on a jwtAuth session, this is a serious problem. jwtAuth shouldn't be detected without an Authorization header.`,
+    );
+    return res.status(401).send({ error: 'Missing authorization header.' });
+  };
 
 /**
  * Express middleware to set the session user if it's been provided by a valid jwt in the authorization header
