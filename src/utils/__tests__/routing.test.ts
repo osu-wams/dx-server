@@ -157,7 +157,7 @@ describe('jwtUserHasToken', () => {
     mockedStatus.mockReturnValue(mockResponse());
     jwtUserHasToken('refresh')(mockRequest(), mockResponse(), mockNext);
     expect(mockNext).not.toBeCalled();
-    expect(mockedStatus).toBeCalledWith(500);
+    expect(mockedStatus).toBeCalledWith(401);
     expect(mockedSend).toBeCalledWith({ error: 'Invalid token scope to access endpoint.' });
   });
   it('returns error when no authorization header exists', async () => {
@@ -166,7 +166,7 @@ describe('jwtUserHasToken', () => {
     mockedStatus.mockReturnValue(mockResponse());
     jwtUserHasToken('api')(mockRequest(), mockResponse(), mockNext);
     expect(mockNext).not.toBeCalled();
-    expect(mockedStatus).toBeCalledWith(500);
+    expect(mockedStatus).toBeCalledWith(401);
     expect(mockedSend).toBeCalledWith({ error: 'Missing authorization header.' });
   });
 });

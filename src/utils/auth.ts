@@ -237,7 +237,7 @@ export const issueRefresh = async (
     return null;
   } catch (err) {
     logger().error(
-      `utils/Auth#issueJWT failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err.stack}`,
+      `utils/Auth#issueRefresh failed to sign and encrypt the User as a JWT, this is a serious problem that needs to be addressed. Error: ${err.stack}`,
     );
     return null;
   }
