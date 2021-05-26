@@ -507,7 +507,12 @@ describe('/api/student', () => {
       await request
         .get('/api/student/holds')
         .expect(200, [
-          { description: 'Permanent Hold', toDate: '2199-01-01', fromDate: '2021-12-05' },
+          {
+            description: 'Permanent Hold',
+            reason: 'got to pay',
+            toDate: '2199-01-01',
+            fromDate: '2021-12-05',
+          },
         ]);
     });
 
