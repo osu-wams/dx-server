@@ -325,6 +325,7 @@ interface Hold {
   toDate: string;
   fromDate: string;
   description: string;
+  reason: string;
   webDisplay: boolean;
 }
 interface HoldsResponse {
@@ -356,9 +357,10 @@ export const getHolds = async (user: any): Promise<[{ description: string }] | [
     if (currentHolds.length === 0) return [];
     return currentHolds.map((h) => ({
       description: h.description,
+      reason: h.reason,
       toDate: h.toDate,
       fromDate: h.fromDate,
-    })) as [{ description: string; toDate: string; fromDate: string }];
+    })) as [{ description: string; reason: string; toDate: string; fromDate: string }];
   }
   return [];
 };
