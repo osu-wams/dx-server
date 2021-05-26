@@ -325,7 +325,7 @@ interface Hold {
   toDate: string;
   fromDate: string;
   description: string;
-  reason: string;
+  reason: string | null;
   webDisplay: boolean;
 }
 interface HoldsResponse {
