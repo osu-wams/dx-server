@@ -3,6 +3,8 @@ import redis from 'redis';
 import config from 'config';
 import { promisify } from 'util';
 import logger from '../../logger';
+import { cacheFailureOrPing } from './notifications';
+import { CACHED_API_ERROR_THRESHOLD_COUNT, CACHED_API_ERROR_THRESHOLD_SEC } from '../../constants';
 
 const DEFAULT_DB: number = 1;
 export const AUTH_DB: number = 2;
@@ -77,8 +79,23 @@ const requestRetry = async (
       },
     });
   } catch (err) {
-    if (!conditions.codes.includes(err.response.status)) throw err;
-    if (conditions.times < 1) throw err;
+    const expiredCert = err.code === 'CERT_HAS_EXPIRED';
+    if (expiredCert) {
+      logger().error(
+        `cache.request url:${url}, failed because its SSL certificate has expired, escalate to proper system admin for repair.`,
+      );
+    }
+    if (
+      (conditions.codes.length && !conditions.codes.includes(err.response?.status)) ||
+      conditions.times < 1 ||
+      expiredCert
+    ) {
+      await cacheFailureOrPing(err, `cache.ts_request_${url}`, {
+        timeThreshold: CACHED_API_ERROR_THRESHOLD_SEC,
+        errThreshold: CACHED_API_ERROR_THRESHOLD_COUNT,
+      });
+      throw err;
+    }
     logger().debug(
       `cache.requestRetry retrying times:${conditions.times}, status:${err.response.status}, url:${url}, options:${options}`,
     );
