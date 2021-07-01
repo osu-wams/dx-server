@@ -3,7 +3,6 @@ import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import { DX_MCM_BASE_URL } from '../../../constants';
 import { getUserMessages, markRead, findByChannelPath, markReadPath } from '../dx-mcm';
 import cache from '../cache'; // eslint-disable-line no-unused-vars
-import logger from '../../../logger';
 
 const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
@@ -75,7 +74,6 @@ describe('DX Multi-Channel Message Module', () => {
       try {
         await markRead(osuId, onid, messageId);
       } catch (error) {
-        logger().debug(error);
         expect(error.response).toStrictEqual({
           body: 'boom',
           status: 500,
