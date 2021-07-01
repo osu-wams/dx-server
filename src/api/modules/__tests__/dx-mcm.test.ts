@@ -32,7 +32,7 @@ describe('DX Multi-Channel Message Module', () => {
     });
 
     it('catches an error response', async () => {
-      nock(DX_MCM_BASE_URL).get(findByChannelPath(osuId, onid)).reply(500, 'boom');
+      nock(DX_MCM_BASE_URL).get(findByChannelPath(osuId, onid)).times(2).reply(500, 'boom');
       try {
         await getUserMessages(osuId, onid);
       } catch (error) {
@@ -70,7 +70,7 @@ describe('DX Multi-Channel Message Module', () => {
     });
 
     it('catches an error response', async () => {
-      nock(DX_MCM_BASE_URL).get(markReadPath(osuId, onid, messageId)).reply(500, 'boom');
+      nock(DX_MCM_BASE_URL).get(markReadPath(osuId, onid, messageId)).times(2).reply(500, 'boom');
       try {
         await markRead(osuId, onid, messageId);
       } catch (error) {

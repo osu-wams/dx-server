@@ -14,6 +14,15 @@ export default {
    ** eg. '[{"key":"somekey", "isAdmin": true}]'
    */
   apiKeys: '',
+  /**
+   * All cached external API endpoints flow through cache.ts, the following
+   * configuration defines the rate at which to alert when there are failures
+   * accessing and caching results from these APIs.
+   * Example rate:
+   * {cachedApiErrorThresholdCount} per {cachedApiErrorThresholdSec} will send a notification
+   */
+  cachedApiErrorThresholdSec: '300',
+  cachedApiErrorThresholdCount: '50',
   google: {
     cacheEndpointSec: '604800',
     analyticsViewId: '',

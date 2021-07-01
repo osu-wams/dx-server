@@ -1,7 +1,7 @@
 import request from 'node-fetch';
 import logger from '../../logger';
 import cache from './cache';
-import { MS_TEAMS_URL } from '../../constants';
+import { ENV, MS_TEAMS_URL } from '../../constants';
 
 interface Facts {
   name: string;
@@ -52,6 +52,7 @@ export const createTeamsPayload = (
 const postTeamsMessage = async (url: string, payload: TeamsPayload): Promise<boolean> => {
   try {
     if (!url) return false; // Do not attempt to post a message if the url hasn't been set
+    if (ENV === 'test') return false; // Do not attempt to post a message during test
 
     logger().debug(`MS Teams API POST request url:${url}`);
     const response = await request(url, {

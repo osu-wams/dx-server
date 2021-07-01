@@ -1,6 +1,13 @@
 import request from 'node-fetch'; // eslint-disable-line no-unused-vars
-import { USE_MOCKS, OSU_API_CLIENT_ID, OSU_API_CLIENT_SECRET } from '../constants';
+import {
+  USE_MOCKS,
+  OSU_API_CLIENT_ID,
+  OSU_API_CLIENT_SECRET,
+  CACHED_API_ERROR_THRESHOLD_COUNT,
+  CACHED_API_ERROR_THRESHOLD_SEC,
+} from '../constants';
 import { asyncTimedFunction } from '../tracer';
+import { cacheFailureOrPing } from './modules/notifications';
 
 export const getToken = async (): Promise<string> => {
   const params = new URLSearchParams({
@@ -33,11 +40,22 @@ export const getToken = async (): Promise<string> => {
  * @param fn the function to run when not using mocked data
  * @param mockData the mocked data to return when using mocks
  */
-export const fetchData = async (fn: Function, mockData?: any) => {
+export const fetchData = async (cacheKey: string, fn: Function, mockData?: any) => {
   if (USE_MOCKS && mockData !== undefined) {
     return mockData;
   }
-  return fn();
+  try {
+    const result = await fn();
+    return result;
+  } catch (err) {
+    if (cacheKey) {
+      await cacheFailureOrPing(err, `ALERTS-${cacheKey}`, {
+        errThreshold: CACHED_API_ERROR_THRESHOLD_COUNT,
+        timeThreshold: CACHED_API_ERROR_THRESHOLD_SEC,
+      });
+    }
+    throw err;
+  }
 };
 
 /**

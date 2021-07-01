@@ -77,8 +77,19 @@ const requestRetry = async (
       },
     });
   } catch (err) {
-    if (!conditions.codes.includes(err.response.status)) throw err;
-    if (conditions.times < 1) throw err;
+    const expiredCert = err.code === 'CERT_HAS_EXPIRED';
+    if (expiredCert) {
+      logger().error(
+        `cache.request url:${url}, failed because its SSL certificate has expired, escalate to proper system admin for repair.`,
+      );
+    }
+    if (
+      (conditions.codes.length && !conditions.codes.includes(err.response?.status)) ||
+      conditions.times < 1 ||
+      expiredCert
+    ) {
+      throw err;
+    }
     logger().debug(
       `cache.requestRetry retrying times:${conditions.times}, status:${err.response.status}, url:${url}, options:${options}`,
     );

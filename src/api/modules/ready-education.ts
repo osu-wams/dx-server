@@ -44,5 +44,5 @@ const getRequest = async <T>(url: string): Promise<T> => {
  */
 export const getUser = async (user_token: string): Promise<ReadyEducationStudent> => {
   const url = `${BASE_URL}/public/v1/user/?user_token=${user_token}`;
-  return fetchData(() => getRequest(url), mockedStudent);
+  return fetchData(url, () => getRequest(url), mockedStudent);
 };

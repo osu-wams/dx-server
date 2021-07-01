@@ -47,6 +47,7 @@ export const getUserMessages = async (
   const {
     userMessageResults: { items, lastKey },
   }: UserMessageApiResponse = await fetchData(
+    url,
     () =>
       cache.get(url, { json: true, headers: authHeader() }, true, {
         key: url,
@@ -70,6 +71,7 @@ export const markRead = async (
   const url = markReadUrl(osuId, onid, messageId);
 
   const { userMessage, message }: UserMessageApiResponse = await fetchData(
+    url,
     () =>
       cache.get(url, { json: true, headers: authHeader() }, true, {
         key: url,

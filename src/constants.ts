@@ -9,6 +9,14 @@ const API_KEYS: ApiKey[] = JSON.parse(config.get('apiKeys'));
 const APP_URL_REGEX = RegExp(/^https?:\/\/(\w*.)?my\.oregonstate\.edu\/.*/);
 const APP_VERSION: string = config.get('appVersion');
 const AWS_REGION: string = config.get('aws.region');
+const CACHED_API_ERROR_THRESHOLD_COUNT: number = parseInt(
+  config.get('cachedApiErrorThresholdCount'),
+  10,
+);
+const CACHED_API_ERROR_THRESHOLD_SEC: number = parseInt(
+  config.get('cachedApiErrorThresholdSec'),
+  10,
+);
 const CANVAS_OAUTH_AUTH_URL: string = config.get('canvasOauth.authUrl');
 const CANVAS_OAUTH_BASE_URL: string = config.get('canvasOauth.baseUrl');
 const CANVAS_OAUTH_CALLBACK_URL: string = config.get('canvasOauth.callbackUrl');
@@ -84,6 +92,8 @@ export {
   APP_URL_REGEX,
   APP_VERSION,
   AWS_REGION,
+  CACHED_API_ERROR_THRESHOLD_COUNT,
+  CACHED_API_ERROR_THRESHOLD_SEC,
   CANVAS_OAUTH_AUTH_URL,
   CANVAS_OAUTH_BASE_URL,
   CANVAS_OAUTH_CALLBACK_URL,

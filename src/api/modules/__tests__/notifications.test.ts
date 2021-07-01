@@ -95,10 +95,6 @@ describe('Notifications module', () => {
   });
 
   describe('Tests for MS Teams Webhook', () => {
-    it('should send message to teams', async () => {
-      const result = await sendTeamsMessage(teamsPayload);
-      expect(result).toBeTruthy();
-    });
     it('should throw error upon message teams failure', async () => {
       nock('https://outlook.office.com')
         .filteringPath(() => '/')

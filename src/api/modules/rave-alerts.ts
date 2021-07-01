@@ -15,6 +15,7 @@ const CACHE_SEC = parseInt(config.get('raveApi.cacheEndpointSec'), 10);
 export const getAlerts = async (): Promise<Types.Alert[]> => {
   // Rave alerts come as an RSS feed, always containing a single item.
   const xml = await fetchData(
+    BASE_URL,
     () =>
       cache.get(BASE_URL, {}, true, {
         key: BASE_URL,
