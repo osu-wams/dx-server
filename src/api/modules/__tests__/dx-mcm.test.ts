@@ -3,6 +3,7 @@ import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import { DX_MCM_BASE_URL } from '../../../constants';
 import { getUserMessages, markRead, findByChannelPath, markReadPath } from '../dx-mcm';
 import cache from '../cache'; // eslint-disable-line no-unused-vars
+import logger from '../../../logger';
 
 const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
@@ -32,7 +33,7 @@ describe('DX Multi-Channel Message Module', () => {
     });
 
     it('catches an error response', async () => {
-      nock(DX_MCM_BASE_URL).get(findByChannelPath(osuId, onid)).reply(500, 'boom');
+      nock(DX_MCM_BASE_URL).get(findByChannelPath(osuId, onid)).times(2).reply(500, 'boom');
       try {
         await getUserMessages(osuId, onid);
       } catch (error) {
@@ -70,10 +71,11 @@ describe('DX Multi-Channel Message Module', () => {
     });
 
     it('catches an error response', async () => {
-      nock(DX_MCM_BASE_URL).get(markReadPath(osuId, onid, messageId)).reply(500, 'boom');
+      nock(DX_MCM_BASE_URL).get(markReadPath(osuId, onid, messageId)).times(2).reply(500, 'boom');
       try {
         await markRead(osuId, onid, messageId);
       } catch (error) {
+        logger().debug(error);
         expect(error.response).toStrictEqual({
           body: 'boom',
           status: 500,

@@ -156,6 +156,7 @@ const retrieveData = async (url: string, kitsuOpts: any, cacheSec?: number): Pro
  */
 export const getAnnouncements = async (): Promise<IAnnouncementResult[]> => {
   const data = await fetchData(
+    'node/announcement',
     () =>
       retrieveData('node/announcement', {
         fields: {
@@ -201,6 +202,7 @@ export const getResources = async (): Promise<Types.Resource[]> => {
     },
   };
   const data = await fetchData(
+    'node/services',
     () => retrieveData('node/services', opts, LONG_CACHE_SEC),
     mockedResources,
   );
@@ -212,6 +214,7 @@ export const getResources = async (): Promise<Types.Resource[]> => {
  */
 export const getCuratedResources = async (category: string): Promise<Types.ResourceEntityQueue> => {
   const data = await fetchData(
+    `entity_subqueue/${category}`,
     () =>
       retrieveData(`entity_subqueue/${category}`, {
         fields: {
@@ -253,6 +256,7 @@ export const getCuratedResources = async (category: string): Promise<Types.Resou
  */
 export const getCategories = async (): Promise<Types.Category[]> => {
   const data = await fetchData(
+    'taxonomy_term/categories',
     () =>
       retrieveData('taxonomy_term/categories', {
         fields: {
@@ -290,6 +294,7 @@ export const getCategories = async (): Promise<Types.Category[]> => {
  */
 export const getInfo = async (): Promise<IInfoResult[]> => {
   const data = await fetchData(
+    'node_information',
     () =>
       retrieveData('node/information', {
         fields: {
@@ -316,6 +321,7 @@ export const getInfo = async (): Promise<IInfoResult[]> => {
 
 export const getPageContent = async (pageTitle: string): Promise<IPageContent> => {
   const data = await fetchData(
+    'node_dashboard_content',
     () =>
       retrieveData('node/dashboard_content', {
         fields: {
@@ -345,6 +351,7 @@ export const getPageContent = async (pageTitle: string): Promise<IPageContent> =
 
 export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
   const data = await fetchData(
+    'node_release_notes',
     () =>
       retrieveData('node/release_notes', {
         fields: {
@@ -376,6 +383,7 @@ export const getReleaseNotes = async (): Promise<IReleaseNotes> => {
 export const getDxAlerts = async (): Promise<Types.Alert[]> => {
   // TODO: Round the time up to the next 30 sec interval
   const data = await fetchData(
+    'node/alerts',
     () =>
       retrieveData('node/alerts', {
         filter: {
@@ -416,6 +424,7 @@ export const getDxAlerts = async (): Promise<Types.Alert[]> => {
  */
 export const getTrainings = async (): Promise<Types.Training[]> => {
   const data = await fetchData(
+    'node/trainings',
     () =>
       retrieveData('node/trainings', {
         fields: {
@@ -468,6 +477,7 @@ export const getTrainings = async (): Promise<Types.Training[]> => {
  */
 export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
   const data = await fetchData(
+    'taxonomy_term/training_tags',
     () =>
       retrieveData('taxonomy_term/training_tags', {
         fields: {
@@ -492,6 +502,7 @@ export const getTrainingTags = async (): Promise<Types.TrainingTag[]> => {
  */
 export const getTrainingAudiences = async (): Promise<Types.TrainingAudience[]> => {
   const data = await fetchData(
+    'taxonomy_term/training_audience',
     () =>
       retrieveData('taxonomy_term/training_audience', {
         fields: {
@@ -561,6 +572,7 @@ export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
     },
   };
   const data = await fetchData(
+    'node/content_card',
     () => retrieveData('node/content_card', opts, LONG_CACHE_SEC),
     mockedCards,
   );
@@ -573,6 +585,7 @@ export const getCardContent = async (): Promise<Types.DynamicCard[]> => {
  */
 export const getSearchIndexPages = async (): Promise<any> => {
   const data = await fetchData(
+    'node/page_index',
     () =>
       retrieveData('node/page_index', {
         fields: {

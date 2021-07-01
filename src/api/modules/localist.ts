@@ -91,6 +91,7 @@ const mappedEvents = (events: ILocalistEvent[]): Types.LocalistEvent[] => {
 export const getEvents = async (): Promise<Types.LocalistEvent[]> => {
   const url = `${LOCALIST_BASE_URL}/events/search?search=${LOCALIST_EVENT_DX_QUERY}&days=${LOCALIST_EVENT_DAYS_AGO}`;
   const data: ILocalistEvents = await fetchData(
+    url,
     () =>
       cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
         key: url,
@@ -109,6 +110,7 @@ export const getEvents = async (): Promise<Types.LocalistEvent[]> => {
 export const getCampusEvents = async (campus: string): Promise<Types.LocalistEvent[]> => {
   const url = `${LOCALIST_BASE_URL}/events?campus_id=${LOCALIST_CAMPUS_IDS[campus]}&days=${LOCALIST_EVENT_DAYS_AGO}`;
   const data: ILocalistEvents = await fetchData(
+    url,
     () =>
       cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
         key: url,
@@ -127,6 +129,7 @@ export const getAcademicCalendarEvents = async (): Promise<Types.AcademicEvent[]
   // Note: Getting academic calendar items via RSS as a workaround due to
   //       unlisted/restricted events not being visible via API.
   const xml = await fetchData(
+    LOCALIST_ACADEMIC_CALENDAR_URL,
     () =>
       cache.get(LOCALIST_ACADEMIC_CALENDAR_URL, {}, true, {
         key: LOCALIST_ACADEMIC_CALENDAR_URL,
@@ -146,6 +149,7 @@ export const getAcademicCalendarEvents = async (): Promise<Types.AcademicEvent[]
 export const getEmployeeEvents = async (): Promise<Types.LocalistEvent[]> => {
   const url = `${LOCALIST_BASE_URL}/events?type[]=${LOCALIST_EVENT_TYPES.employee}&days=${LOCALIST_EVENT_DAYS_AGO}`;
   const data: ILocalistEvents = await fetchData(
+    url,
     () =>
       cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
         key: url,

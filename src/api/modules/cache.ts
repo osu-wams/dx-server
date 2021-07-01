@@ -3,8 +3,6 @@ import redis from 'redis';
 import config from 'config';
 import { promisify } from 'util';
 import logger from '../../logger';
-import { cacheFailureOrPing } from './notifications';
-import { CACHED_API_ERROR_THRESHOLD_COUNT, CACHED_API_ERROR_THRESHOLD_SEC } from '../../constants';
 
 const DEFAULT_DB: number = 1;
 export const AUTH_DB: number = 2;
@@ -90,10 +88,6 @@ const requestRetry = async (
       conditions.times < 1 ||
       expiredCert
     ) {
-      await cacheFailureOrPing(err, `cache.ts_request_${url}`, {
-        timeThreshold: CACHED_API_ERROR_THRESHOLD_SEC,
-        errThreshold: CACHED_API_ERROR_THRESHOLD_COUNT,
-      });
       throw err;
     }
     logger().debug(

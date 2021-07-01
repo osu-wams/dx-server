@@ -70,6 +70,7 @@ const getJson = async (
 
 export const getAddresses = async (user: any): Promise<Types.Address[]> => {
   const response: Types.AddressesResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/addresses`,
@@ -82,6 +83,7 @@ export const getAddresses = async (user: any): Promise<Types.Address[]> => {
 
 export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
   const response: Types.MealPlansResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/meal-plans`,
@@ -94,6 +96,7 @@ export const getMealPlan = async (user: any): Promise<Types.MealPlan[]> => {
 
 export const getProfile = async (user: any): Promise<Types.Persons> => {
   const response: Types.PersonsResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}`,
@@ -106,6 +109,7 @@ export const getProfile = async (user: any): Promise<Types.Persons> => {
 
 export const getEmails = async (user: any): Promise<Types.Email[]> => {
   return fetchData(
+    undefined,
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/emails`,
@@ -117,6 +121,7 @@ export const getEmails = async (user: any): Promise<Types.Email[]> => {
 
 export const getPhones = async (user: any): Promise<Types.Phone[]> => {
   return fetchData(
+    undefined,
     () =>
       getJson(
         `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/phones`,
@@ -144,6 +149,7 @@ export const getAcademicStatus = async (
   termQueryString: any,
 ): Promise<{ academicStanding: string; term: string } | {}> => {
   const response: AcademicStatusResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/academic-status${termQueryString}`,
@@ -175,6 +181,7 @@ export const getAcademicStatus = async (
 
 export const getAccountBalance = async (user: any) => {
   return fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-balance`,
@@ -186,6 +193,7 @@ export const getAccountBalance = async (user: any) => {
 
 export const getAccountTransactions = async (user: any) => {
   return fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/account-transactions?term=current`,
@@ -200,6 +208,7 @@ export const getClassSchedule = async (
   term: any,
 ): Promise<{ data: Types.CourseSchedule[] }> => {
   const response: Types.CourseScheduleResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
@@ -228,6 +237,7 @@ export const getClassSchedule = async (
 
 export const getClassification = async (user: any): Promise<Types.Classification> => {
   const response: Types.ClassificationResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/classification`,
@@ -244,6 +254,7 @@ export const getGrades = async (user: any, term: any) => {
     termParam = `?term=${term}`;
   }
   const response = await fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/grades${termParam}`,
@@ -296,6 +307,7 @@ const gpaTypeOrder = ['Institution', 'Overall', 'Transfer'];
 
 export const getGpa = async (user: any): Promise<Types.GpaLevel[]> => {
   const response: GpaResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/gpa`,
@@ -339,6 +351,7 @@ interface HoldsResponse {
 
 export const getHolds = async (user: any): Promise<[{ description: string }] | []> => {
   const response: HoldsResponse = await fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/holds`,
@@ -376,6 +389,7 @@ export const getDegrees = async (user: any, term = 'current'): Promise<Types.Deg
     termParam = `?term=${term}`;
   }
   return fetchData(
+    undefined,
     () =>
       getJson(
         `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/degrees${termParam}`,
@@ -390,6 +404,7 @@ export const getDirectory = async (
 ): Promise<Partial<Types.Directory>[] | { error: { code: string; detail: string } }> => {
   try {
     const response: { data: { id?: string; attributes: Types.Directory }[] } = await fetchData(
+      undefined,
       () =>
         getJson(
           `${DIRECTORY_BASE_URL}?page[size]=100&page[number]=1&filter[fullName][fuzzy]=${name}`,
@@ -431,6 +446,7 @@ export const getDirectory = async (
 
 export const getLocations = async (location: string): Promise<Partial<Types.Location>[]> => {
   const response: { data: { id: string; attributes: Types.Location }[] } = await fetchData(
+    undefined,
     () =>
       getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`, OSU_API_LONG_CACHE_SEC),
     mockedLocations,

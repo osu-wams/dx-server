@@ -89,7 +89,7 @@ export const getPlannerItems = async (params: ICanvasAPIParams): Promise<Types.P
   if (params.osuId) {
     url = appendUserIdParam(url, params.osuId);
   }
-  return fetchData(() => getRequest(url, params.oAuthToken), mockedCanvasPlannerItems);
+  return fetchData(url, () => getRequest(url, params.oAuthToken), mockedCanvasPlannerItems);
 };
 
 /**

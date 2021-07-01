@@ -220,6 +220,7 @@ export const getTrendingResources = async (
 ): Promise<TrendingResource[]> => {
   const dateKey = date.toISOString().slice(0, 10);
   return fetchData(
+    `google.ts#getTrendingResources`,
     async () => getCachedTrendingResources(daysAgo, dateKey),
     mappedTrendingResources(mockedTrendingResources, dateKey),
   );

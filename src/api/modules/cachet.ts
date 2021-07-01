@@ -113,6 +113,7 @@ export interface ICachetComponent {
 const getComponents = async (): Promise<ICachetComponentResponse> => {
   const url = `${CACHET_BASE_URL}/components?per_page=100`;
   return fetchData(
+    url,
     () =>
       cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
         key: url,
@@ -125,6 +126,7 @@ const getComponents = async (): Promise<ICachetComponentResponse> => {
 const getIncidents = async (): Promise<ICachetIncidentResponse> => {
   const url = `${CACHET_BASE_URL}/incidents?sort=status&order=desc&per_page=100`;
   return fetchData(
+    url,
     () =>
       cache.get(url, { json: true, headers: { 'Content-Type': 'application/json' } }, true, {
         key: url,
@@ -164,10 +166,8 @@ const mostRecentIncident = (
  * Query Cachet API to get a list of components and its most recent incident if its not operational
  */
 export const getSystemsStatus = async (): Promise<ICachetComponent[]> => {
-  const [components, incidents]: [
-    ICachetComponentResponse,
-    ICachetIncidentResponse,
-  ] = await Promise.all([getComponents(), getIncidents()]);
+  const [components, incidents]: [ICachetComponentResponse, ICachetIncidentResponse] =
+    await Promise.all([getComponents(), getIncidents()]);
 
   const data = components?.data?.map((c) => ({
     id: c.id,
