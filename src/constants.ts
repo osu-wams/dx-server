@@ -1,5 +1,7 @@
 import config from 'config';
 
+type Env = 'localhost' | 'test' | 'development' | 'preview' | 'stage' | 'production';
+
 interface ApiKey {
   key: string;
   isAdmin: boolean;
@@ -34,7 +36,7 @@ const DX_MCM_CACHE_SEC = parseInt(config.get('dxMcmApi.cacheEndpointSec'), 10);
 const DX_MCM_DASHBOARD_CHANNEL = 'dashboard';
 const DX_MCM_TOKEN: string = config.get('dxMcmApi.token');
 const ENCRYPTION_KEY: string = config.get('encryptionKey');
-const ENV: string = config.get('env');
+const ENV: Env = config.get('env');
 const GOOGLE_ANALYTICS_VIEW_ID: string = config.get('google.analyticsViewId');
 const GOOGLE_CACHE_SEC: number = parseInt(config.get('google.cacheEndpointSec'), 10);
 const GOOGLE_SERVICE_ACCOUNT_EMAIL: string = config.get('google.serviceAccountEmail');
