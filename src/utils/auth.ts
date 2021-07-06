@@ -11,7 +11,7 @@ interface Jwt {
   osuId: number;
   iat: number;
   exp: number;
-  scope: string;
+  scope: 'refresh' | 'api';
 }
 
 export const lastLogin = (): string => new Date().toISOString().slice(0, 10);
@@ -122,7 +122,17 @@ const parseSamlResult = (profile: any, done: any) => {
   return done(null, user);
 };
 
-export const verifiedJwt = (token: string, jwtKey: string): Jwt => jwt.verify(token, jwtKey) as Jwt;
+const encodedHash = (s: string): string => crypto.createHash('sha256').update(s).digest('base64');
+export const verifiedJwt = (token: string, jwtKey: string): Jwt => {
+  try {
+    return jwt.verify(token, jwtKey) as Jwt;
+  } catch (err) {
+    logger().error(
+      `utils/Auth#verifiedJwt failed to verify the provided token, this is a serious problem that indicates the signing key (JWT_KEY) has been changed and this token is still being used, or that the token was malformed or tampered with. At any rate, this problem needs attention. Error: ${err}`,
+    );
+    throw err;
+  }
+};
 
 /**
  * Simple method using nodes crypto to encrypt a string of text
@@ -166,15 +176,23 @@ export const decrypt = (encrypted: string, key: string): string | null => {
  * @param jwtKey the key to used when signing the jwt
  */
 export const userFromJWT = async (token: string, jwtKey: string): Promise<User | undefined> => {
+  let validToken: Jwt;
   try {
-    const { osuId } = verifiedJwt(token, jwtKey);
-    if (osuId) {
-      // TODO: Does it make sense here to instead store the full user record in the JWT and bypass a roundtrip to DDB to find the user?
-      return find(osuId);
-    }
+    validToken = verifiedJwt(token, jwtKey);
   } catch (err) {
-    logger().error(
-      `utils/Auth#userFromJWT failed to verify the provided token, this is a serious problem that indicates the signing key (JWT_KEY) has been changed and this token is still being used, or that the token was malformed or tampered with. At any rate, this problem needs attention. Error: ${err}`,
+    return undefined;
+  }
+  const { osuId, scope } = validToken;
+  if (osuId) {
+    const user = await find(osuId);
+    if (ENV === 'test' || scope === 'api') return user;
+
+    const hashedToken = encodedHash(token);
+    if (scope === 'refresh' && user.mobileRefreshTokenHash === hashedToken) {
+      return user;
+    }
+    logger().info(
+      `utils/Auth#userFromJWT hashed refresh token provided does not match what is stored for the user in mobileRefreshTokenHash, user must reauthenticate to establish a new token`,
     );
   }
   return undefined;
@@ -226,10 +244,7 @@ export const issueRefresh = async (
       { osuId: user.osuId, email: user.email, iat, exp, scope: 'refresh' },
       jwtKey,
     );
-    const mobileRefreshTokenHash = crypto
-      .createHash('sha256')
-      .update(mobileRefreshToken)
-      .digest('base64');
+    const mobileRefreshTokenHash = encodedHash(mobileRefreshToken);
     const updatedUser = await upsert({ ...user, mobileRefreshTokenHash });
     if (updatedUser) {
       return encrypt(mobileRefreshToken, encryptionKey);

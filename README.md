@@ -52,6 +52,16 @@ To run with SAML authentication, in a separate terminal window run:
 
     $ yarn saml
 
+### Create a 'refresh' JWT for use with mobile application development
+
+Create (and replace existing) refresh token for the user id provided. This user must have a full record in the local database.
+
+    $ yarn ts-node support/jwt.ts create <OSUID>
+
+Read (decrypt and decode) any jwt token to see its contents.
+
+    $ yarn ts-node support/jwt.ts read <TOKEN>
+
 # Localhost Tips
 
 ## Scan all records from a table
