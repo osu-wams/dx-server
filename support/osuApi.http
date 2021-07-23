@@ -1,4 +1,5 @@
 @baseUrl = https://api.oregonstate.edu
+// @baseUrl = https://oregonstateuniversity-dev.apigee.net
 @client_id = {{$processEnv OSU_API_CLIENT_ID}}
 @client_secret = {{$processEnv OSU_API_CLIENT_SECRET}}
 
@@ -123,4 +124,11 @@ Authorization: Bearer {{token}}
 
 # @name getLocations
 GET {{baseUrl}}/v1/locations?q=Cascade HTTP/1.1
+Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getMedical
+GET {{baseUrl}}/v2/persons/{{osuId}}/medical HTTP/1.1
 Authorization: Bearer {{token}}

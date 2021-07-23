@@ -1,0 +1,21 @@
+{
+  "link": {
+    "self": "string"
+  },
+  "data": [
+    {
+      "id": "123456",
+      "type": "medical",
+      "links": {
+        "self": "string"
+      },
+      "attributes": {
+        "medicalType": {
+          "code": "COVIDVACC",
+          "description": "COVID-19 Vaccine Completed"
+        },
+        "codeDate": "2020-04-20"
+      }
+    }
+  ]
+}
