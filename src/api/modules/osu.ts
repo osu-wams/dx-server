@@ -490,7 +490,7 @@ export const getMedical = async (user: any): Promise<Types.Medical[]> => {
   const response: {
     data: {
       id: string;
-      attributes: { medicalType: { code: string; description: string }; codeDate?: string };
+      attributes: { medicalType: { code: any; description: string }; codeDate?: string }; // code: any to cover any of the string codes (50+)
     }[];
   } = await fetchData(
     undefined, // module handles its own failure notification
