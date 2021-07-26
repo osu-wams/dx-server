@@ -5,16 +5,21 @@ import { Router, Request, Response } from 'express'; // eslint-disable-line no-u
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
-import { getProfile, getMealPlan, getAddresses, getEmails, getPhones } from './modules/osu'; // eslint-disable-line no-unused-vars
+import {
+  getProfile,
+  getMealPlan,
+  getAddresses,
+  getEmails,
+  getPhones,
+  getMedical,
+} from './modules/osu'; // eslint-disable-line no-unused-vars
 
 const router: Router = Router();
 
 // Main endpoint with general data about the person
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const response: Types.Persons = await asyncTimedFunction(getProfile, 'getProfile', [
-      req.user,
-    ]);
+    const response: Types.Persons = await asyncTimedFunction(getProfile, 'getProfile', [req.user]);
     res.send({ ...response.attributes, id: response.id });
   } catch (err) {
     logger().error('api/persons failed:', err);
@@ -54,9 +59,7 @@ router.get('/addresses', async (req: Request, res: Response) => {
 // Phone numbers by osu id - Apigee endpoint
 router.get('/phones', async (req: Request, res: Response) => {
   try {
-    const response: Types.Phone[] = await asyncTimedFunction(getPhones, 'getPhones', [
-      req.user,
-    ]);
+    const response: Types.Phone[] = await asyncTimedFunction(getPhones, 'getPhones', [req.user]);
     res.send(response);
   } catch (err) {
     logger().error('api/persons/phones failed:', err);
@@ -67,9 +70,7 @@ router.get('/phones', async (req: Request, res: Response) => {
 // Email addresses by osu id - Apigee endpoint
 router.get('/emails', async (req: Request, res: Response) => {
   try {
-    const response: Types.Email[] = await asyncTimedFunction(getEmails, 'getEmails', [
-      req.user,
-    ]);
+    const response: Types.Email[] = await asyncTimedFunction(getEmails, 'getEmails', [req.user]);
     res.send(response);
   } catch (err) {
     logger().error('api/persons/emails failed:', err);
@@ -77,6 +78,17 @@ router.get('/emails', async (req: Request, res: Response) => {
   }
 });
 
-
+// Medical data by osu id
+router.get('/medical', async (req: Request, res: Response) => {
+  try {
+    const response: Types.Medical[] = await asyncTimedFunction(getMedical, 'getMedical', [
+      req.user,
+    ]);
+    res.send(response);
+  } catch (err) {
+    logger().error('api/persons/medical failed:', err);
+    res.status(500).send({ message: 'Unable to retrieve medical information.' });
+  }
+});
 
 export default router;

@@ -6,11 +6,13 @@ import {
   personsAddressesData,
   personsMailingAddressData,
 } from '../__mocks__/persons-addresses.data';
+import * as medicalData from '../../mocks/osu/medical.data.json';
 import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import { OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
+  // @ts-ignore
   ...jest.requireActual('../util.ts'),
   getToken: () => Promise.resolve('bearer token'),
 }));
@@ -128,6 +130,48 @@ describe('/api/persons', () => {
       await request
         .get('/api/persons/meal-plans')
         .expect(500, { message: 'Unable to retrieve meal plans.' });
+    });
+  });
+
+  // Medical
+  describe('/medical', () => {
+    it('should return medical data', async () => {
+      mockedGetResponse.mockReturnValue(medicalData);
+      cache.get = mockedGet;
+
+      // Mock response from apigee
+      nock(APIGEE_BASE_URL)
+        .get(/persons\/[0-9]+\/medical/)
+        .query(true)
+        .reply(200, medicalData);
+
+      await request.get('/api/persons/medical').expect(200, [
+        {
+          id: '123456',
+          code: 'COVIDVACC',
+          description: 'COVID-19 Vaccine Completed',
+          codeDate: '2020-04-20',
+        },
+      ]);
+    });
+
+    it('should return an error if the user is not logged in', async () => {
+      // Clear session data - we don't want to be logged in
+      request = supertest.agent(app);
+
+      await request.get('/api/persons/medical').expect(401, { message: 'Unauthorized' });
+    });
+
+    it('should return "Unable to retrieve medical information." when there is a 500 error', async () => {
+      mockedGetResponse.mockReturnValue(undefined);
+      cache.get = mockedGet;
+      nock(APIGEE_BASE_URL)
+        .get(/persons\/[0-9]+\/medical/)
+        .reply(500);
+
+      await request
+        .get('/api/persons/medical')
+        .expect(500, { message: 'Unable to retrieve medical information.' });
     });
   });
 });

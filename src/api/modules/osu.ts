@@ -4,6 +4,7 @@ import cache from './cache';
 import {
   mockedAddresses,
   mockedMealPlans,
+  mockedMedical,
   mockedPersons,
   mockedGpa,
   mockedAcademicStatus,
@@ -483,4 +484,36 @@ export const getLocations = async (location: string): Promise<Partial<Types.Loca
     )
     .filter((i) => i.link)
     .sort((a, b) => (a.name > b.name ? 1 : -1));
+};
+
+export const getMedical = async (user: any): Promise<Types.Medical[]> => {
+  const response: {
+    data: {
+      id: string;
+      attributes: { medicalType: { code: any; description: string }; codeDate?: string }; // code: any to cover any of the string codes (50+)
+    }[];
+  } = await fetchData(
+    undefined, // module handles its own failure notification
+    () =>
+      getJson(
+        `${PERSON_BASE_URL}/${user.masqueradeId || user.osuId}/medical`,
+        `ALERTS-${PERSON_BASE_URL}/medical`,
+      ),
+    mockedMedical,
+  );
+
+  return response.data.map(
+    ({
+      id,
+      attributes: {
+        medicalType: { code, description },
+        codeDate,
+      },
+    }) => ({
+      id,
+      code,
+      description,
+      codeDate,
+    }),
+  );
 };
