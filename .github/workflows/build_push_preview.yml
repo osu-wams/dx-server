@@ -47,49 +47,23 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-      - name: Build and push Docker Image
-        run: |
-          build_date=$(date +%Y%m%d%H%M%S)
-          git_sha=$(git rev-parse --short ${{ github.sha }})
-          app_version=$(expr ${build_date}-${git_sha})
-          expr ${app_version} > app_version
-          docker build -f Dockerfile -t $ECR_REGISTRY/$ECR_REPOSITORY:preview-${app_version} --build-arg APP_VERSION=${app_version} --build-arg NODE_ENV=preview --build-arg GITHUB_NPM_TOKEN=${{ secrets.GH_NPM_TOKEN }} .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:preview-${app_version}
-        env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: dx
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-          GITHUB_NPM_TOKEN: ${{ secrets.GH_NPM_TOKEN }}
-      - name: Update task definition to new server image on PREVIEW cluster
-        run: |
-          COMMIT_LINK=https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA
-          COMMIT_MESSAGE=$(git log --format=%B -n 1 $GITHUB_SHA | cat -)
-          POST_DATA="{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX Preview Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Stack: ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}\", \"activitySubtitle\": \"Status: DEPLOYMENT_STARTED, Message: $COMMIT_MESSAGE $COMMIT_LINK\", \"markdown\": false }] }"
-          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}
-          app_version=`cat app_version`
-          ecr_image="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/dx:preview-${app_version}"
-          # this next line grabs content of parameter file from s3 bucket the "s3 cp file - " acts like cat, jq updates the ServerImage
-          aws s3 cp s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }} - | jq -r --arg ECR_IMAGE "$ecr_image" 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE} else . end)' > ${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }}
-          # now that jq updated our ServerImage directive and created the parameter file, next line just uploads it back to s3
-          aws s3 cp ${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }} s3://${{ secrets.CLOUDFORMATION_BUCKET }}/${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }}
-          STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
-          if [ "$STACK_STATUS" == "UPDATE_IN_PROGRESS" ]; then
-            aws cloudformation cancel-update-stack --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}
-            aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}
-          fi
-          aws cloudformation update-stack --template-url https://${{ secrets.CLOUDFORMATION_BUCKET }}.s3-${{ secrets.AWS_REGION }}.amazonaws.com/${{ secrets.CLOUDFORMATION_TEMPLATE_FILE }} --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/${{ secrets.CLOUDFORMATION_PREVIEW_PARAMETERS_FILE }}
-          aws cloudformation wait stack-update-complete --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}
-          STACK_STATUS=$(aws cloudformation describe-stacks --stack-name ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }} --query 'Stacks[].StackStatus' --output text)
-          POST_DATA="{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX Preview Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Cloudformation Stack Updated: ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}\", \"activitySubtitle\": \"Stack: ${{ secrets.CLOUDFORMATION_PREVIEW_STACKNAME }}, Status: $STACK_STATUS, Message: $COMMIT_MESSAGE $COMMIT_LINK\", \"markdown\": false }] }"
-          curl -d "${POST_DATA}" -H "Content-Type: application/json" -X POST ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}
+      - name: Run deploy-playbook
+        uses: osu-wams/action-ansible-playbook@v2
+        with:
+          playbook: deploy-playbook.yaml
+          directory: .github/ansible
         env:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
+          CLOUDFORMATION_BUCKET: ${{ secrets.CLOUDFORMATION_BUCKET }}
+          CLOUDFORMATION_STACKNAME: 'osu-dx-preview'
+          CLOUDFORMATION_PARAMETERS_FILE: 'parameters-preview.json'
+          CLOUDFORMATION_TEMPLATE_FILE: 'full-stack.yml'
+          CLUSTER: 'preview'
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REPOSITORY: 'dx'
           GITHUB_NPM_TOKEN: ${{ secrets.GH_NPM_TOKEN }}
+          TEAMS_WAMS_CICD_HOOK_URL: ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}

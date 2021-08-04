@@ -1,0 +1,159 @@
+---
+- name: Deploy Application
+  hosts: localhost
+
+  vars:
+    aws_account_id: "{{ lookup('env', 'AWS_ACCOUNT_ID') | string }}"
+    aws_region: "{{ lookup('env', 'AWS_REGION') | string }}"
+    build_date: "{{ lookup('pipe', 'date +%Y%m%d%H%M%S') | string }}"
+    cloudformation_bucket: "{{ lookup('env', 'CLOUDFORMATION_BUCKET') | string }}"
+    cloudformation_parameters_file: "{{ lookup('env', 'CLOUDFORMATION_PARAMETERS_FILE' or 'parameters-dev.json') | string }}"
+    cloudformation_stackname: "{{ lookup('env', 'CLOUDFORMATION_STACKNAME' or 'osu-dx-development') | string }}"
+    cloudformation_template_file: "{{ lookup('env', 'CLOUDFORMATION_TEMPLATE_FILE') or 'full-stack.yml' | string }}"
+    cluster: "{{ lookup('env', 'CLUSTER') or 'development' | string }}"
+    ecr_registry: "{{ lookup('env', 'ECR_REGISTRY') | string }}"
+    ecr_repository: "{{ lookup('env', 'ECR_REPOSITORY') or 'dx' | string }}"
+    github_npm_token: "{{ lookup('env', 'GITHUB_NPM_TOKEN') | string }}"
+    repo: "{{ lookup('env', 'GITHUB_REPOSITORY' | string }}"
+    sha: "{{ lookup('env', 'GITHUB_SHA') or 'HEAD' | string }}"
+    teams_wams_cicd_hook_url: "{{ lookup('env', 'TEAMS_WAMS_CICD_HOOK_URL') | string }}"
+
+  tasks:
+    - name: Validate required variables
+      fail:
+        msg: Missing necessary ENV variables (AWS_ACCOUNT_ID, AWS_REGION, CLOUDFORMATION_BUCKET, CLOUDFORMATION_PARAMETERS_FILE, ECR_REGISTRY, ECR_REPOSITORY or GITHUB_NPM_TOKEN)
+      when: aws_account_id == '' or aws_region == '' or ecr_repository == '' or ecr_registry == '' or github_npm_token == '' or cloudformation_parameters_file == '' or cloudformation_bucket == ''
+
+    # Create and register the dynamic variables needed by the following steps.
+    - name: Generate commit link directly to the SHA that was committed
+      command: 'echo "https://github.com/{{ repo }}/commit/{{ sha }}"'
+      register: commit_link
+
+    - name: Generate a short commit message
+      command: 'git log --format=%B -n 1 {{ sha }}'
+      register: commit_message
+
+    - name: Generate pre-deploy post data
+      command: 'echo "{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX {{ cluster }} Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Stack: {{ cloudformation_stackname }}\", \"activitySubtitle\": \"Status: DEPLOYMENT_STARTED, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\", \"markdown\": false }] }"'
+      register: pre_deploy_post_data
+
+    - name: Generate deploy post data
+      command: 'echo "{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX {{ cluster }} Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Cloudformation Stack Updated: {{ cloudformation_stackname }}\", \"activitySubtitle\": \"Stack: {{ cloudformation_stackname }}, Status: UPDATE_COMPLETE, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\", \"markdown\": false }] }"'
+      register: deploy_post_data
+
+    - name: Generate git short sha
+      command: 'git rev-parse --short {{ sha }}'
+      register: github_short_sha
+
+    - name: Generate application version (ie. 20210420162000-aed3cnef)
+      command: 'echo "{{ build_date }}-{{ github_short_sha.stdout }}"'
+      register: application_version
+
+    - name: Create application_version file to be included as part of the docker image build
+      copy:
+        dest: '../../application_version'
+        content: |
+          {{ application_version.stdout }}
+
+    - name: Generate ecr image name
+      command: 'echo "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ ecr_repository }}:{{ cluster }}-{{ application_version.stdout }}"'
+      register: ecr_image
+
+    # Start the process
+    # 1. Login to ECR (private docker image repository)
+    # 2. Build and tag the latest docker image
+    # 3. Send a Teams message about deployment starting
+    # 4. Update the appropriate (Cluster-specific) Cloudformation parameters file
+    # 5. Update the appropriate (Cluster-specific) Cloudformation stack to cause the new server images to come online
+    # 6. Send a Teams message about the deployment completing
+    - name: Report env
+      command: echo "Running Ansible Playbook in {{ cluster }} cluster with application version {{ application_version.stdout }}."
+
+    - name: Get login password
+      command: 'aws ecr get-login-password --region {{ aws_region }}'
+      register: aws_ecr
+      tags:
+        - build
+
+    - name: Login to docker
+      community.docker.docker_login:
+        username: AWS
+        password: '{{ aws_ecr.stdout }}'
+        registry_url: '{{ ecr_registry }}'
+        reauthorize: yes
+      tags:
+        - build
+
+    - name: Build and push docker image
+      community.docker.docker_image:
+        build:
+          path: '../..'
+          args:
+            APP_VERSION: '{{ application_version.stdout }}'
+            NODE_ENV: '{{ cluster }}'
+            GITHUB_NPM_TOKEN: '{{ github_npm_token }}'
+        name: '{{ cluster }}-{{ application_version.stdout }}'
+        tag: '{{ cluster }}-{{ application_version.stdout }}'
+        repository: '{{ ecr_registry}}/{{ ecr_repository }}'
+        push: yes
+        source: build
+      tags:
+        - build
+
+    - name: Send pre-deploy message to Teams
+      raw: |
+        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hooks_url }}
+      tags:
+        - deploy
+
+    - name: Fetch and update Cloudformation parameters file
+      raw: |
+        aws s3 cp s3://{{ cloudformation_bucket}}/{{ cloudformation_parameters_file }} - | jq -r --arg ECR_IMAGE {{ ecr_image.stdout }} 'map(if .ParameterKey == "ServerImage" then . + {"ParameterValue": $ECR_IMAGE } else . end)' > {{ cloudformation_parameters_file }}
+      tags:
+        - deploy
+
+    - name: Upload updated Cloudformation parameters file
+      raw: |
+        aws s3 cp {{ cloudformation_parameters_file }} s3://{{ cloudformation_bucket}}/{{ cloudformation_parameters_file }}
+      tags:
+        - deploy
+
+    - name: Get Cloudformation stack status
+      raw: |
+        aws cloudformation describe-stacks --stack-name {{ cloudformation_stackname }} --query 'Stacks[].StackStatus' --output text
+      register: stack_status
+      tags:
+        - deploy
+
+    - name: Cancel Cloudformation update if running
+      raw: |
+        aws cloudformation cancel-update-stack --stack-name {{ cloudformation_stackname }}
+        aws cloudformation wait stack-update-complete --stack-name {{ cloudformation_stackname }}
+      when: stack_status.stdout == 'UPDATE_IN_PROGRESS'
+      tags:
+        - deploy
+
+    - name: Update Cloudformation stack
+      raw: |
+        aws cloudformation update-stack --template-url https://{{ cloudformation_bucket }}.s3-{{ aws_region }}.amazonaws.com/{{ cloudformation_template_file }} --stack-name {{ cloudformation_stackname }} --capabilities CAPABILITY_NAMED_IAM --parameters file://$PWD/{{ cloudformation_parameters_file }}
+      tags:
+        - deploy
+
+    - name: Wait for update Cloudformation stack
+      raw: |
+        aws cloudformation wait stack-update-complete --stack-name {{ cloudformation_stackname }}
+      tags:
+        - deploy
+
+    - name: Get updated Cloudformation stack status
+      raw: |
+        aws cloudformation describe-stacks --stack-name {{ cloudformation_stackname }} --query 'Stacks[].StackStatus' --output text
+      register: stack_updated_status
+      tags:
+        - deploy
+
+    - name: Send deploy complete message to Teams
+      raw: |
+        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hooks_url }}
+      tags:
+        - deploy
