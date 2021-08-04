@@ -79,7 +79,7 @@
         - build
 
     - name: Install Docker SDK
-      command: 'pipx install docker requests'
+      raw: 'pipx install docker requests'
 
     - name: Login to docker
       community.docker.docker_login:
