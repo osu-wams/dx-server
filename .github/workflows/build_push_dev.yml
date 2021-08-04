@@ -63,7 +63,6 @@ jobs:
           CLOUDFORMATION_PARAMETERS_FILE: 'parameters-dev.json'
           CLOUDFORMATION_TEMPLATE_FILE: 'full-stack.yml'
           CLUSTER: 'development'
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           ECR_REPOSITORY: 'dx'
           GITHUB_NPM_TOKEN: ${{ secrets.GH_NPM_TOKEN }}
           TEAMS_WAMS_CICD_HOOK_URL: ${{ secrets.TEAMS_WAMS_CICD_HOOK_URL }}
