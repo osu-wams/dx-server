@@ -48,7 +48,7 @@
       command: 'git rev-parse --short {{ sha }}'
       register: github_short_sha
 
-    - name: Generate application version (ie. 20210420162000-aed3cnef)
+    - name: Generate application version (ie. 20210420162000-ab031f)
       command: 'echo "{{ build_date }}-{{ github_short_sha.stdout }}"'
       register: application_version
 
@@ -72,13 +72,13 @@
     - name: Report env
       command: echo "Running Ansible Playbook in {{ cluster }} cluster with application version {{ application_version.stdout }}."
 
-    - name: Get login password
+    - name: Get AWS ECR login password
       command: 'aws ecr get-login-password --region {{ aws_region }}'
       register: aws_ecr
       tags:
         - build
 
-    - name: Login to docker
+    - name: Login to AWS ECR with docker
       command: 'docker login {{ ecr_registry.stdout }} --username AWS --password {{ aws_ecr.stdout }}'
       tags:
         - build
@@ -97,7 +97,7 @@
 
     - name: Send pre-deploy message to Teams
       raw: |
-        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hooks_url }}
+        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
       tags:
         - deploy
 
@@ -149,6 +149,6 @@
 
     - name: Send deploy complete message to Teams
       raw: |
-        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hooks_url }}
+        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
       tags:
         - deploy
