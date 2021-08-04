@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install python docker dependencies
-        run: pip install request docker
+        run: pip install requests docker && pip3 install requests docker
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
