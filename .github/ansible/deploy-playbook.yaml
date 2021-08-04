@@ -11,7 +11,6 @@
     cloudformation_stackname: "{{ lookup('env', 'CLOUDFORMATION_STACKNAME' or 'osu-dx-development') | string }}"
     cloudformation_template_file: "{{ lookup('env', 'CLOUDFORMATION_TEMPLATE_FILE') or 'full-stack.yml' | string }}"
     cluster: "{{ lookup('env', 'CLUSTER') or 'development' | string }}"
-    ecr_registry: "{{ lookup('env', 'ECR_REGISTRY') | string }}"
     ecr_repository: "{{ lookup('env', 'ECR_REPOSITORY') or 'dx' | string }}"
     github_npm_token: "{{ lookup('env', 'GITHUB_NPM_TOKEN') | string }}"
     repo: "{{ lookup('env', 'GITHUB_REPOSITORY' | string }}"
@@ -21,10 +20,14 @@
   tasks:
     - name: Validate required variables
       fail:
-        msg: Missing necessary ENV variables (AWS_ACCOUNT_ID, AWS_REGION, CLOUDFORMATION_BUCKET, CLOUDFORMATION_PARAMETERS_FILE, ECR_REGISTRY, ECR_REPOSITORY or GITHUB_NPM_TOKEN)
-      when: aws_account_id == '' or aws_region == '' or ecr_repository == '' or ecr_registry == '' or github_npm_token == '' or cloudformation_parameters_file == '' or cloudformation_bucket == ''
+        msg: Missing necessary ENV variables (AWS_ACCOUNT_ID, AWS_REGION, CLOUDFORMATION_BUCKET, CLOUDFORMATION_PARAMETERS_FILE, ECR_REPOSITORY or GITHUB_NPM_TOKEN)
+      when: aws_account_id == '' or aws_region == '' or ecr_repository == '' or github_npm_token == '' or cloudformation_parameters_file == '' or cloudformation_bucket == ''
 
     # Create and register the dynamic variables needed by the following steps.
+    - name: Generate ecr registry url
+      command: 'echo "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com"'
+      register: ecr_registry
+
     - name: Generate commit link directly to the SHA that was committed
       command: 'echo "https://github.com/{{ repo }}/commit/{{ sha }}"'
       register: commit_link
@@ -56,7 +59,7 @@
           {{ application_version.stdout }}
 
     - name: Generate ecr image name
-      command: 'echo "{{ aws_account_id }}.dkr.ecr.{{ aws_region }}.amazonaws.com/{{ ecr_repository }}:{{ cluster }}-{{ application_version.stdout }}"'
+      command: 'echo "{{ ecr_registry.stdout }}/{{ ecr_repository }}:{{ cluster }}-{{ application_version.stdout }}"'
       register: ecr_image
 
     # Start the process
@@ -79,7 +82,7 @@
       community.docker.docker_login:
         username: AWS
         password: '{{ aws_ecr.stdout }}'
-        registry_url: '{{ ecr_registry }}'
+        registry_url: '{{ ecr_registry.stdout }}'
         reauthorize: yes
       tags:
         - build
@@ -94,7 +97,7 @@
             GITHUB_NPM_TOKEN: '{{ github_npm_token }}'
         name: '{{ cluster }}-{{ application_version.stdout }}'
         tag: '{{ cluster }}-{{ application_version.stdout }}'
-        repository: '{{ ecr_registry}}/{{ ecr_repository }}'
+        repository: '{{ ecr_registry.stdout}}/{{ ecr_repository }}'
         push: yes
         source: build
       tags:
