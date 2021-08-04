@@ -78,11 +78,6 @@
       tags:
         - build
 
-    - name: Install Docker SDK for Python
-      package:
-        name: python3-docker
-        state: present
-
     - name: Login to docker
       community.docker.docker_login:
         username: AWS
