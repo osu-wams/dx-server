@@ -97,7 +97,7 @@
 
     - name: Send pre-deploy message to Teams
       raw: |
-        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
+        curl -d "{{ pre_deploy_post_data.stdout }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
       tags:
         - deploy
 
@@ -149,6 +149,6 @@
 
     - name: Send deploy complete message to Teams
       raw: |
-        curl -d "{{ deploy_post_data }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
+        curl -d "{{ deploy_post_data.stdout }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
       tags:
         - deploy
