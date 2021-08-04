@@ -42,7 +42,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Install python3 docker sdk
-        run: sudo apt-get install python3-docker
+        run: sudo apt-get install python3-docker && pipx install docker
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
