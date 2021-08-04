@@ -13,7 +13,7 @@
     cluster: "{{ lookup('env', 'CLUSTER') or 'development' | string }}"
     ecr_repository: "{{ lookup('env', 'ECR_REPOSITORY') or 'dx' | string }}"
     github_npm_token: "{{ lookup('env', 'GITHUB_NPM_TOKEN') | string }}"
-    repo: "{{ lookup('env', 'GITHUB_REPOSITORY' | string }}"
+    repo: "{{ lookup('env', 'GITHUB_REPOSITORY') or 'osu-wams/dx-server' | string }}"
     sha: "{{ lookup('env', 'GITHUB_SHA') or 'HEAD' | string }}"
     teams_wams_cicd_hook_url: "{{ lookup('env', 'TEAMS_WAMS_CICD_HOOK_URL') | string }}"
 
