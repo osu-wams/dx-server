@@ -78,31 +78,20 @@
       tags:
         - build
 
-    - name: Install Docker SDK
-      raw: 'pip install docker requests'
-
     - name: Login to docker
-      community.docker.docker_login:
-        username: AWS
-        password: '{{ aws_ecr.stdout }}'
-        registry_url: '{{ ecr_registry.stdout }}'
-        reauthorize: yes
+      command: 'docker login {{ ecr_registry.stdout }} --username AWS --password {{ aws_ecr.stdout }}'
       tags:
         - build
 
-    - name: Build and push docker image
-      community.docker.docker_image:
-        build:
-          path: '../..'
-          args:
-            APP_VERSION: '{{ application_version.stdout }}'
-            NODE_ENV: '{{ cluster }}'
-            GITHUB_NPM_TOKEN: '{{ github_npm_token }}'
-        name: '{{ cluster }}-{{ application_version.stdout }}'
-        tag: '{{ cluster }}-{{ application_version.stdout }}'
-        repository: '{{ ecr_registry.stdout}}/{{ ecr_repository }}'
-        push: yes
-        source: build
+    - name: Build docker image
+      command: 'docker build -f Dockerfile -t {{ ecr_registry.stdout }}/{{ ecr_repository }}:{{ cluster }}-{{ application_version.stdout }} --build-arg APP_VERSION={{ application_version.stdout }} --build-arg NODE_ENV={{ cluster }} --build-arg GITHUB_NPM_TOKEN={{ github_npm_token }} .'
+      args:
+        chdir: ../..
+      tags:
+        - build
+
+    - name: Push docker image
+      command: 'docker push {{ ecr_registry.stdout }}/{{ ecr_repository }}:{{ cluster }}-{{ application_version.stdout }}'
       tags:
         - build
 
