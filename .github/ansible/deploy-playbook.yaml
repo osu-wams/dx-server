@@ -48,7 +48,7 @@
             - activitySubtitle: 'Stack: {{ cloudformation_stackname }}, Status: DEPLOYMENT_STARTED, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}'
             - markdown: false
       set_fact:
-        pre_deploy_message: '{{ message | to_json }}'
+        pre_deploy_message: '{{ message }}'
 
     - name: Generate deploy message
       vars:
@@ -62,7 +62,7 @@
             - activitySubtitle: 'Stack: {{ cloudformation_stackname }}, Status: UPDATE_COMPLETE, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}'
             - markdown: false
       set_fact:
-        deploy_message: '{{ message | to_json }}'
+        deploy_message: '{{ message }}'
 
     - name: Generate git short sha
       command: 'git rev-parse --short {{ sha }}'
@@ -90,13 +90,15 @@
     # 5. Update the appropriate (Cluster-specific) Cloudformation stack to cause the new server images to come online
     # 6. Send a Teams message about the deployment completing
     - name: Report env
-      command: echo "Running Ansible Playbook in {{ cluster }} cluster with application version {{ application_version.stdout }}."
+      command: 'echo "Running Ansible Playbook in {{ cluster }} cluster with application version {{ application_version.stdout }}."'
 
     - name: Send pre-deploy message to Teams
       raw: "curl -d '{{ pre_deploy_message | to_json }}' -H 'Content-Type: application/json' -X POST {{ teams_wams_cicd_hook_url }}"
       register: pre_deploy_result
-      tags:
-        - build
+
+    - name: Debug Teams message output
+      debug:
+        var: pre_deploy_result
 
     - name: Get AWS ECR login password
       command: 'aws ecr get-login-password --region {{ aws_region }}'
@@ -169,5 +171,10 @@
 
     - name: Send deploy complete message to Teams
       raw: "curl -d '{{ deploy_message | to_json }}' -H 'Content-Type: application/json' -X POST {{ teams_wams_cicd_hook_url }}"
+      register: deploy_result
       tags:
         - deploy
+
+    - name: Debug Teams message output
+      debug:
+        var: deploy_result
