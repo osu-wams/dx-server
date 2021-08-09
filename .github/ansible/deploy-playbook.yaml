@@ -93,8 +93,7 @@
       command: echo "Running Ansible Playbook in {{ cluster }} cluster with application version {{ application_version.stdout }}."
 
     - name: Send pre-deploy message to Teams
-      raw: |
-        curl -d "{{ pre_deploy_message | to_json }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
+      raw: "curl -d '{{ pre_deploy_message | to_json }}' -H 'Content-Type: application/json' -X POST {{ teams_wams_cicd_hook_url }}"
       register: pre_deploy_result
       tags:
         - build
@@ -169,7 +168,6 @@
         - deploy
 
     - name: Send deploy complete message to Teams
-      raw: |
-        curl -d "{{ deploy_message | to_json }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
+      raw: "curl -d '{{ deploy_message | to_json }}' -H 'Content-Type: application/json' -X POST {{ teams_wams_cicd_hook_url }}"
       tags:
         - deploy
