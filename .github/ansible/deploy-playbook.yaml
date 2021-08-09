@@ -36,13 +36,33 @@
       command: 'git log --format=%B -n 1 {{ sha }}'
       register: commit_message
 
-    - name: Generate pre-deploy post data
-      command: 'echo "{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX {{ cluster }} Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Stack: {{ cloudformation_stackname }}\", \"activitySubtitle\": \"Status: DEPLOYMENT_STARTED, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\", \"markdown\": false }] }" | jq -Rs'
-      register: pre_deploy_post_data
+    - name: Generate pre-deploy message
+      vars:
+        message:
+          '@type': 'MessageCard'
+          '@context': 'http://schema.org/extensions'
+          themeColor: 'D600D2'
+          summary: 'DX {{ cluster }} Stack Deployment'
+          sections:
+            - activityTitle: 'Cloudformation Stack: {{ cloudformation_stackname }}'
+            - activitySubtitle: 'Stack: {{ cloudformation_stackname }}, Status: DEPLOYMENT_STARTED, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}'
+            - markdown: false
+      set_fact:
+        pre_deploy_message: '{{ message | to_json }}'
 
-    - name: Generate deploy post data
-      command: 'echo "{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX {{ cluster }} Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Cloudformation Stack Updated: {{ cloudformation_stackname }}\", \"activitySubtitle\": \"Stack: {{ cloudformation_stackname }}, Status: UPDATE_COMPLETE, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\", \"markdown\": false }] }" | jq -Rs'
-      register: deploy_post_data
+    - name: Generate deploy message
+      vars:
+        message:
+          '@type': 'MessageCard'
+          '@context': 'http://schema.org/extensions'
+          themeColor: 'D600D2'
+          summary: 'DX {{ cluster }} Stack Deployment'
+          sections:
+            - activityTitle: 'Cloudformation Stack Updated: {{ cloudformation_stackname }}'
+            - activitySubtitle: 'Stack: {{ cloudformation_stackname }}, Status: UPDATE_COMPLETE, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}'
+            - markdown: false
+      set_fact:
+        deploy_message: '{{ message | to_json }}'
 
     - name: Generate git short sha
       command: 'git rev-parse --short {{ sha }}'
@@ -96,7 +116,7 @@
         - build
 
     - name: Send pre-deploy message to Teams
-      command: 'curl -d "{{ pre_deploy_post_data.stdout }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}'
+      command: 'curl -d "{{ pre_deploy_message | to_json }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}'
       register: pre_deploy_result
       tags:
         - deploy
@@ -149,6 +169,6 @@
 
     - name: Send deploy complete message to Teams
       raw: |
-        curl -d "{{ deploy_post_data.stdout }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
+        curl -d "{{ deploy_message | to_json }}" -H "Content-Type: application/json" -X POST {{ teams_wams_cicd_hook_url }}
       tags:
         - deploy
