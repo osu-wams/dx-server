@@ -37,11 +37,11 @@
       register: commit_message
 
     - name: Generate pre-deploy post data
-      command: 'echo "{\\"@type\\": \\"MessageCard\\", \\"@context\\": \\"http://schema.org/extensions\\", \\"themeColor\\": \\"D600D2\\", \\"summary\\": \\"DX {{ cluster }} Stack Deployment\\", \\"sections\\": [{ \\"activityTitle\\": \\"Stack: {{ cloudformation_stackname }}\\", \\"activitySubtitle\\": \\"Status: DEPLOYMENT_STARTED, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\\", \\"markdown\\": false }] }"'
+      command: 'echo "{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX {{ cluster }} Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Stack: {{ cloudformation_stackname }}\", \"activitySubtitle\": \"Status: DEPLOYMENT_STARTED, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\", \"markdown\": false }] }" | jq -Rs'
       register: pre_deploy_post_data
 
     - name: Generate deploy post data
-      command: 'echo "{\\"@type\\": \\"MessageCard\\", \\"@context\\": \\"http://schema.org/extensions\\", \\"themeColor\\": \\"D600D2\\", \\"summary\\": \\"DX {{ cluster }} Stack Deployment\\", \\"sections\\": [{ \\"activityTitle\\": \\"Cloudformation Stack Updated: {{ cloudformation_stackname }}\\", \\"activitySubtitle\\": \\"Stack: {{ cloudformation_stackname }}, Status: UPDATE_COMPLETE, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\\", \\"markdown\\": false }] }"'
+      command: 'echo "{\"@type\": \"MessageCard\", \"@context\": \"http://schema.org/extensions\", \"themeColor\": \"D600D2\", \"summary\": \"DX {{ cluster }} Stack Deployment\", \"sections\": [{ \"activityTitle\": \"Cloudformation Stack Updated: {{ cloudformation_stackname }}\", \"activitySubtitle\": \"Stack: {{ cloudformation_stackname }}, Status: UPDATE_COMPLETE, Message: {{ commit_message.stdout }} {{ commit_link.stdout }}\", \"markdown\": false }] }" | jq -Rs'
       register: deploy_post_data
 
     - name: Generate git short sha
@@ -100,11 +100,6 @@
       register: pre_deploy_result
       tags:
         - deploy
-
-    - name: Debug curl
-      debug:
-        var: pre_deploy_result
-        verbosity: 4
 
     - name: Fetch and update Cloudformation parameters file
       raw: |
