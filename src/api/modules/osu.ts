@@ -449,7 +449,7 @@ export const getLocations = async (location: string): Promise<Partial<Types.Loca
   const response: { data: { id: string; attributes: Types.Location }[] } = await fetchData(
     undefined, // module handles its own failure notification
     () =>
-      getJson(`${LOCATION_BASE_URL}?q=${location}`, `${LOCATION_BASE_URL}`, OSU_API_LONG_CACHE_SEC),
+      getJson(`${LOCATION_BASE_URL}?q=${encodeURIComponent(location)}`, `${LOCATION_BASE_URL}`, OSU_API_LONG_CACHE_SEC),
     mockedLocations,
   );
   return response.data
