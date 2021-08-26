@@ -14,21 +14,7 @@ jest.mock('../util.ts', () => ({
 const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v1`;
 const request = supertest.agent(app);
 
-describe('/api/locations', () => {
-  describe('/', () => {
-    it('should return location general information', async () => {
-      mockedGetResponse.mockReturnValue(locationsData);
-      cache.get = mockedGet;
-      // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
-        .get(/locations\/*/)
-        .query(true)
-        .reply(200, locationsData);
-
-      const response = await request.get('/api/locations/cascade');
-      expect(response.status).toEqual(200);
-
-      expect(response.body).toStrictEqual([
+const mockedBody = [
         {
           id: '665e5039a9e92e7c47f52dd90e091899',
           name: 'Cascade Hall',
@@ -45,7 +31,36 @@ describe('/api/locations', () => {
           zip: '97331',
           campus: 'Corvallis',
         },
-      ]);
+      ];
+
+describe('/api/locations', () => {
+  describe('/', () => {
+    it('should return location general information', async () => {
+      mockedGetResponse.mockReturnValue(locationsData);
+      cache.get = mockedGet;
+      // Mock response from Apigee
+      nock(APIGEE_BASE_URL)
+        .get(/locations\/*/)
+        .query(true)
+        .reply(200, locationsData);
+
+      const response = await request.get('/api/locations/cascade');
+      expect(response.status).toEqual(200);
+
+      expect(response.body).toStrictEqual(mockedBody);
+    });
+
+    it('should return 200 with emoji', async () => {
+      // Mock response from Apigee
+      const encodedEmoji = encodeURIComponent('😺');
+      nock(APIGEE_BASE_URL)
+        .get(`/locations?q=${encodedEmoji}`)
+        .reply(200, locationsData);
+
+      const response = await request.get(`/api/locations/${encodedEmoji}`);
+      expect(response.status).toEqual(200);
+
+      expect(response.body).toStrictEqual(mockedBody);
     });
 
     it('should return "Unable to retrieve location information." when there is a 500 error', async () => {
