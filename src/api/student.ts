@@ -120,7 +120,7 @@ router.get('/classification', async (req: Request, res: Response) => {
 
 router.get('/class-schedule', async (req: Request, res: Response) => {
   try {
-    const term = req.query.term || 'current';
+    const term = req.query.term || '';
     const response = (await asyncTimedFunction(getClassSchedule, 'getClassSchedule', [
       req.user,
       term,

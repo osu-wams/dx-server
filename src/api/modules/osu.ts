@@ -212,7 +212,7 @@ export const getClassSchedule = async (
     undefined, // module handles its own failure notification
     () =>
       getJson(
-        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule?term=${term}`,
+        `${STUDENT_BASE_URL}/${user.masqueradeId || user.osuId}/class-schedule${term ? `?term=${term}` : ''}`,
         `ALERTS-${STUDENT_BASE_URL}/class-schedule`,
       ),
     mockedClassSchedule,
