@@ -1,17 +1,22 @@
 import { Client, getMembers } from '@osu-wams/grouper';
 import config from 'config';
+import { getCache, setCache } from '../modules/cache';
 
 export const getGrouperGroup = async (group: string, attributes: string[]) => {
+  const cacheName = `grouper-${group}`;
+  const groupCache = await getCache(cacheName);
+  if (groupCache) {
+    return JSON.parse(groupCache);
+  }
+
   const client = new Client({
     host: config.get('grouper.host') ?? '',
     username: config.get('grouper.username'),
     password: config.get('grouper.password'),
   });
 
-  const pageNumber = 1;
-  const pageSize = 100;
-  const results = await getMembers(client, [group], attributes, { pageNumber, pageSize });
-  return results[0].subjects.map(({
+  const results = await getMembers(client, [group], attributes);
+  const groupMap = results[0].subjects.map(({
     memberId,
     id,
     name,
@@ -22,4 +27,10 @@ export const getGrouperGroup = async (group: string, attributes: string[]) => {
       name,
     }
   }));
+  setCache(cacheName, JSON.stringify(groupMap), {
+    mode: 'EX',
+    duration: 24 * 60 * 60, // 24 hours
+    flag: 'NX',
+  });
+  return groupMap;
 }
