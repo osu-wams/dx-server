@@ -1,6 +1,12 @@
-import { Client, getMembers } from '@osu-wams/grouper';
+import { Client, getMembers, isMember } from '@osu-wams/grouper';
 import config from 'config';
 import { getCache, setCache } from '../modules/cache';
+
+const client = new Client({
+    host: config.get('grouper.host') ?? '',
+    username: config.get('grouper.username'),
+    password: config.get('grouper.password'),
+});
 
 export const getGrouperGroup = async (group: string, attributes: string[]) => {
   const cacheName = `grouper-${group}`;
@@ -8,12 +14,6 @@ export const getGrouperGroup = async (group: string, attributes: string[]) => {
   if (groupCache) {
     return JSON.parse(groupCache);
   }
-
-  const client = new Client({
-    host: config.get('grouper.host') ?? '',
-    username: config.get('grouper.username'),
-    password: config.get('grouper.password'),
-  });
 
   const results = await getMembers(client, [group], attributes);
   const groupMap = results[0].subjects.map(({
@@ -33,4 +33,8 @@ export const getGrouperGroup = async (group: string, attributes: string[]) => {
     flag: 'NX',
   });
   return groupMap;
+}
+
+export const hasMember = async (group: string, onid: string) => {
+  return await isMember(client, group, onid);
 }
