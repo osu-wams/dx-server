@@ -25,3 +25,14 @@ describe('/api/grouper', () => {
     await request.get('/api/grouper?group=asdfadsf').expect(400);
   })
 });
+
+describe('/api/grouper/hasMember', () => {
+  it('API should return data from asnyc call', async () => {
+    // MOCK 2 DIFFERENT VALUES
+    mockedAsync.mockResolvedValueOnce({ attributes: { onid: 'test' }});
+    mockedAsync.mockResolvedValueOnce({ IS_MEMBER: true });
+
+    await request.get('/api/grouper/hasMember?group=covidvac-student').expect(200, { IS_MEMBER: true });
+    expect(mockedAsync).toHaveBeenCalledTimes(2);
+  });
+});
