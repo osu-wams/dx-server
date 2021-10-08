@@ -15,9 +15,9 @@ const getGroupFullName = (groupName: string) => {
   const groups: Object = config.get('grouper.groups');
   if (groupName && groupName in groups) {
     return config.get(`grouper.groups.${groupName}`);
-  } else {
-    return null;
   }
+
+  return null;
 }
 
 router.get('/', async (req: Request, res: Response) => {
@@ -45,7 +45,7 @@ router.get('/hasMember', async (req: Request, res: Response) => {
   try {
     // run query to get current users onid
     const person: Types.Persons = await asyncTimedFunction(getProfile, 'getProfile', [req.user]);
-    const onid = person.attributes.onid;
+    const { onid } = person.attributes;
     const group: string = req.query.group.toString();
     const groupName = getGroupFullName(group);
     if (!onid) {

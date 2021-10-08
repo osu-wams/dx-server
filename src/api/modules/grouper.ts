@@ -1,6 +1,6 @@
 import { Client, getMembers, isMember } from '@osu-wams/grouper';
 import config from 'config';
-import { getCache, setCache } from '../modules/cache';
+import { getCache, setCache } from './cache';
 
 const client = new Client({
     host: config.get('grouper.host') ?? '',
@@ -36,5 +36,5 @@ export const getGrouperGroup = async (group: string, attributes: string[]) => {
 }
 
 export const hasMember = async (group: string, onid: string) => {
-  return await isMember(client, group, onid);
+  return isMember(client, group, onid);
 }

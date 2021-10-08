@@ -1,7 +1,7 @@
 import supertest from 'supertest';
+import { mocked } from 'ts-jest/utils';
 import app from '../../index';
 import { covidvacStudentData } from '../__mocks__/grouper.data';
-import { mocked } from 'ts-jest/utils';
 import { asyncTimedFunction } from '../../tracer';
 
 jest.mock('../../tracer');
