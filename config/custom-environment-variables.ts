@@ -43,4 +43,12 @@ export default {
   readyEducationApi: {
     token: 'READY_EDUCATION_API_TOKEN',
   },
+  grouper: {
+    host: 'GROUPER_HOST',
+    username: 'GROUPER_USERNAME',
+    password: 'GROUPER_PASSWORD',
+    groups: {
+      'covidvac-student': 'GROUPER_GROUP_COVIDVAC_STUDENT',
+    },
+  },
 };
