@@ -26,4 +26,12 @@ export default {
   readyEducationApi: {
     token: 'bobross',
   },
+  grouper: {
+    host: 'fake.grouper.host',
+    username: 'blahblah',
+    password: 'secretblahblah',
+    groups: {
+      'covidvac-student': 'blahgroupblah',
+    },
+  },
 };

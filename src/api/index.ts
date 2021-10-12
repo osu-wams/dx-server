@@ -19,6 +19,7 @@ import CardsRouter from './cards';
 import PeopleRouter from './people';
 import LocationsRouter from './locations';
 import SearchIndexRouter from './searchIndex';
+import GrouperRouter from './grouper';
 import { jwtUserHasToken } from '../utils/routing';
 
 const router = Router();
@@ -44,5 +45,6 @@ router.use('/cards', CardsRouter);
 router.use('/people', PeopleRouter);
 router.use('/locations', LocationsRouter);
 router.use('/searchIndex', SearchIndexRouter);
+router.use('/grouper', GrouperRouter);
 
 export default router;
