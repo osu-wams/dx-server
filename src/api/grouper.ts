@@ -6,7 +6,7 @@ import { Router, Request, Response } from 'express'; // eslint-disable-line no-u
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
-import { getGrouperGroup, hasMember } from './modules/grouper';
+import { hasMember } from './modules/grouper';
 import { getProfile } from './modules/osu'; // eslint-disable-line no-unused-vars
 
 const router = Router();
@@ -19,28 +19,6 @@ const getGroupFullName = (groupName: string) => {
 
   return null;
 }
-
-router.get('/', async (req: Request, res: Response) => {
-  try {
-    const group: string = req.query.group.toString();
-    const groupName = getGroupFullName(group);
-    if (!groupName) {
-      res.status(400);
-      res.send('Invalid grouper group');
-    } else {
-      const response = await asyncTimedFunction(
-        getGrouperGroup,
-        'getGrouperGroup',
-        [config.get(`grouper.groups.${group}`), ['id']],
-      );
-      res.send(response);
-    }
-  } catch (err) {
-    logger().error('api/grouper failed:', err);
-    res.status(400);
-    res.send({ message: 'Unable to retrieve grouper group.' });
-  }
-});
 
 router.get('/hasMember', async (req: Request, res: Response) => {
   try {

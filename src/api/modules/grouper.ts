@@ -1,40 +1,26 @@
-import { Client, getMembers, isMember } from '@osu-wams/grouper';
-import config from 'config';
-import { getCache, setCache } from './cache';
+import AWS from 'aws-sdk';
+import { ENV } from '../../constants';
 
-const client = new Client({
-    host: config.get('grouper.host') ?? '',
-    username: config.get('grouper.username'),
-    password: config.get('grouper.password'),
-});
-
-export const getGrouperGroup = async (group: string, attributes: string[]) => {
-  const cacheName = `grouper-${group}`;
-  const groupCache = await getCache(cacheName);
-  if (groupCache) {
-    return JSON.parse(groupCache);
-  }
-
-  const results = await getMembers(client, [group], attributes);
-  const groupMap = results[0].subjects.map(({
-    memberId,
-    id,
-    name,
-  }) => ({
-    id: memberId,
-    attributes: {
-      onid: id,
-      name,
-    }
-  }));
-  setCache(cacheName, JSON.stringify(groupMap), {
-    mode: 'EX',
-    duration: 24 * 60 * 60, // 24 hours
-    flag: 'NX',
-  });
-  return groupMap;
-}
+// these lambda functions only have dev and production environments
+const AWS_ENV = ENV === 'production' ? 'production' : 'dev';
 
 export const hasMember = async (group: string, onid: string) => {
-  return isMember(client, group, onid);
+  const params = {
+    FunctionName: `grouperDXPassthrough-${AWS_ENV}-hasMember`,
+    Payload: JSON.stringify({
+      onid,
+      group,
+    }),
+  };
+
+  const result = await (new AWS.Lambda().invoke(params).promise());
+  // payload comes in as a BLOB and needs to be converted to a string
+  const payload = JSON.parse(result.Payload.toString());
+  if (payload.statusCode === 400) {
+    throw new Error(payload.body.message);
+  }
+
+  return payload.body.isMember;
 }
+
+export default { hasMember };
