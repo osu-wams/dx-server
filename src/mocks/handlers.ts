@@ -58,4 +58,7 @@ export const handlers = [
     // console.log('get *', req);
     // Notice no `return res()` statement
   }),
+  rest.get('*/planner/items', async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json([{ assignment: 'test' }]));
+  }),
 ];
