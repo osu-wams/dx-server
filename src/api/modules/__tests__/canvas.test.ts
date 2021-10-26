@@ -5,6 +5,8 @@ import querystring from 'querystring';
 import { server } from '@src/mocks/server';
 import { getPlannerItems, refreshOAuthToken, postRequest, CANVAS_OAUTH_TOKEN_URL } from '../canvas';
 
+const CANVAS_OAUTH_POST_URL = new RegExp(String.raw`${CANVAS_OAUTH_TOKEN_URL}`);
+
 const mockFindReturn = jest.fn();
 const mockUpdateCanvasDataReturn = jest.fn();
 jest.mock('../../models/user', () => ({
@@ -28,7 +30,7 @@ describe('Canvas module', () => {
   describe('postRequest', () => {
     it('refreshes oauth from canvas', async () => {
       server.use(
-        rest.post(new RegExp(String.raw`${CANVAS_OAUTH_TOKEN_URL}`), async (req, res, ctx) => {
+        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
           return res(ctx.status(200), ctx.json({ access_token: 'bobross', expires_in: '8675309' }));
         }),
       );
@@ -48,7 +50,7 @@ describe('Canvas module', () => {
 
     it('resets canvas fields on method exception', async () => {
       server.use(
-        rest.post(new RegExp(String.raw`${CANVAS_OAUTH_TOKEN_URL}`), async (req, res, ctx) => {
+        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
           return res(ctx.status(200), ctx.body('-unparsable-should-blow-up-the.method-'));
         }),
       );
@@ -82,7 +84,7 @@ describe('Canvas module', () => {
   describe('refreshOAuthToken', () => {
     it('refreshes oauth from canvas', async () => {
       server.use(
-        rest.post(new RegExp(String.raw`${CANVAS_OAUTH_TOKEN_URL}`), async (req, res, ctx) => {
+        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
           return res(ctx.status(200), ctx.json({ access_token: 'bobross', expires_in: '8675309' }));
         }),
       );
