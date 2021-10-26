@@ -2,8 +2,8 @@
 
 import { rest } from 'msw';
 import querystring from 'querystring';
-import { getPlannerItems, refreshOAuthToken, postRequest, CANVAS_OAUTH_TOKEN_URL } from '../canvas';
 import { server } from '@src/mocks/server';
+import { getPlannerItems, refreshOAuthToken, postRequest, CANVAS_OAUTH_TOKEN_URL } from '../canvas';
 
 const mockFindReturn = jest.fn();
 const mockUpdateCanvasDataReturn = jest.fn();
