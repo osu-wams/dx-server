@@ -1,15 +1,11 @@
 /* eslint-disable no-unused-vars */
 
-import nock from 'nock';
+import { rest } from 'msw';
 import querystring from 'querystring';
-import {
-  getPlannerItems,
-  refreshOAuthToken,
-  postRequest,
-  CANVAS_BASE_URL,
-  CANVAS_OAUTH_BASE_URL,
-  CANVAS_OAUTH_TOKEN_URL,
-} from '../canvas';
+import { server } from '@src/mocks/server';
+import { getPlannerItems, refreshOAuthToken, postRequest, CANVAS_OAUTH_TOKEN_URL } from '../canvas';
+
+const CANVAS_OAUTH_POST_URL = new RegExp(String.raw`${CANVAS_OAUTH_TOKEN_URL}`);
 
 const mockFindReturn = jest.fn();
 const mockUpdateCanvasDataReturn = jest.fn();
@@ -33,10 +29,11 @@ const assignment = { assignment: 'test' };
 describe('Canvas module', () => {
   describe('postRequest', () => {
     it('refreshes oauth from canvas', async () => {
-      nock(CANVAS_OAUTH_BASE_URL)
-        .post(CANVAS_OAUTH_TOKEN_URL)
-        .query(true)
-        .reply(200, { access_token: 'bobross', expires_in: '8675309' });
+      server.use(
+        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({ access_token: 'bobross', expires_in: '8675309' }));
+        }),
+      );
       const query = querystring.stringify({
         grant_type: 'refresh_token',
         client_id: 'bogus',
@@ -52,10 +49,11 @@ describe('Canvas module', () => {
     });
 
     it('resets canvas fields on method exception', async () => {
-      nock(CANVAS_OAUTH_BASE_URL)
-        .post(CANVAS_OAUTH_TOKEN_URL)
-        .query(true)
-        .reply(200, '-unparsable-should-blow-up-the.method-');
+      server.use(
+        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
+          return res(ctx.status(200), ctx.body('-unparsable-should-blow-up-the.method-'));
+        }),
+      );
       mockUpdateCanvasDataReturn.mockImplementation(() => new Promise((res, rej) => res(user)));
       const query = querystring.stringify({
         grant_type: 'refresh_token',
@@ -85,10 +83,11 @@ describe('Canvas module', () => {
 
   describe('refreshOAuthToken', () => {
     it('refreshes oauth from canvas', async () => {
-      nock(CANVAS_OAUTH_BASE_URL)
-        .post(CANVAS_OAUTH_TOKEN_URL)
-        .query(true)
-        .reply(200, { access_token: 'bobross', expires_in: '8675309' });
+      server.use(
+        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
+          return res(ctx.status(200), ctx.json({ access_token: 'bobross', expires_in: '8675309' }));
+        }),
+      );
       const result = await refreshOAuthToken(user);
       expect(result.canvasOptIn).toBeTruthy();
       expect(result.canvasOauthToken).toBe('bobross');
@@ -99,7 +98,6 @@ describe('Canvas module', () => {
 
   describe('getPlannerItems using oAuth', () => {
     it('returns upcoming assignments', async () => {
-      nock(CANVAS_BASE_URL).get('/planner/items').query(true).reply(200, [assignment]);
       const result = await getPlannerItems({ oAuthToken: 'someToken' });
       expect(result).toStrictEqual(JSON.stringify([assignment]));
     });
@@ -107,7 +105,6 @@ describe('Canvas module', () => {
 
   describe('getPlannerItems as user', () => {
     it('returns upcoming assignments', async () => {
-      nock(CANVAS_BASE_URL).get('/planner/items').query(true).reply(200, [assignment]);
       const result = await getPlannerItems({ osuId: 123456 });
       expect(result).toStrictEqual(JSON.stringify([assignment]));
     });
