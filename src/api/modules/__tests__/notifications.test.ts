@@ -2,8 +2,8 @@
 
 import { rest } from 'msw';
 import { server } from '@src/mocks/server';
-import { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing } from '../notifications';
 import { OUTLOOK_API } from '@src/mocks/apis';
+import { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing } from '../notifications';
 
 const mockedGetAsync = jest.fn();
 const mockedSetAsync = jest.fn();
