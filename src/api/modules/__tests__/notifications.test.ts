@@ -3,6 +3,7 @@
 import { rest } from 'msw';
 import { server } from '@src/mocks/server';
 import { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing } from '../notifications';
+import { OUTLOOK_API } from '@src/mocks/apis';
 
 const mockedGetAsync = jest.fn();
 const mockedSetAsync = jest.fn();
@@ -90,7 +91,7 @@ describe('Notifications module', () => {
   describe('Tests for MS Teams Webhook', () => {
     it('should throw error upon message teams failure', async () => {
       server.use(
-        rest.post('https://outlook.office.com', async (req, res, ctx) => {
+        rest.post(OUTLOOK_API, async (req, res, ctx) => {
           return res(ctx.status(500));
         }),
       );
