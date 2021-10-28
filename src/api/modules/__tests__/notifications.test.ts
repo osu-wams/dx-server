@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
-import nock from 'nock';
+import { rest } from 'msw';
+import { server } from '@src/mocks/server';
 import { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing } from '../notifications';
 
 const mockedGetAsync = jest.fn();
@@ -40,14 +41,6 @@ const teamsPayload = {
 };
 
 describe('Notifications module', () => {
-  beforeEach(() => {
-    nock('https://outlook.office.com')
-      .filteringPath(() => '/')
-      .post('/')
-      .reply(200);
-  });
-  afterEach(() => nock.cleanAll());
-
   it('creates the correct payload for MS Teams', () => {
     const title = 'testing';
     const subtitle = 'testingSub';
@@ -96,10 +89,11 @@ describe('Notifications module', () => {
 
   describe('Tests for MS Teams Webhook', () => {
     it('should throw error upon message teams failure', async () => {
-      nock('https://outlook.office.com')
-        .filteringPath(() => '/')
-        .post('/')
-        .reply(500);
+      server.use(
+        rest.post('https://outlook.office.com', async (req, res, ctx) => {
+          return res(ctx.status(500));
+        }),
+      );
       try {
         await sendTeamsMessage(teamsPayload);
       } catch (e) {
