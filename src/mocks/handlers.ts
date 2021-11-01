@@ -1,6 +1,6 @@
 import type { SetupServerApi } from 'msw/node';
 import { rest } from 'msw';
-import { PLANNER_ITEMS_API } from './apis';
+import { OUTLOOK_API, PLANNER_ITEMS_API } from './apis';
 
 /**
  * A general handler for dynamodb requests, since all dynamodb requests are HTTP POST, this handler needs
@@ -61,5 +61,8 @@ export const handlers = [
   }),
   rest.get(PLANNER_ITEMS_API, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.json([{ assignment: 'test' }]));
+  }),
+  rest.post(OUTLOOK_API, async (req, res, ctx) => {
+    return res(ctx.status(200));
   }),
 ];
