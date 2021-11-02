@@ -1,4 +1,4 @@
-import nock from 'nock';
+import { rest } from 'msw';
 import { getTrendingResources, mappedTrendingResources } from '@src/api/modules/google';
 import {
   trendingResourcesResponse,
@@ -27,17 +27,23 @@ const trendingResource = {
   uniqueEvents: 1,
 };
 
+const GA_ENDPOINT = 'https://www.googleapis.com/analytics/v3/data/ga';
+
 describe('Google api module', () => {
-  afterEach(() => nock.cleanAll());
   beforeEach(() => {
-    nock('https://www.googleapis.com').persist().post('/oauth2/v4/token').reply(200, {});
+    server.use(
+      rest.post('https://www.googleapis.com/oauth2/v4/token', async (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json({}));
+      }),
+    );
     mockedGetCache.mockReturnValue(null);
   });
   it('fetches trending resources from Google', async () => {
-    nock('https://www.googleapis.com')
-      .get('/analytics/v3/data/ga')
-      .query(true)
-      .reply(200, trendingResourcesResponse.data);
+    server.use(
+      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(trendingResourcesResponse.data));
+      }),
+    );
     const result = await getTrendingResources(1, date);
     expect(result).toMatchObject([trendingResource]);
   });
@@ -45,18 +51,20 @@ describe('Google api module', () => {
     mockedGetCache.mockReturnValue(
       JSON.stringify(mappedTrendingResources(mockedTrendingResources, dateKey)),
     );
-    nock('https://www.googleapis.com')
-      .get('/analytics/v3/data/ga')
-      .query(true)
-      .replyWithError('boom');
+    server.use(
+      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
+        return res(ctx.status(403), ctx.json({ errorMessage: 'boom' }));
+      }),
+    );
     const result = await getTrendingResources(1, date);
     expect(result).toMatchObject(mappedTrendingResources(mockedTrendingResources, dateKey));
   });
   it('fetches trending resources from Dynamodb', async () => {
-    nock('https://www.googleapis.com')
-      .get('/analytics/v3/data/ga')
-      .query(true)
-      .replyWithError('boom');
+    server.use(
+      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
+        return res(ctx.status(403), ctx.json({ errorMessage: 'boom' }));
+      }),
+    );
     const result = await getTrendingResources(1, date);
     expect(result).toMatchObject([trendingResource]);
   });
@@ -74,10 +82,11 @@ describe('Google api module', () => {
       ...trendingResourcesResponse.data,
       rows: [],
     };
-    nock('https://www.googleapis.com')
-      .get('/analytics/v3/data/ga')
-      .query(true)
-      .reply(200, emptyRows);
+    server.use(
+      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
+        return res(ctx.status(200), ctx.json(emptyRows));
+      }),
+    );
     const result = await getTrendingResources(1, date);
     expect(result).toMatchObject([]);
   });
@@ -91,10 +100,11 @@ describe('Google api module', () => {
       },
     };
     dynamoDbHandler(server, itemMap);
-    nock('https://www.googleapis.com')
-      .get('/analytics/v3/data/ga')
-      .query(true)
-      .replyWithError('boom');
+    server.use(
+      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
+        return res(ctx.status(403), ctx.json({ errorMessage: 'boom' }));
+      }),
+    );
     const result = await getTrendingResources(1, date);
     expect(result).toStrictEqual([]);
   });
