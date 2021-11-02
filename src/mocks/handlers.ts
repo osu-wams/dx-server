@@ -1,6 +1,7 @@
 import type { SetupServerApi } from 'msw/node';
 import { rest } from 'msw';
-import { OUTLOOK_API, PLANNER_ITEMS_API } from './apis';
+import { OUTLOOK_API, PLANNER_ITEMS_API, READY_EDUCATION_API } from './apis';
+import mockedStudent from './ready-education/student.data';
 
 /**
  * A general handler for dynamodb requests, since all dynamodb requests are HTTP POST, this handler needs
@@ -64,5 +65,8 @@ export const handlers = [
   }),
   rest.post(OUTLOOK_API, async (req, res, ctx) => {
     return res(ctx.status(200));
+  }),
+  rest.get(READY_EDUCATION_API, async (req, res, ctx) => {
+    return res(ctx.status(200), ctx.json(mockedStudent));
   }),
 ];
