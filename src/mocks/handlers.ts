@@ -1,6 +1,6 @@
 import type { SetupServerApi } from 'msw/node';
 import { rest } from 'msw';
-import { OUTLOOK_API, PLANNER_ITEMS_API, READY_EDUCATION_API } from './apis';
+import { CACHE_API, OUTLOOK_API, PLANNER_ITEMS_API, READY_EDUCATION_API } from './apis';
 import mockedStudent from './ready-education/student.data';
 
 /**
@@ -68,5 +68,9 @@ export const handlers = [
   }),
   rest.get(READY_EDUCATION_API, async (req, res, ctx) => {
     return res(ctx.status(200), ctx.json(mockedStudent));
+  }),
+  rest.get(CACHE_API, async (req, res, ctx) => {
+    const mockUrlResponse = { bob: 'ross' };
+    return res(ctx.status(200), ctx.json(mockUrlResponse));
   }),
 ];
