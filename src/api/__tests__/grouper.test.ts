@@ -11,12 +11,16 @@ let request: supertest.SuperTest<supertest.Test>;
 beforeAll(async () => {
   request = supertest.agent(app);
 });
+beforeEach(async () => {
+  // Authenticate before each request
+  await request.get('/login');
+  // mock first response which will return the person data
+  mockedAsync.mockResolvedValueOnce({ attributes: { onid: 'test' }});
+});
 
 describe('/api/grouper/hasMember', () => {
   it('API should return data from asnyc call', async () => {
     const expectedResult = { IS_MEMBER: true };
-    // MOCK 2 DIFFERENT VALUES
-    mockedAsync.mockResolvedValueOnce({ attributes: { onid: 'test' }});
     mockedAsync.mockResolvedValueOnce(expectedResult);
 
     await request.get('/api/grouper/hasMember?group=covidvac-student').expect(200, expectedResult);

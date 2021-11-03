@@ -45,6 +45,6 @@ router.use('/cards', CardsRouter);
 router.use('/people', PeopleRouter);
 router.use('/locations', LocationsRouter);
 router.use('/searchIndex', SearchIndexRouter);
-router.use('/grouper', GrouperRouter);
+router.use('/grouper', Auth.ensureAuthenticated, GrouperRouter);
 
 export default router;
