@@ -43,7 +43,7 @@ router.get('/hasMember', async (req: Request, res: Response) => {
     }
   } catch (err) {
     logger().error('api/grouper/hasMember failed:', err);
-    res.status(400);
+    res.status(500);
     res.send({ message: 'Unable to retrieve grouper group.' });
   }
 });
