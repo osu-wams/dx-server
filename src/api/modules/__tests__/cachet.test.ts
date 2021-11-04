@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-import nock from 'nock';
+import { rest } from 'msw';
+import { server } from '@src/mocks/server';
 import { getSystemsStatus, CACHET_BASE_URL } from '../cachet'; // eslint-disable-line no-unused-vars
 import componentsResponse, { expectedResponse } from '../../../mocks/cachet/components';
 import incidentsResponse from '../../../mocks/cachet/incidents';
@@ -10,8 +11,14 @@ import incidentsResponse from '../../../mocks/cachet/incidents';
  * it not currently possible to mock cache.get instead.
  */
 beforeEach(() => {
-  nock(CACHET_BASE_URL).get('/components').query(true).reply(200, componentsResponse);
-  nock(CACHET_BASE_URL).get('/incidents').query(true).reply(200, incidentsResponse);
+  server.use(
+    rest.get(CACHET_BASE_URL + '/components', async (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(componentsResponse));
+    }),
+    rest.get(CACHET_BASE_URL + '/incidents', async (req, res, ctx) => {
+      return res(ctx.status(200), ctx.json(incidentsResponse));
+    }),
+  );
 });
 
 describe('Cachet IT System status module', () => {
