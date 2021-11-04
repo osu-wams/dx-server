@@ -12,10 +12,10 @@ import incidentsResponse from '../../../mocks/cachet/incidents';
  */
 beforeEach(() => {
   server.use(
-    rest.get(CACHET_BASE_URL + '/components', async (req, res, ctx) => {
+    rest.get(`${CACHET_BASE_URL}/components`, async (req, res, ctx) => {
       return res(ctx.status(200), ctx.json(componentsResponse));
     }),
-    rest.get(CACHET_BASE_URL + '/incidents', async (req, res, ctx) => {
+    rest.get(`${CACHET_BASE_URL}/incidents`, async (req, res, ctx) => {
       return res(ctx.status(200), ctx.json(incidentsResponse));
     }),
   );
