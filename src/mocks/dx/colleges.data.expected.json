@@ -1,0 +1,130 @@
+[
+  {
+    "id": "5e496d9c-e756-42a7-9c96-503d27ed26d8",
+    "name": "College of Education"
+  },
+  {
+    "id": "22e3b62b-0da3-49e5-86de-2ce32aa32909",
+    "name": "Interdisciplinary Programs"
+  },
+  {
+    "id": "2c972e92-494c-4a4e-8dd3-411ba1dc5b67",
+    "name": "College of Engineering"
+  },
+  {
+    "id": "cf7b6dcf-cbc9-4bfd-b2af-871f53a20edb",
+    "name": "Library"
+  },
+  {
+    "id": "ec959e7f-7117-437a-a2c9-4fc8c9c08f9f",
+    "name": "College of Forestry"
+  },
+  {
+    "id": "4f8acdf6-b5c6-42a9-8145-038443b5415f",
+    "name": "No College Designated"
+  },
+  {
+    "id": "6f4ed945-8715-426c-9fff-9af5ad4b0e0d",
+    "name": "College of Health & Human Performance"
+  },
+  {
+    "id": "77d3a9f5-c948-4d35-85e9-1bc0049a18db",
+    "name": "Non-Credit"
+  },
+  {
+    "id": "d1270413-4712-4f33-ac60-5c20f31dee67",
+    "name": "College of Health and Human Sciences"
+  },
+  {
+    "id": "b00cca35-88fa-48a7-8733-b87c4c89b28f",
+    "name": "OSU Cascades Scholarship"
+  },
+  {
+    "id": "cf632723-b1b4-49d5-bc2d-93a8e528a1e9",
+    "name": "College of Home Economics and Education"
+  },
+  {
+    "id": "a0a7fed5-a171-4410-b32c-d4c9df9bd2f9",
+    "name": "OSU-Cascades Partner Inst."
+  },
+  {
+    "id": "31b6b055-1380-4266-8287-b5968f4359a5",
+    "name": "College of Liberal Arts"
+  },
+  {
+    "id": "66371d0c-1711-4b1b-9a23-9866556136f8",
+    "name": "Overseas Study"
+  },
+  {
+    "id": "4feb9038-4f2b-46bf-bd2e-c13acb7b899e",
+    "name": "College of Oceanic and Atmospheric Sciences"
+  },
+  {
+    "id": "03c8f0a0-52db-46bd-b642-e1b859cfd77b",
+    "name": "Pre-Business Program"
+  },
+  {
+    "id": "668af76d-d05d-45e0-8f46-d52cd4ed098e",
+    "name": "College of Pharmacy"
+  },
+  {
+    "id": "1df9827c-eae8-4345-b280-d677033adf03",
+    "name": "Pre-Engineering Program"
+  },
+  {
+    "id": "a0d25884-a729-44fa-aec3-867a88350585",
+    "name": "College of Public Health and Human Sciences"
+  },
+  {
+    "id": "b0712ff6-4b73-4af6-97bd-cddb79affbca",
+    "name": "Pre-Forestry Program"
+  },
+  {
+    "id": "a09afd05-468a-4b74-a25b-a5057fbb7846",
+    "name": "College of Science"
+  },
+  {
+    "id": "f51376f4-5954-445b-aa34-aff57aa6dcba",
+    "name": "University Exploratory Study"
+  },
+  {
+    "id": "c09a13e7-7140-43ba-a12d-2d990ac05264",
+    "name": "Academic Learning Services"
+  },
+  {
+    "id": "a67f72ed-a015-4911-85a1-f4ff1decced5",
+    "name": "College of Veterinary Medicine"
+  },
+  {
+    "id": "4449c99f-e698-496c-84c1-3f9545bb941b",
+    "name": "University Honors College"
+  },
+  {
+    "id": "60c339c5-ece4-462e-83c6-cfb74d4d81f6",
+    "name": "College not used in stat calc"
+  },
+  {
+    "id": "db0cbd96-e66c-46df-8ea9-6ce873a55e2a",
+    "name": "Defense Education"
+  },
+  {
+    "id": "61c65dcc-7414-49fc-b020-63868a014df8",
+    "name": "College of Agricultural Sciences"
+  },
+  {
+    "id": "9e547999-b5b7-4b48-9340-bf33f38937de",
+    "name": "Events, Special"
+  },
+  {
+    "id": "b30d0c16-89cb-45a2-94fc-89360b37426c",
+    "name": "College of Business"
+  },
+  {
+    "id": "a35e03a6-e7ce-45a0-835c-5575a235c103",
+    "name": "Graduate School"
+  },
+  {
+    "id": "5b750f31-43fb-4ba5-8e03-cbc1ef01048f",
+    "name": "College of Earth, Ocean, and Atmospheric Sciences"
+  }
+]
