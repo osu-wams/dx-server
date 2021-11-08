@@ -1,5 +1,4 @@
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
-import { COLLEGES } from '../../constants';
 import { User, find, upsert, updateCanvasData } from '../models/user'; // eslint-disable-line no-unused-vars
 import logger from '../../logger';
 
