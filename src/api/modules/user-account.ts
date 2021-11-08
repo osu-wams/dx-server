@@ -99,7 +99,7 @@ export const setColleges = async (u: Partial<User>, degrees: Types.Degree[]): Pr
   const dualDegrees = degrees.filter((d) => d.dualDegree).map((dd) => dd.dualDegree.college);
   colleges.push(...dualDegrees);
   // eslint-disable-next-line
-  u.colleges = [...new Set(colleges)].map((name) => COLLEGES[name.toLowerCase()]).filter(Boolean);
+  u.colleges = [...new Set(colleges)];
   const { user } = await findOrUpsertUser(u);
   return user;
 };

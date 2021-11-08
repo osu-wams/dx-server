@@ -5,6 +5,8 @@ import mockedAnnouncementsFinancesExpected from './announcements-finances.data.e
 import mockedAnnouncementsAcademicsExpected from './announcements-academics.data.expected';
 import mockedCategories from './categories.data.json';
 import mockedCategoriesExpected from './categories.data.expected';
+import mockedColleges from './colleges.data.json';
+import mockedCollegesExpected from './colleges.data.expected.json';
 import mockedCuratedResourcesFeatured from './resources-featured.data.json';
 import mockedCuratedResourcesFeaturedExpected from './resources-featured.data.expected';
 import mockedCuratedResourcesFeaturedEmployee from './resources-featured-employee.data.json';
@@ -53,6 +55,8 @@ export {
   mockedCardsExpected,
   mockedCategories,
   mockedCategoriesExpected,
+  mockedColleges,
+  mockedCollegesExpected,
   mockedCuratedResources,
   mockedCuratedResourcesFeaturedExpected,
   mockedCuratedResourcesAcademicExpected,

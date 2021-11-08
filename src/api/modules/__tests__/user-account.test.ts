@@ -66,8 +66,9 @@ describe('User Account module', () => {
     });
 
     it('returns an existing user with added colleges', async () => {
-      const user = await setColleges(mockUser, [mockDegrees.data[0].attributes]);
-      expect(user.colleges).toEqual(['5', '6']);
+      const { attributes } = mockDegrees.data[0];
+      const user = await setColleges(mockUser, [attributes]);
+      expect(user.colleges).toEqual([attributes.college, attributes.dualDegree.college]);
     });
     it('returns an existing user who has no colleges', async () => {
       const user = await setColleges(mockUser, []);

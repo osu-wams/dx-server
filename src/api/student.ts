@@ -177,7 +177,7 @@ router.get('/degrees', async (req: Request, res: Response) => {
       'getDegrees',
       [req.user],
     );
-    // If not masqueraded, then upsert this users college(s) to thier user record
+    // If not masqueraded, then upsert this users college(s) to their user record
     if (!req.user.masqueradeId) {
       const degrees = response.data.map((d) => d.attributes);
       if (degrees.length) {

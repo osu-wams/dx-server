@@ -15,6 +15,7 @@ import {
   mockedTrainingAudiences,
   mockedTrainingTags,
   mockedPageSearchIndex,
+  mockedColleges,
 } from '../../mocks/dx';
 import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
 import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
@@ -607,3 +608,29 @@ export const getSearchIndexPages = async (): Promise<any> => {
     searchTerms: d.field_search_index_terms,
   }));
 };
+
+/**
+ * Get all college names
+ */
+export const getColleges = async (): Promise<any> => {
+  const taxonomyName = 'colleges';
+  const data = await fetchData(
+    `taxonomy_term/${taxonomyName}`,
+    () =>
+      retrieveData(`taxonomy_term/${taxonomyName}`, {
+        fields: {
+          'taxonomy_term--colleges': 'id,name',
+        },
+        filter: {
+          status: 1,
+        },
+        sort: 'weight',
+      }),
+    mockedColleges,
+  );
+
+  return data.map((d) => ({
+    id: d.id,
+    name: d.name,
+  }));
+}

@@ -20,6 +20,7 @@ import PeopleRouter from './people';
 import LocationsRouter from './locations';
 import SearchIndexRouter from './searchIndex';
 import GrouperRouter from './grouper';
+import CollegesRouter from './colleges'
 import { jwtUserHasToken } from '../utils/routing';
 
 const router = Router();
@@ -46,5 +47,6 @@ router.use('/people', PeopleRouter);
 router.use('/locations', LocationsRouter);
 router.use('/searchIndex', SearchIndexRouter);
 router.use('/grouper', Auth.ensureAuthenticated, GrouperRouter);
+router.use('/colleges', CollegesRouter);
 
 export default router;
