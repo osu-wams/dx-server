@@ -55,7 +55,7 @@ export default {
     cacheEndpointSec: '3600',
     // Overridden by process.env.CANVAS_API_TOKEN
     token: '',
-    baseUrl: 'https://oregonstate.beta.instructure.com/api/v1',
+    baseUrl: 'https://canvas.oregonstate.edu/api/v1',
   },
   canvasOauth: {
     // Overridden by process.env.CANVAS_OAUTH_ID
@@ -63,7 +63,7 @@ export default {
     // Overridden by process.env.CANVAS_OAUTH_SECRET
     secret: '',
     callbackUrl: '',
-    baseUrl: 'https://oregonstate.beta.instructure.com',
+    baseUrl: 'https://canvas.oregonstate.edu',
     authUrl: '/login/oauth2/auth',
     tokenUrl: '/login/oauth2/token',
     scope: '',

@@ -10,14 +10,14 @@ export default {
     baseUrl: 'https://mcm.oregonstate.edu',
   },
   canvasApi: {
-    baseUrl: 'https://oregonstate.instructure.com/api/v1',
+    baseUrl: 'https://canvas.oregonstate.edu/api/v1',
   },
   saml: {
     callbackUrl: 'https://my.oregonstate.edu/login/saml',
     logoutCallbackUrl: 'https://my.oregonstate.edu/logout/saml',
   },
   canvasOauth: {
-    baseUrl: 'https://oregonstate.instructure.com',
+    baseUrl: 'https://canvas.oregonstate.edu',
     callbackUrl: 'https://my.oregonstate.edu/canvas/auth',
     scope: 'url:GET|/api/v1/planner/items',
   },
