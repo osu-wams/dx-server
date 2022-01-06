@@ -90,7 +90,7 @@ export default JSON.stringify([
         is_media: false,
         author_name: 'Testo Smyth',
         author_avatar_url:
-          'https://oregonstate.instructure.com/images/thumbnails/68463303/k2sR0118HTmunRnBPKTI93vkntE7cSBUbTH6znNc',
+          'https://canvas.oregonstate.edu/images/thumbnails/68463303/k2sR0118HTmunRnBPKTI93vkntE7cSBUbTH6znNc',
       },
     },
     plannable_date: addDays(new Date(), 1),
