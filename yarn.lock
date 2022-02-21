@@ -540,18 +540,18 @@
   resolved "https://registry.yarnpkg.com/@open-draft/until/-/until-1.0.3.tgz#db9cc719191a62e7d9200f6e7bab21c5b848adca"
   integrity sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==
 
-"@osu-wams/grouper@0.0.9":
-  version "0.0.9"
-  resolved "https://npm.pkg.github.com/download/@osu-wams/grouper/0.0.9/5d85535699f782f8963a5903b7e61dfbe85a94a3157a1431e76845bf6a7de396#3d3e47dc3a5d114ddaa8ac40ae89128cc9c4a2d0"
-  integrity sha512-Nn7QeHuSlwgb/cgtb69z7BGbn8ouOp9fbZdZQzfp4iUrdxDTd4cX05One1wPTnhBT9OSj+MYYEN+D3fiudTPcQ==
+"@osu-wams/grouper@0.0.10":
+  version "0.0.10"
+  resolved "https://npm.pkg.github.com/download/@osu-wams/grouper/0.0.10/907c28c60a63a069746fe8c4bab979c32804f98e81a6577533d8d493ddd1ef41#400a2c6388410e51218a24c2211bc29afa3942b9"
+  integrity sha512-tk3KdwdGuFyJNfpdoDnxZPienXAp5D/tgF0Hr3Zfx1wTmfbT7SZks00+R0nNqewxHEcvXjCFnCrj3cho3MaLYg==
   dependencies:
     axios "^0.21.4"
     winston "^3.3.3"
 
-"@osu-wams/lib@0.1.85":
-  version "0.1.85"
-  resolved "https://npm.pkg.github.com/download/@osu-wams/lib/0.1.85/32b55f7760731e106729d161ac3869bf2837bb5a03747e0c74a0ad337e5dd550#9cc833900ef63385c6686fa5806c0ab7036ed567"
-  integrity sha512-rpDTKMt7nCCkbx70G4YpBPSTtKsJYK4IbKyCdcsu8Soz/caWgfoMuB3UrHLlgMpmWYNKd3DaoloX4JdV8uLL/w==
+"@osu-wams/lib@0.1.86":
+  version "0.1.86"
+  resolved "https://npm.pkg.github.com/download/@osu-wams/lib/0.1.86/ed3b64b07e302aff83eee82c62879423a818ab62e1bffe58ee475377167f8353#740995c1fbb5d14af3cfc949b1cdf9fe149ca34e"
+  integrity sha512-3HV6XZ49KHN7Gvt+Zsfl+O0beLNqCoFdIXtWSegVsYES1jv0oMv2+SrgXYesPHeiCQ19s/RVhNb+qr2HtrcaqQ==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
