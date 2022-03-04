@@ -7,6 +7,9 @@ AWS.config.update({
     endpoint: DYNAMODB_ENDPOINT,
     apiVersion: DYNAMODB_APIVERSION,
   },
+  httpOptions: {
+    timeout: ENV === 'test' ? 0 : 12000,
+  }
 });
 
 const dynamoDb = new AWS.DynamoDB();
