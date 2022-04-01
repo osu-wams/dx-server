@@ -9,7 +9,7 @@ import { BASE_URL } from '../modules/dx';
 const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
 jest.mock('../modules/cache.ts', () => ({
-  ...jest.requireActual('../modules/cache.ts'),
+  ...jest.requireActual('../modules/cache.ts') as {},
   setCache: () => mockedSetCache(),
   selectDbAsync: () => jest.fn(),
   getCache: () => mockedGetCache(),

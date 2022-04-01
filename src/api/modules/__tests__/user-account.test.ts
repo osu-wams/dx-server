@@ -7,7 +7,7 @@ import mockDegrees from '../../../mocks/osu/degrees.data.json';
 const mockFindReturn = jest.fn();
 const mockUpdateCanvasDataReturn = jest.fn();
 jest.mock('../../models/user', () => ({
-  ...jest.requireActual('../../models/user'),
+  ...jest.requireActual('../../models/user') as {},
   find: () => mockFindReturn(),
   updateCanvasData: () => mockUpdateCanvasDataReturn(),
 }));

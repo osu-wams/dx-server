@@ -7,7 +7,7 @@ import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import { OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
-  ...jest.requireActual('../util.ts'),
+  ...jest.requireActual('../util.ts') as {},
   getToken: () => Promise.resolve('bearer token'),
 }));
 
