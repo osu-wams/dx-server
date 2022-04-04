@@ -12,14 +12,14 @@ import { server } from '@src/mocks/server';
 import { issueRefresh } from '@src/utils/auth';
 
 jest.mock('../util.ts', () => ({
-  ...jest.requireActual('../util.ts'),
+  ...jest.requireActual('../util.ts') as {},
   getToken: () => Promise.resolve('bearer token'),
 }));
 
 const mockedGetUserMessages = jest.fn();
 const mockedMarkRead = jest.fn();
 jest.mock('../modules/dx-mcm.ts', () => ({
-  ...jest.requireActual('../modules/dx-mcm.ts'),
+  ...jest.requireActual('../modules/dx-mcm.ts') as {},
   getUserMessages: async () => mockedGetUserMessages(),
   markRead: async () => mockedMarkRead(),
 }));

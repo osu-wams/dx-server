@@ -8,7 +8,7 @@ import { getAsync, mockCachedData } from '../modules/__mocks__/cache';
 
 const mockedGetCache = jest.fn();
 jest.mock('../modules/cache.ts', () => ({
-  ...jest.requireActual('../modules/cache.ts'),
+  ...jest.requireActual('../modules/cache.ts') as {},
   selectDbAsync: () => jest.fn(),
   getCache: () => mockedGetCache(),
 }));

@@ -7,7 +7,7 @@ import { getAsync, selectDbAsync, mockCachedData } from '../modules/__mocks__/ca
 import { OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
-  ...jest.requireActual('../util.ts'),
+  ...jest.requireActual('../util.ts') as {},
   getToken: () => Promise.resolve('bearer token'),
 }));
 

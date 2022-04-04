@@ -10,7 +10,7 @@ const mockedSetAsync = jest.fn();
 const mockedDelAsync = jest.fn();
 
 jest.mock('../cache', () => ({
-  ...jest.requireActual('../cache'),
+  ...jest.requireActual('../cache') as {},
   getAsync: (key) => mockedGetAsync(key),
   setAsync: (key, value) => mockedSetAsync(key, value),
   delAsync: (key) => mockedDelAsync(key),

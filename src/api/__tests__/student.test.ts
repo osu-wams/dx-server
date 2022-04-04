@@ -19,7 +19,7 @@ import mockUser from '../../utils/mock-user';
 import { GROUPS, OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
-  ...jest.requireActual('../util.ts'),
+  ...jest.requireActual('../util.ts') as {},
   getToken: () => Promise.resolve('bearer token'),
 }));
 jest.mock('../../utils/mock-user.ts');

@@ -9,14 +9,14 @@ import mockedStudent from '../../mocks/ready-education/student.data';
 const mockRequestOAuthToken = jest.fn();
 
 jest.mock('../modules/canvas', () => ({
-  ...jest.requireActual('../modules/canvas'),
+  ...jest.requireActual('../modules/canvas') as {},
   refreshOAuthToken: () => mockRequestOAuthToken,
 }));
 
 const mockFindReturn = jest.fn();
 
 jest.mock('../models/user', () => ({
-  ...jest.requireActual('../models/user'),
+  ...jest.requireActual('../models/user') as {},
   find: () => mockFindReturn(),
 }));
 

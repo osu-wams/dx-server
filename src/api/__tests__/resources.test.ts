@@ -21,7 +21,7 @@ import { dynamoDbHandler } from '@src/mocks/handlers';
 const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
 jest.mock('../modules/cache.ts', () => ({
-  ...jest.requireActual('../modules/cache.ts'),
+  ...jest.requireActual('../modules/cache.ts') as {},
   setCache: () => mockedSetCache(),
   selectDbAsync: () => jest.fn(),
   getCache: () => mockedGetCache(),
@@ -32,11 +32,11 @@ let request: supertest.SuperTest<supertest.Test>;
 const mockedGetTrendingResources = jest.fn();
 const mockedDaysInDuration = jest.fn();
 jest.mock('../modules/google', () => ({
-  ...jest.requireActual('../modules/google'),
+  ...jest.requireActual('../modules/google') as {},
   getTrendingResources: () => mockedGetTrendingResources(),
 }));
 jest.mock('../../utils/resources', () => ({
-  ...jest.requireActual('../../utils/resources'),
+  ...jest.requireActual('../../utils/resources') as {},
   getDaysInDuration: () => mockedDaysInDuration(),
 }));
 

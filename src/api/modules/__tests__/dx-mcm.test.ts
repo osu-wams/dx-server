@@ -7,7 +7,7 @@ import cache from '../cache'; // eslint-disable-line no-unused-vars
 const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
 jest.mock('../cache.ts', () => ({
-  ...jest.requireActual('../cache.ts'),
+  ...jest.requireActual('../cache.ts') as {},
   setCache: () => mockedSetCache(),
   selectDbAsync: () => jest.fn(),
   getCache: () => mockedGetCache(),

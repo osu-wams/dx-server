@@ -10,7 +10,7 @@ import { dynamoDbHandler } from '@src/mocks/handlers';
 
 const mockedGetCache = jest.fn();
 jest.mock('../cache', () => ({
-  ...jest.requireActual('../cache'),
+  ...jest.requireActual('../cache') as {},
   getCache: () => mockedGetCache(),
   setCache: jest.fn(),
 }));
