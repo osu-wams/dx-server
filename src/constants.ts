@@ -42,8 +42,9 @@ const GOOGLE_CACHE_SEC: number = parseInt(config.get('google.cacheEndpointSec'),
 const GOOGLE_SERVICE_ACCOUNT_EMAIL: string = config.get('google.serviceAccountEmail');
 const GOOGLE_PRIVATE_KEY: string = config.get('google.privateKey');
 const GROUPS = {
-  admin: 'urn:mace:oregonstate.edu:entitlement:dx:dx-admin',
-  masquerade: 'urn:mace:oregonstate.edu:entitlement:dx:dx-masquerade',
+  admin: 'urn:mace:oregonstate.edu:entitlement:dx:dxAdmin',
+  masquerade: 'urn:mace:oregonstate.edu:entitlement:dx:dxMasquerade',
+  successFactors: 'urn:mace:oregonstate.edu:entitlement:dx:dxSuccessFactors'
 };
 const IV_LENGTH: number = 16;
 const JWT_KEY: string = config.get('jwtKey');
