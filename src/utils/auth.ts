@@ -103,6 +103,9 @@ const parseSamlResult = (profile: any, done: any) => {
       user.groups.push('masquerade');
     }
   }
+  if (permissions.includes(GROUPS.successFactors)) {
+    user.groups.push('successFactors');
+  }
 
   if (user.primaryAffiliation.toLowerCase() === 'other') {
     logger().debug(
