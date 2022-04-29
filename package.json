@@ -54,7 +54,7 @@
   },
   "dependencies": {
     "@osu-wams/grouper": "0.0.10",
-    "@osu-wams/lib": "0.1.86",
+    "@osu-wams/lib": "0.1.87",
     "aws-sdk": "^2.510.0",
     "config": "^3.2.2",
     "connect-redis": "^5.2.0",
