@@ -67,7 +67,7 @@
     "express-winston": "^3.2.1",
     "google-auth-library": "^6.1.0",
     "googleapis": "^60.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "kitsu": "^9.1.22",
     "logform": "^2.1.2",
     "node-fetch": "^2.6.7",
