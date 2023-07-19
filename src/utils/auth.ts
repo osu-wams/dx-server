@@ -114,6 +114,15 @@ const parseSamlResult = (profile: any, done: any) => {
     user.primaryAffiliation = UserLib.AFFILIATIONS.employee;
   }
 
+  if (typeof user.affiliations === 'string' || user.affiliations instanceof String){
+    logger().debug(
+      `Saml user's affiliations came as a string, expected an array. Response values: ${JSON.stringify(
+        user,
+      )}, Profile values: ${JSON.stringify(profile)}`,
+    );
+    user.affiliations = [user.affiliations];
+  }
+
   if (user.affiliations.findIndex) {
     const otherIndex = user.affiliations.findIndex((a) => a.toLowerCase() === 'other');
     if (otherIndex > -1) {
