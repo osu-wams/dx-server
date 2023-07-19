@@ -114,12 +114,20 @@ const parseSamlResult = (profile: any, done: any) => {
     user.primaryAffiliation = UserLib.AFFILIATIONS.employee;
   }
 
-  const otherIndex = user.affiliations.findIndex((a) => a.toLowerCase() === 'other');
-  if (otherIndex > -1) {
-    logger().debug(
-      "Saml user has 'other' in affiliations, setting it to 'employee' as the default.",
-    );
-    user.affiliations[otherIndex] = UserLib.AFFILIATIONS.employee;
+  if (user.affiliations.findIndex) {
+    const otherIndex = user.affiliations.findIndex((a) => a.toLowerCase() === 'other');
+    if (otherIndex > -1) {
+      logger().debug(
+        `Saml user has 'other' in affiliations, setting it to 'employee' as the default.`,
+      );
+      user.affiliations[otherIndex] = UserLib.AFFILIATIONS.employee;
+    }
+  } else {
+    logger().error(
+      `Saml user's affiliations does not have a findIndex function, indicates possible issue. Response values: ${JSON.stringify(
+        user,
+      )}, Profile values: ${JSON.stringify(profile)}`,
+    )
   }
 
   return done(null, user);
