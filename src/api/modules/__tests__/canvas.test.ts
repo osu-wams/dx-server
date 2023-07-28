@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 
-import { rest } from 'msw';
 import querystring from 'querystring';
+import { rest } from 'msw';
 import { server } from '@src/mocks/server';
 import { getPlannerItems, refreshOAuthToken, postRequest, CANVAS_OAUTH_TOKEN_URL } from '../canvas';
 

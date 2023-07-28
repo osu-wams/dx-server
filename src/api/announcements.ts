@@ -1,8 +1,8 @@
 /**
  * /api/announcements
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import { isNullOrUndefined } from 'util';
+import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
 import logger from '../logger';
 import { getAnnouncements } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';

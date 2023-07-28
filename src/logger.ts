@@ -1,7 +1,7 @@
-import winston, { createLogger, format, transports, config as winstonConfig } from 'winston'; // eslint-disable-line no-unused-vars
-import expressWinston, { LoggerOptionsWithTransports } from 'express-winston'; // eslint-disable-line no-unused-vars
 import path from 'path';
 import fs from 'fs';
+import winston, { createLogger, format, transports, config as winstonConfig } from 'winston'; // eslint-disable-line no-unused-vars
+import expressWinston, { LoggerOptionsWithTransports } from 'express-winston'; // eslint-disable-line no-unused-vars
 import config from 'config';
 import { Format } from 'logform'; // eslint-disable-line no-unused-vars
 import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
