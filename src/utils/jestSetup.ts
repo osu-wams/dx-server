@@ -1,4 +1,5 @@
 import { beforeEach, beforeAll, afterEach, afterAll, jest } from '@jest/globals'; // eslint-disable-line
+import redis from 'redis';
 import { server } from '@src/mocks/server';
 import { dynamoDbHandler } from '@src/mocks/handlers';
 import TrendingResource from '@src/api/models/trendingResource';
@@ -7,7 +8,6 @@ import User from '@src/api/models/user';
 import { fromDynamoDb } from '@src/mocks/google/trendingResources';
 import { mockDynamoDbUser } from '@src/api/models/__mocks__/user';
 import { mockDynamoDbFavoriteResource } from '@src/api/models/__mocks__/favoriteResource';
-import redis from 'redis';
 
 jest.mock('redis', () => jest.requireActual('redis-mock'));
 

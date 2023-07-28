@@ -1,7 +1,7 @@
+import { promisify } from 'util';
 import request from 'node-fetch';
 import redis from 'redis';
 import config from 'config';
-import { promisify } from 'util';
 import logger from '../../logger';
 
 const DEFAULT_DB: number = 1;

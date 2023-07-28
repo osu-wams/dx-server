@@ -1,6 +1,6 @@
+import querystring from 'querystring';
 import request from 'node-fetch';
 import config from 'config';
-import querystring from 'querystring';
 import { format } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars

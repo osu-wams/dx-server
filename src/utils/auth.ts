@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import crypto from 'crypto';
+import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import jwt from 'jsonwebtoken';
 import { User as UserLib } from '@osu-wams/lib';
 import { ENV, GROUPS, IV_LENGTH } from '../constants';
