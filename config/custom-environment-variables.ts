@@ -48,7 +48,6 @@ export default {
     username: 'GROUPER_USERNAME',
     password: 'GROUPER_PASSWORD',
     groups: {
-      'covidvac-student': 'GROUPER_GROUP_COVIDVAC_STUDENT',
     },
   },
 };
