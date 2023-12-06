@@ -71,7 +71,7 @@
     "kitsu": "^9.1.22",
     "logform": "^2.1.2",
     "node-fetch": "^2.6.7",
-    "passport": "^0.4.0",
+    "passport": "^0.6.0",
     "passport-dev": "^1.0.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
