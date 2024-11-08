@@ -26,8 +26,7 @@ import {
   JWT_KEY,
   SAML_CALLBACK_URL,
   SAML_CERT,
-  SAML_LOGOUT,
-  SAML_LOGOUT_CALLBACK_URL,
+  SAML_LOGOUT_REDIRECT,
   SAML_PVK,
   SAML_URL,
   COOKIE_NAME,
@@ -79,8 +78,6 @@ switch (ENV) {
         disableRequestedAuthnContext: true,
         identifierFormat: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
         callbackUrl: SAML_CALLBACK_URL,
-        logoutUrl: SAML_LOGOUT,
-        logoutCallbackUrl: SAML_LOGOUT_CALLBACK_URL,
         entryPoint: `${SAML_URL}SAML2/Redirect/SSO`,
         issuer: 'https://my.oregonstate.edu',
         cert: SAML_CERT,
@@ -251,7 +248,7 @@ Auth.logout = (req: Request, res: Response) => {
           logger().error('Auth.passportStrategy.logout session destroy failed.', sessionError);
         }
         res.clearCookie(COOKIE_NAME);
-        res.redirect(uri);
+        res.redirect(SAML_LOGOUT_REDIRECT);
       });
     });
   } catch (err) {

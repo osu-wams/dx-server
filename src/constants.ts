@@ -67,10 +67,9 @@ const REDIS_HOST: string = config.get('redis.host');
 const REDIS_PORT: number = parseInt(config.get('redis.port'), 10);
 const SAML_CALLBACK_URL: string = config.get('saml.callbackUrl');
 const SAML_CERT: string = config.get('saml.cert');
-const SAML_LOGOUT_CALLBACK_URL: string = config.get('saml.logoutCallbackUrl');
 const SAML_PVK: string = config.get('saml.pvk');
 const SAML_URL = 'https://login.oregonstate.edu/idp/profile/';
-const SAML_LOGOUT = `${SAML_URL}Logout`;
+const SAML_LOGOUT_REDIRECT = 'https://oregonstate.edu';
 const SESSION_SECRET: string = config.get('sessionSecret');
 const USE_MOCKS: number = parseInt(config.get('useMocks'), 10);
 
@@ -142,8 +141,7 @@ export {
   REDIS_PORT,
   SAML_CALLBACK_URL,
   SAML_CERT,
-  SAML_LOGOUT,
-  SAML_LOGOUT_CALLBACK_URL,
+  SAML_LOGOUT_REDIRECT,
   SAML_PVK,
   SAML_URL,
   SESSION_SECRET,
