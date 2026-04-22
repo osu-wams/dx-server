@@ -72,7 +72,7 @@ describe('/api/locations', () => {
 
       await request
         .get('/api/locations/cascade')
-        .expect(500, { message: 'Unable to retrieve location information.' });
+        .expect(500, 'Unable to retrieve location information.');
     });
   });
 });

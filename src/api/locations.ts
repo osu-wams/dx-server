@@ -20,7 +20,7 @@ router.get('/:location', async (req: Request, res: Response) => {
     res.send(people);
   } catch (err) {
     logger().error('api/locations failed:', err);
-    res.status(500).send({ message: 'Unable to retrieve location information.' });
+    res.status(500).send('Unable to retrieve location information.');
   }
 });
 
