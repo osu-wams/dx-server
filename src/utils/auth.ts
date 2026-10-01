@@ -37,7 +37,7 @@ const parseSamlResult = async (profile: any, done: any) => {
   if (!user.osuId && user.onid) {
     const identityResponse = await getIdentity(user);
     if (identityResponse[0]?.attributes?.osuId) {
-      user.osuId = parseInt(identityResponse[0].attributes.osuId);
+      user.osuId = parseInt(identityResponse[0].attributes.osuId, 10);
     } else {
       logger().error(`Identity API call did not return proper data. Response values: ${JSON.stringify(identityResponse)}`);
     }
