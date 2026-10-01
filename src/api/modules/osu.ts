@@ -34,6 +34,7 @@ const STUDENT_BASE_URL: string = `${OSU_API_BASE_URL}/v1/students`;
 const PERSON_BASE_URL: string = `${OSU_API_BASE_URL}/v2/persons`;
 const DIRECTORY_BASE_URL: string = `${OSU_API_BASE_URL}/v2/directory`;
 const LOCATION_BASE_URL: string = `${OSU_API_BASE_URL}/v1/locations`;
+const IDENTITIES_BASE_URL: string = `${OSU_API_BASE_URL}/v2/identities`;
 
 const getJson = async (
   url: string,
@@ -517,3 +518,17 @@ export const getMedical = async (user: any): Promise<Types.Medical[]> => {
     }),
   );
 };
+
+export const getIdentity = async (user: any): Promise<Types.Identities> => {
+  const response: Types.IdentitiesResponse = await fetchData(
+    undefined, // module handles its own failure notification
+    () =>
+      getJson(
+        `${IDENTITIES_BASE_URL}?filter[onid]=${encodeURIComponent(user.onid)}`,
+        `ALERTS-${IDENTITIES_BASE_URL}/`,
+      ),
+    mockedPersons,
+  );
+  return response.data;
+};
+
