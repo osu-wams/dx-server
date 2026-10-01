@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { User as UserLib } from '@osu-wams/lib';
 import { ENV, GROUPS, IV_LENGTH } from '../constants';
 import { User, find, upsert } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import { getIdentity } from '../api/modules/osu';
 import logger from '../logger';
 
 interface Jwt {
@@ -16,7 +17,7 @@ interface Jwt {
 
 export const lastLogin = (): string => new Date().toISOString().slice(0, 10);
 
-const parseSamlResult = (profile: any, done: any) => {
+const parseSamlResult = async (profile: any, done: any) => {
   const user = {
     osuId: parseInt(profile['urn:oid:1.3.6.1.4.1.5016.2.1.2.1'], 10), // '123456789'
     email: profile['urn:oid:1.3.6.1.4.1.5923.1.1.1.6'], // 'nobody@nobody.nobody'
@@ -31,6 +32,16 @@ const parseSamlResult = (profile: any, done: any) => {
     onid: profile['urn:oid:0.9.2342.19200300.100.1.1'], // 'rossb'
     lastLogin: lastLogin(),
   };
+
+  // some users won't come with an osuId. Use identity API to access it with ONID
+  if (!user.osuId && user.onid) {
+    const identityResponse = await getIdentity(user);
+    if (identityResponse[0]?.attributes?.osuId) {
+      user.osuId = parseInt(identityResponse[0].attributes.osuId);
+    } else {
+      logger().error(`Identity API call did not return proper data. Response values: ${JSON.stringify(identityResponse)}`);
+    }
+  }
 
   if (!user.osuId) {
     logger().error(
