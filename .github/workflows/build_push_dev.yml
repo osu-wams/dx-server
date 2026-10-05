@@ -6,7 +6,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         node-version: [14.x]
@@ -38,7 +38,7 @@ jobs:
           GITHUB_NPM_TOKEN: not-actually-used-but-necessary-here
   build:
     needs: test
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v1
       - name: Configure AWS credentials
