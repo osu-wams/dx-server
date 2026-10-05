@@ -15,6 +15,7 @@ import mockedLocations from '../../mocks/osu/locations.data.json';
 import mockedEmails from '../../mocks/osu/emails.data.json';
 import mockedPhones from '../../mocks/osu/phones.data.json';
 import mockedMedical from '../../mocks/osu/medical.data.json';
+import mockedIdentity from '../../mocks/osu/identities.data.json'
 
 export {
   mockedAcademicStatus,
@@ -34,4 +35,5 @@ export {
   mockedMedical,
   mockedPersons,
   mockedPhones,
+  mockedIdentity,
 };
