@@ -1,6 +1,7 @@
 import parseSamlResult, { encrypt, decrypt, issueJWT, userFromJWT, lastLogin } from '../auth';
 import { ENCRYPTION_KEY, GROUPS, JWT_KEY } from '../../constants';
 import { mockUser as modelMockUser } from '../../api/models/__mocks__/user';
+// import { getToken } from '../../api/util';
 
 const mockedDone = jest.fn();
 const mockSaml = {
@@ -30,6 +31,10 @@ const mockUser = {
   lastLogin: lastLogin(),
 };
 
+jest.mock('../../api/util.ts', () => ({
+  ...jest.requireActual('../../api/util.ts') as {},
+  getToken: () => Promise.resolve('bearer token'),
+}));
 describe('parseSamlResult', () => {
   it('parses the Saml result', async () => {
     parseSamlResult(mockSaml, mockedDone);

@@ -1,0 +1,26 @@
+{
+  "links": {
+    "self": "string"
+  },
+  "data": [
+    {
+      "type": "identity",
+      "id": "912345678",
+      "links": {
+        "self": "string"
+      },
+      "attributes": {
+        "firstName": "Eileen",
+        "middleName": " ",
+        "lastName": "Best Student",
+        "displayFirstName": "Eileen",
+        "displayMiddleName": null,
+        "displayLastName": "Eileen Star",
+        "osuId": "912345678",
+        "onid": "beste",
+        "osuUid": "55555555555",
+        "proxId": "1868-0256213"
+      }
+    }
+  ]
+}

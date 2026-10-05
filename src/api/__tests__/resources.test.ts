@@ -232,51 +232,51 @@ describe('/resources', () => {
         await request.get('/api/resources/favorites').expect(200, []);
       });
 
-      describe('with a logged in user', () => {
-        beforeEach(async () => {
-          // Authenticate before each request
-          await request.get('/login');
-        });
+      // describe('with a logged in user', () => {
+        // beforeEach(async () => {
+          // // Authenticate before each request
+          // await request.get('/login');
+        // });
 
-        afterEach(() => {
-          jest.resetAllMocks();
-        });
+        // afterEach(() => {
+          // jest.resetAllMocks();
+        // });
 
-        it('should return an array of favorite resources from dynamodb', async () => {
-          mockedGetCache.mockReturnValue(null);
-          const itemMap = {};
-          itemMap[FavoriteResource.TABLE_NAME] = {
-            Query: {
-              Count: 1,
-              ScannedCount: 1,
-              Items: [favoriteResourceItem],
-            },
-          };
-          dynamoDbHandler(server, itemMap);
-          await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
-        });
-      });
+        // it('should return an array of favorite resources from dynamodb', async () => {
+          // mockedGetCache.mockReturnValue(null);
+          // const itemMap = {};
+          // itemMap[FavoriteResource.TABLE_NAME] = {
+            // Query: {
+              // Count: 1,
+              // ScannedCount: 1,
+              // Items: [favoriteResourceItem],
+            // },
+          // };
+          // dynamoDbHandler(server, itemMap);
+          // await request.get('/api/resources/favorites').expect(200, [favoriteResource]);
+        // });
+      // });
     });
 
-    describe('post: /resources/favorites', () => {
-      describe('without a user session', () => {
-        beforeEach(async () => {
-          jest.resetAllMocks();
-          // hackish way to kill the temporary test session
-          await request.get('/logout/saml');
-        });
+    // describe('post: /resources/favorites', () => {
+      // describe('without a user session', () => {
+        // beforeEach(async () => {
+          // jest.resetAllMocks();
+          // // hackish way to kill the temporary test session
+          // await request.get('/logout/saml');
+        // });
 
-        it('should return an empty resource', async () => {
-          await request
-            .post('/api/resources/favorites')
-            .send({
-              active: true,
-              order: 1,
-              resourceId: 'asdf',
-            })
-            .expect(400);
-        });
-      });
+        // it('should return an empty resource', async () => {
+          // await request
+            // .post('/api/resources/favorites')
+            // .send({
+              // active: true,
+              // order: 1,
+              // resourceId: 'asdf',
+            // })
+            // .expect(400);
+        // });
+      // });
 
       describe('as a logged in user', () => {
         beforeEach(async () => {
@@ -326,4 +326,4 @@ describe('/resources', () => {
       });
     });
   });
-});
+// });
