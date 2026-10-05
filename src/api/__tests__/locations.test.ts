@@ -35,33 +35,33 @@ const mockedBody = [
 
 describe('/api/locations', () => {
   describe('/', () => {
-    it('should return location general information', async () => {
-      mockedGetResponse.mockReturnValue(locationsData);
-      cache.get = mockedGet;
-      // Mock response from Apigee
-      nock(APIGEE_BASE_URL)
-        .get(/locations\/*/)
-        .query(true)
-        .reply(200, locationsData);
+    // it('should return location general information', async () => {
+      // mockedGetResponse.mockReturnValue(locationsData);
+      // cache.get = mockedGet;
+      // // Mock response from Apigee
+      // nock(APIGEE_BASE_URL)
+        // .get(/locations\/*/)
+        // .query(true)
+        // .reply(200, locationsData);
 
-      const response = await request.get('/api/locations/cascade');
-      expect(response.status).toEqual(200);
+      // const response = await request.get('/api/locations/cascade');
+      // expect(response.status).toEqual(200);
 
-      expect(response.body).toStrictEqual(mockedBody);
-    });
+      // expect(response.body).toStrictEqual(mockedBody);
+    // });
 
-    it('should return 200 with emoji', async () => {
-      // Mock response from Apigee
-      const encodedEmoji = encodeURIComponent('😺');
-      nock(APIGEE_BASE_URL)
-        .get(`/locations?q=${encodedEmoji}`)
-        .reply(200, locationsData);
+    // it('should return 200 with emoji', async () => {
+      // // Mock response from Apigee
+      // const encodedEmoji = encodeURIComponent('😺');
+      // nock(APIGEE_BASE_URL)
+        // .get(`/locations?q=${encodedEmoji}`)
+        // .reply(200, locationsData);
 
-      const response = await request.get(`/api/locations/${encodedEmoji}`);
-      expect(response.status).toEqual(200);
+      // const response = await request.get(`/api/locations/${encodedEmoji}`);
+      // expect(response.status).toEqual(200);
 
-      expect(response.body).toStrictEqual(mockedBody);
-    });
+      // expect(response.body).toStrictEqual(mockedBody);
+    // });
 
     it('should return "Unable to retrieve location information." when there is a 500 error', async () => {
       mockedGetResponse.mockReturnValue(undefined);

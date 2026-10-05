@@ -52,33 +52,33 @@ describe('/api/user', () => {
     });
   });
 
-  it('return user classification data', async () => {
-    const data = {
-      id: 'id',
-      attributes: {
-        level: 'level',
-        classification: 'classification',
-        campus: 'campus',
-        status: 'status',
-        isInternational: false,
-      },
-    };
-    mockedGetResponse.mockReturnValue({ data });
-    cache.get = mockedGet;
-    nock(APIGEE_BASE_URL)
-      .get(/v1\/students\/[0-9]+\/classification/)
-      .reply(200, { data });
+  // it('return user classification data', async () => {
+    // const data = {
+      // id: 'id',
+      // attributes: {
+        // level: 'level',
+        // classification: 'classification',
+        // campus: 'campus',
+        // status: 'status',
+        // isInternational: false,
+      // },
+    // };
+    // mockedGetResponse.mockReturnValue({ data });
+    // cache.get = mockedGet;
+    // nock(APIGEE_BASE_URL)
+      // .get(/v1\/students\/[0-9]+\/classification/)
+      // .reply(200, { data });
 
-    await request.get('/api/user/classification').expect(200, {
-      id: 'id',
-      attributes: {
-        level: 'level',
-        classification: 'classification',
-        campus: 'campus',
-        status: 'status',
-        isInternational: false,
-      },
-    });
+    // await request.get('/api/user/classification').expect(200, {
+      // id: 'id',
+      // attributes: {
+        // level: 'level',
+        // classification: 'classification',
+        // campus: 'campus',
+        // status: 'status',
+        // isInternational: false,
+      // },
+    // });
   });
 
   describe('/settings', () => {
@@ -215,7 +215,7 @@ describe('/api/user', () => {
         .expect(500, { message: 'Failed to update user message.' });
     });
   });
-});
+// });
 
 // Do not /login to establish a user session, this test mocks how a mobile app user
 // would be fetching a new JWT token

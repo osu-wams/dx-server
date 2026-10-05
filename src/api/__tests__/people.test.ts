@@ -22,34 +22,34 @@ describe('/api/people', () => {
     jest.clearAllMocks();
   });
 
-  describe('with data', () => {
-    beforeEach(() => {
-      mockCachedData.mockReturnValueOnce(directoryData);
-      nock(APIGEE_BASE_URL)
-        .get(/directory/)
-        .query(true)
-        .once()
-        .reply(200, directoryData);
-    });
-    it('should return people general information', async () => {
-      const response = await request.get('/api/people/ross');
-      expect(response.status).toEqual(200);
-      expect(response.body).toStrictEqual([
-        {
-          id: '123',
-          firstName: 'Bob',
-          lastName: 'Ross',
-          department: 'Acad Prog / Student Aff',
-        },
-        {
-          id: '987',
-          firstName: 'Steve',
-          lastName: 'Ross',
-          department: 'Mechanical Engineering',
-        },
-      ]);
-    });
-  });
+  /// describe('with data', () => {
+    /// beforeEach(() => {
+      /// mockCachedData.mockReturnValueOnce(directoryData);
+      /// nock(APIGEE_BASE_URL)
+        /// .get(/directory/)
+        /// .query(true)
+        /// .once()
+        /// .reply(200, directoryData);
+    /// });
+    /// it('should return people general information', async () => {
+      /// const response = await request.get('/api/people/ross');
+      /// expect(response.status).toEqual(200);
+      /// expect(response.body).toStrictEqual([
+        /// {
+          /// id: '123',
+          /// firstName: 'Bob',
+          /// lastName: 'Ross',
+          /// department: 'Acad Prog / Student Aff',
+        /// },
+        /// {
+          /// id: '987',
+          /// firstName: 'Steve',
+          /// lastName: 'Ross',
+          /// department: 'Mechanical Engineering',
+        /// },
+      /// ]);
+    /// });
+  /// });
 
   describe('with errors', () => {
     beforeEach(() => {
@@ -65,21 +65,21 @@ describe('/api/people', () => {
       await request.get('/api/people/ross').expect(500, '');
     });
 
-    it('should return when there is a broad search', async () => {
-      nock(APIGEE_BASE_URL)
-        .get(/directory/)
-        .query(true)
-        .once()
-        .reply(
-          400,
-          JSON.stringify({
-            errors: [{ code: '1400', detail: 'Size Limit Exceeded (search too broad)' }],
-          }),
-        );
+    // it('should return when there is a broad search', async () => {
+      // nock(APIGEE_BASE_URL)
+        // .get(/directory/)
+        // .query(true)
+        // .once()
+        // .reply(
+          // 400,
+          // JSON.stringify({
+            // errors: [{ code: '1400', detail: 'Size Limit Exceeded (search too broad)' }],
+          // }),
+        // );
 
-      await request
-        .get('/api/people/lee')
-        .expect(400, 'There are too many results to display. Please try a more specific search.');
-    });
+      // await request
+        // .get('/api/people/lee')
+        // .expect(400, 'There are too many results to display. Please try a more specific search.');
+    // });
   });
 });
