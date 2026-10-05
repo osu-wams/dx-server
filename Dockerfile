@@ -18,7 +18,7 @@ ADD ./package.json ./
 ADD ./yarn.lock ./
 ADD ./.npmrc ./
 RUN yarn install
-RUN yarn global add ts-node typescript
+RUN yarn global add ts-node typescript@4.9.5
 
 # Now add application files
 ADD . ./
