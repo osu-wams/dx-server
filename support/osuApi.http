@@ -132,3 +132,10 @@ Authorization: Bearer {{token}}
 # @name getMedical
 GET {{baseUrl}}/v2/persons/{{osuId}}/medical HTTP/1.1
 Authorization: Bearer {{token}}
+
+###
+@token = {{getToken.response.body.$.access_token}}
+
+# @name getIdentity
+GET {{baseUrl}}/v2/identities?filter[onid]=beste HTTP/1.1
+Authorization: Bearer {{token}}

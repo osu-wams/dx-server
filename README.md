@@ -34,6 +34,19 @@ _`local.ts` contains overrides for environment variables that contain authentica
 
     $ docker-compose up
 
+### Setup AWS Keys
+
+Navigate to d-9267fb4065.awsapps.com/start/ \
+Search for 'IAM' \
+Go to 'Users' \
+Find your username, you may need to create a new one \
+Scroll down to 'Access Keys' and create a new one \
+In your shell file add
+```
+export AWS_ACCESS_KEY_ID=xxxxxxxxxxxxxxxxx
+export AWS_SECRET_ACCESS_KEY=xxxxxxxxxxxxxxxxx
+```
+
 ### Create the tables in DynamoDb
 
 _This step is only required the first time you start development and/or if you wipe the docker volumes for this project._
@@ -41,6 +54,11 @@ _This step is only required the first time you start development and/or if you w
     $ yarn ts-node -T src/db/scripts/create_table.ts user
     $ yarn ts-node -T src/db/scripts/create_table.ts favorite
     $ yarn ts-node -T src/db/scripts/create_table.ts trending
+
+### OSU VPN
+
+OSU VPN is now required to access the local.my.oregonstate.edu url.
+https://technology.oregonstate.edu/services/vpn
 
 ### Run the server for local development
 

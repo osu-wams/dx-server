@@ -64,34 +64,34 @@ describe('Notifications module', () => {
     expect(result).toMatchObject(teamsPayload);
   });
 
-  // describe('Tests for cacheFailureOrPing', () => {
-    // it('replaces cache data when cache contents expired', async () => {
-      // const mockSecThreshhold = 10;
-      // const mockTime = Date.now() - (mockSecThreshhold + 1) * 1000;
-      // mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // Make this return cache format w time > timeThreshold
-      // const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
-      // await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
-      // expect(mockedSetAsync).toHaveBeenCalled();
-      // expect(JSON.parse(mockedSetAsync.mock.calls[0][1])).toHaveLength(1);
-    // });
-    // it('appends new error data to existing cache cache is not stale and error threshold has not been attained', async () => {
-      // const mockSecThreshhold = 10;
-      // const mockTime = Date.now() - (mockSecThreshhold - 1) * 1000;
-      // mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // time < timeThreshold
-      // const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
-      // await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
-      // expect(mockedSetAsync).toHaveBeenCalled();
-      // expect(JSON.parse(mockedSetAsync.mock.calls[0][1])).toHaveLength(2);
-    // });
-    // it('clears cache and sends team message upon reaching error threshold', async () => {
-      // const mockSecThreshhold = 10;
-      // const mockTime = Date.now() - (mockSecThreshhold - 1) * 1000;
-      // mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // time < timeThreshold
-      // const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 1 }; // Err threshold of 1, new error should send teams message
-      // await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
-      // expect(mockedDelAsync).toHaveBeenCalled();
-    // });
-  // });
+  describe('Tests for cacheFailureOrPing', () => {
+    it('replaces cache data when cache contents expired', async () => {
+      const mockSecThreshhold = 10;
+      const mockTime = Date.now() - (mockSecThreshhold + 1) * 1000;
+      mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // Make this return cache format w time > timeThreshold
+      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
+      await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
+      expect(mockedSetAsync).toHaveBeenCalled();
+      expect(JSON.parse(mockedSetAsync.mock.calls[0][1])).toHaveLength(1);
+    });
+    it('appends new error data to existing cache cache is not stale and error threshold has not been attained', async () => {
+      const mockSecThreshhold = 10;
+      const mockTime = Date.now() - (mockSecThreshhold - 1) * 1000;
+      mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // time < timeThreshold
+      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 5 };
+      await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
+      expect(mockedSetAsync).toHaveBeenCalled();
+      expect(JSON.parse(mockedSetAsync.mock.calls[0][1])).toHaveLength(2);
+    });
+    it('clears cache and sends team message upon reaching error threshold', async () => {
+      const mockSecThreshhold = 10;
+      const mockTime = Date.now() - (mockSecThreshhold - 1) * 1000;
+      mockedGetAsync.mockReturnValue(JSON.stringify([{ d: mockTime, e: 'foo' }])); // time < timeThreshold
+      const testconfig = { timeThreshold: mockSecThreshhold, errThreshold: 1 }; // Err threshold of 1, new error should send teams message
+      await cacheFailureOrPing({ e: 'test' }, 'testkey', testconfig);
+      expect(mockedDelAsync).toHaveBeenCalled();
+    });
+  });
 
   describe('Tests for MS Teams Webhook', () => {
     it('should throw error upon message teams failure', async () => {
