@@ -1,7 +1,7 @@
 /**
  * /api/alerts
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
 import logger from '../logger';
 import { getAlerts } from './modules/rave-alerts';
 import { getDxAlerts } from './modules/dx';

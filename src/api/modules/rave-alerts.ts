@@ -1,6 +1,6 @@
 import Parser from 'rss-parser';
 import config from 'config';
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib';
 import cache from './cache';
 import { fetchData } from '../util';
 import { mockedRaveAlerts } from '../../mocks/rave';

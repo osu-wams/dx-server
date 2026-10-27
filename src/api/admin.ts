@@ -1,9 +1,9 @@
 /**
  * /api/admin
  */
-import config from 'config';
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
-import redis from 'redis';
+import { Router, Request, Response } from 'express';
+import { createClient } from 'redis';
+import { REDIS_HOST, REDIS_PORT } from '../constants';
 import configsForApi from '../utils/config';
 import logger from '../logger';
 import User from './models/user';
@@ -12,10 +12,13 @@ import { getFavoritesMetrics, getTrendingMetrics, getUsersMetrics } from './modu
 import { getActiveUsers, getPageViews } from './modules/google';
 
 const router: Router = Router();
-const redisClient = redis.createClient({
-  host: `${config.get('redis.host')}`,
-  port: parseInt(config.get('redis.port'), 10),
+const redisClient = createClient({
+  socket: {
+    host: REDIS_HOST,
+    port: REDIS_PORT,
+  },
 });
+redisClient.on('error', (err) => logger().error(`admin: redisClient.on('error'): ${err}`));
 
 /**
  * Reset all users sessions, causing them to login with CAS again
@@ -29,7 +32,9 @@ router.get('/reset-sessions', async (req: Request, res: Response) => {
     // will finish it its own time. Also, this is indiscriminate and flushes everything
     // in the queue. It will need improvement if/when the queue holds keys that
     // deal with things other than user sessions.
-    redisClient.flushdb();
+    (redisClient.isOpen ? Promise.resolve() : redisClient.connect().then(() => undefined))
+      .then(() => redisClient.flushDb())
+      .catch((err) => logger().error('api/admin/reset-sessions session cache flush failed:', err));
     res.status(200).send({ message: 'Tokens reset, session cache is clearing.' });
   } catch (err) {
     logger().error('api/admin/reset-sessions failed:', err);

@@ -1,8 +1,20 @@
-import DynamoDB from 'aws-sdk/clients/dynamodb'; // eslint-disable-line no-unused-vars
-import { Table, Entity } from 'dynamodb-toolbox';
+import type { CreateTableCommandInput } from '@aws-sdk/client-dynamodb';
+import type { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import {
+  Table,
+  Entity,
+  item,
+  string,
+  number,
+  boolean,
+  PutItemCommand,
+  QueryCommand,
+  ScanCommand,
+} from 'dynamodb-toolbox';
 import { DYNAMODB_TABLE_PREFIX } from '../../constants';
 import logger from '../../logger';
 import { DocumentClient } from '../../db';
+import { normalizeItem, toBoolean, toNumber } from '../../db/format';
 import { getCache, setCache } from '../modules/cache';
 
 export interface FavoriteResource {
@@ -13,15 +25,11 @@ export interface FavoriteResource {
   resourceId: string;
 }
 
-interface FavoriteResources {
-  // eslint-disable-next-line no-use-before-define
-  Items: FavoriteResource[];
-  next?: Function;
-}
+type Client = DynamoDBDocumentClient;
 
 export const TABLE_NAME: string = `${DYNAMODB_TABLE_PREFIX}-FavoriteResources`;
 
-export const TableDefinition: DynamoDB.CreateTableInput = {
+export const TableDefinition: CreateTableCommandInput = {
   AttributeDefinitions: [
     { AttributeName: 'osuId', AttributeType: 'N' },
     { AttributeName: 'resourceId', AttributeType: 'S' },
@@ -40,35 +48,55 @@ export const TableDefinition: DynamoDB.CreateTableInput = {
   },
 };
 
-const table = (client?: typeof DocumentClient) =>
+const table = (client?: Client) =>
   new Table({
     name: TABLE_NAME,
-    partitionKey: 'osuId',
-    sortKey: 'resourceId',
-    DocumentClient: client ?? DocumentClient,
+    partitionKey: { name: 'osuId', type: 'number' },
+    sortKey: { name: 'resourceId', type: 'string' },
+    documentClient: client ?? DocumentClient,
   });
 
-const FavoriteResourceEntity = (client?: typeof DocumentClient) =>
+const favoriteResourceSchema = item({
+  osuId: number().key(),
+  resourceId: string().key(),
+  order: number().optional().putDefault(0),
+  active: boolean().optional().putDefault(true),
+  // created: the `created` timestamp attribute is managed by the entity and saved as `_ct`
+});
+
+const FavoriteResourceEntity = (client?: Client) =>
   new Entity({
     name: 'FavoriteResource',
-    attributes: {
-      osuId: { partitionKey: true, type: 'number' },
-      resourceId: { sortKey: true, type: 'string' },
-      order: { type: 'number', coerce: true, default: 0 },
-      active: { type: 'boolean', coerce: true, default: true },
-      // created: { type: 'string' } // Already set as an alias for _ct
-    },
     table: table(client),
-    autoExecute: true,
-    autoParse: true,
+    schema: favoriteResourceSchema,
+    timestamps: {
+      created: { name: 'created' },
+      modified: { name: 'modified' },
+    },
   });
 
-export const upsert = async (
-  props: FavoriteResource,
-  client?: typeof DocumentClient,
-): Promise<FavoriteResource> => {
+const toItem = (props: FavoriteResource) => ({
+  osuId: toNumber(props.osuId),
+  resourceId: props.resourceId,
+  order: toNumber(props.order),
+  active: toBoolean(props.active),
+});
+
+/**
+ * Translate a raw DynamoDB item into a FavoriteResource, the `created` value is the
+ * dynamodb-toolbox created timestamp (`_ct`) unless a `created` attribute exists.
+ */
+const fromItem = (raw: Record<string, any>): FavoriteResource => {
+  const created = raw.created ?? raw._ct;
+  return { ...normalizeItem<FavoriteResource>(raw), created };
+};
+
+export const upsert = async (props: FavoriteResource, client?: Client): Promise<FavoriteResource> => {
   try {
-    await FavoriteResourceEntity(client).put(props);
+    await FavoriteResourceEntity(client)
+      .build(PutItemCommand)
+      .item(toItem(props))
+      .send();
     logger().silly('FavoriteResource.upsert succeeded:', props);
     return props;
   } catch (err) {
@@ -77,36 +105,37 @@ export const upsert = async (
   }
 };
 
-export const findAll = async (
-  osuId: number,
-  client?: typeof DocumentClient,
-): Promise<FavoriteResource[] | null> => {
+export const findAll = async (osuId: number, client?: Client): Promise<FavoriteResource[] | null> => {
   try {
-    const results: FavoriteResources = await FavoriteResourceEntity(client).query(osuId);
-    return results.Items;
+    const { Items = [] } = await table(client)
+      .build(QueryCommand)
+      .query({ partition: osuId })
+      .send();
+    return Items.map(fromItem);
   } catch (err) {
     logger().error(`FavoriteResource.findAll(${osuId}) failed:`, err);
     throw err;
   }
 };
 
-export const scanAll = async (client?: typeof DocumentClient): Promise<FavoriteResource[]> => {
+export const scanAll = async (client?: Client): Promise<FavoriteResource[]> => {
   const cached = await getCache(TABLE_NAME);
   if (cached) {
     return JSON.parse(cached);
   }
 
   const found: FavoriteResource[] = [];
-  let results: FavoriteResources = await FavoriteResourceEntity(client).scan();
-  found.push(...results.Items);
-  logger().info(`${TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`);
-
-  while (results.next) {
-    // eslint-disable-next-line no-await-in-loop
-    results = await results.next();
-    found.push(...results.Items);
-    logger().info(`${TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`);
-  }
+  let exclusiveStartKey: Record<string, unknown> | undefined;
+  do {
+    const { Items = [], LastEvaluatedKey } = await table(client)
+      .build(ScanCommand)
+      .options(exclusiveStartKey ? { exclusiveStartKey } : {})
+      .send();
+    const resources = Items.map(fromItem);
+    found.push(...resources);
+    logger().info(`${TABLE_NAME} scan returned ${resources.length}, total: ${found.length}`);
+    exclusiveStartKey = LastEvaluatedKey;
+  } while (exclusiveStartKey);
 
   await setCache(TABLE_NAME, JSON.stringify(found), {
     mode: 'EX',

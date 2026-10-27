@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 
 import { getUser } from '../ready-education';
 import mockedStudent from '../../../mocks/ready-education/student.data';

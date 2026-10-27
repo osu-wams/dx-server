@@ -1,6 +1,5 @@
-/* eslint-disable import/prefer-default-export */
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { server } from '@src/mocks/server';
 import { OUTLOOK_API } from '@src/mocks/apis';
 import { createTeamsPayload, sendTeamsMessage, cacheFailureOrPing } from '../notifications';
@@ -96,8 +95,8 @@ describe('Notifications module', () => {
   describe('Tests for MS Teams Webhook', () => {
     it('should throw error upon message teams failure', async () => {
       server.use(
-        rest.post(OUTLOOK_API, async (req, res, ctx) => {
-          return res(ctx.status(500));
+        http.post(OUTLOOK_API, async () => {
+          return new HttpResponse(null, { status: 500 });
         }),
       );
       try {

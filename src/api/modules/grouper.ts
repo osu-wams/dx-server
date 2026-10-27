@@ -1,26 +1,30 @@
-import AWS from 'aws-sdk';
-import { ENV } from '../../constants';
+import { LambdaClient, InvokeCommand } from '@aws-sdk/client-lambda';
+import { AWS_REGION, ENV } from '../../constants';
 
 // these lambda functions only have dev and production environments
 const AWS_ENV = ENV === 'production' ? 'production' : 'dev';
 
-export const hasMember = async (group: string, onid: string) => {
-  const params = {
-    FunctionName: `grouperDXPassthrough-${AWS_ENV}-hasMember`,
-    Payload: JSON.stringify({
-      onid,
-      group,
-    }),
-  };
+const lambda = new LambdaClient({ region: AWS_REGION });
 
-  const result = await (new AWS.Lambda().invoke(params).promise());
-  // payload comes in as a BLOB and needs to be converted to a string
-  const payload = JSON.parse(result.Payload.toString());
+export const hasMember = async (group: string, onid: string) => {
+  const command = new InvokeCommand({
+    FunctionName: `grouperDXPassthrough-${AWS_ENV}-hasMember`,
+    Payload: Buffer.from(
+      JSON.stringify({
+        onid,
+        group,
+      }),
+    ),
+  });
+
+  const result = await lambda.send(command);
+  // payload comes in as a BLOB (Uint8Array) and needs to be converted to a string
+  const payload = JSON.parse(Buffer.from(result.Payload ?? []).toString());
   if (payload.statusCode === 400) {
     throw new Error(payload.body.message);
   }
 
   return payload.body.isMember;
-}
+};
 
 export default { hasMember };

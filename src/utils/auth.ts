@@ -1,9 +1,8 @@
 import crypto from 'crypto';
-import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
 import jwt from 'jsonwebtoken';
 import { User as UserLib } from '@osu-wams/lib';
 import { ENV, GROUPS, IV_LENGTH } from '../constants';
-import { User, find, upsert } from '../api/models/user'; // eslint-disable-line no-unused-vars
+import { User, find, upsert } from '../api/models/user';
 import logger from '../logger';
 
 interface Jwt {
@@ -34,7 +33,6 @@ const parseSamlResult = async (profile: any, done: any) => {
 
   // some users won't come with an osuId. Use identity API to access it with ONID
   if (!user.osuId && user.onid) {
-    // eslint-disable-next-line global-require
     const { getIdentity } = require('../api/modules/osu');
     const identityResponse = await getIdentity(user);
     if (identityResponse[0]?.attributes?.osuId) {

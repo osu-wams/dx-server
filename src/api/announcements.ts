@@ -1,8 +1,7 @@
 /**
  * /api/announcements
  */
-import { isNullOrUndefined } from 'util';
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
 import logger from '../logger';
 import { getAnnouncements } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';
@@ -14,7 +13,7 @@ export interface IAnnouncementResult {
   date: null;
   title: string;
   body: string;
-  bg_image?: string; // eslint-disable-line camelcase
+  bg_image?: string;
   action: {
     title: string;
     link: string;
@@ -24,18 +23,18 @@ export interface IAnnouncementResult {
   pages: string[];
 }
 
-router.get('/:page?', async (req: Request, res: Response) => {
+router.get('{/:page}', async (req: Request, res: Response) => {
   try {
     const result: IAnnouncementResult[] = await asyncTimedFunction(
       getAnnouncements,
       'getAnnouncements',
       []
     );
-    if (!isNullOrUndefined(req.params.page) && req.params.page !== '') {
+    if (!(req.params.page === null || req.params.page === undefined) && req.params.page !== '') {
       res.send(
         result.filter(
           r =>
-            r.pages.some(p => p.toLowerCase() === req.params.page.toLowerCase()) ||
+            r.pages.some(p => p.toLowerCase() === String(req.params.page).toLowerCase()) ||
             r.pages.length === 0
         )
       );

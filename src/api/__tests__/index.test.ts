@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import app from '../../index';
 import { USE_MOCKS } from '../../constants';
 import { mockUser } from '../models/__mocks__/user';
@@ -20,7 +20,7 @@ jest.mock('../models/user', () => ({
   find: () => mockFindReturn(),
 }));
 
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 
 beforeAll(async () => {
   request = supertest.agent(app);

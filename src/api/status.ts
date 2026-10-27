@@ -1,7 +1,7 @@
 /**
  * /api/status
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
 import { getSystemsStatus } from './modules/cachet';
 import { asyncTimedFunction } from '../tracer';
 import logger from '../logger';

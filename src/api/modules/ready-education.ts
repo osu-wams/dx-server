@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-import request from 'node-fetch';
 import config from 'config';
 import logger from '../../logger';
 import { fetchData } from '../util';
@@ -18,11 +16,11 @@ interface ReadyEducationStudent {
 const getRequest = async <T>(url: string): Promise<T> => {
   try {
     logger().debug(`Ready Education API GET request url:${url}`);
-    const response = await request(url, {
+    const response = await fetch(url, {
       headers: { Authorization: AUTH_TOKEN },
     });
     if (response.ok) {
-      const data = await response.json();
+      const data = (await response.json()) as T;
       return data;
     }
     throw Object({

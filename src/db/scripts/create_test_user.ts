@@ -1,4 +1,3 @@
-/* eslint-disable no-console, no-unused-vars */
 
 import { User, upsert } from '../../api/models/user';
 import logger from '../../logger';

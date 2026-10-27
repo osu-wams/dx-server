@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export const mockFavoriteResource = {
   active: true,
   osuId: 123456,

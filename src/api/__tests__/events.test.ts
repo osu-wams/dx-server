@@ -1,6 +1,6 @@
 import supertest from 'supertest';
-import nock from 'nock';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import nock from '@src/mocks/nock';
+import cache from '../modules/cache';
 import app from '../../index';
 import employeeEventsData, { expectedEmployeeEvents } from '../../mocks/localist/events-employee';
 import { academicCalendarData } from '../__mocks__/events-academic.data';

@@ -9,7 +9,7 @@ jest.mock('../util.ts');
 jest.mock('../models/user.ts');
 jest.mock('../modules/cache.ts');
 
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 const mockedUser = User as jest.Mocked<any>;
 
 beforeAll(async () => {

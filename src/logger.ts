@@ -1,10 +1,10 @@
 import path from 'path';
 import fs from 'fs';
-import winston, { createLogger, format, transports, config as winstonConfig } from 'winston'; // eslint-disable-line no-unused-vars
-import expressWinston, { LoggerOptionsWithTransports } from 'express-winston'; // eslint-disable-line no-unused-vars
+import winston, { createLogger, format, transports, config as winstonConfig } from 'winston';
+import expressWinston, { LoggerOptionsWithTransports } from 'express-winston';
 import config from 'config';
-import { Format } from 'logform'; // eslint-disable-line no-unused-vars
-import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import { Format } from 'logform';
+import { Request, Response, NextFunction } from 'express';
 
 const ENV = config.get('env');
 const LOG_LEVEL: string = config.get('logLevel');
@@ -23,14 +23,12 @@ interface LoggerOptions {
   dynamicMeta?: any;
 }
 
-/* eslint-disable no-unused-vars */
 const loggerOptions: LoggerOptions = {
   level: LOG_LEVEL,
   levels: winstonConfig.npm.levels,
   format: combine(timestamp(), json()),
   dynamicMeta: (req, res, err) => ({ sessionID: req.session?.id }),
 };
-/* eslint-enable no-unused-vars */
 
 if (ENV === 'test') {
   loggerOptions.transports = [

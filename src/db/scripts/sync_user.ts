@@ -1,19 +1,20 @@
-/* eslint-disable no-console, no-unused-vars */
 
 import config from 'config';
-import AWS from 'aws-sdk';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import User from '../../api/models/user';
 
 const DYNAMODB_ENDPOINT: string = config.get('aws.dynamodb.endpoint');
 const DYNAMODBCLOUD_ENDPOINT: string = config.get('aws.dynamodbCloud.endpoint');
 const region = config.get('aws.region') as string;
-const apiVersion = config.get('aws.dynamodbCloud.apiVersion') as string;
 
-const cloudDb = new AWS.DynamoDB.DocumentClient({
-  endpoint: DYNAMODBCLOUD_ENDPOINT,
-  region,
-  apiVersion,
-});
+const cloudDb = DynamoDBDocumentClient.from(
+  new DynamoDBClient({
+    endpoint: DYNAMODBCLOUD_ENDPOINT,
+    region,
+  }),
+  { marshallOptions: { removeUndefinedValues: true } },
+);
 
 (async (targetDynamoDb: string, sourceDynamoDb: string) => {
   try {
@@ -28,11 +29,9 @@ const cloudDb = new AWS.DynamoDB.DocumentClient({
       if (!cloudUser) {
         console.error(`User ${process.argv[2]} not found.`);
       } else {
-        let affiliations: string[] = ['employee'];
-        if (cloudUser.affiliations) {
-          // @ts-ignore dynamodb-toolback returns wrapped sets
-          affiliations = cloudUser.affiliations.values;
-        }
+        const affiliations: string[] = cloudUser.affiliations?.length
+          ? cloudUser.affiliations
+          : ['employee'];
 
         const updatedUser = await User.upsert({
           ...cloudUser,

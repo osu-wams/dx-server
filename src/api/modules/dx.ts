@@ -1,6 +1,6 @@
-import Kitsu from 'kitsu';
+import { createJsonApiClient } from './jsonapi';
 import config from 'config';
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib';
 import {
   mockedAnnouncements,
   mockedAlerts,
@@ -16,10 +16,10 @@ import {
   mockedTrainingTags,
   mockedPageSearchIndex,
 } from '../../mocks/dx';
-import { IAnnouncementResult } from '../announcements'; // eslint-disable-line no-unused-vars
-import { IInfoResult } from '../information'; // eslint-disable-line no-unused-vars
-import { IReleaseNotes } from '../releaseNotes'; // eslint-disable-line no-unused-vars
-import { IPageContent } from '../pageContent'; // eslint-disable-line no-unused-vars
+import { IAnnouncementResult } from '../announcements';
+import { IInfoResult } from '../information';
+import { IReleaseNotes } from '../releaseNotes';
+import { IPageContent } from '../pageContent';
 import cache, { setCache } from './cache';
 import { fetchData, sortBy } from '../util';
 
@@ -27,12 +27,7 @@ export const BASE_URL: string = config.get('dxApi.baseUrl');
 export const CACHE_SEC = parseInt(config.get('dxApi.cacheEndpointSec'), 10);
 export const LONG_CACHE_SEC = parseInt(config.get('dxApi.longCacheEndpointSec'), 10);
 
-const api = new Kitsu({
-  baseURL: `${BASE_URL}/jsonapi`,
-  pluralize: false,
-  camelCaseTypes: false,
-  resourceCase: 'none',
-});
+const api = createJsonApiClient({ baseURL: `${BASE_URL}/jsonapi` });
 
 /**
  * Inspect related field_announcement_image to return the url otherwise undefined
@@ -131,7 +126,6 @@ const retrieveData = async (url: string, kitsuOpts: any, cacheSec?: number): Pro
   let hasItems = true;
   const paginatedOpts = { page: { limit: kitsuOpts?.page?.limit ?? 50, offset: 0 } };
 
-  /* eslint-disable no-await-in-loop */
   while (hasItems) {
     const response = await api.get(url, { ...kitsuOpts, ...paginatedOpts });
     fetchedItems.push(response.data);
@@ -237,8 +231,7 @@ export const getCuratedResources = async (category: string): Promise<Types.Resou
 
   // Remove everything before a colon to clean up the name. "Employee: Featured" becomes simply "Featured"
   if (entityQueueTitle?.indexOf(':') > -1) {
-    // eslint-disable-next-line no-unused-vars
-    const [affiliationToDiscard, queueTitle] = entityQueueTitle.split(':');
+    const [, queueTitle] = entityQueueTitle.split(':');
     entityQueueTitle = queueTitle.trim();
   }
 
@@ -405,7 +398,6 @@ export const getDxAlerts = async (): Promise<Types.Alert[]> => {
   );
   if (data.length === 0) return [];
 
-  /* eslint-disable camelcase */
   const { field_alert_content, field_alert_type, created, title, revision_timestamp } = data[0];
   return [
     {
@@ -416,7 +408,6 @@ export const getDxAlerts = async (): Promise<Types.Alert[]> => {
       updated: revision_timestamp as Date,
     },
   ];
-  /* eslint-enable camelcase */
 };
 
 /**

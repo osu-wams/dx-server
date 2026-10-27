@@ -1,11 +1,11 @@
 /**
  * /api/locations
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
+import { Types } from '@osu-wams/lib';
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
-import { getLocations } from './modules/osu'; // eslint-disable-line no-unused-vars
+import { getLocations } from './modules/osu';
 
 const router: Router = Router();
 

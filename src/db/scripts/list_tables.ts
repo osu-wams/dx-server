@@ -1,11 +1,10 @@
-/* eslint-disable no-console */
 
-import { DynamoDB, AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
+import { ListTablesCommand } from '@aws-sdk/client-dynamodb';
 import { DYNAMODB } from '../../constants';
 import dynamoDb from '../index';
 
 console.info('Accessing dynamoDb:', DYNAMODB);
-dynamoDb.listTables((err: AWSError, data: DynamoDB.ListTablesOutput) => {
-  if (err) console.error(err);
-  console.info(data);
-});
+dynamoDb
+  .send(new ListTablesCommand({}))
+  .then((data) => console.info(data))
+  .catch((err) => console.error(err));

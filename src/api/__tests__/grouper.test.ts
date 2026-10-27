@@ -1,12 +1,11 @@
 import supertest from 'supertest';
-import { mocked } from 'ts-jest/utils';
 import app from '../../index';
 import { asyncTimedFunction } from '../../tracer';
 
 jest.mock('../../tracer');
-const mockedAsync = mocked(asyncTimedFunction, true);
+const mockedAsync = jest.mocked(asyncTimedFunction);
 
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 
 beforeAll(async () => {
   request = supertest.agent(app);

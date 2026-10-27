@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 
 import querystring from 'querystring';
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { server } from '@src/mocks/server';
 import { getPlannerItems, refreshOAuthToken, postRequest, CANVAS_OAUTH_TOKEN_URL } from '../canvas';
 
@@ -30,8 +29,8 @@ describe('Canvas module', () => {
   describe('postRequest', () => {
     it('refreshes oauth from canvas', async () => {
       server.use(
-        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
-          return res(ctx.status(200), ctx.json({ access_token: 'bobross', expires_in: '8675309' }));
+        http.post(CANVAS_OAUTH_POST_URL, async () => {
+          return HttpResponse.json({ access_token: 'bobross', expires_in: '8675309' }, { status: 200 });
         }),
       );
       const query = querystring.stringify({
@@ -50,8 +49,8 @@ describe('Canvas module', () => {
 
     it('resets canvas fields on method exception', async () => {
       server.use(
-        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
-          return res(ctx.status(200), ctx.body('-unparsable-should-blow-up-the.method-'));
+        http.post(CANVAS_OAUTH_POST_URL, async () => {
+          return new HttpResponse('-unparsable-should-blow-up-the.method-', { status: 200 });
         }),
       );
       mockUpdateCanvasDataReturn.mockImplementation(() => new Promise((res, rej) => res(user)));
@@ -84,8 +83,8 @@ describe('Canvas module', () => {
   describe('refreshOAuthToken', () => {
     it('refreshes oauth from canvas', async () => {
       server.use(
-        rest.post(CANVAS_OAUTH_POST_URL, async (req, res, ctx) => {
-          return res(ctx.status(200), ctx.json({ access_token: 'bobross', expires_in: '8675309' }));
+        http.post(CANVAS_OAUTH_POST_URL, async () => {
+          return HttpResponse.json({ access_token: 'bobross', expires_in: '8675309' }, { status: 200 });
         }),
       );
       const result = await refreshOAuthToken(user);

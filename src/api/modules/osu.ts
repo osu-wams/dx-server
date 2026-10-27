@@ -1,4 +1,4 @@
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib';
 import { getToken, fetchData } from '../util';
 import cache from './cache';
 import {
@@ -442,7 +442,7 @@ export const getDirectory = async (
         errorMessage = body;
       }
     }
-    throw new Error(errorMessage);
+    throw new Error(errorMessage, { cause: err });
   }
 };
 

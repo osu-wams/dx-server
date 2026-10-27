@@ -1,4 +1,4 @@
-import { TrendingResource } from '../api/models/trendingResource'; // eslint-disable-line no-unused-vars
+import { TrendingResource } from '../api/models/trendingResource';
 
 export const getDaysInDuration = (duration: string): [number, Date][] => {
   const [number] = duration.toLowerCase().split('daysago');
@@ -14,7 +14,6 @@ export const getDaysInDuration = (duration: string): [number, Date][] => {
 const groupSum = (r: TrendingResource[], dateKey: string) =>
   r.reduce((p: { [index: string]: TrendingResource }, c) => {
     const key = `${c.resourceId}-${c.affiliation}-${c.campus}`;
-    /* eslint-disable no-param-reassign */
     if (!p[key]) {
       p[key] = c;
       p[key].date = dateKey;
@@ -22,7 +21,6 @@ const groupSum = (r: TrendingResource[], dateKey: string) =>
     }
     p[key].totalEvents += c.totalEvents;
     p[key].uniqueEvents += c.uniqueEvents;
-    /* eslint-enable no-param-reassign */
     return p;
   }, Object.create(null));
 /**

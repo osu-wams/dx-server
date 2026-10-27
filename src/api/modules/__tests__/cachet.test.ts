@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { server } from '@src/mocks/server';
-import { getSystemsStatus, CACHET_BASE_URL } from '../cachet'; // eslint-disable-line no-unused-vars
+import { getSystemsStatus, CACHET_BASE_URL } from '../cachet';
 import componentsResponse, { expectedResponse } from '../../../mocks/cachet/components';
 import incidentsResponse from '../../../mocks/cachet/incidents';
 
@@ -12,11 +11,11 @@ import incidentsResponse from '../../../mocks/cachet/incidents';
  */
 beforeEach(() => {
   server.use(
-    rest.get(`${CACHET_BASE_URL}/components`, async (req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(componentsResponse));
+    http.get(`${CACHET_BASE_URL}/components`, async () => {
+      return HttpResponse.json(componentsResponse, { status: 200 });
     }),
-    rest.get(`${CACHET_BASE_URL}/incidents`, async (req, res, ctx) => {
-      return res(ctx.status(200), ctx.json(incidentsResponse));
+    http.get(`${CACHET_BASE_URL}/incidents`, async () => {
+      return HttpResponse.json(incidentsResponse, { status: 200 });
     }),
   );
 });

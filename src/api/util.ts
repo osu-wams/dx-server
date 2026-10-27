@@ -1,4 +1,3 @@
-import request from 'node-fetch'; // eslint-disable-line no-unused-vars
 import {
   USE_MOCKS,
   OSU_API_CLIENT_ID,
@@ -20,18 +19,15 @@ export const getToken = async (): Promise<string> => {
     body: params,
   };
 
-  /* eslint-disable camelcase */
   const response = (await asyncTimedFunction(
     async () => {
-      // @ts-ignore
-      const res = await request('https://api.oregonstate.edu/oauth2/token', requestInit);
+      const res = await fetch('https://api.oregonstate.edu/oauth2/token', requestInit);
       return res.json();
     },
     'getToken',
     [],
   )) as { access_token: string };
   return response.access_token;
-  /* eslint-enable camelcase */
 };
 
 /**

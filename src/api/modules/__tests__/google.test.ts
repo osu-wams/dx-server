@@ -1,4 +1,4 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { getTrendingResources, mappedTrendingResources } from '@src/api/modules/google';
 import {
   trendingResourcesResponse,
@@ -32,16 +32,16 @@ const GA_ENDPOINT = 'https://www.googleapis.com/analytics/v3/data/ga';
 describe('Google api module', () => {
   beforeEach(() => {
     server.use(
-      rest.post('https://www.googleapis.com/oauth2/v4/token', async (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json({}));
+      http.post('https://www.googleapis.com/oauth2/v4/token', async () => {
+        return HttpResponse.json({}, { status: 200 });
       }),
     );
     mockedGetCache.mockReturnValue(null);
   });
   it('fetches trending resources from Google', async () => {
     server.use(
-      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json(trendingResourcesResponse.data));
+      http.get(GA_ENDPOINT, async () => {
+        return HttpResponse.json(trendingResourcesResponse.data, { status: 200 });
       }),
     );
     const result = await getTrendingResources(1, date);
@@ -52,8 +52,8 @@ describe('Google api module', () => {
       JSON.stringify(mappedTrendingResources(mockedTrendingResources, dateKey)),
     );
     server.use(
-      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
-        return res(ctx.status(403), ctx.json({ errorMessage: 'boom' }));
+      http.get(GA_ENDPOINT, async () => {
+        return HttpResponse.json({ errorMessage: 'boom' }, { status: 403 });
       }),
     );
     const result = await getTrendingResources(1, date);
@@ -61,8 +61,8 @@ describe('Google api module', () => {
   });
   it('fetches trending resources from Dynamodb', async () => {
     server.use(
-      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
-        return res(ctx.status(403), ctx.json({ errorMessage: 'boom' }));
+      http.get(GA_ENDPOINT, async () => {
+        return HttpResponse.json({ errorMessage: 'boom' }, { status: 403 });
       }),
     );
     const result = await getTrendingResources(1, date);
@@ -83,8 +83,8 @@ describe('Google api module', () => {
       rows: [],
     };
     server.use(
-      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
-        return res(ctx.status(200), ctx.json(emptyRows));
+      http.get(GA_ENDPOINT, async () => {
+        return HttpResponse.json(emptyRows, { status: 200 });
       }),
     );
     const result = await getTrendingResources(1, date);
@@ -101,8 +101,8 @@ describe('Google api module', () => {
     };
     dynamoDbHandler(server, itemMap);
     server.use(
-      rest.get(GA_ENDPOINT, async (req, res, ctx) => {
-        return res(ctx.status(403), ctx.json({ errorMessage: 'boom' }));
+      http.get(GA_ENDPOINT, async () => {
+        return HttpResponse.json({ errorMessage: 'boom' }, { status: 403 });
       }),
     );
     const result = await getTrendingResources(1, date);

@@ -1,10 +1,10 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import { mockedUserMessages } from '@src/mocks/dx-mcm';
-import cache from '@src/api/modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '@src/api/modules/cache';
 import app from '@src/index';
-import User, { UserSettings } from '@src/api/models/user'; // eslint-disable-line no-unused-vars
-import { ENCRYPTION_KEY, GROUPS, JWT_KEY, OSU_API_BASE_URL } from '@src/constants'; // eslint-disable-line no-unused-vars
+import User, { UserSettings } from '@src/api/models/user';
+import { ENCRYPTION_KEY, GROUPS, JWT_KEY, OSU_API_BASE_URL } from '@src/constants';
 import { mockedGet, mockedGetResponse } from '@src/api/modules/__mocks__/cache';
 import { mockDynamoDbUser, mockUser } from '@src/api/models/__mocks__/user';
 import { dynamoDbHandler } from '@src/mocks/handlers';
@@ -25,7 +25,7 @@ jest.mock('../modules/dx-mcm.ts', () => ({
 }));
 
 const APIGEE_BASE_URL: string = `${OSU_API_BASE_URL}/v1`;
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 beforeAll(async () => {
   request = supertest.agent(app);
 });

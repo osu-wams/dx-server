@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import { Request, Response, NextFunction } from 'express';
 import {
   setSessionReturnUrl,
   isMobileRedirect,
@@ -9,7 +9,7 @@ import {
 } from '../routing';
 import { mockUser } from '../../api/models/__mocks__/user';
 import { issueJWT } from '../auth';
-import { ENCRYPTION_KEY, JWT_KEY } from '../../constants'; // eslint-disable-line no-unused-vars
+import { ENCRYPTION_KEY, JWT_KEY } from '../../constants';
 
 const mockedSession = jest.fn();
 const mockedQuery = jest.fn();
@@ -104,7 +104,7 @@ describe('redirectReturnUrl', () => {
   it('redirects', async () => {
     mockedSession.mockReturnValue({ returnUrl: '/blah' });
     await redirectReturnUrl(mockRequest(), mockResponse(), mockUser);
-    expect(mockedRedirect).toBeCalledWith('/blah');
+    expect(mockedRedirect).toHaveBeenCalledWith('/blah');
   });
 });
 
@@ -118,21 +118,21 @@ describe('setJwtUserSession', () => {
     mockedHeaders.mockReturnValue({ authorization: undefined });
     await setJwtUserSession(mockRequest(), mockResponse(), mockNext);
     expect(mockedSession().jwtAuth).toBe(undefined);
-    expect(mockNext).toBeCalled();
+    expect(mockNext).toHaveBeenCalled();
   });
   it('calls next when a token is provided but a user has been set previously', async () => {
     mockedUser.mockReturnValue(mockUser);
     mockedSession.mockReturnValue({});
     await setJwtUserSession(mockRequest(), mockResponse(), mockNext);
     expect(mockedSession().jwtAuth).toBe(undefined);
-    expect(mockNext).toBeCalled();
+    expect(mockNext).toHaveBeenCalled();
   });
   it('sets jwt auth and user based on the jwt token', async () => {
     mockedUser.mockReturnValue(undefined);
     mockedSession.mockReturnValue({});
     await setJwtUserSession(mockRequest(), mockResponse(), mockNext);
     expect(mockedSession().jwtAuth).toBe(true);
-    expect(mockNext).toBeCalled();
+    expect(mockNext).toHaveBeenCalled();
   });
 });
 
@@ -145,28 +145,28 @@ describe('jwtUserHasToken', () => {
   it('calls next when the request is not of jwtAuth type', async () => {
     mockedSession.mockReturnValue({ jwtAuth: false });
     jwtUserHasToken('api')(mockRequest(), mockResponse(), mockNext);
-    expect(mockNext).toBeCalled();
+    expect(mockNext).toHaveBeenCalled();
   });
   it('calls next when a token is provided and matches the required scope', async () => {
     mockedSession.mockReturnValue({ jwtAuth: true });
     jwtUserHasToken('api')(mockRequest(), mockResponse(), mockNext);
-    expect(mockNext).toBeCalled();
+    expect(mockNext).toHaveBeenCalled();
   });
   it('returns error when the token does not match the required scope', async () => {
     mockedSession.mockReturnValue({ jwtAuth: true });
     mockedStatus.mockReturnValue(mockResponse());
     jwtUserHasToken('refresh')(mockRequest(), mockResponse(), mockNext);
-    expect(mockNext).not.toBeCalled();
-    expect(mockedStatus).toBeCalledWith(401);
-    expect(mockedSend).toBeCalledWith({ error: 'Invalid token scope to access endpoint.' });
+    expect(mockNext).not.toHaveBeenCalled();
+    expect(mockedStatus).toHaveBeenCalledWith(401);
+    expect(mockedSend).toHaveBeenCalledWith({ error: 'Invalid token scope to access endpoint.' });
   });
   it('returns error when no authorization header exists', async () => {
     mockedSession.mockReturnValue({ jwtAuth: true });
     mockedHeaders.mockReturnValue({});
     mockedStatus.mockReturnValue(mockResponse());
     jwtUserHasToken('api')(mockRequest(), mockResponse(), mockNext);
-    expect(mockNext).not.toBeCalled();
-    expect(mockedStatus).toBeCalledWith(401);
-    expect(mockedSend).toBeCalledWith({ error: 'Missing authorization header.' });
+    expect(mockNext).not.toHaveBeenCalled();
+    expect(mockedStatus).toHaveBeenCalledWith(401);
+    expect(mockedSend).toHaveBeenCalledWith({ error: 'Missing authorization header.' });
   });
 });

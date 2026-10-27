@@ -1,12 +1,12 @@
 /**
  * /api/user
  */
-import { Router, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
+import { Types } from '@osu-wams/lib';
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
-import { getClassification } from './modules/osu'; // eslint-disable-line no-unused-vars
-import { User, updateSettings } from './models/user'; // eslint-disable-line no-unused-vars
+import { getClassification } from './modules/osu';
+import { User, updateSettings } from './models/user';
 import { getUserMessages, markRead } from './modules/dx-mcm';
 import { ENCRYPTION_KEY, JWT_KEY } from '../constants';
 import { issueJWT } from '../utils/auth';
@@ -86,7 +86,7 @@ router.post('/settings', async (req: Request, res: Response) => {
   try {
     const { audienceOverride, theme, devTools, primaryAffiliationOverride } = req.body;
 
-    const user: User = req.user.masquerade || req.user; // eslint-disable-line prefer-destructuring
+    const user: User = req.user.masquerade || req.user;
     const updatedUser: User = await updateSettings(user, {
       audienceOverride,
       primaryAffiliationOverride,
@@ -132,7 +132,7 @@ router.get('/messages', async (req: Request, res: Response) => {
     const isMasquerading = groups.includes('masquerade') && masqueradeId;
     if (isMasquerading) {
       osuId = masqueradeId;
-      onid = masquerade?.onid; // eslint-disable-line
+      onid = masquerade?.onid;
     }
     if (onid) {
       const response = await asyncTimedFunction<Types.UserMessageItems>(
@@ -169,7 +169,7 @@ router.post('/messages', async (req: Request, res: Response) => {
       // TODO: Allow for different statuses to be posted?
       throw new Error(`User message status ${status} update unsupported.`);
     }
-    const user: User = req.user; // eslint-disable-line prefer-destructuring
+    const user: User = req.user;
     const args = [user.osuId, user.onid];
     if (messageId) args.push(messageId);
     const result = await asyncTimedFunction<Types.UserMessage>(markRead, 'markRead', args);

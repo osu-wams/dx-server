@@ -6,7 +6,7 @@ import { mockUser } from '../models/__mocks__/user';
 jest.mock('../models/user');
 const mockUserModel = User as jest.Mocked<any>;
 
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 
 beforeAll(async () => {
   request = supertest.agent(app);

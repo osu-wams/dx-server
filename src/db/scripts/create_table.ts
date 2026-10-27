@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-import { DynamoDB, AWSError } from 'aws-sdk'; // eslint-disable-line no-unused-vars
+import { CreateTableCommand } from '@aws-sdk/client-dynamodb';
 import { DYNAMODB } from '../../constants';
 import dynamoDb from '../index';
 import {
@@ -45,14 +44,11 @@ const createTable = (table?: string): void => {
 
   console.info('Accessing dynamoDb:', DYNAMODB);
 
-  dynamoDb.createTable(TableDefinition, (err: AWSError, data: DynamoDB.CreateTableOutput) => {
-    if (err) {
-      console.error(`Error creating ${TABLE_NAME} table.`, err);
-    } else {
-      console.info(`Created ${TABLE_NAME} table.`, data);
-    }
-    process.exit();
-  });
+  dynamoDb
+    .send(new CreateTableCommand(TableDefinition))
+    .then((data) => console.info(`Created ${TABLE_NAME} table.`, data))
+    .catch((err) => console.error(`Error creating ${TABLE_NAME} table.`, err))
+    .finally(() => process.exit());
 };
 
 createTable(process.argv[2]);

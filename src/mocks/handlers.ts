@@ -1,5 +1,5 @@
-import type { SetupServerApi } from 'msw/node';
-import { rest } from 'msw';
+import type { SetupServer } from 'msw/node';
+import { http, HttpResponse } from 'msw';
 import { CACHE_API, OUTLOOK_API, PLANNER_ITEMS_API, READY_EDUCATION_API } from './apis';
 import mockedStudent from './ready-education/student.data';
 
@@ -11,13 +11,13 @@ import mockedStudent from './ready-education/student.data';
  * @param itemMap a map of item responses related to the target dynamodb tablename
  */
 export const dynamoDbHandler = (
-  server: SetupServerApi,
+  server: SetupServer,
   itemMap?: { [key: string]: any },
   endpoint: string = 'http://localhost:8000',
 ) => {
   server.use(
-    rest.post(endpoint, async (req, res, ctx) => {
-      const { TableName, Item, KeyConditionExpression, UpdateExpression } = req.body as {
+    http.post(endpoint, async ({ request }) => {
+      const { TableName, Item, KeyConditionExpression, UpdateExpression } = (await request.json()) as {
         TableName: string;
         Item: any;
         KeyConditionExpression: string;
@@ -25,7 +25,7 @@ export const dynamoDbHandler = (
       };
       // DDB Put is creating an Item, so just return it as-is mocking a successful creation
       if (Item) {
-        return res(ctx.json(Item));
+        return HttpResponse.json(Item);
       }
 
       const ddbResponse = itemMap[TableName];
@@ -35,42 +35,34 @@ export const dynamoDbHandler = (
             itemMap,
           )}`,
         );
-        return res(ctx.status(500));
+        return new HttpResponse(null, { status: 500 });
       }
 
       // DDB Query/Scan with conditions expects a return like { Count: number, ScannedCount: number, Items: DynamoDbItem[] }
       if (KeyConditionExpression) {
-        return res(ctx.json(ddbResponse.Query));
+        return HttpResponse.json(ddbResponse.Query);
       }
       if (UpdateExpression) {
-        return res(ctx.json(ddbResponse.Update));
+        return HttpResponse.json(ddbResponse.Update);
       }
       // DDB Scan with conditions expects a return like { Count: number, ScannedCount: number, Items: DynamoDbItem[] }
-      return res(ctx.json(ddbResponse.Query));
+      return HttpResponse.json(ddbResponse.Query);
     }),
   );
 };
 
 export const handlers = [
-  rest.post('*', async (req, res, ctx) => {
-    // console.log('post *', req);
-    // Notice no `return res()` statement
+  http.get(PLANNER_ITEMS_API, async () => {
+    return HttpResponse.json([{ assignment: 'test' }], { status: 200 });
   }),
-  rest.get('*', async (req, res, ctx) => {
-    // console.log('get *', req);
-    // Notice no `return res()` statement
+  http.post(OUTLOOK_API, async () => {
+    return new HttpResponse(null, { status: 200 });
   }),
-  rest.get(PLANNER_ITEMS_API, async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json([{ assignment: 'test' }]));
+  http.get(READY_EDUCATION_API, async () => {
+    return HttpResponse.json(mockedStudent, { status: 200 });
   }),
-  rest.post(OUTLOOK_API, async (req, res, ctx) => {
-    return res(ctx.status(200));
-  }),
-  rest.get(READY_EDUCATION_API, async (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(mockedStudent));
-  }),
-  rest.get(CACHE_API, async (req, res, ctx) => {
+  http.get(CACHE_API, async () => {
     const mockUrlResponse = { bob: 'ross' };
-    return res(ctx.status(200), ctx.json(mockUrlResponse));
+    return HttpResponse.json(mockUrlResponse, { status: 200 });
   }),
 ];

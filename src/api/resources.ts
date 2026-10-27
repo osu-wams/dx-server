@@ -1,7 +1,7 @@
 /**
  * /api/resources
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
 import { Types } from '@osu-wams/lib';
 import { getResources, getCuratedResources, getCategories } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';
@@ -56,11 +56,11 @@ router.get(
   ['/trending/:period/:affiliation', '/trending/:period'],
   async (req: Request, res: Response) => {
     try {
-      const days = getDaysInDuration(req.params.period);
-      const affiliation = req.params.affiliation?.toLowerCase();
+      const days = getDaysInDuration(String(req.params.period));
+      const affiliation = req.params.affiliation?.toString().toLowerCase();
       const data = [];
       for (let index = 0; index < days.length; index += 1) {
-        const resources = await getTrendingResources(days[index][0], days[index][1]); // eslint-disable-line no-await-in-loop
+        const resources = await getTrendingResources(days[index][0], days[index][1]);
         data.push(...resources);
       }
       res.send(

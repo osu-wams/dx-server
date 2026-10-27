@@ -36,7 +36,7 @@ const configsForApi = (isAdmin: boolean) => {
       region,
       dynamodb: { endpoint, apiVersion, tablePrefix },
     },
-  } = config.util.toObject();
+  } = config.util.toObject() as any;
 
   return {
     appVersion,

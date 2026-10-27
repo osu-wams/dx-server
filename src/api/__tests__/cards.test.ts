@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import { mockedCards, mockedCardsExpected } from '../../mocks/dx';
 import app from '../../index';
 import { BASE_URL } from '../modules/dx';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import { getAsync, mockCachedData } from '../modules/__mocks__/cache';
 
 const mockedGetCache = jest.fn();
@@ -13,7 +13,7 @@ jest.mock('../modules/cache.ts', () => ({
   getCache: () => mockedGetCache(),
 }));
 
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 
 beforeAll(async () => {
   request = supertest.agent(app);

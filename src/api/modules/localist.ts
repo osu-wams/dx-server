@@ -1,5 +1,5 @@
 import Parser from 'rss-parser';
-import { Types, User } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Types, User } from '@osu-wams/lib';
 import cache from './cache';
 import { fetchData } from '../util';
 import {
@@ -20,7 +20,6 @@ import {
 
 const parser = new Parser();
 
-/* eslint-disable camelcase */
 interface ILocalistEvent {
   event: {
     id: number;
@@ -81,7 +80,6 @@ const mappedEvents = (events: ILocalistEvent[]): Types.LocalistEvent[] => {
     };
   });
 };
-/* eslint-enable camelcase */
 
 /**
  * Gets events from Localist.

@@ -1,7 +1,7 @@
 /**
  * /api/page-content
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
 import logger from '../logger';
 import { getPageContent } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';

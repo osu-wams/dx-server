@@ -1,8 +1,19 @@
-import DynamoDB from 'aws-sdk/clients/dynamodb'; // eslint-disable-line no-unused-vars
-import { Table, Entity } from 'dynamodb-toolbox';
+import type { CreateTableCommandInput } from '@aws-sdk/client-dynamodb';
+import type { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import {
+  Table,
+  Entity,
+  item,
+  string,
+  number,
+  PutItemCommand,
+  QueryCommand,
+  ScanCommand,
+} from 'dynamodb-toolbox';
 import { DYNAMODB_TABLE_PREFIX } from '../../constants';
 import logger from '../../logger';
 import { DocumentClient } from '../../db';
+import { normalizeItem, toNumber } from '../../db/format';
 import { getCache, setCache } from '../modules/cache';
 
 export interface GoogleTrendingResource {
@@ -25,14 +36,11 @@ export interface TrendingResource {
   period?: string;
 }
 
-interface TrendingResources {
-  Items: TrendingResource[];
-  next?: Function;
-}
+type Client = DynamoDBDocumentClient;
 
 export const TABLE_NAME: string = `${DYNAMODB_TABLE_PREFIX}-TrendingResources`;
 
-export const TableDefinition: DynamoDB.CreateTableInput = {
+export const TableDefinition: CreateTableCommandInput = {
   AttributeDefinitions: [
     { AttributeName: 'date', AttributeType: 'S' },
     { AttributeName: 'resourceId', AttributeType: 'S' },
@@ -52,48 +60,58 @@ export const TableDefinition: DynamoDB.CreateTableInput = {
 };
 
 const getTitlePart = (title: string, index: number): string => {
-  const parts = title.split(' || ');
+  const parts = (title ?? '').split(' || ');
   return parts[index]?.trim() ?? '<missing data>';
 };
 
-const table = (client?: typeof DocumentClient) =>
+const table = (client?: Client) =>
   new Table({
     name: TABLE_NAME,
-    partitionKey: 'date',
-    sortKey: 'resourceId',
-    DocumentClient: client ?? DocumentClient,
+    partitionKey: { name: 'date', type: 'string' },
+    sortKey: { name: 'resourceId', type: 'string' },
+    documentClient: client ?? DocumentClient,
   });
 
-const TrendingResourceEntity = (client?: typeof DocumentClient) =>
+const trendingResourceSchema = item({
+  date: string().key(),
+  resourceId: string().key(),
+  affiliation: string().optional(),
+  campus: string().optional(),
+  title: string().optional(),
+  totalEvents: number().optional(),
+  uniqueEvents: number().optional(),
+  period: string().optional(),
+});
+
+const TrendingResourceEntity = (client?: Client) =>
   new Entity({
     name: 'TrendingResource',
-    attributes: {
-      date: { partitionKey: true, type: 'string' },
-      resourceId: {
-        sortKey: true,
-        type: 'string',
-        default: (data) => data.resourceId?.trim() ?? '<missing data>',
-      },
-      affiliation: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 0) },
-      campus: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 1) },
-      title: { type: 'string', default: (data) => getTitlePart(data.concatenatedTitle, 2) },
-      totalEvents: { type: 'number', coerce: true },
-      uniqueEvents: { type: 'number', coerce: true },
-      period: { type: 'string' },
-      concatenatedTitle: { type: 'string', save: false },
-    },
     table: table(client),
-    autoExecute: true,
-    autoParse: true,
+    schema: trendingResourceSchema,
   });
 
-export const findAll = async (
-  date: string,
-  client?: typeof DocumentClient,
-): Promise<TrendingResource[] | null> => {
+/**
+ * Translate the Google Analytics data into the item shape persisted in DynamoDB, the
+ * affiliation, campus and title are derived from the concatenated title.
+ */
+const toItem = (props: GoogleTrendingResource) => ({
+  date: props.date,
+  resourceId: props.resourceId?.trim() ?? '<missing data>',
+  affiliation: getTitlePart(props.concatenatedTitle, 0),
+  campus: getTitlePart(props.concatenatedTitle, 1),
+  title: getTitlePart(props.concatenatedTitle, 2),
+  totalEvents: toNumber(props.totalEvents),
+  uniqueEvents: toNumber(props.uniqueEvents),
+  period: props.period,
+});
+
+export const findAll = async (date: string, client?: Client): Promise<TrendingResource[] | null> => {
   try {
-    const results: TrendingResources = await TrendingResourceEntity(client).query(date);
-    return results.Items;
+    const { Items = [] } = await table(client)
+      .build(QueryCommand)
+      .query({ partition: date })
+      .send();
+    return Items.map((i) => normalizeItem<TrendingResource>(i));
   } catch (err) {
     logger().error(`TrendingResource.findAll(${date}) failed:`, err);
     throw err;
@@ -103,13 +121,14 @@ export const findAll = async (
 export const find = async (
   resourceId: string,
   date: string,
-  client?: typeof DocumentClient,
+  client?: Client,
 ): Promise<TrendingResource | null> => {
   try {
-    const result: TrendingResources = await TrendingResourceEntity(client).query(date, {
-      eq: resourceId,
-    });
-    return result.Items[0];
+    const { Items = [] } = await table(client)
+      .build(QueryCommand)
+      .query({ partition: date, range: { eq: resourceId } })
+      .send();
+    return Items[0] ? normalizeItem<TrendingResource>(Items[0]) : undefined;
   } catch (err) {
     logger().error(`TrendingResource.find(${resourceId}, ${date}) failed:`, err);
     throw err;
@@ -118,34 +137,39 @@ export const find = async (
 
 export const upsert = async (
   props: GoogleTrendingResource,
-  client?: typeof DocumentClient,
+  client?: Client,
 ): Promise<TrendingResource> => {
   try {
-    const result: TrendingResources = await TrendingResourceEntity(client).put(props);
+    const result = await TrendingResourceEntity(client)
+      .build(PutItemCommand)
+      .item(toItem(props))
+      .send();
     logger().info('TrendingResource.upsert succeeded:', result);
-    return find(props.resourceId, props.date);
+    return find(props.resourceId, props.date, client);
   } catch (err) {
     logger().error(`TrendingResource.upsert failed:`, props, err);
     throw err;
   }
 };
 
-export const scanAll = async (client?: typeof DocumentClient): Promise<TrendingResource[]> => {
+export const scanAll = async (client?: Client): Promise<TrendingResource[]> => {
   const cached = await getCache(TABLE_NAME);
   if (cached) {
     return JSON.parse(cached);
   }
 
-  const found = [];
-  let results: TrendingResources = await TrendingResourceEntity(client).scan();
-  found.push(...results.Items);
-  logger().info(`${TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`);
-  while (results.next) {
-    // eslint-disable-next-line no-await-in-loop
-    results = await results.next();
-    found.push(...results.Items);
-    logger().info(`${TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`);
-  }
+  const found: TrendingResource[] = [];
+  let exclusiveStartKey: Record<string, unknown> | undefined;
+  do {
+    const { Items = [], LastEvaluatedKey } = await table(client)
+      .build(ScanCommand)
+      .options(exclusiveStartKey ? { exclusiveStartKey } : {})
+      .send();
+    const resources = Items.map((i) => normalizeItem<TrendingResource>(i));
+    found.push(...resources);
+    logger().info(`${TABLE_NAME} scan returned ${resources.length}, total: ${found.length}`);
+    exclusiveStartKey = LastEvaluatedKey;
+  } while (exclusiveStartKey);
 
   setCache(TABLE_NAME, JSON.stringify(found), {
     mode: 'EX',

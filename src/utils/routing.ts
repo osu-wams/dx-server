@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import { Request, Response, NextFunction } from 'express';
 import logger from '../logger';
 import { APP_URL_REGEX, ENCRYPTION_KEY, JWT_KEY } from '../constants';
 import { decrypt, userFromJWT, issueRefresh, verifiedJwt } from './auth';

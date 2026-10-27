@@ -38,21 +38,21 @@ jest.mock('../../api/util.ts', () => ({
 describe('parseSamlResult', () => {
   it('parses the Saml result', async () => {
     parseSamlResult(mockSaml, mockedDone);
-    expect(mockedDone).toBeCalledWith(null, mockUser);
+    expect(mockedDone).toHaveBeenCalledWith(null, mockUser);
   });
   it('parses a Saml result without masquerade', async () => {
     parseSamlResult(
       { ...mockSaml, 'urn:oid:1.3.6.1.4.1.5923.1.1.1.7': [GROUPS.admin] },
       mockedDone,
     );
-    expect(mockedDone).toBeCalledWith(null, { ...mockUser, groups: ['admin'] });
+    expect(mockedDone).toHaveBeenCalledWith(null, { ...mockUser, groups: ['admin'] });
   });
   it('parses a Saml result without admin', async () => {
     parseSamlResult(
       { ...mockSaml, 'urn:oid:1.3.6.1.4.1.5923.1.1.1.7': [GROUPS.masquerade] },
       mockedDone,
     );
-    expect(mockedDone).toBeCalledWith(null, {
+    expect(mockedDone).toHaveBeenCalledWith(null, {
       ...mockUser,
       isAdmin: false,
       groups: ['masquerade'],
@@ -67,7 +67,7 @@ describe('parseSamlResult', () => {
       },
       mockedDone,
     );
-    expect(mockedDone).toBeCalledWith(null, {
+    expect(mockedDone).toHaveBeenCalledWith(null, {
       ...mockUser,
       primaryAffiliation: 'employee',
       affiliations: ['employee'],

@@ -1,7 +1,7 @@
 /**
  * /api/events
  */
-import { Router, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
 import logger from '../logger';
 import {
   getEvents,

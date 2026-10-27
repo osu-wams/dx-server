@@ -1,4 +1,3 @@
-import request from 'node-fetch';
 import logger from '../../logger';
 import cache from './cache';
 import { ENV, MS_TEAMS_URL } from '../../constants';
@@ -55,7 +54,7 @@ const postTeamsMessage = async (url: string, payload: TeamsPayload): Promise<boo
     if (ENV === 'test') return false; // Do not attempt to post a message during test
 
     logger().debug(`MS Teams API POST request url:${url}`);
-    const response = await request(url, {
+    const response = await fetch(url, {
       method: 'post',
       body: JSON.stringify(payload),
     });

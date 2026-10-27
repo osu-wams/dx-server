@@ -63,8 +63,9 @@ const OSU_API_CLIENT_ID: string = config.get('osuApi.clientId');
 const OSU_API_CLIENT_SECRET: string = config.get('osuApi.clientSecret');
 const OSU_ERROR_SEC_THRESH = parseInt(config.get('osuApi.thresholdErrorSeconds'), 10);
 const OSU_ERROR_OCCUR_THRESH = parseInt(config.get('osuApi.thresholdErrorOccurrence'), 10);
-const REDIS_HOST: string = config.get('redis.host');
-const REDIS_PORT: number = parseInt(config.get('redis.port'), 10);
+// Fall back to the redis defaults when unset (node-redis v3 did this implicitly, v4+ does not)
+const REDIS_HOST: string = config.get<string>('redis.host') || '127.0.0.1';
+const REDIS_PORT: number = parseInt(config.get<string>('redis.port'), 10) || 6379;
 const SAML_CALLBACK_URL: string = config.get('saml.callbackUrl');
 const SAML_CERT: string = config.get('saml.cert');
 const SAML_PVK: string = config.get('saml.pvk');

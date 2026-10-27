@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import config from 'config';
 import app from '../../index';
 import {
@@ -13,7 +13,7 @@ import { holdsData } from '../__mocks__/holds.data';
 import { plannerItemsData } from '../__mocks__/planner-items.data';
 import mockDegrees from '../../mocks/osu/degrees.data.json';
 import mockGrades from '../../mocks/osu/grades.data.json';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import mockUser from '../../utils/mock-user';
 import { GROUPS, OSU_API_BASE_URL } from '../../constants';
@@ -42,7 +42,7 @@ const user = {
 };
 
 const CANVAS_BASE_URL: string = config.get<string>('canvasApi.baseUrl').replace('/api/v1', '');
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 
 beforeAll(async () => {
   request = supertest.agent(app);

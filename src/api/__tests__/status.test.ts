@@ -1,8 +1,8 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import config from 'config';
 import app from '../../index';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import { mockedGetResponse, mockedGet } from '../modules/__mocks__/cache';
 import componentsResponse, { expectedResponse } from '../../mocks/cachet/components';
 import incidentsResponse from '../../mocks/cachet/incidents';

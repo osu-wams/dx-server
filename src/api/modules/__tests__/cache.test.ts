@@ -1,7 +1,6 @@
-import { rest } from 'msw';
-import redis from 'redis'; // eslint-disable-line no-unused-vars
+import { http, HttpResponse } from 'msw';
 import { server } from '@src/mocks/server';
-import cache from '../cache'; // eslint-disable-line no-unused-vars
+import cache from '../cache';
 import { mockCacheUrl, mockedGet, mockedGetResponse } from '../__mocks__/cache';
 
 const mockUrlResponse = { bob: 'ross' };
@@ -22,8 +21,8 @@ describe('Cache module', () => {
     });
     it('gets a json object and caches it from a funky endpoint', async () => {
       server.use(
-        rest.get('http://funky-endpoint', async (req, res, ctx) => {
-          return res(ctx.status(200), ctx.body('test'));
+        http.get('http://funky-endpoint', async () => {
+          return new HttpResponse('test', { status: 200 });
         }),
       );
       const result = await cache.get('http://funky-endpoint', {}, true);
