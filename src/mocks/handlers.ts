@@ -1,5 +1,5 @@
 import type { SetupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
+import { http, HttpResponse, passthrough } from 'msw';
 import { CACHE_API, OUTLOOK_API, PLANNER_ITEMS_API, READY_EDUCATION_API } from './apis';
 import mockedStudent from './ready-education/student.data';
 
@@ -64,5 +64,20 @@ export const handlers = [
   http.get(CACHE_API, async () => {
     const mockUrlResponse = { bob: 'ross' };
     return HttpResponse.json(mockUrlResponse, { status: 200 });
+  }),
+  /**
+   * Fallback for requests no other handler matched. Requests to the local supertest server pass
+   * through, anything else fails with a network error so the tests never reach the real internet.
+   * Besides keeping the suite hermetic this avoids a subtle bug: msw intercepts at the socket level
+   * and a real keep-alive connection opened by one test file is reused (un-intercepted) by the next
+   * test file in the same Jest worker, which made the Canvas OAuth tests fail depending on ordering.
+   */
+  http.all('*', ({ request }) => {
+    const { hostname } = new URL(request.url);
+    if (['127.0.0.1', 'localhost', '::1', '[::1]'].includes(hostname)) {
+      return passthrough();
+    }
+    console.warn(`[msw] unhandled request blocked: ${request.method} ${request.url}`);
+    return HttpResponse.error();
   }),
 ];
