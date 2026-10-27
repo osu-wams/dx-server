@@ -1,7 +1,5 @@
-import { promisify } from 'util';
-import request from 'node-fetch';
-import redis from 'redis';
-import config from 'config';
+import { createClient } from 'redis';
+import { REDIS_HOST, REDIS_PORT } from '../../constants';
 import logger from '../../logger';
 
 const DEFAULT_DB: number = 1;
@@ -13,28 +11,50 @@ export interface SetCacheOptions {
   flag: string;
 }
 
-const opts = {
-  host: config.get('redis.host'),
-  port: config.get('redis.port'),
-  db: DEFAULT_DB,
-} as redis.ClientOpts;
-
-const client = redis.createClient(opts);
-
-export const selectDbAsync = promisify(client.select).bind(client);
-export const flushDbAsync = promisify(client.flushdb).bind(client);
-export const getAsync = promisify(client.get).bind(client);
-export const setAsync = promisify(client.set).bind(client);
-export const delAsync = promisify(client.del).bind(client);
-/*
-  set(key: string, value: string, cb?: Callback<'OK'>): R;
-  set(key: string, value: string, flag: string, cb?: Callback<'OK'>): R;
-  set(key: string, value: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R;
-  set(key: string, value: string, mode: string, duration: number, flag: string, cb?: Callback<'OK' | undefined>): R;
-  set(key: string, value: string, flag: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R
-*/
+const client = createClient({
+  socket: {
+    host: REDIS_HOST,
+    port: REDIS_PORT,
+  },
+  database: DEFAULT_DB,
+});
 
 client.on('error', (err) => logger().error(`cache: redisClient.on('error'): ${err}`));
+
+/**
+ * node-redis v4+ requires an explicit connection, commands issued before the connection
+ * is established are queued and flushed once the client is ready.
+ */
+export const connect = async (): Promise<void> => {
+  if (!client.isOpen) {
+    await client.connect();
+  }
+};
+
+connect().catch((err) => logger().error(`cache: redisClient.connect() failed: ${err}`));
+
+/**
+ * Translate the legacy (redis v3 style) set arguments into node-redis v4+ set options.
+ * ie. `{ mode: 'EX', duration: 60, flag: 'NX' }` becomes `{ expiration: { type: 'EX', value: 60 }, condition: 'NX' }`
+ */
+const toSetOptions = (options?: SetCacheOptions): Record<string, unknown> | undefined => {
+  if (!options) return undefined;
+  const setOptions: Record<string, unknown> = {};
+  if (options.mode) setOptions.expiration = { type: options.mode, value: options.duration };
+  if (options.flag) setOptions.condition = options.flag;
+  return setOptions;
+};
+
+export const selectDbAsync = async (db: number) => client.select(db);
+export const flushDbAsync = async () => client.flushDb();
+export const getAsync = async (key: string): Promise<string | null> =>
+  (await client.get(key)) as string | null;
+export const setAsync = async (
+  key: string,
+  value: string,
+  options?: SetCacheOptions,
+): Promise<string | null> => (await client.set(key, value, toSetOptions(options) as any)) as string | null;
+export const delAsync = async (key: string) => client.del(key);
 
 export const getCache = async (key: string, db: number = DEFAULT_DB): Promise<string | null> => {
   await selectDbAsync(db);
@@ -50,9 +70,9 @@ export const setCache = async (
   db?: number,
 ): Promise<boolean> => {
   await selectDbAsync(db || DEFAULT_DB);
-  const reply = await setAsync(key, data, options.mode, options.duration, options.flag);
+  const reply = await setAsync(key, data, options);
   if (!reply) logger().debug(`setCache(${key}, ${data}) failed to set cache.`);
-  return reply;
+  return !!reply;
 };
 
 export interface CacheOptions {
@@ -66,7 +86,7 @@ const requestRetry = async (
   conditions: { codes: number[]; times: number },
 ) => {
   try {
-    const response = await request(url, options);
+    const response = await fetch(url, options);
     if (response.ok) return response;
     throw Object({
       response: {
@@ -77,7 +97,7 @@ const requestRetry = async (
       },
     });
   } catch (err) {
-    const expiredCert = err.code === 'CERT_HAS_EXPIRED';
+    const expiredCert = (err.code ?? err.cause?.code) === 'CERT_HAS_EXPIRED';
     if (expiredCert) {
       logger().error(
         `cache.request url:${url}, failed because its SSL certificate has expired, escalate to proper system admin for repair.`,
@@ -91,7 +111,7 @@ const requestRetry = async (
       throw err;
     }
     logger().debug(
-      `cache.requestRetry retrying times:${conditions.times}, status:${err.response.status}, url:${url}, options:${options}`,
+      `cache.requestRetry retrying times:${conditions.times}, status:${err.response?.status}, url:${url}, options:${options}`,
     );
     return requestRetry(url, options, { codes: conditions.codes, times: conditions.times - 1 });
   }
@@ -104,7 +124,6 @@ const requestRetry = async (
  * @param performCache optionally perform a cache of the API data fetched
  * @param cacheOptions the cache options for a specific key and/or TTL for the data
  */
-/* eslint-disable consistent-return */
 export const get = async (
   url: string,
   requestOptions: { json?: boolean; headers?: any },
@@ -139,7 +158,6 @@ export const get = async (
     return responseText;
   }
 };
-/* eslint-enable consistent-return */
 
 /**
  * Flushes the cache database

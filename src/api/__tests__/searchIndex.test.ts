@@ -1,7 +1,7 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import app from '../../index';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
 import { mockedPageSearchIndex, mockedPageSearchIndexExpected } from '../../mocks/dx';
 import { BASE_URL } from '../modules/dx';

@@ -2,12 +2,12 @@
  * /api/grouper
  */
 import config from 'config';
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
+import { Types } from '@osu-wams/lib';
 import logger from '../logger';
 import { asyncTimedFunction } from '../tracer';
 import { hasMember } from './modules/grouper';
-import { getProfile } from './modules/osu'; // eslint-disable-line no-unused-vars
+import { getProfile } from './modules/osu';
 
 const router = Router();
 

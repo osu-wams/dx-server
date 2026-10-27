@@ -7,7 +7,6 @@ import mockedComponents from '../../mocks/cachet/components';
 export const CACHET_BASE_URL: string = config.get('cachetApi.baseUrl');
 const CACHE_SEC: number = parseInt(config.get('cachetApi.cacheEndpointSec'), 10);
 
-/* eslint-disable camelcase */
 interface ICachetMeta {
   meta: {
     pagination: {
@@ -86,7 +85,6 @@ interface ICachetIncidentResponse {
   meta: ICachetMeta;
   data: ICachetIncidentItemResponse[];
 }
-/* eslint-enable camelcase */
 
 export interface ICachetIncident {
   id: number;

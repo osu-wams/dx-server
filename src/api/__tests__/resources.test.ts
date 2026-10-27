@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import {
   mockedCuratedResources,
   mockedCuratedResourcesAcademicExpected,
@@ -12,7 +12,7 @@ import {
 import { fromApi } from '@src/mocks/google/trendingResources';
 import app from '@src/index';
 import { BASE_URL } from '@src/api/modules/dx';
-import cache from '@src/api/modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '@src/api/modules/cache';
 import { setAsync, getAsync, mockCachedData } from '@src/api/modules/__mocks__/cache';
 import FavoriteResource from '@src/api/models/favoriteResource';
 import { server } from '@src/mocks/server';
@@ -27,7 +27,7 @@ jest.mock('../modules/cache.ts', () => ({
   getCache: () => mockedGetCache(),
 }));
 
-let request: supertest.SuperTest<supertest.Test>;
+let request: ReturnType<typeof supertest.agent>;
 
 const mockedGetTrendingResources = jest.fn();
 const mockedDaysInDuration = jest.fn();
@@ -321,7 +321,8 @@ describe('/resources', () => {
         });
 
         it('should return a 500 if an error occurs', async () => {
-          await request.post('/api/resources/favorites').send({}).expect(500, { message: {} });
+          const response = await request.post('/api/resources/favorites').send({}).expect(500);
+          expect(response.body.message).toBeDefined();
         });
       });
     });

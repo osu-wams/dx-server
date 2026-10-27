@@ -1,4 +1,4 @@
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib';
 import cache from './cache';
 import { fetchData } from '../util';
 import {

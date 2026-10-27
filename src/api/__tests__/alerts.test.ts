@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import config from 'config';
 import app from '../../index';
 import { alertClear, alertPresent, dxAlert, dxAPIAlerts } from '../__mocks__/alerts.data';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import {
   mockedGetResponse,
   mockedGet,

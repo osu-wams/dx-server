@@ -1,12 +1,12 @@
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Types } from '@osu-wams/lib';
 import { COLLEGES } from '../../constants';
-import { User, find, upsert, updateCanvasData } from '../models/user'; // eslint-disable-line no-unused-vars
+import { User, find, upsert, updateCanvasData } from '../models/user';
 import logger from '../../logger';
 
 export interface SamlUser {
-  osu_id: string; // eslint-disable-line camelcase
-  first_name: string; // eslint-disable-line camelcase
-  last_name: string; // eslint-disable-line camelcase
+  osu_id: string;
+  first_name: string;
+  last_name: string;
   email: string;
   phone: string;
   primaryAffiliation: string;
@@ -98,7 +98,6 @@ export const setColleges = async (u: Partial<User>, degrees: Types.Degree[]): Pr
   const colleges = degrees.map((d) => d.college);
   const dualDegrees = degrees.filter((d) => d.dualDegree).map((dd) => dd.dualDegree.college);
   colleges.push(...dualDegrees);
-  // eslint-disable-next-line
   u.colleges = [...new Set(colleges)].map((name) => COLLEGES[name.toLowerCase()]).filter(Boolean);
   const { user } = await findOrUpsertUser(u);
   return user;

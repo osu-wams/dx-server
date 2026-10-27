@@ -5,7 +5,6 @@
  */
 export const groupBy = <T>(array: T[], key: string): { [key: string]: T[] } =>
   array.reduce((result, item) => {
-    // eslint-disable-next-line
     result[item[key]] = result[item[key]] || [];
     result[item[key]].push(item);
     return result;

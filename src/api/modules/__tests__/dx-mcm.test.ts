@@ -1,8 +1,7 @@
-import { rest } from 'msw';
+import { http, HttpResponse } from 'msw';
 import { server } from '@src/mocks/server';
 import { mockedUserMessages } from '@src/mocks/dx-mcm';
 import { getUserMessages, markRead, findByChannelPath, markReadPath } from '../dx-mcm';
-import cache from '../cache'; // eslint-disable-line no-unused-vars
 
 const mockedSetCache = jest.fn();
 const mockedGetCache = jest.fn();
@@ -29,8 +28,8 @@ describe('DX Multi-Channel Message Module', () => {
   describe('getUserMessages', () => {
     it('fetches a users current messages', async () => {
       server.use(
-        rest.get(FIND_BY_CHANNEL_MCM_URL, async (req, res, ctx) => {
-          return res(ctx.status(200), ctx.json(getApiResponse));
+        http.get(FIND_BY_CHANNEL_MCM_URL, async () => {
+          return HttpResponse.json(getApiResponse, { status: 200 });
         }),
       );
 
@@ -44,8 +43,8 @@ describe('DX Multi-Channel Message Module', () => {
 
     it('catches an error response', async () => {
       server.use(
-        rest.get(FIND_BY_CHANNEL_MCM_URL, async (req, res, ctx) => {
-          return res(ctx.status(500), ctx.body('boom'));
+        http.get(FIND_BY_CHANNEL_MCM_URL, async () => {
+          return new HttpResponse('boom', { status: 500 });
         }),
       );
       try {
@@ -65,13 +64,13 @@ describe('DX Multi-Channel Message Module', () => {
     it('marks a user message as read', async () => {
       const updatedUserMessage = { ...mockedUserMessages[0], status: 'READ' };
       server.use(
-        rest.get(MARK_READ_PATH_MCM_URL, async (req, res, ctx) => {
-          return res(
-            ctx.status(200),
-            ctx.json({
+        http.get(MARK_READ_PATH_MCM_URL, async () => {
+          return HttpResponse.json(
+            {
               action: 'user-message-mark-read',
               userMessage: updatedUserMessage,
-            }),
+            },
+            { status: 200 },
           );
         }),
       );
@@ -86,15 +85,15 @@ describe('DX Multi-Channel Message Module', () => {
 
     it('marks all user messages as read', async () => {
       server.use(
-        rest.get(
+        http.get(
           new RegExp(String.raw`${markReadPath(osuId, onid, 'all')}`),
-          async (req, res, ctx) => {
-            return res(
-              ctx.status(200),
-              ctx.json({
+          async () => {
+            return HttpResponse.json(
+              {
                 action: 'user-message-mark-read',
                 message: '1 marked as read.',
-              }),
+              },
+              { status: 200 },
             );
           },
         ),
@@ -106,8 +105,8 @@ describe('DX Multi-Channel Message Module', () => {
 
     it('catches an error response', async () => {
       server.use(
-        rest.get(MARK_READ_PATH_MCM_URL, async (req, res, ctx) => {
-          return res(ctx.status(500), ctx.body('boom'));
+        http.get(MARK_READ_PATH_MCM_URL, async () => {
+          return new HttpResponse('boom', { status: 500 });
         }),
       );
       try {

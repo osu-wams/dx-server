@@ -3,7 +3,7 @@
 ## Dependencies
 
 - [Docker](https://docs.docker.com/install/)
-- [NVM](https://github.com/nvm-sh/nvm#installation-and-update)
+- [NVM](https://github.com/nvm-sh/nvm#installation-and-update) (run `nvm use` to pick up the Node version from `.nvmrc`, currently Node 24)
 - [Yarn (install via NPM)](https://yarnpkg.com/en/docs/install#alternatives-stable)
 
 ## Development Setup
@@ -184,3 +184,12 @@ This feature will clear all of the external API caches in the case that some dat
 This feature is intended to be used infrequently and will cause all users to have to "opt-in" to Canvas OAuth. **use sparingly!**
 
     curl -b cookie.txt -c cookie.txt https://dev.my.oregonstate.edu/api/admin/reset-sessions
+
+# Toolchain Notes
+
+- **Node 24** is required (the `@osu-wams/*` packages declare `engines.node >= 24`). `.nvmrc`, the `Dockerfile` and the GitHub workflows all pin it.
+- **TypeScript 6.x** is intentionally used rather than 7.x: TypeScript 7 is the native (Go) compiler which does not expose the compiler API that `ts-jest` and `typescript-eslint` rely on.
+- **ESM-only packages** (`msw`, `connect-redis`, `cross-env`, ...) are loaded from this CommonJS codebase through Node's `require(esm)` support. Jest needs the `--experimental-vm-modules` flag for that, which the `test` and `test:coverage` scripts set via `NODE_OPTIONS`.
+- **HTTP mocking in tests** is done exclusively with `msw`. `nock` (v14+) uses the same interceptor library as `msw` and the two cannot be active in one process, so tests use the small nock-compatible adapter in `src/mocks/nock.ts` (`import nock from '@src/mocks/nock'`).
+- **DX (Drupal JSON:API) client** lives in `src/api/modules/jsonapi.ts`. It replaced `kitsu` whose v13 changed the deserialised document shape (relationships are no longer wrapped in `{ data }`), which the DX module and all mocked DX data depend on.
+- **Linting** uses ESLint flat config (`eslint.config.js`) without type-aware rules: the TypeScript project service loads the large JSON mock data and runs out of memory.

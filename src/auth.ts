@@ -1,13 +1,12 @@
-/* eslint-disable consistent-return */
-import { Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import { Request, Response, NextFunction } from 'express';
 import passport from 'passport';
-import { Strategy as SamlStrategy } from 'passport-saml';
+import { Strategy as SamlStrategy } from '@node-saml/passport-saml';
 import { Strategy as OAuthStrategy } from 'passport-oauth2';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt'; // eslint-disable-line no-unused-vars
+import { Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 import DevStrategy from 'passport-dev';
 import MockStrategy from './utils/mock-strategy';
-import { User, find } from './api/models/user'; // eslint-disable-line no-unused-vars
+import { User, find } from './api/models/user';
 import { refreshOAuthToken } from './api/modules/canvas';
 import logger from './logger';
 import parseSamlResult, { decrypt } from './utils/auth';
@@ -33,7 +32,6 @@ import {
 } from './constants';
 import { getUser } from './api/modules/ready-education';
 
-/* eslint-disable no-unused-vars */
 interface IAuth {
   passportStrategy?: any;
   oAuth2Strategy?: any;
@@ -48,7 +46,6 @@ interface IAuth {
   ensureAdmin?(req: Request, res: Response, next: NextFunction): void;
   hasCanvasRefreshToken?(req: Request, res: Response, next: NextFunction): void;
 }
-/* eslint-enable */
 
 const canvasOAuthConfig = () => {
   const c = {
@@ -80,12 +77,20 @@ switch (ENV) {
         callbackUrl: SAML_CALLBACK_URL,
         entryPoint: `${SAML_URL}SAML2/Redirect/SSO`,
         issuer: 'https://my.oregonstate.edu',
-        cert: SAML_CERT,
+        idpCert: SAML_CERT,
         privateKey: SAML_PVK.replace(/\\n/g, '\n'),
         decryptionPvk: SAML_PVK.replace(/\\n/g, '\n'),
         signatureAlgorithm: 'sha256',
+        // @node-saml/passport-saml (v4+) validates the Audience and requires both the response
+        // AND the assertions to be signed by default. passport-saml v3 did not validate the
+        // audience and only required one of the two to be signed, these preserve that behavior.
+        audience: false,
+        wantAssertionsSigned: false,
+        wantAuthnResponseSigned: false,
       },
       parseSamlResult,
+      // Logout verify callback, required by @node-saml/passport-saml
+      (profile: any, done: any) => done(null, profile),
     );
     break;
   case 'localhost':
@@ -191,7 +196,6 @@ Auth.deserializeUser = (user, done) => {
 };
 
 Auth.login = (req: Request, res: Response, next: NextFunction) => {
-  // eslint-disable-next-line
   return passport.authenticate('readyEducation', (reaErr, reaUser) => {
     logger().debug(`Ready Education User authenticated: ${reaUser}`);
     if (reaErr) {
@@ -206,8 +210,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
         if (!user) {
           res.status(400).send({ message: 'Bad username or password' });
         } else {
-          // eslint-disable-next-line
-          req.login(user, (innerErr: any) => {
+          req.login(user, { session: true, keepSessionInfo: true }, (innerErr: any) => {
             if (innerErr) {
               return next(innerErr);
             }
@@ -221,8 +224,7 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
       req.session.isMobile = true;
       req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 30; // 30 days in milliseconds
       req.session.save();
-      // eslint-disable-next-line
-      req.login(reaUser, (innerErr: any) => {
+      req.login(reaUser, { session: true, keepSessionInfo: true }, (innerErr: any) => {
         if (innerErr) {
           return next(innerErr);
         }
@@ -236,7 +238,6 @@ Auth.login = (req: Request, res: Response, next: NextFunction) => {
   })(req, res, next);
 };
 
-// eslint-disable-next-line
 Auth.logout = (req: Request, res: Response) => {
   try {
     if (!req.user) return res.redirect('/');
@@ -280,7 +281,7 @@ Auth.ensureAdmin = (req: Request, res: Response, next: NextFunction) => {
  * then disallow access to the route protected by this middleware.
  */
 Auth.hasCanvasRefreshToken = async (req: Request, res: Response, next: NextFunction) => {
-  const user: User = req.user; // eslint-disable-line prefer-destructuring
+  const user: User = req.user;
   if (user.canvasOptIn && user.canvasRefreshToken) {
     if (!user.canvasOauthExpire || Math.floor(Date.now() / 1000) >= user.canvasOauthExpire) {
       logger().debug('Auth.hasCanvasRefreshToken oauth token expired, refreshing.', user);

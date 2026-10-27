@@ -1,7 +1,7 @@
 /**
  * /api/trainings
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
 import logger from '../logger';
 import { getTrainings, getTrainingTags, getTrainingAudiences } from './modules/dx';
 import { asyncTimedFunction } from '../tracer';

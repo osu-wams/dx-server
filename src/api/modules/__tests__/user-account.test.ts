@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 
 import { findOrUpsertUser, setColleges, updateOAuthData } from '../user-account';
 import { mockUser } from '../../models/__mocks__/user';
@@ -29,7 +28,7 @@ describe('User Account module', () => {
     it('throws an error on failure', async () => {
       mockFindReturn.mockRejectedValue(new Error('happy little accident'));
       try {
-        const { user, isNew } = await findOrUpsertUser(mockUser);
+        await findOrUpsertUser(mockUser);
       } catch (err) {
         expect(err.message).toBe('happy little accident');
       }
@@ -76,7 +75,7 @@ describe('User Account module', () => {
     it('throws an error on failure', async () => {
       mockFindReturn.mockRejectedValueOnce(new Error('happy little accident'));
       try {
-        const user = await setColleges(mockUser, [mockDegrees.data[0].attributes]);
+        await setColleges(mockUser, [mockDegrees.data[0].attributes]);
       } catch (err) {
         expect(err.message).toBe('happy little accident');
       }

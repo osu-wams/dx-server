@@ -1,8 +1,25 @@
-import DynamoDB from 'aws-sdk/clients/dynamodb'; // eslint-disable-line no-unused-vars
-import { Table, Entity } from 'dynamodb-toolbox';
+import type { CreateTableCommandInput } from '@aws-sdk/client-dynamodb';
+import type { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import {
+  Table,
+  Entity,
+  item,
+  string,
+  number,
+  boolean,
+  set,
+  map,
+  PutItemCommand,
+  UpdateItemCommand,
+  QueryCommand,
+  ScanCommand,
+  $remove,
+  $set,
+} from 'dynamodb-toolbox';
 import { DYNAMODB_TABLE_PREFIX } from '../../constants';
 import logger from '../../logger';
 import { DocumentClient } from '../../db';
+import { normalizeItem, toSet } from '../../db/format';
 import { getCache, setCache } from '../modules/cache';
 
 export interface AudienceOverride {
@@ -91,15 +108,12 @@ export interface User {
   /** Mobile app Refresh JWT token */
   mobileRefreshTokenHash?: string;
 }
-interface Users {
-  // eslint-disable-next-line no-use-before-define
-  Items: User[];
-  next?: Function;
-}
+
+type Client = DynamoDBDocumentClient;
 
 export const TABLE_NAME: string = `${DYNAMODB_TABLE_PREFIX}-Users`;
 
-export const TableDefinition: DynamoDB.CreateTableInput = {
+export const TableDefinition: CreateTableCommandInput = {
   AttributeDefinitions: [{ AttributeName: 'osuId', AttributeType: 'N' }],
   KeySchema: [{ AttributeName: 'osuId', KeyType: 'HASH' }],
   ProvisionedThroughput: {
@@ -112,52 +126,87 @@ export const TableDefinition: DynamoDB.CreateTableInput = {
   },
 };
 
-const table = (client?: typeof DocumentClient) =>
+const table = (client?: Client) =>
   new Table({
     name: TABLE_NAME,
-    partitionKey: 'osuId',
-    DocumentClient: client ?? DocumentClient,
+    partitionKey: { name: 'osuId', type: 'number' },
+    documentClient: client ?? DocumentClient,
   });
 
-const UserEntity = (client?: typeof DocumentClient) =>
+const audienceOverrideSchema = map({
+  campusCode: string().optional(),
+  firstYear: boolean().optional(),
+  international: boolean().optional(),
+  graduate: boolean().optional(),
+  colleges: set(string()).optional(),
+});
+
+/**
+ * Attributes persisted for a User. `isAdmin`, `canvasOauthExpire` and `canvasOauthToken` are
+ * intentionally omitted, they're derived at login time and never saved to the database.
+ */
+const userSchema = item({
+  osuId: number().key(),
+  firstName: string().optional(),
+  lastName: string().optional(),
+  email: string().optional(),
+  primaryAffiliation: string().optional(),
+  affiliations: set(string()).optional(),
+  groups: set(string()).optional(),
+  phone: string().optional(),
+  canvasRefreshToken: string().optional(),
+  canvasOptIn: boolean().optional().putDefault(false),
+  nameID: string().optional(),
+  nameIDFormat: string().optional(),
+  audienceOverride: audienceOverrideSchema.optional(),
+  primaryAffiliationOverride: string().optional(),
+  theme: string().optional().putDefault('light'),
+  devTools: boolean().optional().putDefault(false),
+  onid: string().optional(),
+  lastLogin: string()
+    .optional()
+    .putDefault(() => new Date().toISOString().slice(0, 10)),
+  colleges: set(string()).optional(),
+  mobileRefreshTokenHash: string().optional(),
+});
+
+const UserEntity = (client?: Client) =>
   new Entity({
     name: 'User',
-    attributes: {
-      osuId: { partitionKey: true, type: 'number' },
-      firstName: { type: 'string' },
-      lastName: { type: 'string' },
-      email: { type: 'string' },
-      primaryAffiliation: { type: 'string' },
-      affiliations: { type: 'set', setType: 'string' },
-      groups: { type: 'set', setType: 'string' },
-      phone: { type: 'string' },
-      isAdmin: { type: 'boolean', save: false },
-      canvasRefreshToken: { type: 'string' },
-      canvasOauthExpire: { type: 'number', save: false },
-      canvasOauthToken: { type: 'string', save: false },
-      canvasOptIn: { type: 'boolean', default: false },
-      nameID: { type: 'string' },
-      nameIDFormat: { type: 'string' },
-      audienceOverride: { type: 'map' },
-      primaryAffiliationOverride: { type: 'string' },
-      theme: { type: 'string', default: 'light' },
-      devTools: { type: 'boolean', default: false },
-      onid: { type: 'string' },
-      lastLogin: { type: 'string', default: () => new Date().toISOString().slice(0, 10) },
-      colleges: { type: 'set', setType: 'string' },
-      mobileRefreshTokenHash: { type: 'string' },
-    },
     table: table(client),
-    autoExecute: true,
-    autoParse: true,
+    schema: userSchema,
   });
+
+const toAudienceOverride = (audienceOverride?: AudienceOverride) => {
+  if (!audienceOverride) return undefined;
+  return {
+    ...audienceOverride,
+    colleges: toSet(audienceOverride.colleges),
+  };
+};
+
+/**
+ * Translate a User into the item shape persisted in DynamoDB (arrays become string sets,
+ * non-persisted attributes are dropped).
+ */
+const toItem = (props: Partial<User>) => {
+  const { isAdmin, canvasOauthExpire, canvasOauthToken, ...persisted } = props;
+  return {
+    ...persisted,
+    affiliations: toSet(props.affiliations),
+    groups: toSet(props.groups),
+    colleges: toSet(props.colleges),
+    audienceOverride: toAudienceOverride(props.audienceOverride),
+  };
+};
 
 /**
  * Detect if the user is a student, currently by checking only the primaryAffiliation
  */
 export const isStudent = (props: Partial<User>): boolean => {
   return (
-    props.primaryAffiliation?.toLowerCase() === 'student' || props.affiliations.includes('student')
+    props.primaryAffiliation?.toLowerCase() === 'student' ||
+    (props.affiliations ?? []).includes('student')
   );
 };
 
@@ -167,13 +216,13 @@ export const isStudent = (props: Partial<User>): boolean => {
  * @param id [Number] - the users id
  * @returns Promise<User | null> - a promise with the User or a null if none found
  */
-export const find = async (
-  id: number,
-  client?: typeof DocumentClient,
-): Promise<User | undefined> => {
+export const find = async (id: number, client?: Client): Promise<User | undefined> => {
   try {
-    const result: Users = await UserEntity(client).query(id);
-    const user = result.Items[0];
+    const { Items = [] } = await table(client)
+      .build(QueryCommand)
+      .query({ partition: id })
+      .send();
+    const user = Items[0] ? normalizeItem<User>(Items[0]) : undefined;
     logger().debug(`User.find found: ${JSON.stringify(user)}`);
     return user;
   } catch (err) {
@@ -188,44 +237,39 @@ export const find = async (
  * @param props - the user properties to translate to a dynamodb user item
  * @returns Promise<User> - a promise with the User that was inserted/updated
  */
-export const upsert = async (
-  props: Partial<User>,
-  client?: typeof DocumentClient,
-): Promise<User> => {
+export const upsert = async (props: Partial<User>, client?: Client): Promise<User> => {
   try {
-    const u = { ...props };
-    // Ensure empty (and optional) sets aren't persisted, because they fail
-    if (!u.groups?.length) {
-      u.groups = undefined;
-    }
-    if (!u.colleges?.length) {
-      u.colleges = undefined;
-    }
-    await UserEntity(client).put(u);
+    // Ensure empty (and optional) sets aren't persisted, because they fail (handled by toItem)
+    await UserEntity(client)
+      .build(PutItemCommand)
+      .item(toItem(props) as any)
+      .send();
     logger().debug('User.upsert succeeded');
-    return find(props.osuId);
+    return find(props.osuId, client);
   } catch (err) {
     logger().error(`User.upsert failed:`, props, err);
     throw err;
   }
 };
 
-export const scanAll = async (client?: typeof DocumentClient): Promise<User[]> => {
+export const scanAll = async (client?: Client): Promise<User[]> => {
   const cached = await getCache(TABLE_NAME);
   if (cached) {
     return JSON.parse(cached);
   }
 
-  const found = [];
-  let results: Users = await UserEntity(client).scan();
-  found.push(...results.Items);
-  logger().info(`${TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`);
-  while (results.next) {
-    // eslint-disable-next-line no-await-in-loop
-    results = await results.next();
-    found.push(...results.Items);
-    logger().info(`${TABLE_NAME} scan returned ${results.Items.length}, total: ${found.length}`);
-  }
+  const found: User[] = [];
+  let exclusiveStartKey: Record<string, unknown> | undefined;
+  do {
+    const { Items = [], LastEvaluatedKey } = await table(client)
+      .build(ScanCommand)
+      .options(exclusiveStartKey ? { exclusiveStartKey } : {})
+      .send();
+    const users = Items.map((i) => normalizeItem<User>(i));
+    found.push(...users);
+    logger().info(`${TABLE_NAME} scan returned ${users.length}, total: ${found.length}`);
+    exclusiveStartKey = LastEvaluatedKey;
+  } while (exclusiveStartKey);
 
   await setCache(TABLE_NAME, JSON.stringify(found), {
     mode: 'EX',
@@ -243,20 +287,21 @@ export const scanAll = async (client?: typeof DocumentClient): Promise<User[]> =
  * @returns Promise<[boolean, any]> - a promise with an array of boolean and errors,
  *          the boolean indicates if there were no errors, and the 'any' is an array of [id,error]
  */
-export const clearAllCanvasRefreshTokens = async (
-  client?: typeof DocumentClient,
-): Promise<[boolean, any]> => {
+export const clearAllCanvasRefreshTokens = async (client?: Client): Promise<[boolean, any]> => {
   const errors = [];
   const users = await scanAll();
   users
     .map((u) => u.osuId)
     .forEach(async (osuId) => {
       try {
-        const result = await UserEntity(client).update({
-          osuId,
-          canvasOptIn: false,
-          $remove: ['canvasRefreshToken'],
-        });
+        const result = await UserEntity(client)
+          .build(UpdateItemCommand)
+          .item({
+            osuId,
+            canvasOptIn: false,
+            canvasRefreshToken: $remove(),
+          })
+          .send();
         logger().debug('User.clearAllCanvasRefreshTokens updated user:', osuId, result);
       } catch (err) {
         logger().error(`User.clearAllCanvasRefreshTokens error:`, err);
@@ -270,7 +315,7 @@ export const clearAllCanvasRefreshTokens = async (
  * Update user's canvas opt-in and refresh token.
  * * Example use: User.updateCanvasData({osuId: 123456, firstName: 'f', lastName: 'l', email: 'e'}, 'bobross', true).then(v => console.log(v))
  * @param props [User] - the user to update
- * @param canvasRefreshToken [string] - the new canvas refresh token to set
+ * @param canvasRefreshToken [string] - the new canvas refresh token to set (null removes it)
  * @param canvasOptIn [boolean] - the new opt in boolean
  * @returns Promise<User> - a promise with the User that was inserted/updated
  */
@@ -278,20 +323,25 @@ export const updateCanvasData = async (
   props: Partial<User>,
   canvasRefreshToken: string | null,
   canvasOptIn: boolean,
-  client?: typeof DocumentClient,
+  client?: Client,
 ): Promise<User> => {
   try {
     const { osuId } = props;
-    await UserEntity(client).update({
-      osuId,
-      canvasOptIn,
-      canvasRefreshToken,
-    });
+    await UserEntity(client)
+      .build(UpdateItemCommand)
+      .item({
+        osuId,
+        canvasOptIn,
+        ...(canvasRefreshToken === undefined
+          ? {}
+          : { canvasRefreshToken: canvasRefreshToken === null ? $remove() : canvasRefreshToken }),
+      })
+      .send();
 
     logger().debug(
       `User.updateCanvasData updated user:${osuId}, canvasOptIn:${canvasOptIn}, canvasRefreshToken:${canvasRefreshToken}`,
     );
-    return find(osuId);
+    return find(osuId, client);
   } catch (err) {
     logger().error(`User.updateCanvasData failed:`, err);
     throw err;
@@ -301,24 +351,26 @@ export const updateCanvasData = async (
 export const updateSettings = async (
   props: User,
   settings: UserSettings,
-  client?: typeof DocumentClient,
+  client?: Client,
 ): Promise<User> => {
   try {
     const { osuId } = props;
     const theme: string = settings.theme || props.theme || 'light';
     const devTools: boolean = settings.devTools ?? props.devTools ?? false;
-    const updates: Partial<User> = {
-      osuId,
-      theme,
-      devTools,
-    };
     const { audienceOverride, primaryAffiliationOverride } = settings;
-    if (primaryAffiliationOverride) updates.primaryAffiliationOverride = primaryAffiliationOverride;
-    if (audienceOverride) updates.audienceOverride = audienceOverride;
-    const result = await UserEntity(client).update(updates);
+    const result = await UserEntity(client)
+      .build(UpdateItemCommand)
+      .item({
+        osuId,
+        theme,
+        devTools,
+        ...(primaryAffiliationOverride ? { primaryAffiliationOverride } : {}),
+        ...(audienceOverride ? { audienceOverride: $set(toAudienceOverride(audienceOverride)) } : {}),
+      })
+      .send();
 
     logger().silly('User.updateSettings updated user:', osuId, result);
-    return find(osuId);
+    return find(osuId, client);
   } catch (err) {
     logger().error(`User.updateSettings failed:`, err);
     throw err;

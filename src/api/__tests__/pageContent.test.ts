@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import app from '../../index';
 import pageContentJSON, { expectedPageContent } from '../../mocks/dx/page-content';
 import { BASE_URL } from '../modules/dx';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
 
 const request = supertest.agent(app);

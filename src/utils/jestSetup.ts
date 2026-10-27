@@ -1,5 +1,5 @@
-import { beforeEach, beforeAll, afterEach, afterAll, jest } from '@jest/globals'; // eslint-disable-line
-import redis from 'redis';
+import { beforeEach, beforeAll, afterEach, afterAll, jest } from '@jest/globals';
+import { createClient } from 'redis';
 import { server } from '@src/mocks/server';
 import { dynamoDbHandler } from '@src/mocks/handlers';
 import TrendingResource from '@src/api/models/trendingResource';
@@ -9,12 +9,14 @@ import { fromDynamoDb } from '@src/mocks/google/trendingResources';
 import { mockDynamoDbUser } from '@src/api/models/__mocks__/user';
 import { mockDynamoDbFavoriteResource } from '@src/api/models/__mocks__/favoriteResource';
 
-jest.mock('redis', () => jest.requireActual('redis-mock'));
+// Replace the redis client with an in-memory mock for the whole test suite
+jest.mock('redis', () => jest.requireActual('@src/mocks/redis'));
 
-const redisClient = redis.createClient();
+const redisClient = createClient();
 
 // Establish API mocking before all tests.
-beforeAll(() => server.listen());
+// Requests without a matching msw handler are passed through (nock handles most of the API mocking)
+beforeAll(() => server.listen({ onUnhandledFrame: 'bypass' }));
 
 // Setup the most basic dynamoDbHandlers.
 beforeEach(() => {
@@ -47,7 +49,7 @@ beforeEach(() => {
 // so they don't affect other tests.
 afterEach(() => {
   server.resetHandlers();
-  redisClient.flushall();
+  redisClient.flushAll();
 });
 
 // Clean up after the tests are finished.

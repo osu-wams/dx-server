@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 export const mockGATrendingResource = {
   date: '2020-02-19',
   resourceId: 'test-resource-id',

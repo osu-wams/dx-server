@@ -85,7 +85,7 @@ describe('User model', () => {
         };
         dynamoDbHandler(server, itemMap);
         const result = await User.upsert({ ...mockUser, phone: value });
-        expect(result.affiliations.values).toStrictEqual(mockUser.affiliations);
+        expect(result.affiliations).toStrictEqual(mockUser.affiliations);
         result.affiliations = null;
         mockUser.affiliations = null;
         expect(result).toStrictEqual({ ...mockUser, phone: value });
@@ -144,7 +144,7 @@ describe('User model', () => {
         expect(result.audienceOverride.international).toStrictEqual(overrides.international);
         expect(result.audienceOverride.graduate).toStrictEqual(overrides.graduate);
         expect(result.audienceOverride.firstYear).toStrictEqual(overrides.firstYear);
-        expect(result.audienceOverride.colleges.values).toStrictEqual(overrides.colleges);
+        expect(result.audienceOverride.colleges).toStrictEqual(overrides.colleges);
       });
 
       it('can update a singular audienceOverride setting', async () => {

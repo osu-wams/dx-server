@@ -1,11 +1,11 @@
 /**
  * /api/student
  */
-import { Router, Request, Response } from 'express'; // eslint-disable-line no-unused-vars
-import { Types } from '@osu-wams/lib'; // eslint-disable-line no-unused-vars
+import { Router, Request, Response } from 'express';
+import { Types } from '@osu-wams/lib';
 import logger from '../logger';
 import Auth from '../auth';
-import { getPlannerItems } from './modules/canvas'; // eslint-disable-line no-unused-vars
+import { getPlannerItems } from './modules/canvas';
 import {
   getAcademicStatus,
   getAccountBalance,
@@ -188,7 +188,6 @@ router.get('/degrees', async (req: Request, res: Response) => {
 
     // If user's degrees contain "in", get rid of it
     if (response.data.length > 0) {
-      // @ts-ignore
       response.data.forEach((element, i) => {
         if (response.data[i].attributes.degree.includes(' in')) {
           const degree = response.data[i].attributes.degree.replace(' in', '');

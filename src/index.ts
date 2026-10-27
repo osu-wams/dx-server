@@ -1,10 +1,9 @@
-/* eslint-disable no-console, import/first, global-require */
-import redis from 'redis';
-import express, { Application, Request, Response, NextFunction } from 'express'; // eslint-disable-line no-unused-vars
+import { createClient } from 'redis';
+import express, { Application, Request, Response, NextFunction } from 'express';
 import cookieParser from 'cookie-parser';
 import passport from 'passport';
 import session from 'express-session';
-import connectRedis from 'connect-redis';
+import { RedisStore } from 'connect-redis';
 import {
   APP_VERSION,
   COOKIE_NAME,
@@ -20,9 +19,7 @@ import logger, { expressLogger, sessionLogger } from './logger';
 import ApiRouter from './api';
 import { findOrUpsertUser, updateOAuthData } from './api/modules/user-account';
 import { refreshOAuthToken, getOAuthToken } from './api/modules/canvas';
-import { User, isStudent } from './api/models/user'; // eslint-disable-line no-unused-vars
-
-const RedisStore = connectRedis(session);
+import { User, isStudent } from './api/models/user';
 // const ENV = config.get('env');
 
 // App Configuration
@@ -31,6 +28,11 @@ app.use(expressLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// Express 5 leaves req.body undefined when no body was parsed, keep the Express 4 behavior of an empty object
+app.use((req: Request, _res: Response, next: NextFunction) => {
+  req.body ??= {};
+  next();
+});
 
 interface SessionOptions {
   name: string;
@@ -42,7 +44,7 @@ interface SessionOptions {
     httpOnly: boolean;
     maxAge: number;
   };
-  store?: connectRedis.RedisStore;
+  store?: session.Store;
 }
 // Configure Sessions
 const sessionOptions: SessionOptions = {
@@ -59,10 +61,16 @@ const sessionOptions: SessionOptions = {
 
 if (['production', 'stage', 'development', 'preview', 'localhost'].includes(ENV)) {
   console.log(`Server started with ENV=${ENV}, VERSION=${APP_VERSION}`);
-  const redisClient = redis.createClient({
-    host: REDIS_HOST,
-    port: REDIS_PORT,
+  const redisClient = createClient({
+    socket: {
+      host: REDIS_HOST,
+      port: REDIS_PORT,
+    },
   });
+  redisClient.on('error', (err) => logger().error(`session: redisClient.on('error'): ${err}`));
+  redisClient
+    .connect()
+    .catch((err) => logger().error(`session: redisClient.connect() failed: ${err}`));
   sessionOptions.store = new RedisStore({
     client: redisClient,
   });
@@ -100,7 +108,7 @@ app.get('/healthcheck', (req, res) => {
 app.post(
   '/login/saml',
   // SAML authentication
-  passport.authenticate('saml'),
+  passport.authenticate('saml', { keepSessionInfo: true }),
 
   // Find or upsert the user set through SAML authentication
   async (req, res, next) => {

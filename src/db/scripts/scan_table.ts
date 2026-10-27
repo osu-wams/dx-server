@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import fs from 'fs';
 import { DYNAMODB } from '../../constants';
 import FavoriteResource from '../../api/models/favoriteResource';

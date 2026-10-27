@@ -1,5 +1,5 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import app from '../../index';
 import * as personsData from '../../mocks/osu/persons.data.json';
 import {
@@ -7,12 +7,11 @@ import {
   personsMailingAddressData,
 } from '../__mocks__/persons-addresses.data';
 import * as medicalData from '../../mocks/osu/medical.data.json';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import { mockedGet, mockedGetResponse } from '../modules/__mocks__/cache';
 import { OSU_API_BASE_URL } from '../../constants';
 
 jest.mock('../util.ts', () => ({
-  // @ts-ignore
   ...jest.requireActual('../util.ts'),
   getToken: () => Promise.resolve('bearer token'),
 }));

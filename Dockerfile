@@ -1,7 +1,7 @@
-FROM node:14-alpine
+FROM node:24-alpine
 
 # RUN apk add --no-cache yarn
-RUN npm install -g yarn@1.22.4 --force
+RUN npm install -g yarn@1.22.22 --force
 
 ENV appDir /var/www/app/current
 
@@ -18,7 +18,7 @@ ADD ./package.json ./
 ADD ./yarn.lock ./
 ADD ./.npmrc ./
 RUN yarn install
-RUN yarn global add ts-node typescript@4.9.5
+RUN yarn global add ts-node typescript@6.0.3
 
 # Now add application files
 ADD . ./

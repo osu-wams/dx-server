@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 
-import cache, { CacheOptions, SetCacheOptions } from '../cache';
+import { CacheOptions, SetCacheOptions } from '../cache';
 
 export const mockCacheUrl = 'http://key';
 export const mockCachedData: any = jest.fn(() => {

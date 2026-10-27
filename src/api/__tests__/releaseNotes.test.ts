@@ -1,9 +1,9 @@
 import supertest from 'supertest';
-import nock from 'nock';
+import nock from '@src/mocks/nock';
 import app from '../../index';
 import releaseNotesJSON, { lastReleaseNote } from '../../mocks/dx/release-notes';
 import { BASE_URL } from '../modules/dx';
-import cache from '../modules/cache'; // eslint-disable-line no-unused-vars
+import cache from '../modules/cache';
 import { setAsync, getAsync, mockCachedData } from '../modules/__mocks__/cache';
 
 const request = supertest.agent(app);
@@ -19,12 +19,10 @@ describe('/release-notes', () => {
       .get('/jsonapi/node/release_notes')
       .query(true)
       .reply(200, {
-        // eslint-disable-next-line no-unused-vars
         data: [...Array(10)].map((_i) => releaseNotesJSON[0]),
       });
     await request.get(apiPath).expect(
       200,
-      // eslint-disable-next-line no-unused-vars
       [...Array(6)].map((_i) => lastReleaseNote[0]),
     );
   });

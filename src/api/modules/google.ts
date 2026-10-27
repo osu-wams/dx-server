@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 
 import { analytics_v3, google } from 'googleapis';
 import { getCache, setCache } from './cache';
@@ -19,14 +18,12 @@ import {
 } from '../models/trendingResource';
 import { mockedTrendingResources } from '../../mocks/google/trendingResources';
 
-const jwt = new google.auth.JWT(
-  GOOGLE_SERVICE_ACCOUNT_EMAIL,
-  null,
-  GOOGLE_PRIVATE_KEY,
-  'https://www.googleapis.com/auth/analytics.readonly',
-);
+const jwt = new google.auth.JWT({
+  email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
+  key: GOOGLE_PRIVATE_KEY,
+  scopes: ['https://www.googleapis.com/auth/analytics.readonly'],
+});
 
-// eslint-disable-next-line
 const getGaData = async (params: analytics_v3.Params$Resource$Data$Ga$Get) =>
   google.analytics('v3').data.ga.get(params);
 
