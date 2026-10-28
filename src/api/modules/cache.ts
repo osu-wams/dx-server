@@ -17,6 +17,8 @@ const client = createClient({
     port: REDIS_PORT,
   },
   database: DEFAULT_DB,
+  // node-redis v5+ defaults to RESP3 (HELLO 3) which requires Redis 6+, the deployed cache is older
+  RESP: 2,
 });
 
 client.on('error', (err) => logger().error(`cache: redisClient.on('error'): ${err}`));

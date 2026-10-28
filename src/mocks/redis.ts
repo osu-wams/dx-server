@@ -33,7 +33,7 @@ class MockRedisClient {
 
   public isReady = false;
 
-  constructor(options?: { database?: number }) {
+  constructor(options?: { database?: number; RESP?: 2 | 3 }) {
     this.db = options?.database ?? 0;
   }
 
@@ -117,6 +117,6 @@ class MockRedisClient {
   }
 }
 
-export const createClient = (options?: { database?: number }) => new MockRedisClient(options);
+export const createClient = (options?: { database?: number; RESP?: 2 | 3 }) => new MockRedisClient(options);
 
 export default { createClient };
